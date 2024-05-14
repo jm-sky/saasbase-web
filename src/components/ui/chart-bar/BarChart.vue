@@ -1,11 +1,11 @@
 <script setup lang="ts" generic="T extends Record<string, any>">
-import type { BulletLegendItemInterface } from '@unovis/ts'
-import { VisAxis, VisGroupedBar, VisStackedBar, VisXYContainer } from '@unovis/vue'
-import { Axis, GroupedBar, StackedBar } from '@unovis/ts'
-import { type Component, computed, ref } from 'vue'
-import { useMounted } from '@vueuse/core'
-import { type BaseChartProps, ChartCrosshair, ChartLegend, defaultColors } from '@/components/ui/chart'
-import { cn } from '@/lib/utils'
+import { VisAxis, VisGroupedBar, VisStackedBar, VisXYContainer } from '@unovis/vue';
+import { Axis, GroupedBar, StackedBar } from '@unovis/ts';
+import { type Component, computed, ref } from 'vue';
+import { useMounted } from '@vueuse/core';
+import type { BulletLegendItemInterface } from '@unovis/ts';
+import { type BaseChartProps, ChartCrosshair, ChartLegend, defaultColors } from '@/components/ui/chart';
+import { cn } from '@/lib/utils';
 
 const props = withDefaults(defineProps<BaseChartProps<T> & {
   /**
@@ -32,42 +32,52 @@ const props = withDefaults(defineProps<BaseChartProps<T> & {
   showTooltip: true,
   showLegend: true,
   showGridLine: true,
-})
+});
 const emits = defineEmits<{
   legendItemClick: [d: BulletLegendItemInterface, i: number]
-}>()
+}>();
 
 type KeyOfT = Extract<keyof T, string>
 type Data = typeof props.data[number]
 
-const index = computed(() => props.index as KeyOfT)
-const colors = computed(() => props.colors?.length ? props.colors : defaultColors(props.categories.length))
+const index = computed(() => props.index as KeyOfT);
+const colors = computed(() => props.colors?.length ? props.colors : defaultColors(props.categories.length));
 const legendItems = ref<BulletLegendItemInterface[]>(props.categories.map((category, i) => ({
   name: category,
   color: colors.value[i],
   inactive: false,
-})))
+})));
 
-const isMounted = useMounted()
+const isMounted = useMounted();
 
 function handleLegendItemClick(d: BulletLegendItemInterface, i: number) {
-  emits('legendItemClick', d, i)
+  emits('legendItemClick', d, i);
 }
 
-const VisBarComponent = computed(() => props.type === 'grouped' ? VisGroupedBar : VisStackedBar)
-const selectorsBar = computed(() => props.type === 'grouped' ? GroupedBar.selectors.bar : StackedBar.selectors.bar)
+const VisBarComponent = computed(() => props.type === 'grouped' ? VisGroupedBar : VisStackedBar);
+const selectorsBar = computed(() => props.type === 'grouped' ? GroupedBar.selectors.bar : StackedBar.selectors.bar);
 </script>
 
 <template>
   <div :class="cn('w-full h-[400px] flex flex-col items-end', $attrs.class ?? '')">
-    <ChartLegend v-if="showLegend" v-model:items="legendItems" @legend-item-click="handleLegendItemClick" />
+    <ChartLegend
+      v-if="showLegend"
+      v-model:items="legendItems"
+      @legend-item-click="handleLegendItemClick"
+    />
 
     <VisXYContainer
       :data="data"
       :style="{ height: isMounted ? '100%' : 'auto' }"
       :margin="margin"
     >
-      <ChartCrosshair v-if="showTooltip" :colors="colors" :items="legendItems" :custom-tooltip="customTooltip" :index="index" />
+      <ChartCrosshair
+        v-if="showTooltip"
+        :colors="colors"
+        :items="legendItems"
+        :custom-tooltip="customTooltip"
+        :index="index"
+      />
 
       <VisBarComponent
         :x="(d: Data, i: number) => i"

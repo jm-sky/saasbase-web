@@ -1,20 +1,20 @@
 <script lang="ts" setup>
-import { type HTMLAttributes, computed } from 'vue'
-import { RangeCalendarRoot, type RangeCalendarRootEmits, type RangeCalendarRootProps, useForwardPropsEmits } from 'radix-vue'
-import { RangeCalendarCell, RangeCalendarCellTrigger, RangeCalendarGrid, RangeCalendarGridBody, RangeCalendarGridHead, RangeCalendarGridRow, RangeCalendarHeadCell, RangeCalendarHeader, RangeCalendarHeading, RangeCalendarNextButton, RangeCalendarPrevButton } from '.'
-import { cn } from '@/lib/utils'
+import { type HTMLAttributes, computed } from 'vue';
+import { RangeCalendarRoot, type RangeCalendarRootEmits, type RangeCalendarRootProps, useForwardPropsEmits } from 'radix-vue';
+import { RangeCalendarCell, RangeCalendarCellTrigger, RangeCalendarGrid, RangeCalendarGridBody, RangeCalendarGridHead, RangeCalendarGridRow, RangeCalendarHeadCell, RangeCalendarHeader, RangeCalendarHeading, RangeCalendarNextButton, RangeCalendarPrevButton } from '.';
+import { cn } from '@/lib/utils';
 
-const props = defineProps<RangeCalendarRootProps & { class?: HTMLAttributes['class'] }>()
+const props = defineProps<RangeCalendarRootProps & { class?: HTMLAttributes['class'] }>();
 
-const emits = defineEmits<RangeCalendarRootEmits>()
+const emits = defineEmits<RangeCalendarRootEmits>();
 
 const delegatedProps = computed(() => {
-  const { class: _, ...delegated } = props
+  const { class: _, ...delegated } = props; // eslint-disable-line @typescript-eslint/no-unused-vars
 
-  return delegated
-})
+  return delegated;
+});
 
-const forwarded = useForwardPropsEmits(delegatedProps, emits)
+const forwarded = useForwardPropsEmits(delegatedProps, emits);
 </script>
 
 <template>
@@ -30,18 +30,26 @@ const forwarded = useForwardPropsEmits(delegatedProps, emits)
     </RangeCalendarHeader>
 
     <div class="flex flex-col gap-y-4 mt-4 sm:flex-row sm:gap-x-4 sm:gap-y-0">
-      <RangeCalendarGrid v-for="month in grid" :key="month.value.toString()">
+      <RangeCalendarGrid
+        v-for="month in grid"
+        :key="month.value.toString()"
+      >
         <RangeCalendarGridHead>
           <RangeCalendarGridRow>
             <RangeCalendarHeadCell
-              v-for="day in weekDays" :key="day"
+              v-for="day in weekDays"
+              :key="day"
             >
               {{ day }}
             </RangeCalendarHeadCell>
           </RangeCalendarGridRow>
         </RangeCalendarGridHead>
         <RangeCalendarGridBody>
-          <RangeCalendarGridRow v-for="(weekDates, index) in month.rows" :key="`weekDate-${index}`" class="mt-2 w-full">
+          <RangeCalendarGridRow
+            v-for="(weekDates, index) in month.rows"
+            :key="`weekDate-${index}`"
+            class="mt-2 w-full"
+          >
             <RangeCalendarCell
               v-for="weekDate in weekDates"
               :key="weekDate.toString()"
