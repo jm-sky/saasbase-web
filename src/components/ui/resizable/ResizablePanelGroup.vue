@@ -7,7 +7,7 @@ const props = defineProps<SplitterGroupProps & { class?: HTMLAttributes['class']
 const emits = defineEmits<SplitterGroupEmits>();
 
 const delegatedProps = computed(() => {
-  const { class: _, ...delegated } = props;
+  const { class: _, ...delegated } = props; // eslint-disable-line @typescript-eslint/no-unused-vars
   return delegated;
 });
 

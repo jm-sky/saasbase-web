@@ -14,7 +14,7 @@ const props = withDefaults(defineProps<TooltipContentProps & { class?: HTMLAttri
 const emits = defineEmits<TooltipContentEmits>();
 
 const delegatedProps = computed(() => {
-  const { class: _, ...delegated } = props;
+  const { class: _, ...delegated } = props; // eslint-disable-line @typescript-eslint/no-unused-vars
 
   return delegated;
 });

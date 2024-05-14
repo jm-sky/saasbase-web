@@ -7,7 +7,7 @@ import { refDebounced } from '@vueuse/core';
 import AccountSwitcher from './AccountSwitcher.vue';
 import MailList from './MailList.vue';
 import MailDisplay from './MailDisplay.vue';
-import Nav, { type LinkProp } from './MailNav.vue';
+import MailNav, { type LinkProp } from './MailNav.vue';
 import type { Mail } from '@/data/mails';
 import { cn } from '@/lib/utils';
 import { Separator } from '@/components/ui/separator';
@@ -166,19 +166,19 @@ function onExpand() {
         @expand="onExpand"
         @collapse="onCollapse"
       >
-        <div :class="cn('flex h-[52px] items-center justify-center', isCollapsed ? 'h-[52px]' : 'px-2')">
+        <div :class="cn('flex h-[56px] items-center justify-center', isCollapsed ? 'h-[56px]' : 'px-2')">
           <AccountSwitcher
             :is-collapsed="isCollapsed"
             :accounts="accounts"
           />
         </div>
         <Separator />
-        <Nav
+        <MailNav
           :is-collapsed="isCollapsed"
           :links="links"
         />
         <Separator />
-        <Nav
+        <MailNav
           :is-collapsed="isCollapsed"
           :links="links2"
         />

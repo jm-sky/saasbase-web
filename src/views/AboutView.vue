@@ -1,15 +1,12 @@
 <template>
-  <div class="about">
-    <h1>This is an about page</h1>
+  <div class="grid place-items-center min-h-72">
+    <div class="p-4">
+      <div class="font-bold text-2xl mb-2">
+        About
+      </div>
+      <p>
+        This is a simple boilerplate app with shadcn components and example templates.
+      </p>
+    </div>
   </div>
 </template>
-
-<style>
-@media (min-width: 1024px) {
-  .about {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-  }
-}
-</style>

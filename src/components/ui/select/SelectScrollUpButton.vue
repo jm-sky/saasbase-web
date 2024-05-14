@@ -7,7 +7,7 @@ import { cn } from '@/lib/utils';
 const props = defineProps<SelectScrollUpButtonProps & { class?: HTMLAttributes['class'] }>();
 
 const delegatedProps = computed(() => {
-  const { class: _, ...delegated } = props;
+  const { class: _, ...delegated } = props; // eslint-disable-line @typescript-eslint/no-unused-vars
 
   return delegated;
 });
@@ -21,7 +21,7 @@ const forwardedProps = useForwardProps(delegatedProps);
     :class="cn('flex cursor-default items-center justify-center py-1', props.class)"
   >
     <slot>
-      <ChevronUp class="h-4 w-4" />
+      <ChevronUp class="size-4" />
     </slot>
   </SelectScrollUpButton>
 </template>

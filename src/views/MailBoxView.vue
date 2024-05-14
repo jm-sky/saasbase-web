@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import MailItem from '@/components/MailBox/MailItem.vue';
+import MailBox from '@/components/MailBox/MailBox.vue';
 import { accounts, mails } from '@/data/mails';
 </script>
 
@@ -21,7 +21,7 @@ import { accounts, mails } from '@/data/mails';
     />
   </div>
   <div class="hidden flex-col md:flex">
-    <MailItem
+    <MailBox
       :accounts="accounts"
       :mails="mails"
       :nav-collapsed-size="4"

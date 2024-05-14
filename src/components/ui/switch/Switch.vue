@@ -14,7 +14,7 @@ const props = defineProps<SwitchRootProps & { class?: HTMLAttributes['class'] }>
 const emits = defineEmits<SwitchRootEmits>();
 
 const delegatedProps = computed(() => {
-  const { class: _, ...delegated } = props;
+  const { class: _, ...delegated } = props; // eslint-disable-line @typescript-eslint/no-unused-vars
 
   return delegated;
 });
@@ -31,7 +31,7 @@ const forwarded = useForwardPropsEmits(delegatedProps, emits);
     )"
   >
     <SwitchThumb
-      :class="cn('pointer-events-none block h-5 w-5 rounded-full bg-background shadow-lg ring-0 transition-transform data-[state=checked]:translate-x-5 data-[state=unchecked]:translate-x-0')"
+      :class="cn('pointer-events-none block size-5 rounded-full bg-background shadow-lg ring-0 transition-transform data-[state=checked]:translate-x-5 data-[state=unchecked]:translate-x-0')"
     />
   </SwitchRoot>
 </template>
