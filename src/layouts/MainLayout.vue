@@ -32,9 +32,9 @@ import { RouterLink } from 'vue-router';
         </RouterLink>
       </div>
     </nav>
-    <div class="p-4">
+    <main>
       <slot />
-    </div>
+    </main>
   </div>
 </template>
 

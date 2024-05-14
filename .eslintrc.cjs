@@ -21,6 +21,7 @@ module.exports = defineConfig({
     'comma-dangle': ['error', 'always-multiline'],
     'eol-last': ['error', 'always'],
     'vue/require-default-prop': 'off',
+    'vue/multi-word-component-names': 'off',
     'sort-imports': ['error', {
         'ignoreCase': true,
         'ignoreDeclarationSort': true,

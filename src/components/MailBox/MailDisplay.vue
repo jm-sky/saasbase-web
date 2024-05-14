@@ -5,17 +5,17 @@ import addDays from 'date-fns/addDays';
 import addHours from 'date-fns/addHours';
 import format from 'date-fns/format';
 import nextSaturday from 'date-fns/nextSaturday';
-import type { Mail } from '../data/mails';
-import { Calendar } from '@/lib/registry/new-york/ui/calendar';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/lib/registry/new-york/ui/dropdown-menu';
-import { Popover, PopoverContent, PopoverTrigger } from '@/lib/registry/new-york/ui/popover';
-import { Avatar, AvatarFallback } from '@/lib/registry/new-york/ui/avatar';
-import { Button } from '@/lib/registry/new-york/ui/button';
-import { Label } from '@/lib/registry/new-york/ui/label';
-import { Separator } from '@/lib/registry/new-york/ui/separator';
-import { Switch } from '@/lib/registry/new-york/ui/switch';
-import { Textarea } from '@/lib/registry/new-york/ui/textarea';
-import { Tooltip, TooltipContent, TooltipTrigger } from '@/lib/registry/new-york/ui/tooltip';
+import type { Mail } from '@/data/mails';
+import { Calendar } from '@/components/ui/calendar';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import { Button } from '@/components/ui/button';
+import { Label } from '@/components/ui/label';
+import { Separator } from '@/components/ui/separator';
+import { Switch } from '@/components/ui/switch';
+import { Textarea } from '@/components/ui/textarea';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 
 interface MailDisplayProps {
   mail: Mail | undefined
