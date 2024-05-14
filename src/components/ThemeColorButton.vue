@@ -32,7 +32,7 @@ const colors = computed(() => themeStore.allowedColors.map(name => ({
       </Button>
     </PopoverTrigger>
     <PopoverContent class="w-96 space-y-3">
-      <Label>{{ $t('common.Color') }}</Label>
+      <Label class="font-bold">{{ $t('common.ThemeColor') }}</Label>
       <div class="grid grid-cols-3 gap-2">
         <Button
           v-for="color in colors"
@@ -40,7 +40,7 @@ const colors = computed(() => themeStore.allowedColors.map(name => ({
           variant="outline"
           class="gap-2 justify-start text-xs"
           size="sm"
-          :class="{ 'ring': color.isActive }"
+          :class="{ 'ring ring-primary/50': color.isActive }"
           @click="themeColor = color.name"
         >
           <span
@@ -51,9 +51,6 @@ const colors = computed(() => themeStore.allowedColors.map(name => ({
           </span>
           <span class="capitalize">{{ color.name }}</span>
         </Button>
-      </div>
-      <div class="text-xs text-gray-500 pt-2">
-        Current color is: <span class="capitalize font-bold">{{ themeColor }}</span>
       </div>
     </PopoverContent>
   </Popover>

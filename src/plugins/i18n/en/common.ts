@@ -1,3 +1,3 @@
 export const common = {
-  Color: 'Color',
+  ThemeColor: 'Theme color',
 };
