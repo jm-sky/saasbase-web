@@ -9,7 +9,7 @@ import {
 } from '@/components/ui/popover';
 import Button from '@/components/ui/button/Button.vue';
 import Label from '@/components/ui/label/Label.vue';
-import { useThemeStore } from '@/stores/theme';
+import { useThemeStore } from '@/stores/theme.store';
 
 const themeStore = useThemeStore();
 
