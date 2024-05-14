@@ -15,6 +15,10 @@ import {
   DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { userData } from '@/data/userData';
+import { User } from '@/models/user.model';
+
+const user = User.load(userData);
 </script>
 
 <template>
@@ -29,7 +33,7 @@ import {
             src="/avatars/01.png"
             alt="@shadcn"
           />
-          <AvatarFallback>SC</AvatarFallback>
+          <AvatarFallback>{{ user.initials }}</AvatarFallback>
         </Avatar>
       </Button>
     </DropdownMenuTrigger>
@@ -40,10 +44,10 @@ import {
       <DropdownMenuLabel class="font-normal flex">
         <div class="flex flex-col space-y-1">
           <p class="text-sm font-medium leading-none">
-            shadcn
+            {{ user.fullName }}
           </p>
           <p class="text-xs leading-none text-muted-foreground">
-            m@example.com
+            {{ user.email }}
           </p>
         </div>
       </DropdownMenuLabel>

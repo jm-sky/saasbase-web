@@ -32,13 +32,17 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { User } from '@/models/user.model';
+import { user as userData } from '@/data/user';
+
+const user = User.load({ ...userData });
 
 const groups = [
   {
     label: 'Personal Account',
     teams: [
       {
-        label: 'Alicia Koch',
+        label: user.fullName,
         value: 'personal',
       },
     ],

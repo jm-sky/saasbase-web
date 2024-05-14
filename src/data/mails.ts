@@ -1,3 +1,5 @@
+import { userData } from '@/data/userData';
+
 export const mails = [
   {
     id: '6c84fb90-12c4-11e1-840d-7b25c5ee775a',
@@ -175,19 +177,14 @@ export type Mail = (typeof mails)[number]
 
 export const accounts = [
   {
-    label: 'Alicia Koch',
-    email: 'alicia@example.com',
-    icon: 'ion:logo-vercel',
-  },
-  {
-    label: 'Alicia Koch',
-    email: 'alicia@gmail.com',
-    icon: 'mdi:google',
-  },
-  {
-    label: 'Alicia Koch',
-    email: 'alicia@me.com',
+    label: `${userData.name} ${userData.lastName}`,
+    email: userData.email,
     icon: 'bx:bxl-gmail',
+  },
+  {
+    label: `${userData.name} ${userData.lastName}`,
+    email: 'office@company.com',
+    icon: 'mdi:google',
   },
 ];
 

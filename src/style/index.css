@@ -6,3 +6,57 @@
 
 @import 'tailwindcss/utilities';
 @import './utilities.css';
+
+.theme-sky {
+  --primary-50: var(--sky-50);
+  --primary-100: var(--sky-100);
+  --primary-500: var(--sky-500);
+  --primary-600: var(--sky-600);
+  --primary-900: var(--sky-900);
+  --primary: var(--primary-600);
+}
+
+.theme-emerald {
+  --primary-50: var(--emerald-50);
+  --primary-100: var(--emerald-100);
+  --primary-500: var(--emerald-500);
+  --primary-600: var(--emerald-600);
+  --primary-900: var(--emerald-900);
+  --primary: var(--primary-600);
+}
+
+.theme-violet {
+  --primary-50: var(--violet-50);
+  --primary-100: var(--violet-100);
+  --primary-500: var(--violet-500);
+  --primary-600: var(--violet-600);
+  --primary-900: var(--violet-900);
+  --primary: var(--primary-600);
+}
+
+.theme-slate {
+  --primary-50: var(--slate-50);
+  --primary-100: var(--slate-100);
+  --primary-500: var(--slate-500);
+  --primary-600: var(--slate-600);
+  --primary-900: var(--slate-900);
+  --primary: var(--primary-600);
+}
+
+.theme-purple {
+  --primary-50: var(--purple-50);
+  --primary-100: var(--purple-100);
+  --primary-500: var(--purple-500);
+  --primary-600: var(--purple-600);
+  --primary-900: var(--purple-900);
+  --primary: var(--primary-600);
+}
+
+.theme-green {
+  --primary-50: var(--green-50);
+  --primary-100: var(--green-100);
+  --primary-500: var(--green-500);
+  --primary-600: var(--green-600);
+  --primary-900: var(--green-900);
+  --primary: var(--primary-600);
+}
