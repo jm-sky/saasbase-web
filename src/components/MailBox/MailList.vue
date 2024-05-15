@@ -47,7 +47,7 @@ function getBadgeVariantFromLabel(label: string) {
                 </div>
                 <span
                   v-if="!item.read"
-                  class="flex h-2 w-2 rounded-full bg-blue-600"
+                  class="flex size-2 rounded-full bg-blue-600"
                 />
               </div>
               <div

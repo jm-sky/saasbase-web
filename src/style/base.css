@@ -2,10 +2,17 @@
 
 @layer base {
   :root {
+    --primary-50: var(--sky-50);
     --primary-100: var(--sky-100);
+    --primary-200: var(--sky-200);
+    --primary-300: var(--sky-300);
+    --primary-400: var(--sky-400);
     --primary-500: var(--sky-500);
     --primary-600: var(--sky-600);
+    --primary-700: var(--sky-700);
+    --primary-800: var(--sky-800);
     --primary-900: var(--sky-900);
+    --primary-950: var(--sky-950);
     
     --background: 0 0% 100%;
     --foreground: 222.2 84% 4.9%;

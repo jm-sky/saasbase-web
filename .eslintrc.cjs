@@ -33,6 +33,16 @@ module.exports = defineConfig({
       'error',
       {
         'newlines-between': 'never',
+        'alphabetize': {
+          'order': 'asc',
+          'caseInsensitive': true,
+        },
+        'pathGroups': [
+          {
+            'pattern': '@/**',
+            'group': 'internal',
+          },
+        ],
         'groups': [
           'builtin',
           'external',

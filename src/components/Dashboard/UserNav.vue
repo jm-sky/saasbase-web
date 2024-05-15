@@ -26,9 +26,9 @@ const user = User.load(userData);
     <DropdownMenuTrigger as-child>
       <Button
         variant="ghost"
-        class="relative h-8 w-8 rounded-full"
+        class="relative size-8 rounded-full"
       >
-        <Avatar class="h-8 w-8">
+        <Avatar class="size-8">
           <AvatarImage
             src="/avatars/01.png"
             alt="@shadcn"
