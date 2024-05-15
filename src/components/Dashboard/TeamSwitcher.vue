@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import { ref } from 'vue';
 import { Icon } from '@iconify/vue';
-import { cn } from '@/lib/utils';
+import { ref } from 'vue';
 import {
   Avatar,
   AvatarFallback,
   AvatarImage,
 } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList, CommandSeparator } from '@/components/ui/command';
 import {
   Dialog,
   DialogContent,
@@ -17,7 +17,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
-import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList, CommandSeparator } from '@/components/ui/command';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import {
@@ -32,8 +31,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { User } from '@/models/user.model';
 import { user as userData } from '@/data/user';
+import { cn } from '@/lib/utils';
+import { User } from '@/models/user.model';
 
 const user = User.load({ ...userData });
 

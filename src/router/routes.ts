@@ -1,7 +1,8 @@
 import LoginView from '@/views/auth/LoginView.vue';
 import HomeView from '@/views/HomeView.vue';
+import type { RouteRecordRaw } from 'vue-router';
 
-export const routes = [
+export const routes: RouteRecordRaw[] = [
   {
     path: '/',
     name: 'home',
@@ -11,6 +12,11 @@ export const routes = [
     path: '/login',
     name: 'login',
     component: LoginView,
+  },
+  {
+    path: '/register',
+    name: 'register',
+    component: () => import('@/views/auth/RegisterView.vue'),
   },
   {
     path: '/terms',

@@ -1,16 +1,16 @@
 <script setup lang="ts">
-import { Calendar as CalendarIcon } from 'lucide-vue-next';
 import { CalendarDate, DateFormatter, getLocalTimeZone } from '@internationalized/date';
+import { Calendar as CalendarIcon } from 'lucide-vue-next';
 import { type Ref, ref } from 'vue';
-import type { DateRange } from 'radix-vue';
-import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
-import { RangeCalendar } from '@/components/ui/range-calendar';
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover';
+import { RangeCalendar } from '@/components/ui/range-calendar';
+import { cn } from '@/lib/utils';
+import type { DateRange } from 'radix-vue';
 
 const df = new DateFormatter('en-US', {
   dateStyle: 'medium',

@@ -1,11 +1,11 @@
 <script lang="ts" setup>
 import MailBox from '@/components/MailBox/MailBox.vue';
 import { accounts, mails } from '@/data/mails';
-import MainLayout from '@/layouts/MainLayout.vue';
+import AuthenticatedLayout from '@/layouts/AuthenticatedLayout.vue';
 </script>
 
 <template>
-  <MainLayout>
+  <AuthenticatedLayout>
     <div class="md:hidden">
       <image
         src="/examples/mail-dark.png"
@@ -29,5 +29,5 @@ import MainLayout from '@/layouts/MainLayout.vue';
         :nav-collapsed-size="4"
       />
     </div>
-  </MainLayout>
+  </AuthenticatedLayout>
 </template>

@@ -1,17 +1,12 @@
 <script lang="ts" setup>
+import { refDebounced } from '@vueuse/core';
 import {
   Search,
 } from 'lucide-vue-next';
 import { computed, ref } from 'vue';
-import { refDebounced } from '@vueuse/core';
-import AccountSwitcher from './AccountSwitcher.vue';
-import MailList from './MailList.vue';
-import MailDisplay from './MailDisplay.vue';
-import MailNav, { type LinkProp } from './MailNav.vue';
-import type { Mail } from '@/data/mails';
-import { cn } from '@/lib/utils';
-import { Separator } from '@/components/ui/separator';
 import { Input } from '@/components/ui/input';
+import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@/components/ui/resizable';
+import { Separator } from '@/components/ui/separator';
 import {
   Tabs,
   TabsContent,
@@ -19,7 +14,12 @@ import {
   TabsTrigger,
 } from '@/components/ui/tabs';
 import { TooltipProvider } from '@/components/ui/tooltip';
-import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@/components/ui/resizable';
+import type { Mail } from '@/data/mails';
+import { cn } from '@/lib/utils';
+import AccountSwitcher from './AccountSwitcher.vue';
+import MailDisplay from './MailDisplay.vue';
+import MailList from './MailList.vue';
+import MailNav, { type LinkProp } from './MailNav.vue';
 
 interface MailProps {
   accounts: {

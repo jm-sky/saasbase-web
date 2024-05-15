@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import MainLayout from '@/layouts/MainLayout.vue';
+import AuthenticatedLayout from '@/layouts/AuthenticatedLayout.vue';
 
 </script>
 
 <template>
-  <MainLayout>
+  <AuthenticatedLayout>
     <div class="grid place-items-center min-h-72">
       <div class="p-4">
         <div class="font-bold text-2xl mb-2">
@@ -15,5 +15,5 @@ import MainLayout from '@/layouts/MainLayout.vue';
         </p>
       </div>
     </div>
-  </MainLayout>
+  </AuthenticatedLayout>
 </template>

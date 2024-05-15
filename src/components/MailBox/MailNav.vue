@@ -1,12 +1,12 @@
 <script lang="ts" setup>
 import { Icon } from '@iconify/vue';
-import { cn } from '@/lib/utils';
 import { buttonVariants } from '@/components/ui/button';
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
 } from '@/components/ui/tooltip';
+import { cn } from '@/lib/utils';
 
 export interface LinkProp {
   title: string

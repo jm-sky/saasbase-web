@@ -1,6 +1,6 @@
-import { watch } from 'vue';
-import { defineStore } from 'pinia';
 import { useLocalStorage } from '@vueuse/core';
+import { defineStore } from 'pinia';
+import { watch } from 'vue';
 
 const allowedColors = [
   'sky',

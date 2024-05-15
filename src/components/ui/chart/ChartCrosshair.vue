@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { VisCrosshair, VisTooltip } from '@unovis/vue';
 import { omit } from '@unovis/ts';
+import { VisCrosshair, VisTooltip } from '@unovis/vue';
 import { type Component, createApp } from 'vue';
 import { ChartTooltip } from '.';
 import type { BulletLegendItemInterface } from '@unovis/ts';

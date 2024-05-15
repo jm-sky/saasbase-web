@@ -21,7 +21,7 @@ const authProviders: Record<AuthProvider, boolean> = {
 
 const isLoading = ref(false);
 
-async function onSubmit(event: Event) {
+const onSubmit = async (event: Event) => {
   event.preventDefault();
   isLoading.value = true;
 
@@ -29,7 +29,7 @@ async function onSubmit(event: Event) {
     isLoading.value = false;
     router.push('/');
   }, 3000);
-}
+};
 
 const useAuthProviders = computed<boolean>(() => Object.values(authProviders).filter(v => v).length > 0);
 </script>

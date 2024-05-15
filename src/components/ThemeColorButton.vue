@@ -1,14 +1,14 @@
 <script setup lang="ts">
 import { Icon } from '@iconify/vue';
-import { computed } from 'vue';
 import { storeToRefs } from 'pinia';
+import { computed } from 'vue';
+import Button from '@/components/ui/button/Button.vue';
+import Label from '@/components/ui/label/Label.vue';
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover';
-import Button from '@/components/ui/button/Button.vue';
-import Label from '@/components/ui/label/Label.vue';
 import { useThemeStore } from '@/stores/theme.store';
 
 const themeStore = useThemeStore();

@@ -1,11 +1,11 @@
 <script setup lang="ts" generic="T extends Record<string, any>">
-import { VisAxis, VisGroupedBar, VisStackedBar, VisXYContainer } from '@unovis/vue';
 import { Axis, GroupedBar, StackedBar } from '@unovis/ts';
-import { type Component, computed, ref } from 'vue';
+import { VisAxis, VisGroupedBar, VisStackedBar, VisXYContainer } from '@unovis/vue';
 import { useMounted } from '@vueuse/core';
-import type { BulletLegendItemInterface } from '@unovis/ts';
+import { type Component, computed, ref } from 'vue';
 import { type BaseChartProps, ChartCrosshair, ChartLegend, defaultColors } from '@/components/ui/chart';
 import { cn } from '@/lib/utils';
+import type { BulletLegendItemInterface } from '@unovis/ts';
 
 const props = withDefaults(defineProps<BaseChartProps<T> & {
   /**

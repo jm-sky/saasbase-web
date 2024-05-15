@@ -1,9 +1,9 @@
 <script lang="ts" setup>
 import { formatDistanceToNow } from 'date-fns';
-import type { Mail } from '@/data/mails';
-import { ScrollArea } from '@/components/ui/scroll-area';
-import { cn } from '@/lib/utils';
 import { Badge } from '@/components/ui/badge';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import type { Mail } from '@/data/mails';
+import { cn } from '@/lib/utils';
 
 interface MailListProps {
   items: Mail[]

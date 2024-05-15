@@ -15,6 +15,7 @@
     "@internationalized/date": "3.5.2",
     "@unovis/ts": "^1.4.0",
     "@unovis/vue": "^1.4.0",
+    "@vee-validate/zod": "^4.12.8",
     "@vueuse/core": "^10.9.0",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
@@ -25,9 +26,11 @@
     "radix-vue": "^1.7.4",
     "tailwind-merge": "^2.3.0",
     "tailwindcss-animate": "^1.0.7",
+    "vee-validate": "^4.12.8",
     "vue": "^3.4.21",
     "vue-i18n": "9",
-    "vue-router": "^4.3.0"
+    "vue-router": "^4.3.0",
+    "zod": "^3.23.8"
   },
   "devDependencies": {
     "@rushstack/eslint-patch": "^1.10.2",

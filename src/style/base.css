@@ -41,6 +41,9 @@
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: var(--primary-100); /* 210 40% 98% */
  
+    --success: var(--green-300);
+    --success-foreground: var(--green-600);
+ 
     --ring: var(--primary-500); /* 222.2 84% 4.9% */
  
     --radius: 0.5rem;
