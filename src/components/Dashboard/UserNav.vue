@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { storeToRefs } from 'pinia';
+import { useRouter } from 'vue-router';
 import {
   Avatar,
   AvatarFallback,
@@ -15,10 +17,18 @@ import {
   DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { userData } from '@/data/userData';
-import { User } from '@/models/user.model';
+import { authService } from '@/services/authService';
+import { useAuthStore } from '@/stores/auth.store';
 
-const user = User.load(userData);
+const authStore = useAuthStore();
+const router = useRouter();
+
+const { user } = storeToRefs(authStore);
+
+const logout = async () => {
+  await authService.logout();
+  router.push('/login');
+};
 </script>
 
 <template>
@@ -33,7 +43,7 @@ const user = User.load(userData);
             src="/avatars/01.png"
             alt="@shadcn"
           />
-          <AvatarFallback>{{ user.initials }}</AvatarFallback>
+          <AvatarFallback>{{ user?.initials }}</AvatarFallback>
         </Avatar>
       </Button>
     </DropdownMenuTrigger>
@@ -44,10 +54,10 @@ const user = User.load(userData);
       <DropdownMenuLabel class="font-normal flex">
         <div class="flex flex-col space-y-1">
           <p class="text-sm font-medium leading-none">
-            {{ user.fullName }}
+            {{ user?.fullName }}
           </p>
           <p class="text-xs leading-none text-muted-foreground">
-            {{ user.email }}
+            {{ user?.email }}
           </p>
         </div>
       </DropdownMenuLabel>
@@ -68,7 +78,7 @@ const user = User.load(userData);
         <DropdownMenuItem>New Team</DropdownMenuItem>
       </DropdownMenuGroup>
       <DropdownMenuSeparator />
-      <DropdownMenuItem>
+      <DropdownMenuItem @click="logout()">
         Log out
         <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
       </DropdownMenuItem>

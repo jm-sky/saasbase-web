@@ -153,7 +153,7 @@ function onExpand() {
     <ResizablePanelGroup
       id="resize-panel-group-1"
       direction="horizontal"
-      class="h-full max-h-[800px] items-stretch"
+      class="h-full max-h-[100%] items-stretch"
     >
       <ResizablePanel
         id="resize-panel-1"

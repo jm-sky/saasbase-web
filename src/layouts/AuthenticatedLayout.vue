@@ -3,9 +3,9 @@ import TopBar from './partials/TopBar.vue';
 </script>
 
 <template>
-  <div>
+  <div class="min-h-screen flex flex-col">
     <TopBar />
-    <main>
+    <main class="flex flex-col h-full grow">
       <slot />
     </main>
   </div>

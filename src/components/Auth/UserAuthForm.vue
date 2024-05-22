@@ -1,19 +1,26 @@
 <script setup lang="ts">
+import { toTypedSchema } from '@vee-validate/zod';
+import { useForm } from 'vee-validate';
 import { computed } from 'vue';
 import { ref } from 'vue';
-import { useRouter } from 'vue-router';
+import { RouterLink, useRouter } from 'vue-router';
+import FormFieldLabeled from '@/components/Form/FormFieldLabeled.vue';
+import FormFieldLabeledAfter from '@/components/Form/FormFieldLabeledAfter.vue';
 import { Button } from '@/components/ui/button';
+import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import UIIcon from '@/components/UIIcon.vue';
 import { cn } from '@/lib/utils';
+import { authService, credentialsSchema, type Credentials } from '@/services/authService';
+import { useToast } from '../ui/toast';
 
 const router = useRouter();
+const { toast } = useToast();
 
 type AuthProvider = 'gitHub' | 'google' | 'facebook' | 'linkedIn'
 
 const authProviders: Record<AuthProvider, boolean> = {
-  gitHub: false,
+  gitHub: true,
   google: false,
   facebook: false,
   linkedIn: false,
@@ -21,15 +28,23 @@ const authProviders: Record<AuthProvider, boolean> = {
 
 const isLoading = ref(false);
 
-const onSubmit = async (event: Event) => {
-  event.preventDefault();
+const form = useForm<Credentials>({
+  validationSchema: toTypedSchema(credentialsSchema),
+});
+
+const onSubmit = form.handleSubmit(async (values) => {
+  toast({
+    title: 'Logging in...',
+    description: `Hello there ${values.email}`,
+    variant: 'default',
+  });
+
   isLoading.value = true;
 
-  setTimeout(() => {
-    isLoading.value = false;
-    router.push('/');
-  }, 3000);
-};
+  await authService.login(values);
+
+  router.push('/');
+});
 
 const useAuthProviders = computed<boolean>(() => Object.values(authProviders).filter(v => v).length > 0);
 </script>
@@ -38,39 +53,43 @@ const useAuthProviders = computed<boolean>(() => Object.values(authProviders).fi
   <div :class="cn('grid gap-6', $attrs.class ?? '')">
     <form @submit="onSubmit">
       <div class="grid gap-2">
-        <div class="grid gap-1">
-          <Label
-            class="sr-only"
-            for="email"
-          >
-            E-mail
-          </Label>
+        <FormFieldLabeled
+          v-slot="{ componentField }"
+          name="email"
+        >
           <Input
-            id="email"
+            v-bind="componentField"
             placeholder="name@example.com"
-            type="email"
-            auto-capitalize="none"
-            auto-complete="email"
-            auto-correct="off"
-            :disabled="isLoading"
           />
-        </div>
-        <div class="grid gap-1">
-          <Label
-            class="sr-only"
-            for="password"
-          >
-            Password
-          </Label>
+        </FormFieldLabeled>
+
+        <FormFieldLabeled
+          v-slot="{ componentField }"
+          name="password"
+        >
           <Input
-            id="password"
+            v-bind="componentField"
             placeholder="Your secret password"
-            type="password"
-            auto-capitalize="none"
-            auto-complete="password"
-            auto-correct="off"
-            :disabled="isLoading"
           />
+        </FormFieldLabeled>
+
+        <div class="flex flex-row gap-3 items-center justify-between text-sm mb-4 text-gray-600">
+          <FormFieldLabeledAfter
+            v-slot="{ componentField }"
+            name="remember"
+            label="Remember"
+          >
+            <Checkbox v-bind="componentField" />
+          </FormFieldLabeledAfter>
+
+          <div class="">
+            <RouterLink
+              to="/password-forgot"
+              class="text-sm text-gray-500 hover:text-primary-500"
+            >
+              Forgot password?
+            </RouterLink>
+          </div>
         </div>
 
         <Button :disabled="isLoading">
@@ -109,6 +128,7 @@ const useAuthProviders = computed<boolean>(() => Object.values(authProviders).fi
           v-else
           icon="lucide:github"
           class="mr-2 size-4"
+          disabled
         />
         GitHub
       </Button>

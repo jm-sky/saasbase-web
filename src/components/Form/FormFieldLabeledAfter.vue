@@ -19,19 +19,22 @@ defineProps<{
     v-slot="{ componentField, meta }"
     :name
   >
-    <FormItem>
-      <FormLabel v-if="label">
+    <FormItem class="flex items-center gap-1.5 space-y-0">
+      <FormControl>
+        <slot :component-field />
+      </FormControl>
+      <FormLabel
+        v-if="label"
+        class="font-normal my-0 leading-none"
+      >
         {{ label }}
         <span
           v-if="meta.required"
           class="text-destructive"
         >*</span>
       </FormLabel>
-      <FormControl>
-        <slot :component-field />
-      </FormControl>
-      <FormDescription />
-      <FormMessage />
     </FormItem>
+    <FormDescription />
+    <FormMessage />
   </FormField>
 </template>

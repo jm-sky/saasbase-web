@@ -31,9 +31,10 @@ const onSubmit = form.handleSubmit(async (values) => {
     variant: 'success',
   });
 
-  console.log('[onSubmit] values:', values);
   isLoading.value = true;
+
   await new Promise((resolve) => setTimeout(resolve, 1000));
+  
   isLoading.value = false;
 });
 </script>
@@ -41,12 +42,26 @@ const onSubmit = form.handleSubmit(async (values) => {
 <template>
   <GuestLayout>
     <div class="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
-      <div class="flex flex-col space-y-2 text-center">
-        <h1 class="text-2xl font-semibold tracking-tight">
+      <div class="flex flex-col text-center">
+        <h1 class="text-2xl font-semibold tracking-tight mb-2">
           Register
         </h1>
         <p class="text-sm text-muted-foreground">
           Enter your account details below to create your account
+        </p>
+        <p class="text-sm text-muted-foreground">
+          ...or
+          <RouterLink
+            to="/login"
+            as="template"
+          >
+            <Button
+              variant="link"
+              class="p-0"
+            >
+              login
+            </Button>
+          </RouterLink>
         </p>
       </div>
         

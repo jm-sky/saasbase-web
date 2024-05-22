@@ -1,17 +1,33 @@
 <script setup lang="ts">
+import { RouterLink } from 'vue-router';
 import UserAuthForm from '@/components/Auth/UserAuthForm.vue';
+import { Button } from '@/components/ui/button';
 import GuestLayout from '@/layouts/GuestLayout.vue';
 </script>
 
 <template>
   <GuestLayout>
     <div class="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
-      <div class="flex flex-col space-y-2 text-center">
-        <h1 class="text-2xl font-semibold tracking-tight">
+      <div class="flex flex-col text-center">
+        <h1 class="text-2xl font-semibold tracking-tight mb-2">
           Sign in
         </h1>
         <p class="text-sm text-muted-foreground">
           Enter Your credentials below to login
+        </p>
+        <p class="text-sm text-muted-foreground">
+          ...or
+          <RouterLink
+            to="/register"
+            as="template"
+          >
+            <Button
+              variant="link"
+              class="p-0"
+            >
+              Create new account
+            </Button>
+          </RouterLink>
         </p>
       </div>
         

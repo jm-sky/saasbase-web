@@ -1,3 +1,13 @@
+import dayjs from 'dayjs';
+
+export interface IUserData {
+  id: string
+  name: string
+  lastName: string
+  email: string
+  createdAt: string | Date
+}
+
 export interface IUser {
   id: string
   name: string
@@ -13,15 +23,15 @@ export class User implements IUser {
   email: string;
   createdAt: Date;
 
-  private constructor(payload: IUser) {
+  private constructor(payload: IUserData) {
     this.id = payload.id;
     this.name = payload.name;
     this.lastName = payload.lastName;
     this.email = payload.email;
-    this.createdAt = payload.createdAt;
+    this.createdAt = dayjs(payload.createdAt).toDate();
   }
 
-  static create(payload: Omit<IUser, 'id' | 'createdAt'>) {
+  static create(payload: Omit<IUserData, 'id' | 'createdAt'>) {
     return new User({
       ...payload,
       id: self.crypto.randomUUID(),
@@ -29,7 +39,7 @@ export class User implements IUser {
     });
   }
 
-  static load(payload: IUser) {
+  static load(payload: IUserData) {
     return new User(payload);
   }
 
