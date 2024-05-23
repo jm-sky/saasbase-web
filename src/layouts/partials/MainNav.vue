@@ -11,21 +11,18 @@ import { cn } from '@/lib/utils';
     <RouterLink
       to="/"
       class="font-medium transition-colors hover:text-primary border-b-2 border-transparent hover:border-primary -mb-1 py-5 px-2"
-      active-class="active"
     >
       Dashboard
     </RouterLink>
     <RouterLink
       to="/mailbox"
       class="font-medium transition-colors hover:text-primary border-b-2 border-transparent hover:border-primary -mb-1 py-5 px-2"
-      active-class="active"
     >
       MailBox
     </RouterLink>
     <RouterLink
       to="/settings"
       class="font-medium transition-colors hover:text-primary border-b-2 border-transparent hover:border-primary -mb-1 py-5 px-2"
-      active-class="active"
     >
       Settings
     </RouterLink>
