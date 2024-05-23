@@ -1,6 +1,5 @@
 import dayjs from 'dayjs';
 import { v4 } from 'uuid';
-import { useRouter } from 'vue-router';
 import { ZodError, z } from 'zod';
 import type { IUser } from '@/models/user.model';
 import { useAuthStore, type SessionData } from '@/stores/auth.store';
@@ -11,12 +10,20 @@ export interface Credentials {
   remember?: boolean
 }
 
+export interface ResetPasswordData {
+  email: string
+}
+
 const SESSION_LIFETIME = 15;
 
 export const credentialsSchema = z.object({
-  email: z.string().min(1),
-  password: z.string().email().min(1),
+  email: z.string().email().min(1),
+  password: z.string().min(4),
   remember: z.boolean().optional(),
+});
+
+export const resetPasswordSchema = z.object({
+  email: z.string().email().min(1),
 });
 
 export class AuthService {
@@ -66,6 +73,12 @@ export class AuthService {
     const authStore = useAuthStore();
 
     authStore.session = null;
+  }
+  
+  async resetPassword(data: ResetPasswordData) {
+    await new Promise((resolve) => setTimeout(resolve, 2000));
+    
+    return data;
   }
 }
 

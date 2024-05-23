@@ -7,7 +7,7 @@ export const useTranslate = () => {
   const tr = (text: string): string => {
     if (te(text)) return t(text);
 
-    return startCase(text);
+    return startCase(text.split('.').at(-1));
   };
 
   return tr;

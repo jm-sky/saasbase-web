@@ -12,6 +12,7 @@ const allowedColors = [
 ] as const;
 
 type TThemeColor = typeof allowedColors[number];
+type TGuestLayoutVariant = 'centered' | 'two-columns'
 
 export const useThemeStore = defineStore('theme', () => {
   const themeColor = useLocalStorage<TThemeColor>('theme-color', 'sky');
@@ -26,5 +27,11 @@ export const useThemeStore = defineStore('theme', () => {
 
   watch(themeColor, (color: TThemeColor) => updateThemeClass(color), { immediate: true });
 
-  return { themeColor, allowedColors };
+  const guestLayoutVariant = useLocalStorage<TGuestLayoutVariant>('layout:guest-layout:variant', 'centered');
+
+  return {
+    themeColor,
+    allowedColors,
+    guestLayoutVariant,
+  };
 });

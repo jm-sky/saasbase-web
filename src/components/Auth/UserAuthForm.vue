@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { toTypedSchema } from '@vee-validate/zod';
+import { isAxiosError } from 'axios';
 import { useForm } from 'vee-validate';
 import { computed } from 'vue';
-import { ref } from 'vue';
 import { RouterLink, useRouter } from 'vue-router';
 import FormFieldLabeled from '@/components/Form/FormFieldLabeled.vue';
 import FormFieldLabeledAfter from '@/components/Form/FormFieldLabeledAfter.vue';
@@ -26,24 +26,23 @@ const authProviders: Record<AuthProvider, boolean> = {
   linkedIn: false,
 };
 
-const isLoading = ref(false);
-
-const form = useForm<Credentials>({
+const { isSubmitting, handleSubmit } = useForm<Credentials>({
   validationSchema: toTypedSchema(credentialsSchema),
 });
 
-const onSubmit = form.handleSubmit(async (values) => {
-  toast({
-    title: 'Logging in...',
-    description: `Hello there ${values.email}`,
-    variant: 'default',
-  });
+const onSubmit = handleSubmit(async (values) => {
+  try {
+    await authService.login(values);
+  
+    router.push('/');
 
-  isLoading.value = true;
-
-  await authService.login(values);
-
-  router.push('/');
+  } catch (error: unknown) {
+    toast({
+      title: 'Error',
+      description: `Invalid credentials. ${isAxiosError(error) ? error.message : ''}`,
+      variant: 'destructive',
+    });
+  }
 });
 
 const useAuthProviders = computed<boolean>(() => Object.values(authProviders).filter(v => v).length > 0);
@@ -60,6 +59,7 @@ const useAuthProviders = computed<boolean>(() => Object.values(authProviders).fi
           <Input
             v-bind="componentField"
             placeholder="name@example.com"
+            class="bg-white/50"
           />
         </FormFieldLabeled>
 
@@ -69,7 +69,9 @@ const useAuthProviders = computed<boolean>(() => Object.values(authProviders).fi
         >
           <Input
             v-bind="componentField"
+            type="password"
             placeholder="Your secret password"
+            class="bg-white/50"
           />
         </FormFieldLabeled>
 
@@ -92,9 +94,9 @@ const useAuthProviders = computed<boolean>(() => Object.values(authProviders).fi
           </div>
         </div>
 
-        <Button :disabled="isLoading">
+        <Button :disabled="isSubmitting">
           <UIIcon
-            v-if="isLoading"
+            v-if="isSubmitting"
             icon="lucide:loader-circle"
             class="mr-2 size-4 animate-spin"
           />
@@ -109,7 +111,7 @@ const useAuthProviders = computed<boolean>(() => Object.values(authProviders).fi
           <span class="w-full border-t" />
         </div>
         <div class="relative flex justify-center text-xs uppercase">
-          <span class="bg-background px-2 text-muted-foreground">
+          <span class="backdrop-blur-md px-2 text-muted-foreground">
             Or continue with
           </span>
         </div>
@@ -117,10 +119,10 @@ const useAuthProviders = computed<boolean>(() => Object.values(authProviders).fi
       <Button
         variant="outline"
         type="button"
-        :disabled="isLoading"
+        disabled
       >
         <UIIcon
-          v-if="isLoading"
+          v-if="isSubmitting"
           icon="lucide:loader-circle"
           class="mr-2 size-4 animate-spin"
         />
@@ -128,7 +130,6 @@ const useAuthProviders = computed<boolean>(() => Object.values(authProviders).fi
           v-else
           icon="lucide:github"
           class="mr-2 size-4"
-          disabled
         />
         GitHub
       </Button>

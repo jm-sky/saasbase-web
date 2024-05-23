@@ -74,7 +74,10 @@ const onSubmit = form.handleSubmit(async (values) => {
           name="name"
           label="Name"
         >
-          <Input v-bind="componentField" />
+          <Input
+            v-bind="componentField"
+            class="bg-white/50"
+          />
         </FormFieldLabeled>
 
         <FormFieldLabeled
@@ -82,7 +85,10 @@ const onSubmit = form.handleSubmit(async (values) => {
           name="lastName"
           label="Last name"
         >
-          <Input v-bind="componentField" />
+          <Input
+            v-bind="componentField"
+            class="bg-white/50"
+          />
         </FormFieldLabeled>
 
         <FormFieldLabeled
@@ -90,7 +96,10 @@ const onSubmit = form.handleSubmit(async (values) => {
           name="email"
           label="E-mail"
         >
-          <Input v-bind="componentField" />
+          <Input
+            v-bind="componentField"
+            class="bg-white/50"
+          />
         </FormFieldLabeled>
 
         <FormFieldLabeled
@@ -101,6 +110,7 @@ const onSubmit = form.handleSubmit(async (values) => {
           <Input
             type="password"
             v-bind="componentField"
+            class="bg-white/50"
           />
         </FormFieldLabeled>
 

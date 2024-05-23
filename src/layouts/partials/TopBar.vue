@@ -2,7 +2,7 @@
 import DarkModeButton from '@/components/DarkModeButton.vue';
 import Search from '@/components/Dashboard/Search.vue';
 import UserNav from '@/components/Dashboard/UserNav.vue';
-import ThemeColorButton from '@/components/ThemeColorButton.vue';
+import ThemeColorButton from '@/components/LayoutConfigurator/ThemeColorButton.vue';
 import MainNav from './MainNav.vue';
 </script>
 

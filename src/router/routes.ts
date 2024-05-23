@@ -14,6 +14,11 @@ export const routes: RouteRecordRaw[] = [
     component: LoginView,
   },
   {
+    path: '/password-forgot',
+    name: 'passwordForgot',
+    component: () => import('@/views/auth/ForgotPasswordView.vue'),
+  },
+  {
     path: '/register',
     name: 'register',
     component: () => import('@/views/auth/RegisterView.vue'),

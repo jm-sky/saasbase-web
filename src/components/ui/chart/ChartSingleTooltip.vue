@@ -29,8 +29,11 @@ function template(d: any, i: number, elements: (HTMLElement | SVGElement)[]) {
         return { ...legendReference, value: props.valueFormatter(value) };
       });
       const TooltipComponent = props.customTooltip ?? ChartTooltip;
-      createApp(TooltipComponent, { title: d[props.index], data: omittedData }).mount(componentDiv);
+
+      createApp(TooltipComponent, { title: d[props.index], data: omittedData }).mount(componentDiv); // eslint-disable-line vue/one-component-per-file
+
       wm.set(d, componentDiv.innerHTML);
+
       return componentDiv.innerHTML;
     }
   }
@@ -46,8 +49,11 @@ function template(d: any, i: number, elements: (HTMLElement | SVGElement)[]) {
       const omittedData = [{ name: data.name, value: props.valueFormatter(data[props.index]), color: style.fill }];
       const componentDiv = document.createElement('div');
       const TooltipComponent = props.customTooltip ?? ChartTooltip;
-      createApp(TooltipComponent, { title: d[props.index], data: omittedData }).mount(componentDiv);
+
+      createApp(TooltipComponent, { title: d[props.index], data: omittedData }).mount(componentDiv); // eslint-disable-line vue/one-component-per-file
+
       wm.set(d, componentDiv.innerHTML);
+      
       return componentDiv.innerHTML;
     }
   }
