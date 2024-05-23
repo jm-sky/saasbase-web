@@ -23,18 +23,15 @@ defineProps<{
       <FormControl>
         <slot :component-field />
       </FormControl>
-      <FormLabel
-        v-if="label"
-        class="font-normal my-0 leading-none"
-      >
+      <FormLabel v-if="label">
         {{ label }}
         <span
           v-if="meta.required"
           class="text-destructive"
         >*</span>
       </FormLabel>
+      <FormDescription />
+      <FormMessage />
     </FormItem>
-    <FormDescription />
-    <FormMessage />
   </FormField>
 </template>

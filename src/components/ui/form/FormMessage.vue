@@ -7,10 +7,19 @@ const { name, formMessageId } = useFormField();
 </script>
 
 <template>
-  <ErrorMessage
-    :id="formMessageId"
-    as="p"
-    :name="toValue(name)"
-    class="px-1 text-xs text-destructive"
-  />
+  <Transition
+    enter-from-class="opacity-0 -translate-y-5"
+    enter-active-class="transition"
+    enter-to-class="opacity-100"
+    leave-from-class="opacity-100"
+    leave-active-class="transition"
+    leave-to-class="opacity-0 -translate-y-5"
+  >
+    <ErrorMessage
+      :id="formMessageId"
+      as="p"
+      :name="toValue(name)"
+      class="px-1 text-xs text-destructive"
+    />
+  </Transition>
 </template>

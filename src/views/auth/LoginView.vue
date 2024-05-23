@@ -1,15 +1,15 @@
 <script setup lang="ts">
 import { RouterLink } from 'vue-router';
 import UserAuthForm from '@/components/Auth/UserAuthForm.vue';
-import { Button } from '@/components/ui/button';
+import ButtonLink from '@/components/ButtonLink.vue';
 import GuestLayout from '@/layouts/GuestLayout.vue';
 </script>
 
 <template>
   <GuestLayout>
     <div class="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
-      <div class="flex flex-col text-center">
-        <h1 class="text-2xl font-semibold tracking-tight mb-2">
+      <div class="flex flex-col text-center space-y-2">
+        <h1 class="text-2xl font-semibold tracking-tight">
           Sign in
         </h1>
         <p class="text-sm text-muted-foreground">
@@ -17,17 +17,9 @@ import GuestLayout from '@/layouts/GuestLayout.vue';
         </p>
         <p class="text-sm text-muted-foreground">
           ...or
-          <RouterLink
-            to="/register"
-            as="template"
-          >
-            <Button
-              variant="link"
-              class="p-0"
-            >
-              Create new account
-            </Button>
-          </RouterLink>
+          <ButtonLink to="/register">
+            Create new account
+          </ButtonLink>
         </p>
       </div>
         

@@ -10,21 +10,13 @@ import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import UIIcon from '@/components/UIIcon.vue';
+import { config } from '@/config';
 import { cn } from '@/lib/utils';
 import { authService, credentialsSchema, type Credentials } from '@/services/authService';
 import { useToast } from '../ui/toast';
 
 const router = useRouter();
 const { toast } = useToast();
-
-type AuthProvider = 'gitHub' | 'google' | 'facebook' | 'linkedIn'
-
-const authProviders: Record<AuthProvider, boolean> = {
-  gitHub: true,
-  google: false,
-  facebook: false,
-  linkedIn: false,
-};
 
 const { isSubmitting, handleSubmit } = useForm<Credentials>({
   validationSchema: toTypedSchema(credentialsSchema),
@@ -45,7 +37,7 @@ const onSubmit = handleSubmit(async (values) => {
   }
 });
 
-const useAuthProviders = computed<boolean>(() => Object.values(authProviders).filter(v => v).length > 0);
+const useAuthProviders = computed<boolean>(() => Object.values(config.auth.providers).filter(v => v).length > 0);
 </script>
 
 <template>
@@ -59,7 +51,7 @@ const useAuthProviders = computed<boolean>(() => Object.values(authProviders).fi
           <Input
             v-bind="componentField"
             placeholder="name@example.com"
-            class="bg-white/50"
+            class="bg-white/50 dark:bg-black/50"
           />
         </FormFieldLabeled>
 
@@ -71,7 +63,7 @@ const useAuthProviders = computed<boolean>(() => Object.values(authProviders).fi
             v-bind="componentField"
             type="password"
             placeholder="Your secret password"
-            class="bg-white/50"
+            class="bg-white/50 dark:bg-black/50"
           />
         </FormFieldLabeled>
 
@@ -106,15 +98,12 @@ const useAuthProviders = computed<boolean>(() => Object.values(authProviders).fi
     </form>
 
     <template v-if="useAuthProviders">
-      <div class="relative">
-        <div class="absolute inset-0 flex items-center">
-          <span class="w-full border-t" />
+      <div class="flex flex-row justify-center items-center">
+        <div class="border-b grow" />
+        <div class="backdrop-blur-md rounded-lg py-0.5 px-2 text-xs uppercase text-muted-foreground">
+          Or continue with
         </div>
-        <div class="relative flex justify-center text-xs uppercase">
-          <span class="backdrop-blur-md px-2 text-muted-foreground">
-            Or continue with
-          </span>
-        </div>
+        <div class="border-b grow" />
       </div>
       <Button
         variant="outline"
