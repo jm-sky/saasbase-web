@@ -4,6 +4,9 @@
 - i18n
 - shadcn-vue
 
+![obraz](https://github.com/jm-sky/vue-ts-boilerplate/assets/17783569/c02801a0-894e-4395-93b0-6f7bcae4913d)
+
+
 ## Recommended Setup
 
 - [VS Code](https://code.visualstudio.com/) + [Vue - Official](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (previously Volar) and disable Vetur
