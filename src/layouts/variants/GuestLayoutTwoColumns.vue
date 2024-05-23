@@ -51,7 +51,7 @@ const isDark = useDark();
       <slot />
     </div>
 
-    <div class="absolute top-1 right-1 flex flex-row gap-2 items-center p-1 bg-white/50 dark:bg-black/50 rounded-lg backdrop-blur-md">
+    <div class="absolute top-1 right-1 flex flex-row gap-2 items-center p-1 bg-white/50 dark:bg-black/50 rounded-lg backdrop-blur-md transition-colors">
       <DarkModeButton />
       <LayoutConfigurator />
     </div>

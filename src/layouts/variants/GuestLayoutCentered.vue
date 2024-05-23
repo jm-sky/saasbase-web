@@ -38,13 +38,13 @@ const isDark = useDark();
       </RouterLink>
     </div>
 
-    <div class="absolute top-1 right-1 flex flex-row gap-2 items-center p-1 bg-white/30 dark:bg-black/50 rounded-lg backdrop-blur-md">
+    <div class="absolute top-1 right-1 flex flex-row gap-2 items-center p-1 bg-white/30 dark:bg-black/50 rounded-lg backdrop-blur-md transition-colors">
       <DarkModeButton />
       <LayoutConfigurator />
     </div>
 
     <div
-      class="w-full sm:max-w-md mt-6 px-6 py-4 bg-white/60 dark:bg-black/60 backdrop-blur-lg shadow-md overflow-hidden sm:rounded-lg"
+      class="w-full sm:max-w-md mt-6 px-6 py-4 bg-white/60 dark:bg-black/60 backdrop-blur-lg shadow-md overflow-hidden sm:rounded-lg transition-colors duration-1000"
     >
       <slot />
     </div>
