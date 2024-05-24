@@ -11,6 +11,7 @@ import {
 defineProps<{
   name: string
   label?: string
+  disabled?: boolean
 }>();
 </script>
 
@@ -27,7 +28,7 @@ defineProps<{
           class="text-destructive"
         >*</span>
       </FormLabel>
-      <FormControl>
+      <FormControl :disabled>
         <slot :component-field />
       </FormControl>
       <FormDescription />

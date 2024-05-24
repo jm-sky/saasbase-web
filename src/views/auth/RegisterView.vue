@@ -1,43 +1,43 @@
 <script setup lang="ts">
 import { toTypedSchema } from '@vee-validate/zod';
+import { isAxiosError } from 'axios';
 import { useForm } from 'vee-validate';
-import { ref } from 'vue';
-import { RouterLink } from 'vue-router';
-import * as z from 'zod';
+import { RouterLink, useRouter } from 'vue-router';
 import ButtonLink from '@/components/ButtonLink.vue';
 import FormFieldLabeled from '@/components/Form/FormFieldLabeled.vue';
 import Button from '@/components/ui/button/Button.vue';
 import Input from '@/components/ui/input/Input.vue';
 import { useToast } from '@/components/ui/toast/use-toast';
+import UIIcon from '@/components/UIIcon.vue';
 import GuestLayout from '@/layouts/GuestLayout.vue';
+import { authService, registrationSchema, type RegistrationData } from '@/services/authService';
 
+const router = useRouter();
 const { toast } = useToast();
 
-const isLoading = ref(false);
-
-const formSchema = toTypedSchema(z.object({
-  name: z.string().min(2).max(50),
-  lastName: z.string().min(2).max(50),
-  password: z.string().min(8).max(50),
-  email: z.string().email().min(4).max(50),
-}));
-
-const { resetForm, handleSubmit } = useForm({
-  validationSchema: formSchema,
+const { isSubmitting, resetForm, handleSubmit } = useForm<RegistrationData>({
+  validationSchema: toTypedSchema(registrationSchema),
+  initialValues: {
+    name: 'John',
+    lastName: 'Doe',
+    email: 'jan.madeyski@gmail.com',
+    password: 'Secret123!',
+  },
 });
 
 const onSubmit = handleSubmit(async (values) => {
-  toast({
-    title: 'Registering...',
-    description: `Hello there ${values.name}`,
-    variant: 'success',
-  });
-
-  isLoading.value = true;
-
-  await new Promise((resolve) => setTimeout(resolve, 1000));
+  try {
+    await authService.register(values);
   
-  isLoading.value = false;
+    router.push('/');
+
+  } catch (error: unknown) {
+    toast({
+      title: 'Error',
+      description: `Registration error. ${isAxiosError(error) ? error.message : ''}`,
+      variant: 'destructive',
+    });
+  }
 });
 </script>
 
@@ -67,6 +67,7 @@ const onSubmit = handleSubmit(async (values) => {
           v-slot="{ componentField }"
           name="name"
           label="Name"
+          :disabled="isSubmitting"
         >
           <Input
             v-bind="componentField"
@@ -78,6 +79,7 @@ const onSubmit = handleSubmit(async (values) => {
           v-slot="{ componentField }"
           name="lastName"
           label="Last name"
+          :disabled="isSubmitting"
         >
           <Input
             v-bind="componentField"
@@ -89,6 +91,7 @@ const onSubmit = handleSubmit(async (values) => {
           v-slot="{ componentField }"
           name="email"
           label="E-mail"
+          :disabled="isSubmitting"
         >
           <Input
             v-bind="componentField"
@@ -100,6 +103,7 @@ const onSubmit = handleSubmit(async (values) => {
           v-slot="{ componentField }"
           name="password"
           label="Password"
+          :disabled="isSubmitting"
         >
           <Input
             type="password"
@@ -111,8 +115,14 @@ const onSubmit = handleSubmit(async (values) => {
         <Button
           type="submit"
           class="w-full mt-4"
-          :loading="isLoading"
+          :disabled="isSubmitting"
+          :loading="isSubmitting"
         >
+          <UIIcon
+            v-if="isSubmitting"
+            icon="lucide:loader-circle"
+            class="mr-2 size-4 animate-spin"
+          />
           Register
         </Button>
 
@@ -120,6 +130,8 @@ const onSubmit = handleSubmit(async (values) => {
           type="button"
           variant="outline"
           class="w-full"
+          :disabled="isSubmitting"
+          :loading="isSubmitting"
           @click="resetForm()"
         >
           Reset
