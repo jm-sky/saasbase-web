@@ -47,4 +47,9 @@ export const routes: RouteRecordRaw[] = [
     name: 'settings',
     component: () => import('@/views/SettingsView.vue'),
   },
+  {
+    path: '/users/:id',
+    name: 'userProfile',
+    component: () => import('@/views/users/UserProfileView.vue'),
+  },
 ];

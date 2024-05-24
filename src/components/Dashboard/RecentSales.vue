@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
+import { RouterLink } from 'vue-router';
 import {
   Avatar,
   AvatarFallback,
@@ -13,25 +14,18 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { useTranslate } from '@/composables/useTranslate';
-import axios from '@/helpers/axios';
+import { User } from '@/models/user.model';
+import { userService } from '@/services/userService';
 
 const tr = useTranslate();
 
-interface PublicUser {
-  id: number
-  firstName: string
-  lastName: string
-  email: string
-  image: string
-}
-
 const isLoading = ref(false);
-const users = ref<PublicUser[]>([]);
+const users = ref<User[]>([]);
 
 const refresh = async () => {
   try {
     isLoading.value = true;
-    users.value = (await axios.get<{ users: PublicUser[] }>('/api/users?limit=5')).data.users;
+    users.value = await userService.index({ limit: 5 });
   } finally {
     isLoading.value = false;
   }
@@ -65,17 +59,22 @@ onMounted(async () => refresh());
           :key="user.id"
           class="flex items-center"
         >
-          <Avatar class="size-9">
-            <AvatarImage
-              :src="user.image"
-              alt="Avatar"
-            />
-            <AvatarFallback>OM</AvatarFallback>
-          </Avatar>
+          <RouterLink :to="`/users/${user.id}`">
+            <Avatar class="size-9">
+              <AvatarImage
+                :src="user.image ?? ''"
+                :alt="user?.initials"
+              />
+              <AvatarFallback>{{ user.initials }}</AvatarFallback>
+            </Avatar>
+          </RouterLink>
           <div class="ml-4 space-y-1">
-            <p class="text-sm font-medium leading-none">
-              {{ user.firstName }} {{ user.lastName }}
-            </p>
+            <RouterLink
+              :to="`/users/${user.id}`"
+              class="text-sm font-medium hover:text-primary leading-none"
+            >
+              {{ user.fullName }}
+            </RouterLink>
             <p class="text-sm text-muted-foreground">
               {{ user.email }}
             </p>

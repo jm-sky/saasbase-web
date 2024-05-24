@@ -71,7 +71,7 @@ const useAuthProviders = computed<boolean>(() => Object.values(config.auth.provi
           <FormFieldLabeledAfter
             v-slot="{ componentField }"
             name="remember"
-            label="Remember"
+            label="Remember me"
           >
             <Checkbox v-bind="componentField" />
           </FormFieldLabeledAfter>
@@ -79,7 +79,7 @@ const useAuthProviders = computed<boolean>(() => Object.values(config.auth.provi
           <div class="">
             <RouterLink
               to="/password-forgot"
-              class="text-sm text-gray-500 hover:text-primary-500"
+              class="text-sm font-bold text-gray-500 hover:text-primary-500"
             >
               Forgot password?
             </RouterLink>
