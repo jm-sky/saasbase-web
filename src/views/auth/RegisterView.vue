@@ -29,7 +29,7 @@ const onSubmit = handleSubmit(async (values) => {
   try {
     await authService.register(values)
   
-    router.push('/')
+    await router.push('/')
 
   } catch (error: unknown) {
     toast({

@@ -19,10 +19,11 @@ export default defineConfig(() => ({
   server: {
     proxy: {
       '/api': {
-        target: 'https://dummyjson.com',
+        target: 'http://localhost:8000',
+        // target: 'https://dummyjson.com',
         changeOrigin: true,
         secure: false,
-        rewrite: path => path.replace(/^\/api/, ''),
+        // rewrite: path => path.replace(/^\/api/, ''),
       },
     },
   },

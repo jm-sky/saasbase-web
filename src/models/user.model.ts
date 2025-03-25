@@ -16,6 +16,7 @@ export interface IPublicUser {
   }
   image: string
 }
+
 export interface IUserData {
   id: string
   name: string

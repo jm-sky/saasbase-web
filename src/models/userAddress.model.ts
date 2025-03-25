@@ -9,20 +9,20 @@ const nonEmptyJoin = (parts: (string | undefined)[], separator: string): string 
   return [
     ...parts,
   ].filter(part => part)
-  .join(separator);
-};
+  .join(separator)
+}
 
 export class UserAddress implements IUserAddress {
-  street?: string;
-  city?: string;
-  postalCode?: string;
-  country?: string;
+  street?: string
+  city?: string
+  postalCode?: string
+  country?: string
 
   constructor(payload: IUserAddress) {
-    this.street = payload.street;
-    this.city = payload.city;
-    this.postalCode = payload.postalCode;
-    this.country = payload.country;
+    this.street = payload.street
+    this.city = payload.city
+    this.postalCode = payload.postalCode
+    this.country = payload.country
   }
 
   get fullAddress(): string {
@@ -30,6 +30,6 @@ export class UserAddress implements IUserAddress {
       this.street,
       nonEmptyJoin([this.postalCode, this.city],  ' '),
       this.country,
-    ], ', ');
+    ], ', ')
   }
 }

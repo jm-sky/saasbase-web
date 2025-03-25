@@ -2,7 +2,7 @@ import axiosLib, { HttpStatusCode } from 'axios'
 import { DEFAULT_LOCALE } from '@/plugins/i18n'
 import type { AxiosError, AxiosResponse } from 'axios'
 
-const axios = axiosLib.create({
+const api = axiosLib.create({
   withCredentials: true,
   headers: {
     Accept: 'application/json',
@@ -12,9 +12,9 @@ const axios = axiosLib.create({
   },
 })
 
-axios.interceptors.response.use(
+api.interceptors.response.use(
   (response: AxiosResponse): AxiosResponse => response,
-  async (error: AxiosError<any>): Promise<any> => {
+  (error: AxiosError): Promise<unknown> => {
     const { response } = error
 
     if (response?.status === HttpStatusCode.Unauthorized || response?.status === HttpStatusCode.Forbidden) {
@@ -27,5 +27,13 @@ axios.interceptors.response.use(
   },
 )
 
+export const setAuthToken = (token?: string | null) => {
+  if (token) {
+    api.defaults.headers.common.Authorization = `Bearer ${token}`
+  } else {
+    delete api.defaults.headers.common.Authorization
+  }
+}
 
-export default axios
+
+export default api

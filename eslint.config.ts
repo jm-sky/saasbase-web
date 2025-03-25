@@ -26,6 +26,7 @@ export default defineConfigWithVueTs(
 
       '@typescript-eslint/restrict-template-expressions': 'off',
       '@typescript-eslint/no-extraneous-class': 'off',
+      // ----------------------------------------
       'perfectionist/sort-classes': 'off',
       'perfectionist/sort-interfaces': 'off',
       'perfectionist/sort-object-types': 'off',
@@ -57,7 +58,7 @@ export default defineConfigWithVueTs(
           type: 'unsorted',
         },
       ],
-
+      // ----------------------------------------
     }
   },
 )

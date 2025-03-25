@@ -1,6 +1,7 @@
 import dayjs from 'dayjs'
 import { v4 } from 'uuid'
 import { z, ZodError } from 'zod'
+import api from '@/helpers/api'
 import { type SessionData, useAuthStore } from '@/stores/auth.store'
 import type { IUser } from '@/models/user.model'
 
@@ -79,26 +80,29 @@ export class AuthService {
   async login(credentials: Credentials): Promise<SessionData | ZodError<Credentials>> {
     const authStore = useAuthStore()
     
-    await new Promise((resolve) => setTimeout(resolve, 1500))
+    const response = (await api.post<{ token: string }>('/api/auth/login', credentials)).data
 
-    const { data, error, success: isValid } = credentialsSchema.safeParse(credentials)
+    authStore.setToken(response.token)
 
-    if (!isValid) {
-      return error
-    }
+    // const { data, error, success: isValid } = credentialsSchema.safeParse(credentials)
 
-    const user = this.userFromCredentials(data)
-    const session = this.createSession(user)
+    // if (!isValid) {
+    //   return error
+    // }
 
-    authStore.session = session
+    const user = await this.getUser()
+    authStore.session = this.createSession(user)
 
-    return session
+    return authStore.session
   }
 
-  async logout() {
-    const authStore = useAuthStore()
+  async getUser() {
+    const response = (await api.get<IUser>('/api/user')).data
+    return response
+  }
 
-    authStore.session = null
+  logout() {
+    useAuthStore().clearData()
   }
   
   async resetPassword(data: ResetPasswordData) {

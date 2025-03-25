@@ -2,6 +2,7 @@ import type { INextPipeline } from '../helpers/middlewarePipeline'
 import middlewarePipeline from '../helpers/middlewarePipeline'
 import type { NavigationGuardNext, RouteLocationNormalized, RouteLocationRaw, Router } from 'vue-router'
 
+// eslint-disable-next-line @typescript-eslint/no-invalid-void-type
 export type NavigationGuardReturn = boolean | Error | RouteLocationRaw | void
 
 export interface RunMiddlewarePipelineOptions {

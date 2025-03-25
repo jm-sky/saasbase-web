@@ -22,7 +22,7 @@ const onSubmit = handleSubmit(async (values) => {
   try {
     await authService.resetPassword(values)
   
-    router.push('/')
+    await router.push('/')
 
     toast({
       title: 'Success',

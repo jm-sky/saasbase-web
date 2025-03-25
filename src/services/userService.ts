@@ -1,4 +1,4 @@
-import axios from '@/helpers/axios'
+import api from '@/helpers/api'
 import { type IPublicUser, User } from '@/models/user.model'
 
 export interface IUserGetParams {
@@ -26,13 +26,13 @@ class UserService {
   }
 
   async index(params?: IUserGetParams): Promise<User[]> {
-    const users = (await axios.get<{ users: IPublicUser[] }>('/api/users', { params })).data.users
+    const users = (await api.get<{ users: IPublicUser[] }>('/api/users', { params })).data.users
 
     return users.map(user => this.publicUserToUser(user))
   }
 
   async get(id: string): Promise<User> {
-    const user = (await axios.get<IPublicUser>(`/api/users/${id}`)).data
+    const user = (await api.get<IPublicUser>(`/api/users/${id}`)).data
 
     return this.publicUserToUser(user)
   }

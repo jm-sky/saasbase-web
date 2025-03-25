@@ -131,7 +131,9 @@ function useToast() {
 
 type Toast = Omit<ToasterToast, 'id'>
 
-function toast(props: Toast) {
+
+
+function openToast(props: Toast) {
   const id = genId()
 
   const update = (props: ToasterToast) =>
@@ -161,5 +163,22 @@ function toast(props: Toast) {
     update,
   }
 }
+
+const toast = (props: Toast) => openToast(props)
+
+toast.info = (props: Toast) => openToast({
+  ...props,
+  variant: 'default',
+})
+
+toast.success = (props: Toast) => openToast({
+  ...props,
+  variant: 'success',
+})
+
+toast.error = (props: Toast) => openToast({
+  ...props,
+  variant: 'destructive',
+})
 
 export { toast, useToast }

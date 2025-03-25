@@ -20,19 +20,23 @@ const { toast } = useToast()
 
 const { isSubmitting, handleSubmit } = useForm<Credentials>({
   validationSchema: toTypedSchema(credentialsSchema),
+  initialValues: {
+    email: import.meta.env.VITE_DEFAULT_LOGIN ?? '',
+    password: import.meta.env.VITE_DEFAULT_PASSWORD ?? '',
+    remember: false,
+  }
 })
 
 const onSubmit = handleSubmit(async (values) => {
   try {
     await authService.login(values)
   
-    router.push('/')
+    await router.push('/')
 
   } catch (error: unknown) {
-    toast({
+    toast.error({
       title: 'Error',
       description: `Invalid credentials. ${isAxiosError(error) ? error.message : ''}`,
-      variant: 'destructive',
     })
   }
 })
