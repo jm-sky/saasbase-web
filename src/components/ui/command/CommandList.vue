@@ -1,21 +1,21 @@
 <script setup lang="ts">
-import { ComboboxContent, useForwardPropsEmits } from 'radix-vue';
-import { type HTMLAttributes, computed } from 'vue';
-import { cn } from '@/lib/utils';
-import type { ComboboxContentEmits, ComboboxContentProps } from 'radix-vue';
+import { ComboboxContent, useForwardPropsEmits } from 'radix-vue'
+import { computed, type HTMLAttributes } from 'vue'
+import { cn } from '@/lib/utils'
+import type { ComboboxContentEmits, ComboboxContentProps } from 'radix-vue'
 
 const props = withDefaults(defineProps<ComboboxContentProps & { class?: HTMLAttributes['class'] }>(), {
   dismissable: false,
-});
-const emits = defineEmits<ComboboxContentEmits>();
+})
+const emits = defineEmits<ComboboxContentEmits>()
 
 const delegatedProps = computed(() => {
-  const { class: _, ...delegated } = props; // eslint-disable-line @typescript-eslint/no-unused-vars
+  const { class: _, ...delegated } = props // eslint-disable-line @typescript-eslint/no-unused-vars
 
-  return delegated;
-});
+  return delegated
+})
 
-const forwarded = useForwardPropsEmits(delegatedProps, emits);
+const forwarded = useForwardPropsEmits(delegatedProps, emits)
 </script>
 
 <template>

@@ -1,36 +1,36 @@
 <script lang="ts" setup>
-import addDays from 'date-fns/addDays';
-import addHours from 'date-fns/addHours';
-import format from 'date-fns/format';
-import nextSaturday from 'date-fns/nextSaturday';
-import { Archive, ArchiveX, Clock, Forward, MoreVertical, Reply, ReplyAll, Trash2 } from 'lucide-vue-next';
-import { computed } from 'vue';
-import { Avatar, AvatarFallback } from '@/components/ui/avatar';
-import { Button } from '@/components/ui/button';
-import { Calendar } from '@/components/ui/calendar';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
-import { Label } from '@/components/ui/label';
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { Separator } from '@/components/ui/separator';
-import { Switch } from '@/components/ui/switch';
-import { Textarea } from '@/components/ui/textarea';
-import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
-import type { Mail } from '@/data/mails';
+import addDays from 'date-fns/addDays'
+import addHours from 'date-fns/addHours'
+import format from 'date-fns/format'
+import nextSaturday from 'date-fns/nextSaturday'
+import { Archive, ArchiveX, Clock, Forward, MoreVertical, Reply, ReplyAll, Trash2 } from 'lucide-vue-next'
+import { computed } from 'vue'
+import { Avatar, AvatarFallback } from '@/components/ui/avatar'
+import { Button } from '@/components/ui/button'
+import { Calendar } from '@/components/ui/calendar'
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
+import { Label } from '@/components/ui/label'
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
+import { Separator } from '@/components/ui/separator'
+import { Switch } from '@/components/ui/switch'
+import { Textarea } from '@/components/ui/textarea'
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
+import type { Mail } from '@/data/mails'
 
 interface MailDisplayProps {
   mail: Mail | undefined
 }
 
-const props = defineProps<MailDisplayProps>();
+const props = defineProps<MailDisplayProps>()
 
 const mailFallbackName = computed(() => {
   return props.mail?.name
     .split(' ')
     .map(chunk => chunk[0])
-    .join('');
-});
+    .join('')
+})
 
-const today = new Date();
+const today = new Date()
 </script>
 
 <template>

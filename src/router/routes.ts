@@ -1,7 +1,7 @@
-import { isAuthenticated } from '@/router/middleware/isAuthenticated';
-import LoginView from '@/views/auth/LoginView.vue';
-import HomeView from '@/views/HomeView.vue';
-import type { RouteRecordRaw } from 'vue-router';
+import { isAuthenticated } from '@/router/middleware/isAuthenticated'
+import LoginView from '@/views/auth/LoginView.vue'
+import HomeView from '@/views/HomeView.vue'
+import type { RouteRecordRaw } from 'vue-router'
 
 export const routes: RouteRecordRaw[] = [
   {
@@ -52,4 +52,4 @@ export const routes: RouteRecordRaw[] = [
     name: 'userProfile',
     component: () => import('@/views/users/UserProfileView.vue'),
   },
-];
+]

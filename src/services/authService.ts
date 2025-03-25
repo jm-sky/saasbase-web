@@ -1,8 +1,8 @@
-import dayjs from 'dayjs';
-import { v4 } from 'uuid';
-import { ZodError, z } from 'zod';
-import type { IUser } from '@/models/user.model';
-import { useAuthStore, type SessionData } from '@/stores/auth.store';
+import dayjs from 'dayjs'
+import { v4 } from 'uuid'
+import { z, ZodError } from 'zod'
+import { type SessionData, useAuthStore } from '@/stores/auth.store'
+import type { IUser } from '@/models/user.model'
 
 export interface Credentials {
   email: string
@@ -15,30 +15,30 @@ export interface ResetPasswordData {
 }
 
 export interface RegistrationData {
-  name: string
-  lastName: string
   email: string
+  lastName: string
+  name: string
   password: string
 }
 
-const SESSION_LIFETIME = 15;
+const SESSION_LIFETIME = 15
 
 export const credentialsSchema = z.object({
   email: z.string().email().min(1).max(50),
   password: z.string().min(4).max(50),
   remember: z.boolean().optional(),
-});
+})
 
 export const resetPasswordSchema = z.object({
   email: z.string().email().min(1).max(50),
-});
+})
 
 export const registrationSchema = z.object({
   name: z.string().min(1).max(50),
   lastName: z.string().min(1).max(50),
   email: z.string().min(1).max(50),
   password: z.string().min(4).max(50),
-});
+})
 
 export class AuthService {
   private userFromCredentials(data: Credentials): IUser {
@@ -48,9 +48,9 @@ export class AuthService {
       lastName: 'Doe',
       email: data.email,
       createdAt: new Date(),
-    };
+    }
 
-    return user;
+    return user
   }
 
   private userFromRegistration(data: RegistrationData): IUser {
@@ -60,9 +60,9 @@ export class AuthService {
       lastName: data.lastName,
       email: data.email,
       createdAt: new Date(),
-    };
+    }
 
-    return user;
+    return user
   }
 
   private createSession(user: IUser): SessionData {
@@ -71,60 +71,60 @@ export class AuthService {
       user,
       startedAt: (new Date()).toISOString(),
       expiresAt: dayjs().add(SESSION_LIFETIME, 'minutes').toISOString(),
-    };
+    }
 
-    return session;
+    return session
   }
 
   async login(credentials: Credentials): Promise<SessionData | ZodError<Credentials>> {
-    const authStore = useAuthStore();
+    const authStore = useAuthStore()
     
-    await new Promise((resolve) => setTimeout(resolve, 1500));
+    await new Promise((resolve) => setTimeout(resolve, 1500))
 
-    const { data, error, success: isValid } = credentialsSchema.safeParse(credentials);
+    const { data, error, success: isValid } = credentialsSchema.safeParse(credentials)
 
     if (!isValid) {
-      return error;
+      return error
     }
 
-    const user = this.userFromCredentials(data);
-    const session = this.createSession(user);
+    const user = this.userFromCredentials(data)
+    const session = this.createSession(user)
 
-    authStore.session = session;
+    authStore.session = session
 
-    return session;
+    return session
   }
 
   async logout() {
-    const authStore = useAuthStore();
+    const authStore = useAuthStore()
 
-    authStore.session = null;
+    authStore.session = null
   }
   
   async resetPassword(data: ResetPasswordData) {
-    await new Promise((resolve) => setTimeout(resolve, 1500));
+    await new Promise((resolve) => setTimeout(resolve, 1500))
     
-    return data;
+    return data
   }
 
   async register(registrationData: RegistrationData): Promise<SessionData | ZodError<RegistrationData>> {
-    const authStore = useAuthStore();
+    const authStore = useAuthStore()
     
-    await new Promise((resolve) => setTimeout(resolve, 1500));
+    await new Promise((resolve) => setTimeout(resolve, 1500))
 
-    const { data, error, success: isValid } = registrationSchema.safeParse(registrationData);
+    const { data, error, success: isValid } = registrationSchema.safeParse(registrationData)
 
     if (!isValid) {
-      return error;
+      return error
     }
 
-    const user = this.userFromRegistration(data);
-    const session = this.createSession(user);
+    const user = this.userFromRegistration(data)
+    const session = this.createSession(user)
 
-    authStore.session = session;
+    authStore.session = session
 
-    return session;
+    return session
   }
 }
 
-export const authService = new AuthService();
+export const authService = new AuthService()

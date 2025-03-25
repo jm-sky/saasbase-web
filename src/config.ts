@@ -1,4 +1,4 @@
-export type AuthProvider = 'gitHub' | 'google' | 'facebook' | 'linkedIn'
+export type AuthProvider = 'facebook' | 'gitHub' | 'google' | 'linkedIn'
 
 export interface IConfig {
   auth: {
@@ -15,4 +15,4 @@ export const config = {
       linkedIn: false,
     },
   },
-};
+}

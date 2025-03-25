@@ -1,20 +1,20 @@
 <script lang="ts">
-import type { HTMLAttributes, InjectionKey } from 'vue'; // eslint-disable-line import/order
+import type { HTMLAttributes, InjectionKey } from 'vue' // eslint-disable-line import/order
 
-export const FORM_ITEM_INJECTION_KEY = Symbol() as InjectionKey<string>;
+export const FORM_ITEM_INJECTION_KEY = Symbol() as InjectionKey<string>
 </script>
 
 <script lang="ts" setup>
-import { useId } from 'radix-vue';
-import { provide } from 'vue';
-import { cn } from '@/lib/utils';
+import { useId } from 'radix-vue'
+import { provide } from 'vue'
+import { cn } from '@/lib/utils'
 
 const props = defineProps<{
   class?: HTMLAttributes['class']
-}>();
+}>()
 
-const id = useId();
-provide(FORM_ITEM_INJECTION_KEY, id);
+const id = useId()
+provide(FORM_ITEM_INJECTION_KEY, id)
 </script>
 
 <template>

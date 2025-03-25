@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { storeToRefs } from 'pinia';
-import { useRouter } from 'vue-router';
+import { storeToRefs } from 'pinia'
+import { useRouter } from 'vue-router'
 import {
   Avatar,
   AvatarFallback,
   AvatarImage,
-} from '@/components/ui/avatar';
-import { Button } from '@/components/ui/button';
+} from '@/components/ui/avatar'
+import { Button } from '@/components/ui/button'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -16,19 +16,19 @@ import {
   DropdownMenuSeparator,
   DropdownMenuShortcut,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import { authService } from '@/services/authService';
-import { useAuthStore } from '@/stores/auth.store';
+} from '@/components/ui/dropdown-menu'
+import { authService } from '@/services/authService'
+import { useAuthStore } from '@/stores/auth.store'
 
-const authStore = useAuthStore();
-const router = useRouter();
+const authStore = useAuthStore()
+const router = useRouter()
 
-const { user } = storeToRefs(authStore);
+const { user } = storeToRefs(authStore)
 
 const logout = async () => {
-  await authService.logout();
-  router.push('/login');
-};
+  await authService.logout()
+  router.push('/login')
+}
 </script>
 
 <template>

@@ -1,43 +1,43 @@
 <script setup lang="ts">
-import { toTypedSchema } from '@vee-validate/zod';
-import { isAxiosError } from 'axios';
-import { useForm } from 'vee-validate';
-import { RouterLink, useRouter } from 'vue-router';
-import FormFieldLabeled from '@/components/Form/FormFieldLabeled.vue';
-import { Button } from '@/components/ui/button';
-import Input from '@/components/ui/input/Input.vue';
-import { useToast } from '@/components/ui/toast';
-import UIIcon from '@/components/UIIcon.vue';
-import GuestLayout from '@/layouts/GuestLayout.vue';
-import { authService, resetPasswordSchema, type ResetPasswordData } from '@/services/authService';
+import { toTypedSchema } from '@vee-validate/zod'
+import { isAxiosError } from 'axios'
+import { useForm } from 'vee-validate'
+import { RouterLink, useRouter } from 'vue-router'
+import FormFieldLabeled from '@/components/Form/FormFieldLabeled.vue'
+import { Button } from '@/components/ui/button'
+import Input from '@/components/ui/input/Input.vue'
+import { useToast } from '@/components/ui/toast'
+import UIIcon from '@/components/UIIcon.vue'
+import GuestLayout from '@/layouts/GuestLayout.vue'
+import { authService, type ResetPasswordData, resetPasswordSchema } from '@/services/authService'
 
-const router = useRouter();
-const { toast } = useToast();
+const router = useRouter()
+const { toast } = useToast()
 
 const { isSubmitting, handleSubmit } = useForm<ResetPasswordData>({
   validationSchema: toTypedSchema(resetPasswordSchema),
-});
+})
 
 const onSubmit = handleSubmit(async (values) => {
   try {
-    await authService.resetPassword(values);
+    await authService.resetPassword(values)
   
-    router.push('/');
+    router.push('/')
 
     toast({
       title: 'Success',
       description: `E-mail with instructions has been sent to ${values.email}`,
       variant: 'success',
-    });
+    })
 
   } catch (error: unknown) {
     toast({
       title: 'Error',
       description: `Invalid credentials. ${isAxiosError(error) ? error.message : ''}`,
       variant: 'destructive',
-    });
+    })
   }
-});
+})
 </script>
 
 <template>

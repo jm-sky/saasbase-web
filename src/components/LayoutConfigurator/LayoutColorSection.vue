@@ -1,18 +1,18 @@
 <script setup lang="ts">
-import { storeToRefs } from 'pinia';
-import { computed } from 'vue';
-import Button from '@/components/ui/button/Button.vue';
-import Label from '@/components/ui/label/Label.vue';
-import { useThemeStore } from '@/stores/theme.store';
+import { storeToRefs } from 'pinia'
+import { computed } from 'vue'
+import Button from '@/components/ui/button/Button.vue'
+import Label from '@/components/ui/label/Label.vue'
+import { useThemeStore } from '@/stores/theme.store'
 
-const themeStore = useThemeStore();
+const themeStore = useThemeStore()
 
-const { themeColor } = storeToRefs(themeStore);
+const { themeColor } = storeToRefs(themeStore)
 
 const colors = computed(() => themeStore.allowedColors.map(name => ({
   name,
   isActive: name === themeColor.value,
-})));
+})))
 </script>
 
 <template>
@@ -25,7 +25,7 @@ const colors = computed(() => themeStore.allowedColors.map(name => ({
         variant="outline"
         class="gap-2 justify-start text-xs"
         size="sm"
-        :class="{ 'ring ring-primary/50': color.isActive }"
+        :class="{ 'ring-3 ring-primary/50': color.isActive }"
         @click="themeColor = color.name"
       >
         <span

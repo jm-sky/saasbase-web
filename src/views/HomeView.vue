@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import Dashboard from '@/components/Dashboard.vue';
-import AuthenticatedLayout from '@/layouts/AuthenticatedLayout.vue';
+import Dashboard from '@/components/Dashboard.vue'
+import AuthenticatedLayout from '@/layouts/AuthenticatedLayout.vue'
 </script>
 
 <template>

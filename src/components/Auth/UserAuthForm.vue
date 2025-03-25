@@ -1,43 +1,43 @@
 <script setup lang="ts">
-import { toTypedSchema } from '@vee-validate/zod';
-import { isAxiosError } from 'axios';
-import { useForm } from 'vee-validate';
-import { computed } from 'vue';
-import { RouterLink, useRouter } from 'vue-router';
-import FormFieldLabeled from '@/components/Form/FormFieldLabeled.vue';
-import FormFieldLabeledAfter from '@/components/Form/FormFieldLabeledAfter.vue';
-import { Button } from '@/components/ui/button';
-import { Checkbox } from '@/components/ui/checkbox';
-import { Input } from '@/components/ui/input';
-import UIIcon from '@/components/UIIcon.vue';
-import { config } from '@/config';
-import { cn } from '@/lib/utils';
-import { authService, credentialsSchema, type Credentials } from '@/services/authService';
-import { useToast } from '../ui/toast';
+import { toTypedSchema } from '@vee-validate/zod'
+import { isAxiosError } from 'axios'
+import { useForm } from 'vee-validate'
+import { computed } from 'vue'
+import { RouterLink, useRouter } from 'vue-router'
+import FormFieldLabeled from '@/components/Form/FormFieldLabeled.vue'
+import FormFieldLabeledAfter from '@/components/Form/FormFieldLabeledAfter.vue'
+import { Button } from '@/components/ui/button'
+import { Checkbox } from '@/components/ui/checkbox'
+import { Input } from '@/components/ui/input'
+import UIIcon from '@/components/UIIcon.vue'
+import { config } from '@/config'
+import { cn } from '@/lib/utils'
+import { authService, type Credentials, credentialsSchema } from '@/services/authService'
+import { useToast } from '../ui/toast'
 
-const router = useRouter();
-const { toast } = useToast();
+const router = useRouter()
+const { toast } = useToast()
 
 const { isSubmitting, handleSubmit } = useForm<Credentials>({
   validationSchema: toTypedSchema(credentialsSchema),
-});
+})
 
 const onSubmit = handleSubmit(async (values) => {
   try {
-    await authService.login(values);
+    await authService.login(values)
   
-    router.push('/');
+    router.push('/')
 
   } catch (error: unknown) {
     toast({
       title: 'Error',
       description: `Invalid credentials. ${isAxiosError(error) ? error.message : ''}`,
       variant: 'destructive',
-    });
+    })
   }
-});
+})
 
-const useAuthProviders = computed<boolean>(() => Object.values(config.auth.providers).filter(v => v).length > 0);
+const useAuthProviders = computed<boolean>(() => Object.values(config.auth.providers).filter(v => v).length > 0)
 </script>
 
 <template>

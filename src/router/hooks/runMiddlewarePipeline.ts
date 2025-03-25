@@ -1,18 +1,18 @@
-import middlewarePipeline from '../helpers/middlewarePipeline';
-import type { INextPipeline } from '../helpers/middlewarePipeline';
-import type { NavigationGuardNext, RouteLocationNormalized, RouteLocationRaw, Router } from 'vue-router';
+import type { INextPipeline } from '../helpers/middlewarePipeline'
+import middlewarePipeline from '../helpers/middlewarePipeline'
+import type { NavigationGuardNext, RouteLocationNormalized, RouteLocationRaw, Router } from 'vue-router'
 
-export type NavigationGuardReturn = void | Error | RouteLocationRaw | boolean
+export type NavigationGuardReturn = boolean | Error | RouteLocationRaw | void
 
 export interface RunMiddlewarePipelineOptions {
   router: Router
 }
 
 export interface RouterMiddlewareOptions {
-  to: RouteLocationNormalized
   from: RouteLocationNormalized
-  next: NavigationGuardNext | INextPipeline
+  next: INextPipeline | NavigationGuardNext
   router: Router
+  to: RouteLocationNormalized
 }
 
 export type RouterMiddleware = (options: RouterMiddlewareOptions) => NavigationGuardReturn
@@ -20,11 +20,11 @@ export type RouterMiddleware = (options: RouterMiddlewareOptions) => NavigationG
 export const runMiddlewarePipeline =
   ({ router }: RunMiddlewarePipelineOptions) =>
     (to: RouteLocationNormalized, from: RouteLocationNormalized, next: NavigationGuardNext): NavigationGuardReturn => {
-      const middlewares: RouterMiddleware[] | undefined = to.meta?.middlewares;
-      const firstMiddleware = middlewares?.[0];
+      const middlewares: RouterMiddleware[] | undefined = to.meta.middlewares
+      const firstMiddleware = middlewares?.[0]
 
       if (!firstMiddleware) {
-        return next();
+        next(); return
       }
 
       const context = {
@@ -32,7 +32,7 @@ export const runMiddlewarePipeline =
         from,
         next,
         router,
-      };
+      }
 
-      return firstMiddleware({ ...context, next: middlewarePipeline(context, middlewares, 1) });
-    };
+      return firstMiddleware({ ...context, next: middlewarePipeline(context, middlewares, 1) })
+    }

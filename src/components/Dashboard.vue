@@ -1,27 +1,27 @@
 <script setup lang="ts">
-import ActiveNowCard from '@/components/Dashboard/Cards/ActiveNowCard.vue';
-import SalesCard from '@/components/Dashboard/Cards/SalesCard.vue';
-import SubscriptionsCard from '@/components/Dashboard/Cards/SubscriptionsCard.vue';
-import TotalRevenueCard from '@/components/Dashboard/Cards/TotalRevenueCard.vue';
-import DateRangePicker from '@/components/Dashboard/DateRangePicker.vue';
-import Overview from '@/components/Dashboard/Overview.vue';
-import RecentSales from '@/components/Dashboard/RecentSales.vue';
-import { Button } from '@/components/ui/button';
+import ActiveNowCard from '@/components/Dashboard/Cards/ActiveNowCard.vue'
+import SalesCard from '@/components/Dashboard/Cards/SalesCard.vue'
+import SubscriptionsCard from '@/components/Dashboard/Cards/SubscriptionsCard.vue'
+import TotalRevenueCard from '@/components/Dashboard/Cards/TotalRevenueCard.vue'
+import DateRangePicker from '@/components/Dashboard/DateRangePicker.vue'
+import Overview from '@/components/Dashboard/Overview.vue'
+import RecentSales from '@/components/Dashboard/RecentSales.vue'
+import { Button } from '@/components/ui/button'
 import {
   Card,
   CardContent,
   CardHeader,
   CardTitle,
-} from '@/components/ui/card';
+} from '@/components/ui/card'
 import {
   Tabs,
   TabsContent,
   TabsList,
   TabsTrigger,
-} from '@/components/ui/tabs';
-import { useTranslate } from '@/composables/useTranslate';
+} from '@/components/ui/tabs'
+import { useTranslate } from '@/composables/useTranslate'
 
-const tr = useTranslate();
+const tr = useTranslate()
 </script>
 
 <template>

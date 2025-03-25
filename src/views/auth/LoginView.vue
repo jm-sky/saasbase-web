@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { RouterLink } from 'vue-router';
-import UserAuthForm from '@/components/Auth/UserAuthForm.vue';
-import ButtonLink from '@/components/ButtonLink.vue';
-import GuestLayout from '@/layouts/GuestLayout.vue';
+import { RouterLink } from 'vue-router'
+import UserAuthForm from '@/components/Auth/UserAuthForm.vue'
+import ButtonLink from '@/components/ButtonLink.vue'
+import GuestLayout from '@/layouts/GuestLayout.vue'
 </script>
 
 <template>

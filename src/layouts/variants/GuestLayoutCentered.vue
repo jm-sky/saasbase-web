@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { useDark } from '@vueuse/core';
-import { RouterLink } from 'vue-router';
-import ApplicationLogo from '@/components/ApplicationLogo.vue';
-import DarkModeButton from '@/components/DarkModeButton.vue';
-import LayoutConfigurator from '@/components/LayoutConfigurator/LayoutConfigurator.vue';
+import { useDark } from '@vueuse/core'
+import { RouterLink } from 'vue-router'
+import ApplicationLogo from '@/components/ApplicationLogo.vue'
+import DarkModeButton from '@/components/DarkModeButton.vue'
+import LayoutConfigurator from '@/components/LayoutConfigurator/LayoutConfigurator.vue'
 
-const isDark = useDark();
+const isDark = useDark()
 </script>
 
 <template>

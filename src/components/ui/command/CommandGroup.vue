@@ -1,19 +1,19 @@
 <script setup lang="ts">
-import { ComboboxGroup, ComboboxLabel } from 'radix-vue';
-import { type HTMLAttributes, computed } from 'vue';
-import { cn } from '@/lib/utils';
-import type { ComboboxGroupProps } from 'radix-vue';
+import { ComboboxGroup, ComboboxLabel } from 'radix-vue'
+import { computed, type HTMLAttributes } from 'vue'
+import { cn } from '@/lib/utils'
+import type { ComboboxGroupProps } from 'radix-vue'
 
 const props = defineProps<ComboboxGroupProps & {
   class?: HTMLAttributes['class']
   heading?: string
-}>();
+}>()
 
 const delegatedProps = computed(() => {
-  const { class: _, ...delegated } = props; // eslint-disable-line @typescript-eslint/no-unused-vars
+  const { class: _, ...delegated } = props // eslint-disable-line @typescript-eslint/no-unused-vars
 
-  return delegated;
-});
+  return delegated
+})
 </script>
 
 <template>

@@ -1,53 +1,53 @@
 <script lang="ts" setup>
-import { refDebounced } from '@vueuse/core';
+import { refDebounced } from '@vueuse/core'
 import {
   Search,
-} from 'lucide-vue-next';
-import { computed, ref } from 'vue';
-import { Input } from '@/components/ui/input';
-import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@/components/ui/resizable';
-import { Separator } from '@/components/ui/separator';
+} from 'lucide-vue-next'
+import { computed, ref } from 'vue'
+import { Input } from '@/components/ui/input'
+import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@/components/ui/resizable'
+import { Separator } from '@/components/ui/separator'
 import {
   Tabs,
   TabsContent,
   TabsList,
   TabsTrigger,
-} from '@/components/ui/tabs';
-import { TooltipProvider } from '@/components/ui/tooltip';
-import type { Mail } from '@/data/mails';
-import { cn } from '@/lib/utils';
-import AccountSwitcher from './AccountSwitcher.vue';
-import MailDisplay from './MailDisplay.vue';
-import MailList from './MailList.vue';
-import MailNav, { type LinkProp } from './MailNav.vue';
+} from '@/components/ui/tabs'
+import { TooltipProvider } from '@/components/ui/tooltip'
+import { cn } from '@/lib/utils'
+import AccountSwitcher from './AccountSwitcher.vue'
+import MailDisplay from './MailDisplay.vue'
+import MailList from './MailList.vue'
+import MailNav, { type LinkProp } from './MailNav.vue'
+import type { Mail } from '@/data/mails'
 
 interface MailProps {
   accounts: {
-    label: string
     email: string
     icon: string
+    label: string
   }[]
-  mails: Mail[]
-  defaultLayout?: number[]
   defaultCollapsed?: boolean
+  defaultLayout?: number[]
+  mails: Mail[]
   navCollapsedSize: number
 }
 
 const props = withDefaults(defineProps<MailProps>(), {
   defaultCollapsed: false,
   defaultLayout: () => [265, 440, 655],
-});
+})
 
-const isCollapsed = ref(props.defaultCollapsed);
-const selectedMail = ref<string | undefined>(props.mails[0].id);
-const searchValue = ref('');
-const debouncedSearch = refDebounced(searchValue, 250);
+const isCollapsed = ref(props.defaultCollapsed)
+const selectedMail = ref<string | undefined>(props.mails[0].id)
+const searchValue = ref('')
+const debouncedSearch = refDebounced(searchValue, 250)
 
 const filteredMailList = computed(() => {
-  let output: Mail[] = [];
-  const searchValue = debouncedSearch.value?.trim();
+  let output: Mail[] = []
+  const searchValue = debouncedSearch.value.trim()
   if (!searchValue) {
-    output = props.mails;
+    output = props.mails
   }
 
   else {
@@ -56,16 +56,16 @@ const filteredMailList = computed(() => {
         || item.email.includes(debouncedSearch.value)
         || item.name.includes(debouncedSearch.value)
         || item.subject.includes(debouncedSearch.value)
-        || item.text.includes(debouncedSearch.value);
-    });
+        || item.text.includes(debouncedSearch.value)
+    })
   }
 
-  return output;
-});
+  return output
+})
 
-const unreadMailList = computed(() => filteredMailList.value.filter(item => !item.read));
+const unreadMailList = computed(() => filteredMailList.value.filter(item => !item.read))
 
-const selectedMailData = computed(() => props.mails.find(item => item.id === selectedMail.value));
+const selectedMailData = computed(() => props.mails.find(item => item.id === selectedMail.value))
 
 const links: LinkProp[] = [
   {
@@ -104,7 +104,7 @@ const links: LinkProp[] = [
     icon: 'lucide:archive',
     variant: 'ghost',
   },
-];
+]
 
 const links2: LinkProp[] = [
   {
@@ -137,14 +137,14 @@ const links2: LinkProp[] = [
     icon: 'lucide:archive',
     variant: 'ghost',
   },
-];
+]
 
 function onCollapse() {
-  isCollapsed.value = true;
+  isCollapsed.value = true
 }
 
 function onExpand() {
-  isCollapsed.value = false;
+  isCollapsed.value = false
 }
 </script>
 
@@ -213,7 +213,7 @@ function onExpand() {
             </TabsList>
           </div>
           <Separator />
-          <div class="bg-background/95 p-4 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+          <div class="bg-background/95 p-4 backdrop-blur-sm supports-backdrop-filter:bg-background/60">
             <form>
               <div class="relative">
                 <Search class="absolute left-2 top-2.5 size-4 text-muted-foreground" />

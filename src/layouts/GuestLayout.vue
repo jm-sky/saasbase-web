@@ -1,16 +1,16 @@
 <script setup lang="ts">
-import { computed } from 'vue';
-import { useThemeStore } from '@/stores/theme.store';
-import GuestLayoutCentered from './variants/GuestLayoutCentered.vue';
-import GuestLayoutTwoColumns from './variants/GuestLayoutTwoColumns.vue';
+import { computed } from 'vue'
+import { useThemeStore } from '@/stores/theme.store'
+import GuestLayoutCentered from './variants/GuestLayoutCentered.vue'
+import GuestLayoutTwoColumns from './variants/GuestLayoutTwoColumns.vue'
 
-const themeStore = useThemeStore();
+const themeStore = useThemeStore()
 
 const layoutComponent = computed(() => {
-  if (themeStore.guestLayoutVariant === 'centered') return GuestLayoutCentered;
+  if (themeStore.guestLayoutVariant === 'centered') return GuestLayoutCentered
 
-  return GuestLayoutTwoColumns;
-});
+  return GuestLayoutTwoColumns
+})
 </script>
 
 <template>

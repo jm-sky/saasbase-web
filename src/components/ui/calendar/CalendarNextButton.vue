@@ -1,19 +1,19 @@
 <script lang="ts" setup>
-import { ChevronRight } from 'lucide-vue-next';
-import { CalendarNext, type CalendarNextProps, useForwardProps } from 'radix-vue';
-import { type HTMLAttributes, computed } from 'vue';
-import { buttonVariants } from '@/components/ui/button';
-import { cn } from '@/lib/utils';
+import { ChevronRight } from 'lucide-vue-next'
+import { CalendarNext, type CalendarNextProps, useForwardProps } from 'radix-vue'
+import { computed, type HTMLAttributes } from 'vue'
+import { buttonVariants } from '@/components/ui/button'
+import { cn } from '@/lib/utils'
 
-const props = defineProps<CalendarNextProps & { class?: HTMLAttributes['class'] }>();
+const props = defineProps<CalendarNextProps & { class?: HTMLAttributes['class'] }>()
 
 const delegatedProps = computed(() => {
-  const { class: _, ...delegated } = props; // eslint-disable-line @typescript-eslint/no-unused-vars
+  const { class: _, ...delegated } = props // eslint-disable-line @typescript-eslint/no-unused-vars
 
-  return delegated;
-});
+  return delegated
+})
 
-const forwardedProps = useForwardProps(delegatedProps);
+const forwardedProps = useForwardProps(delegatedProps)
 </script>
 
 <template>

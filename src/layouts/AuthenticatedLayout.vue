@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import TopBar from './partials/TopBar.vue';
+import TopBar from './partials/TopBar.vue'
 </script>
 
 <template>

@@ -1,7 +1,7 @@
 <script lang="ts" setup>
-import MailBox from '@/components/MailBox/MailBox.vue';
-import { accounts, mails } from '@/data/mails';
-import AuthenticatedLayout from '@/layouts/AuthenticatedLayout.vue';
+import MailBox from '@/components/MailBox/MailBox.vue'
+import { accounts, mails } from '@/data/mails'
+import AuthenticatedLayout from '@/layouts/AuthenticatedLayout.vue'
 </script>
 
 <template>

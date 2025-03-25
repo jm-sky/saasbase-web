@@ -1,19 +1,19 @@
 <script setup lang="ts">
-import { toTypedSchema } from '@vee-validate/zod';
-import { isAxiosError } from 'axios';
-import { useForm } from 'vee-validate';
-import { RouterLink, useRouter } from 'vue-router';
-import ButtonLink from '@/components/ButtonLink.vue';
-import FormFieldLabeled from '@/components/Form/FormFieldLabeled.vue';
-import Button from '@/components/ui/button/Button.vue';
-import Input from '@/components/ui/input/Input.vue';
-import { useToast } from '@/components/ui/toast/use-toast';
-import UIIcon from '@/components/UIIcon.vue';
-import GuestLayout from '@/layouts/GuestLayout.vue';
-import { authService, registrationSchema, type RegistrationData } from '@/services/authService';
+import { toTypedSchema } from '@vee-validate/zod'
+import { isAxiosError } from 'axios'
+import { useForm } from 'vee-validate'
+import { RouterLink, useRouter } from 'vue-router'
+import ButtonLink from '@/components/ButtonLink.vue'
+import FormFieldLabeled from '@/components/Form/FormFieldLabeled.vue'
+import Button from '@/components/ui/button/Button.vue'
+import Input from '@/components/ui/input/Input.vue'
+import { useToast } from '@/components/ui/toast/use-toast'
+import UIIcon from '@/components/UIIcon.vue'
+import GuestLayout from '@/layouts/GuestLayout.vue'
+import { authService, type RegistrationData, registrationSchema } from '@/services/authService'
 
-const router = useRouter();
-const { toast } = useToast();
+const router = useRouter()
+const { toast } = useToast()
 
 const { isSubmitting, resetForm, handleSubmit } = useForm<RegistrationData>({
   validationSchema: toTypedSchema(registrationSchema),
@@ -23,22 +23,22 @@ const { isSubmitting, resetForm, handleSubmit } = useForm<RegistrationData>({
     email: 'jan.madeyski@gmail.com',
     password: 'Secret123!',
   },
-});
+})
 
 const onSubmit = handleSubmit(async (values) => {
   try {
-    await authService.register(values);
+    await authService.register(values)
   
-    router.push('/');
+    router.push('/')
 
   } catch (error: unknown) {
     toast({
       title: 'Error',
       description: `Registration error. ${isAxiosError(error) ? error.message : ''}`,
       variant: 'destructive',
-    });
+    })
   }
-});
+})
 </script>
 
 <template>

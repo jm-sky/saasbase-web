@@ -1,25 +1,25 @@
 <script lang="ts" setup>
-import { formatDistanceToNow } from 'date-fns';
-import { Badge } from '@/components/ui/badge';
-import { ScrollArea } from '@/components/ui/scroll-area';
-import type { Mail } from '@/data/mails';
-import { cn } from '@/lib/utils';
+import { formatDistanceToNow } from 'date-fns'
+import { Badge } from '@/components/ui/badge'
+import { ScrollArea } from '@/components/ui/scroll-area'
+import { cn } from '@/lib/utils'
+import type { Mail } from '@/data/mails'
 
 interface MailListProps {
   items: Mail[]
 }
 
-defineProps<MailListProps>();
-const selectedMail = defineModel<string>('selectedMail', { required: false });
+defineProps<MailListProps>()
+const selectedMail = defineModel<string>('selectedMail', { required: false })
 
 function getBadgeVariantFromLabel(label: string) {
   if (['work'].includes(label.toLowerCase()))
-    return 'default';
+    return 'default'
 
   if (['personal'].includes(label.toLowerCase()))
-    return 'outline';
+    return 'outline'
 
-  return 'secondary';
+  return 'secondary'
 }
 </script>
 

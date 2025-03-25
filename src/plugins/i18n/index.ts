@@ -1,10 +1,10 @@
-import { createI18n } from 'vue-i18n';
-import { en } from '@/plugins/i18n/en';
+import { createI18n } from 'vue-i18n'
+import { en } from '@/plugins/i18n/en'
 
 export type TLocale = 'en'
 export type MessageSchema = typeof en;
 
-export const DEFAULT_LOCALE: TLocale = 'en';
+export const DEFAULT_LOCALE: TLocale = 'en'
 
 export const i18n = createI18n<[MessageSchema], TLocale>({
   legacy: false,
@@ -13,4 +13,4 @@ export const i18n = createI18n<[MessageSchema], TLocale>({
   messages: {
     en,
   },
-});
+})

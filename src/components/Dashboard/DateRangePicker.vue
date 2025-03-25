@@ -1,27 +1,27 @@
 <script setup lang="ts">
-import { CalendarDate, DateFormatter, getLocalTimeZone } from '@internationalized/date';
-import { Calendar as CalendarIcon } from 'lucide-vue-next';
-import { type Ref, ref } from 'vue';
-import { Button } from '@/components/ui/button';
+import { CalendarDate, DateFormatter, getLocalTimeZone } from '@internationalized/date'
+import { Calendar as CalendarIcon } from 'lucide-vue-next'
+import { type Ref, ref } from 'vue'
+import { Button } from '@/components/ui/button'
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from '@/components/ui/popover';
-import { RangeCalendar } from '@/components/ui/range-calendar';
-import { cn } from '@/lib/utils';
-import type { DateRange } from 'radix-vue';
+} from '@/components/ui/popover'
+import { RangeCalendar } from '@/components/ui/range-calendar'
+import { cn } from '@/lib/utils'
+import type { DateRange } from 'radix-vue'
 
 const df = new DateFormatter('en-US', {
   dateStyle: 'medium',
-});
+})
 
-const calendarDate = new CalendarDate(2023, 0, 20);
+const calendarDate = new CalendarDate(2023, 0, 20)
 
 const value = ref({
   start: calendarDate,
   end: calendarDate.add({ days: 20 }),
-}) as Ref<DateRange>;
+}) as Ref<DateRange>
 </script>
 
 <template>

@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { Icon } from '@iconify/vue';
-import { useDark, useToggle } from '@vueuse/core';
-import Button from '@/components/ui/button/Button.vue';
+import { Icon } from '@iconify/vue'
+import { useDark, useToggle } from '@vueuse/core'
+import Button from '@/components/ui/button/Button.vue'
 
-const isDark = useDark();
-const toggleDark = useToggle(isDark);
+const isDark = useDark()
+const toggleDark = useToggle(isDark)
 </script>
 
 <template>

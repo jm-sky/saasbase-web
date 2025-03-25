@@ -6,13 +6,13 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/components/ui/form';
+} from '@/components/ui/form'
 
 defineProps<{
-  name: string
-  label?: string
   disabled?: boolean
-}>();
+  label?: string
+  name: string
+}>()
 </script>
 
 <template>

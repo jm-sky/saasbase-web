@@ -1,14 +1,14 @@
 <script setup lang="ts">
-import { storeToRefs } from 'pinia';
-import Button from '@/components/ui/button/Button.vue';
-import Label from '@/components/ui/label/Label.vue';
-import { useTranslate } from '@/composables/useTranslate';
-import { useThemeStore } from '@/stores/theme.store';
+import { storeToRefs } from 'pinia'
+import Button from '@/components/ui/button/Button.vue'
+import Label from '@/components/ui/label/Label.vue'
+import { useTranslate } from '@/composables/useTranslate'
+import { useThemeStore } from '@/stores/theme.store'
 
-const layoutStore = useThemeStore();
-const tr = useTranslate();
+const layoutStore = useThemeStore()
+const tr = useTranslate()
 
-const { guestLayoutVariant } = storeToRefs(layoutStore);
+const { guestLayoutVariant } = storeToRefs(layoutStore)
 </script>
 
 <template>

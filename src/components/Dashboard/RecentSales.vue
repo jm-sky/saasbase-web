@@ -1,37 +1,37 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
-import { RouterLink } from 'vue-router';
+import { onMounted, ref } from 'vue'
+import { RouterLink } from 'vue-router'
 import {
   Avatar,
   AvatarFallback,
   AvatarImage,
-} from '@/components/ui/avatar';
+} from '@/components/ui/avatar'
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from '@/components/ui/card';
-import { useTranslate } from '@/composables/useTranslate';
-import { User } from '@/models/user.model';
-import { userService } from '@/services/userService';
+} from '@/components/ui/card'
+import { useTranslate } from '@/composables/useTranslate'
+import { User } from '@/models/user.model'
+import { userService } from '@/services/userService'
 
-const tr = useTranslate();
+const tr = useTranslate()
 
-const isLoading = ref(false);
-const users = ref<User[]>([]);
+const isLoading = ref(false)
+const users = ref<User[]>([])
 
 const refresh = async () => {
   try {
-    isLoading.value = true;
-    users.value = await userService.index({ limit: 5 });
+    isLoading.value = true
+    users.value = await userService.index({ limit: 5 })
   } finally {
-    isLoading.value = false;
+    isLoading.value = false
   }
-};
+}
 
-onMounted(async () => refresh());
+onMounted(async () => refresh())
 </script>
 
 <template>

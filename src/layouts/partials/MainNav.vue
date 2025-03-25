@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { RouterLink } from 'vue-router';
-import { cn } from '@/lib/utils';
+import { RouterLink } from 'vue-router'
+import { cn } from '@/lib/utils'
 </script>
 
 <template>
@@ -30,6 +30,8 @@ import { cn } from '@/lib/utils';
 </template>
 
 <style>
+@reference '../../style/index.css';
+
 .main-nav .active {
   @apply border-primary;
 }

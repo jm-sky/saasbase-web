@@ -1,30 +1,30 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
-import { useRoute } from 'vue-router';
-import Avatar from '@/components/ui/avatar/Avatar.vue';
-import AvatarFallback from '@/components/ui/avatar/AvatarFallback.vue';
-import AvatarImage from '@/components/ui/avatar/AvatarImage.vue';
-import Button from '@/components/ui/button/Button.vue';
-import UIIcon from '@/components/UIIcon.vue';
-import AuthenticatedLayout from '@/layouts/AuthenticatedLayout.vue';
-import type { User } from '@/models/user.model';
-import { userService } from '@/services/userService';
+import { onMounted, ref } from 'vue'
+import { useRoute } from 'vue-router'
+import Avatar from '@/components/ui/avatar/Avatar.vue'
+import AvatarFallback from '@/components/ui/avatar/AvatarFallback.vue'
+import AvatarImage from '@/components/ui/avatar/AvatarImage.vue'
+import Button from '@/components/ui/button/Button.vue'
+import UIIcon from '@/components/UIIcon.vue'
+import AuthenticatedLayout from '@/layouts/AuthenticatedLayout.vue'
+import { userService } from '@/services/userService'
+import type { User } from '@/models/user.model'
 
-const route = useRoute();
+const route = useRoute()
 
-const isLoading = ref(false);
-const user = ref<User | undefined>();
+const isLoading = ref(false)
+const user = ref<undefined | User>()
 
 const refresh = async () => {
   try {
-    isLoading.value = true;
-    user.value = await userService.get(route.params.id as string);
+    isLoading.value = true
+    user.value = await userService.get(route.params.id as string)
   } finally {
-    isLoading.value = false;
+    isLoading.value = false
   }
-};
+}
 
-onMounted(() => refresh());
+onMounted(() => refresh())
 </script>
 
 <template>

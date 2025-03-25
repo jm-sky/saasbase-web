@@ -1,17 +1,17 @@
 <script lang="ts" setup>
-import { Icon } from '@iconify/vue';
-import { buttonVariants } from '@/components/ui/button';
+import { Icon } from '@iconify/vue'
+import { buttonVariants } from '@/components/ui/button'
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
-} from '@/components/ui/tooltip';
-import { cn } from '@/lib/utils';
+} from '@/components/ui/tooltip'
+import { cn } from '@/lib/utils'
 
 export interface LinkProp {
-  title: string
-  label?: string
   icon: string
+  label?: string
+  title: string
   variant: 'default' | 'ghost'
 }
 
@@ -20,7 +20,7 @@ interface NavProps {
   links: LinkProp[]
 }
 
-defineProps<NavProps>();
+defineProps<NavProps>()
 </script>
 
 <template>
@@ -28,7 +28,7 @@ defineProps<NavProps>();
     :data-collapsed="isCollapsed"
     class="group flex flex-col gap-4 py-2 data-[collapsed=true]:py-2"
   >
-    <nav class="grid gap-1 px-2 group-[[data-collapsed=true]]:justify-center group-[[data-collapsed=true]]:px-2">
+    <nav class="grid gap-1 px-2 group-data-[collapsed=true]:justify-center group-data-[collapsed=true]:px-2">
       <template v-for="(link, index) of links">
         <Tooltip
           v-if="isCollapsed"

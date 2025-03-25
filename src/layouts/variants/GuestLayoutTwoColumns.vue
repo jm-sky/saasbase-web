@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { useDark } from '@vueuse/core';
-import DarkModeButton from '@/components/DarkModeButton.vue';
-import LayoutConfigurator from '@/components/LayoutConfigurator/LayoutConfigurator.vue';
-import UIIcon from '@/components/UIIcon.vue';
+import { useDark } from '@vueuse/core'
+import DarkModeButton from '@/components/DarkModeButton.vue'
+import LayoutConfigurator from '@/components/LayoutConfigurator/LayoutConfigurator.vue'
+import UIIcon from '@/components/UIIcon.vue'
 
-const isDark = useDark();
+const isDark = useDark()
 </script>
 
 <template>

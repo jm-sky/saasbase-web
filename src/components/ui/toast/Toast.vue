@@ -1,20 +1,20 @@
 <script setup lang="ts">
-import { ToastRoot, type ToastRootEmits, useForwardPropsEmits } from 'radix-vue';
-import { computed } from 'vue';
-import { cn } from '@/lib/utils';
-import { type ToastProps, toastVariants } from '.';
+import { ToastRoot, type ToastRootEmits, useForwardPropsEmits } from 'radix-vue'
+import { computed } from 'vue'
+import { cn } from '@/lib/utils'
+import { type ToastProps, toastVariants } from '.'
 
-const props = defineProps<ToastProps>();
+const props = defineProps<ToastProps>()
 
-const emits = defineEmits<ToastRootEmits>();
+const emits = defineEmits<ToastRootEmits>()
 
 const delegatedProps = computed(() => {
-  const { class: _, ...delegated } = props; // eslint-disable-line @typescript-eslint/no-unused-vars
+  const { class: _, ...delegated } = props // eslint-disable-line @typescript-eslint/no-unused-vars
 
-  return delegated;
-});
+  return delegated
+})
 
-const forwarded = useForwardPropsEmits(delegatedProps, emits);
+const forwarded = useForwardPropsEmits(delegatedProps, emits)
 </script>
 
 <template>

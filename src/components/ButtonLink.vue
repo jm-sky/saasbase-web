@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { RouterLink, type RouteLocationRaw } from 'vue-router';
-import Button from '@/components/ui/button/Button.vue';
+import { type RouteLocationRaw, RouterLink } from 'vue-router'
+import Button from '@/components/ui/button/Button.vue'
 
 defineProps<{
   to: RouteLocationRaw
-}>();
+}>()
 </script>
 
 <template>
