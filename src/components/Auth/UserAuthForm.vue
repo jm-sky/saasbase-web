@@ -18,7 +18,7 @@ import { useToast } from '../ui/toast'
 const router = useRouter()
 const { toast } = useToast()
 
-const { isSubmitting, handleSubmit } = useForm<Credentials>({
+const { setErrors, isSubmitting, handleSubmit } = useForm<Credentials>({
   validationSchema: toTypedSchema(credentialsSchema),
   initialValues: {
     email: import.meta.env.VITE_DEFAULT_LOGIN ?? '',
@@ -34,6 +34,10 @@ const onSubmit = handleSubmit(async (values) => {
     await router.push('/')
 
   } catch (error: unknown) {
+    setErrors({
+      email: 'Invalid credentials',
+      password: 'Invalid credentials',
+    })
     toast.error({
       title: 'Error',
       description: `Invalid credentials. ${isAxiosError(error) ? error.message : ''}`,
