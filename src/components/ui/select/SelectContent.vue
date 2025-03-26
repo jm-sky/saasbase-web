@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { type HTMLAttributes, computed } from 'vue';
 import {
   SelectContent,
   type SelectContentEmits,
@@ -7,29 +6,30 @@ import {
   SelectPortal,
   SelectViewport,
   useForwardPropsEmits,
-} from 'radix-vue';
-import { SelectScrollDownButton, SelectScrollUpButton } from '.';
-import { cn } from '@/lib/utils';
+} from 'radix-vue'
+import { computed, type HTMLAttributes } from 'vue'
+import { cn } from '@/lib/utils'
+import { SelectScrollDownButton, SelectScrollUpButton } from '.'
 
 defineOptions({
   inheritAttrs: false,
-});
+})
 
 const props = withDefaults(
   defineProps<SelectContentProps & { class?: HTMLAttributes['class'] }>(),
   {
     position: 'popper',
   },
-);
-const emits = defineEmits<SelectContentEmits>();
+)
+const emits = defineEmits<SelectContentEmits>()
 
 const delegatedProps = computed(() => {
-  const { class: _, ...delegated } = props; // eslint-disable-line @typescript-eslint/no-unused-vars
+  const { class: _, ...delegated } = props // eslint-disable-line @typescript-eslint/no-unused-vars
 
-  return delegated;
-});
+  return delegated
+})
 
-const forwarded = useForwardPropsEmits(delegatedProps, emits);
+const forwarded = useForwardPropsEmits(delegatedProps, emits)
 </script>
 
 <template>
@@ -45,7 +45,7 @@ const forwarded = useForwardPropsEmits(delegatedProps, emits);
       "
     >
       <SelectScrollUpButton />
-      <SelectViewport :class="cn('p-1', position === 'popper' && 'h-[--radix-select-trigger-height] w-full min-w-[--radix-select-trigger-width]')">
+      <SelectViewport :class="cn('p-1', position === 'popper' && 'h-(--radix-select-trigger-height) w-full min-w-(--radix-select-trigger-width)')">
         <slot />
       </SelectViewport>
       <SelectScrollDownButton />

@@ -1,14 +1,14 @@
 <script setup lang="ts">
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 
 defineProps<{
-  title?: string
   data: {
-    name: string
     color: string
+    name: string
     value: any
   }[]
-}>();
+  title?: string
+}>()
 </script>
 
 <template>

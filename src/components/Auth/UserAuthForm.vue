@@ -1,81 +1,102 @@
 <script setup lang="ts">
-import { computed } from 'vue';
-import { ref } from 'vue';
-import { useRouter } from 'vue-router';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import UIIcon from '@/components/UIIcon.vue';
-import { cn } from '@/lib/utils';
+import { toTypedSchema } from '@vee-validate/zod'
+import { isAxiosError } from 'axios'
+import { useForm } from 'vee-validate'
+import { computed } from 'vue'
+import { RouterLink, useRouter } from 'vue-router'
+import FormFieldLabeled from '@/components/Form/FormFieldLabeled.vue'
+import FormFieldLabeledAfter from '@/components/Form/FormFieldLabeledAfter.vue'
+import { Button } from '@/components/ui/button'
+import { Checkbox } from '@/components/ui/checkbox'
+import { Input } from '@/components/ui/input'
+import UIIcon from '@/components/UIIcon.vue'
+import { config } from '@/config'
+import { cn } from '@/lib/utils'
+import { authService, type Credentials, credentialsSchema } from '@/services/authService'
+import { useToast } from '../ui/toast'
 
-const router = useRouter();
+const router = useRouter()
+const { toast } = useToast()
 
-type AuthProvider = 'gitHub' | 'google' | 'facebook' | 'linkedIn'
+const { setErrors, isSubmitting, handleSubmit } = useForm<Credentials>({
+  validationSchema: toTypedSchema(credentialsSchema),
+  initialValues: {
+    email: import.meta.env.VITE_DEFAULT_LOGIN ?? '',
+    password: import.meta.env.VITE_DEFAULT_PASSWORD ?? '',
+    remember: false,
+  }
+})
 
-const authProviders: Record<AuthProvider, boolean> = {
-  gitHub: false,
-  google: false,
-  facebook: false,
-  linkedIn: false,
-};
+const onSubmit = handleSubmit(async (values) => {
+  try {
+    await authService.login(values)
+  
+    await router.push('/')
 
-const isLoading = ref(false);
+  } catch (error: unknown) {
+    setErrors({
+      email: 'Invalid credentials',
+      password: 'Invalid credentials',
+    })
+    toast.error({
+      title: 'Error',
+      description: `Invalid credentials. ${isAxiosError(error) ? error.message : ''}`,
+    })
+  }
+})
 
-async function onSubmit(event: Event) {
-  event.preventDefault();
-  isLoading.value = true;
-
-  setTimeout(() => {
-    isLoading.value = false;
-    router.push('/');
-  }, 3000);
-}
-
-const useAuthProviders = computed<boolean>(() => Object.values(authProviders).filter(v => v).length > 0);
+const useAuthProviders = computed<boolean>(() => Object.values(config.auth.providers).filter(v => v).length > 0)
 </script>
 
 <template>
   <div :class="cn('grid gap-6', $attrs.class ?? '')">
     <form @submit="onSubmit">
       <div class="grid gap-2">
-        <div class="grid gap-1">
-          <Label
-            class="sr-only"
-            for="email"
-          >
-            E-mail
-          </Label>
+        <FormFieldLabeled
+          v-slot="{ componentField }"
+          name="email"
+        >
           <Input
-            id="email"
+            v-bind="componentField"
             placeholder="name@example.com"
-            type="email"
-            auto-capitalize="none"
-            auto-complete="email"
-            auto-correct="off"
-            :disabled="isLoading"
+            class="bg-white/50 dark:bg-black/50"
           />
-        </div>
-        <div class="grid gap-1">
-          <Label
-            class="sr-only"
-            for="password"
-          >
-            Password
-          </Label>
+        </FormFieldLabeled>
+
+        <FormFieldLabeled
+          v-slot="{ componentField }"
+          name="password"
+        >
           <Input
-            id="password"
-            placeholder="Your secret password"
+            v-bind="componentField"
             type="password"
-            auto-capitalize="none"
-            auto-complete="password"
-            auto-correct="off"
-            :disabled="isLoading"
+            placeholder="Your secret password"
+            class="bg-white/50 dark:bg-black/50"
           />
+        </FormFieldLabeled>
+
+        <div class="flex flex-row gap-3 items-center justify-between text-sm mb-4 text-gray-600">
+          <FormFieldLabeledAfter
+            v-slot="{ componentField }"
+            name="remember"
+            label="Remember me"
+          >
+            <Checkbox v-bind="componentField" />
+          </FormFieldLabeledAfter>
+
+          <div class="">
+            <RouterLink
+              to="/password-forgot"
+              class="text-sm font-bold text-gray-500 hover:text-primary-500"
+            >
+              Forgot password?
+            </RouterLink>
+          </div>
         </div>
 
-        <Button :disabled="isLoading">
+        <Button :disabled="isSubmitting">
           <UIIcon
-            v-if="isLoading"
+            v-if="isSubmitting"
             icon="lucide:loader-circle"
             class="mr-2 size-4 animate-spin"
           />
@@ -85,23 +106,20 @@ const useAuthProviders = computed<boolean>(() => Object.values(authProviders).fi
     </form>
 
     <template v-if="useAuthProviders">
-      <div class="relative">
-        <div class="absolute inset-0 flex items-center">
-          <span class="w-full border-t" />
+      <div class="flex flex-row justify-center items-center">
+        <div class="border-b grow" />
+        <div class="backdrop-blur-md rounded-lg py-0.5 px-2 text-xs uppercase text-muted-foreground">
+          Or continue with
         </div>
-        <div class="relative flex justify-center text-xs uppercase">
-          <span class="bg-background px-2 text-muted-foreground">
-            Or continue with
-          </span>
-        </div>
+        <div class="border-b grow" />
       </div>
       <Button
         variant="outline"
         type="button"
-        :disabled="isLoading"
+        disabled
       >
         <UIIcon
-          v-if="isLoading"
+          v-if="isSubmitting"
           icon="lucide:loader-circle"
           class="mr-2 size-4 animate-spin"
         />

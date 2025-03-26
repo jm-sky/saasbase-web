@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { RouterLink } from 'vue-router';
-import { cn } from '@/lib/utils';
+import { RouterLink } from 'vue-router'
+import { cn } from '@/lib/utils'
 </script>
 
 <template>
@@ -11,21 +11,18 @@ import { cn } from '@/lib/utils';
     <RouterLink
       to="/"
       class="font-medium transition-colors hover:text-primary border-b-2 border-transparent hover:border-primary -mb-1 py-5 px-2"
-      active-class="active"
     >
       Dashboard
     </RouterLink>
     <RouterLink
       to="/mailbox"
       class="font-medium transition-colors hover:text-primary border-b-2 border-transparent hover:border-primary -mb-1 py-5 px-2"
-      active-class="active"
     >
       MailBox
     </RouterLink>
     <RouterLink
       to="/settings"
       class="font-medium transition-colors hover:text-primary border-b-2 border-transparent hover:border-primary -mb-1 py-5 px-2"
-      active-class="active"
     >
       Settings
     </RouterLink>
@@ -33,6 +30,8 @@ import { cn } from '@/lib/utils';
 </template>
 
 <style>
+@reference '../../style/index.css';
+
 .main-nav .active {
   @apply border-primary;
 }

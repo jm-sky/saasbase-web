@@ -1,17 +1,17 @@
 <script lang="ts" setup>
-import { type HTMLAttributes, computed } from 'vue';
-import { RangeCalendarGrid, type RangeCalendarGridProps, useForwardProps } from 'radix-vue';
-import { cn } from '@/lib/utils';
+import { RangeCalendarGrid, type RangeCalendarGridProps, useForwardProps } from 'radix-vue'
+import { computed, type HTMLAttributes } from 'vue'
+import { cn } from '@/lib/utils'
 
-const props = defineProps<RangeCalendarGridProps & { class?: HTMLAttributes['class'] }>();
+const props = defineProps<RangeCalendarGridProps & { class?: HTMLAttributes['class'] }>()
 
 const delegatedProps = computed(() => {
-  const { class: _, ...delegated } = props; // eslint-disable-line @typescript-eslint/no-unused-vars
+  const { class: _, ...delegated } = props // eslint-disable-line @typescript-eslint/no-unused-vars
 
-  return delegated;
-});
+  return delegated
+})
 
-const forwardedProps = useForwardProps(delegatedProps);
+const forwardedProps = useForwardProps(delegatedProps)
 </script>
 
 <template>

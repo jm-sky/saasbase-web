@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import { ref } from 'vue';
-import { Icon } from '@iconify/vue';
-import { cn } from '@/lib/utils';
+import { Icon } from '@iconify/vue'
+import { ref } from 'vue'
 import {
   Avatar,
   AvatarFallback,
   AvatarImage,
-} from '@/components/ui/avatar';
-import { Button } from '@/components/ui/button';
+} from '@/components/ui/avatar'
+import { Button } from '@/components/ui/button'
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList, CommandSeparator } from '@/components/ui/command'
 import {
   Dialog,
   DialogContent,
@@ -16,26 +16,26 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from '@/components/ui/dialog';
-import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList, CommandSeparator } from '@/components/ui/command';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
+} from '@/components/ui/dialog'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from '@/components/ui/popover';
+} from '@/components/ui/popover'
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
-import { User } from '@/models/user.model';
-import { user as userData } from '@/data/user';
+} from '@/components/ui/select'
+import { user as userData } from '@/data/user'
+import { cn } from '@/lib/utils'
+import { User } from '@/models/user.model'
 
-const user = User.load({ ...userData });
+const user = User.load({ ...userData })
 
 const groups = [
   {
@@ -60,13 +60,13 @@ const groups = [
       },
     ],
   },
-];
+]
 
 type Team = (typeof groups)[number]['teams'][number]
 
-const open = ref(false);
-const showNewTeamDialog = ref(false);
-const selectedTeam = ref<Team>(groups[0].teams[0]);
+const open = ref(false)
+const showNewTeamDialog = ref(false)
+const selectedTeam = ref<Team>(groups[0].teams[0])
 </script>
 
 <template>

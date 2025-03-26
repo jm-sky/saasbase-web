@@ -1,22 +1,22 @@
 <script lang="ts" setup>
-import { computed, ref } from 'vue';
-import { Icon } from '@iconify/vue';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { cn } from '@/lib/utils';
+import { Icon } from '@iconify/vue'
+import { computed, ref } from 'vue'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { cn } from '@/lib/utils'
 
 interface AccountSwitcherProps {
-  isCollapsed: boolean
   accounts: {
-    label: string
     email: string
     icon: string
+    label: string
   }[]
+  isCollapsed: boolean
 }
 
-const props = defineProps<AccountSwitcherProps>();
+const props = defineProps<AccountSwitcherProps>()
 
-const selectedEmail = ref<string>(props.accounts[0].email);
-const selectedEmailData = computed(() => props.accounts.find(item => item.email === selectedEmail.value));
+const selectedEmail = ref<string>(props.accounts[0].email)
+const selectedEmailData = computed(() => props.accounts.find(item => item.email === selectedEmail.value))
 </script>
 
 <template>

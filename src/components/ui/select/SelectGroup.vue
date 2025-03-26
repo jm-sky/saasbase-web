@@ -1,15 +1,15 @@
 <script setup lang="ts">
-import { type HTMLAttributes, computed } from 'vue';
-import { SelectGroup, type SelectGroupProps } from 'radix-vue';
-import { cn } from '@/lib/utils';
+import { SelectGroup, type SelectGroupProps } from 'radix-vue'
+import { computed, type HTMLAttributes } from 'vue'
+import { cn } from '@/lib/utils'
 
-const props = defineProps<SelectGroupProps & { class?: HTMLAttributes['class'] }>();
+const props = defineProps<SelectGroupProps & { class?: HTMLAttributes['class'] }>()
 
 const delegatedProps = computed(() => {
-  const { class: _, ...delegated } = props; // eslint-disable-line @typescript-eslint/no-unused-vars
+  const { class: _, ...delegated } = props // eslint-disable-line @typescript-eslint/no-unused-vars
 
-  return delegated;
-});
+  return delegated
+})
 </script>
 
 <template>
