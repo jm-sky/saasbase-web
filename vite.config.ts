@@ -4,6 +4,7 @@ import { fileURLToPath, URL } from 'node:url'
 import { defineConfig } from 'vite'
 import vueDevTools from 'vite-plugin-vue-devtools'
 
+
 // https://vitejs.dev/config/
 export default defineConfig(() => ({
   plugins: [
@@ -19,7 +20,7 @@ export default defineConfig(() => ({
   server: {
     proxy: {
       '/api': {
-        target: 'http://localhost:8000',
+        target: import.meta.env.VITE_API_HOST ?? 'http://localhost:8000',
         // target: 'https://dummyjson.com',
         changeOrigin: true,
         secure: false,

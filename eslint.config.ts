@@ -27,6 +27,9 @@ export default defineConfigWithVueTs(
       '@typescript-eslint/restrict-template-expressions': 'off',
       '@typescript-eslint/no-extraneous-class': 'off',
       // ----------------------------------------
+      'vue/require-default-prop': 'off',
+      'vue/multi-word-component-names': 'off',
+      // ----------------------------------------
       'perfectionist/sort-classes': 'off',
       'perfectionist/sort-interfaces': 'off',
       'perfectionist/sort-object-types': 'off',

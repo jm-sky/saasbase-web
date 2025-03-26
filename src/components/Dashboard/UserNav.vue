@@ -27,7 +27,7 @@ const { user } = storeToRefs(authStore)
 
 const logout = async () => {
   await authService.logout()
-  router.push('/login')
+  await router.push('/login')
 }
 </script>
 

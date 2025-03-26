@@ -9,19 +9,20 @@ import Button from '@/components/ui/button/Button.vue'
 import Input from '@/components/ui/input/Input.vue'
 import { useToast } from '@/components/ui/toast/use-toast'
 import UIIcon from '@/components/UIIcon.vue'
+import { isValidationError } from '@/helpers/validation'
 import GuestLayout from '@/layouts/GuestLayout.vue'
 import { authService, type RegistrationData, registrationSchema } from '@/services/authService'
 
 const router = useRouter()
 const { toast } = useToast()
 
-const { isSubmitting, resetForm, handleSubmit } = useForm<RegistrationData>({
+const { isSubmitting, handleSubmit, resetForm, setErrors } = useForm<RegistrationData>({
   validationSchema: toTypedSchema(registrationSchema),
   initialValues: {
-    name: 'John',
-    lastName: 'Doe',
-    email: 'jan.madeyski@gmail.com',
-    password: 'Secret123!',
+    name: import.meta.env.VITE_DEFAULT_NAME ?? 'John',
+    lastName: import.meta.env.VITE_DEFAULT_LAST_NAME ?? 'Doe',
+    email: import.meta.env.VITE_DEFAULT_LOGIN ?? '',
+    password: import.meta.env.VITE_DEFAULT_PASSWORD ?? '',
   },
 })
 
@@ -32,9 +33,12 @@ const onSubmit = handleSubmit(async (values) => {
     await router.push('/')
 
   } catch (error: unknown) {
+    if (isValidationError(error)) {
+      setErrors(error.response.data)
+    }
     toast({
       title: 'Error',
-      description: `Registration error. ${isAxiosError(error) ? error.message : ''}`,
+      description: `${isAxiosError(error) && error.response?.data?.message ? error.response.data.message : 'Registration error'}`,
       variant: 'destructive',
     })
   }

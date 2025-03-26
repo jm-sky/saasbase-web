@@ -24,9 +24,12 @@ export const useAuthStore = defineStore('auth', () => {
   const isAuthenticated = computed<boolean>(() => !!session.value?.id)
   const user = computed<undefined | User>(() => session.value?.user ? User.load(session.value.user) : undefined)
 
-  const setToken = (newToken: string) => token.value = newToken
-  const clearToken = () => token.value = null
+  const setToken = (newToken: string) => {
+    token.value = newToken
+    setAuthToken(newToken)
+  }
 
+  const clearToken = () => token.value = null
   const clearData = () => {
     clearToken()
     session.value = null

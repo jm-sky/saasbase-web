@@ -1,5 +1,5 @@
 <script lang="ts">
-import type { HTMLAttributes, InjectionKey } from 'vue' // eslint-disable-line import/order
+import type { HTMLAttributes, InjectionKey } from 'vue'
 
 export const FORM_ITEM_INJECTION_KEY = Symbol() as InjectionKey<string>
 </script>

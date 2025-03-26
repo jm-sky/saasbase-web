@@ -80,18 +80,16 @@ export class AuthService {
   async login(credentials: Credentials): Promise<SessionData | ZodError<Credentials>> {
     const authStore = useAuthStore()
     
-    const response = (await api.post<{ token: string }>('/api/auth/login', credentials)).data
+    const { data, error, success: isValid } = credentialsSchema.safeParse(credentials)
+
+    if (!isValid) {
+      return error
+    }
+
+    const response = (await api.post<{ token: string }>('/api/auth/login', data)).data
 
     authStore.setToken(response.token)
-
-    // const { data, error, success: isValid } = credentialsSchema.safeParse(credentials)
-
-    // if (!isValid) {
-    //   return error
-    // }
-
-    const user = await this.getUser()
-    authStore.session = this.createSession(user)
+    authStore.session = this.createSession(await this.getUser())
 
     return authStore.session
   }
@@ -101,7 +99,8 @@ export class AuthService {
     return response
   }
 
-  logout() {
+  // eslint-disable-next-line @typescript-eslint/require-await
+  async logout() {
     useAuthStore().clearData()
   }
   
@@ -114,20 +113,18 @@ export class AuthService {
   async register(registrationData: RegistrationData): Promise<SessionData | ZodError<RegistrationData>> {
     const authStore = useAuthStore()
     
-    await new Promise((resolve) => setTimeout(resolve, 1500))
-
     const { data, error, success: isValid } = registrationSchema.safeParse(registrationData)
 
     if (!isValid) {
       return error
     }
 
-    const user = this.userFromRegistration(data)
-    const session = this.createSession(user)
+    const { token } = (await api.post<{ token: string }>('/api/auth/register', data)).data
 
-    authStore.session = session
+    authStore.setToken(token)
+    authStore.session = this.createSession(await this.getUser())
 
-    return session
+    return authStore.session
   }
 }
 

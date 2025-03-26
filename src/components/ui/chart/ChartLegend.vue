@@ -5,7 +5,7 @@ import { nextTick, onMounted, ref } from 'vue'
 import { buttonVariants } from '@/components/ui/button'
 import type { BulletLegendItemInterface } from '@unovis/ts'
 
-const props = withDefaults(defineProps<{ items: BulletLegendItemInterface[] }>(), {
+const props = withDefaults(defineProps<{ items?: BulletLegendItemInterface[] }>(), {
   items: () => [],
 })
 
@@ -18,6 +18,7 @@ const elRef = ref<HTMLElement>()
 
 onMounted(() => {
   const selector = `.${BulletLegend.selectors.item}`
+  // eslint-disable-next-line @typescript-eslint/no-floating-promises
   nextTick(() => {
     const elements = elRef.value?.querySelectorAll(selector)
     const classes = buttonVariants({ variant: 'ghost', size: 'xs' }).split(' ')

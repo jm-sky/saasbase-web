@@ -87,7 +87,7 @@ const useAuthProviders = computed<boolean>(() => Object.values(config.auth.provi
           <div class="">
             <RouterLink
               to="/password-forgot"
-              class="text-sm font-bold text-gray-500 hover:text-primary-500"
+              class="text-sm font-bold text-gray-500 hover:text-primary"
             >
               Forgot password?
             </RouterLink>

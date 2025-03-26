@@ -6,7 +6,7 @@ import { ChartTooltip } from '.'
 import type { BulletLegendItemInterface } from '@unovis/ts'
 
 const props = withDefaults(defineProps<{
-  colors: string[]
+  colors?: string[]
   customTooltip?: Component
   index: string
   items: BulletLegendItemInterface[]
@@ -16,6 +16,7 @@ const props = withDefaults(defineProps<{
 
 // Use weakmap to store reference to each datapoint for Tooltip
 const wm = new WeakMap()
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function template(d: any) {
   if (wm.has(d)) {
     return wm.get(d)

@@ -17,6 +17,7 @@ const props = withDefaults(defineProps<{
 
 // Use weakmap to store reference to each datapoint for Tooltip
 const wm = new WeakMap()
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function template(d: any, i: number, elements: (HTMLElement | SVGElement)[]) {
   if (props.index in d) {
     if (wm.has(d)) {

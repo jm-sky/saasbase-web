@@ -37,7 +37,6 @@ const emits = defineEmits<{
   legendItemClick: [d: BulletLegendItemInterface, i: number]
 }>()
 
-type KeyOfT = Extract<keyof T, string>
 type Data = typeof props.data[number]
 
 const index = computed(() => props.index)
