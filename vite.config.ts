@@ -20,7 +20,7 @@ export default defineConfig(() => ({
   server: {
     proxy: {
       '/api': {
-        target: import.meta.env.VITE_API_HOST ?? 'http://localhost:8000',
+        target: process.env.VITE_API_HOST ?? 'http://localhost:8000',
         // target: 'https://dummyjson.com',
         changeOrigin: true,
         secure: false,

@@ -34,7 +34,7 @@ const onSubmit = handleSubmit(async (values) => {
 
   } catch (error: unknown) {
     if (isValidationError(error)) {
-      setErrors(error.response.data)
+      setErrors(error.response.data.errors)
     }
     toast({
       title: 'Error',
