@@ -31,9 +31,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { user as userData } from '@/data/user'
+import { userData } from '@/data/userData'
 import { cn } from '@/lib/utils'
 import { User } from '@/models/user.model'
+import type { ArrayOrWrapped } from 'node_modules/radix-vue/dist/shared/types'
 
 const user = User.load({ ...userData })
 
@@ -67,6 +68,8 @@ type Team = (typeof groups)[number]['teams'][number]
 const open = ref(false)
 const showNewTeamDialog = ref(false)
 const selectedTeam = ref<Team>(groups[0].teams[0])
+
+const filterFn = <T = Team>(list: ArrayOrWrapped<T>, term: string) => list.filter((i) => i.label?.toLowerCase()?.includes(term))
 </script>
 
 <template>
@@ -95,7 +98,8 @@ const selectedTeam = ref<Team>(groups[0].teams[0])
         </Button>
       </PopoverTrigger>
       <PopoverContent class="w-[200px] p-0">
-        <Command :filter-function="(list, term) => list.filter(i => i.label?.toLowerCase()?.includes(term)) ">
+        <!-- @vue-expect-error Needs to be checked -->
+        <Command :filter-function="filterFn">
           <CommandList>
             <CommandInput placeholder="Search team..." />
             <CommandEmpty>No team found.</CommandEmpty>

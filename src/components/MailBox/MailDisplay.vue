@@ -1,8 +1,8 @@
 <script lang="ts" setup>
-import addDays from 'date-fns/addDays'
-import addHours from 'date-fns/addHours'
-import format from 'date-fns/format'
-import nextSaturday from 'date-fns/nextSaturday'
+import { addDays } from 'date-fns/addDays'
+import { addHours } from 'date-fns/addHours'
+import { format } from 'date-fns/format'
+import { nextSaturday } from 'date-fns/nextSaturday'
 import { Archive, ArchiveX, Clock, Forward, MoreVertical, Reply, ReplyAll, Trash2 } from 'lucide-vue-next'
 import { computed } from 'vue'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
