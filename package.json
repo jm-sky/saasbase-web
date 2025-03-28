@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "run-p type-check \"build-only {@}\" --",
+    "build-only": "vite build",
     "type-check": "vue-tsc --build --force",
     "preview": "vite preview",
     "lint": "eslint . --fix"
@@ -21,7 +22,7 @@
     "@vee-validate/zod": "^4.15.0",
     "@vueuse/core": "^10.11.1",
     "axios": "^1.8.4",
-    "date-fns": "^3.6.0",
+    "date-fns": "^4.1.0",
     "dayjs": "^1.11.13",
     "lodash-es": "^4.17.21",
     "lucide-vue-next": "^0.378.0",
