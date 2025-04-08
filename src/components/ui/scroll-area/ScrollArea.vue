@@ -12,6 +12,7 @@ import ScrollBar from './ScrollBar.vue'
 const props = defineProps<ScrollAreaRootProps & { class?: HTMLAttributes['class'] }>()
 
 const delegatedProps = computed(() => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { class: _, ...delegated } = props // eslint-disable-line @typescript-eslint/no-unused-vars
 
   return delegated

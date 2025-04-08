@@ -2,7 +2,7 @@ import dayjs from 'dayjs'
 import { type IUserAddress, UserAddress } from '@/models/userAddress.model'
 
 export interface IPublicUser {
-  id: number
+  id: number | string
   firstName: string
   lastName: string
   email: string
@@ -14,7 +14,7 @@ export interface IPublicUser {
     postalCode?: string
     country?: string
   }
-  image: string
+  image?: string
 }
 
 export interface IUserData {

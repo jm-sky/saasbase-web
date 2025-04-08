@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { toTypedSchema } from '@vee-validate/zod'
-import { isAxiosError } from 'axios'
+import { AxiosError, isAxiosError } from 'axios'
 import { useForm } from 'vee-validate'
 import { computed } from 'vue'
 import { RouterLink, useRouter } from 'vue-router'
@@ -9,11 +9,19 @@ import FormFieldLabeledAfter from '@/components/Form/FormFieldLabeledAfter.vue'
 import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Input } from '@/components/ui/input'
+import { useToast } from '@/components/ui/toast'
 import UIIcon from '@/components/UIIcon.vue'
 import { config } from '@/config'
 import { cn } from '@/lib/utils'
-import { authService, type Credentials, credentialsSchema } from '@/services/authService'
-import { useToast } from '../ui/toast'
+import { credentialsSchema } from '@/schemas/auth.schema'
+import { authService } from '@/services/authService'
+import type { Credentials } from '@/types/auth.type'
+
+interface AuthErrorResponse {
+  detail?: string
+}
+
+const isAuthError = (error: unknown): error is AxiosError<AuthErrorResponse> => isAxiosError(error)
 
 const router = useRouter()
 const { toast } = useToast()
@@ -30,17 +38,16 @@ const { setErrors, isSubmitting, handleSubmit } = useForm<Credentials>({
 const onSubmit = handleSubmit(async (values) => {
   try {
     await authService.login(values)
-  
     await router.push('/')
 
   } catch (error: unknown) {
+    console.warn('[LoginError]', error)
     setErrors({
       email: 'Invalid credentials',
       password: 'Invalid credentials',
     })
-    toast.error({
-      title: 'Error',
-      description: `Invalid credentials. ${isAxiosError(error) ? error.message : ''}`,
+    toast.error('Error', {
+      description: isAuthError(error) ? error.response?.data.detail ?? error.message : 'Invalid credentials.',
     })
   }
 })
@@ -58,6 +65,7 @@ const useAuthProviders = computed<boolean>(() => Object.values(config.auth.provi
         >
           <Input
             v-bind="componentField"
+            autocomplete="username"
             placeholder="name@example.com"
             class="bg-white/50 dark:bg-black/50"
           />
@@ -70,6 +78,7 @@ const useAuthProviders = computed<boolean>(() => Object.values(config.auth.provi
           <Input
             v-bind="componentField"
             type="password"
+            autocomplete="current-password"
             placeholder="Your secret password"
             class="bg-white/50 dark:bg-black/50"
           />

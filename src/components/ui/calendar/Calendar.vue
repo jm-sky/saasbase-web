@@ -9,6 +9,7 @@ const props = defineProps<CalendarRootProps & { class?: HTMLAttributes['class'] 
 const emits = defineEmits<CalendarRootEmits>()
 
 const delegatedProps = computed(() => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { class: _, ...delegated } = props // eslint-disable-line @typescript-eslint/no-unused-vars
 
   return delegated

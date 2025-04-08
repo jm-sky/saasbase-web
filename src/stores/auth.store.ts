@@ -1,8 +1,8 @@
-import { useLocalStorage, useSessionStorage } from '@vueuse/core'
+import { StorageSerializers, useLocalStorage, useSessionStorage } from '@vueuse/core'
 import { defineStore } from 'pinia'
 import { computed, watch } from 'vue'
 import { config } from '@/config'
-import { setAuthToken } from '@/helpers/api'
+import { setApiAuthorization } from '@/helpers/api'
 import { type IUserData, User } from '@/models/user.model'
 
 export interface SessionData {
@@ -14,19 +14,15 @@ export interface SessionData {
 
 export const useAuthStore = defineStore('auth', () => {
   const token = useLocalStorage<null | string>(`${config.appId}:token`, null)
-  const session = useSessionStorage<null | SessionData>(`${config.appId}:session`, null, {
-    serializer: {
-      read: (v: unknown) => v ? JSON.parse(v as string) : null,
-      write: (v: unknown) => JSON.stringify(v),
-    },
-  })
+  const session = useSessionStorage<null | SessionData>(`${config.appId}:session`, null, { serializer: StorageSerializers.object })
 
   const isAuthenticated = computed<boolean>(() => !!session.value?.id)
-  const user = computed<undefined | User>(() => session.value?.user ? User.load(session.value.user) : undefined)
+  const userData = computed<undefined | IUserData>(() => session.value?.user)
+  const user = computed<undefined | User>(() => userData.value ? User.load(userData.value) : undefined)
 
   const setToken = (newToken: string) => {
     token.value = newToken
-    setAuthToken(newToken)
+    setApiAuthorization(newToken)
   }
 
   const clearToken = () => token.value = null
@@ -36,7 +32,7 @@ export const useAuthStore = defineStore('auth', () => {
   }
 
   // eslint-disable-next-line @typescript-eslint/no-confusing-void-expression
-  watch(token, () => setAuthToken(token.value), {
+  watch(token, () => setApiAuthorization(token.value), {
     immediate: true,
   })
 
@@ -44,6 +40,7 @@ export const useAuthStore = defineStore('auth', () => {
     token,
     session,
     user,
+    userData,
     isAuthenticated,
     setToken,
     clearToken,

@@ -166,18 +166,21 @@ function openToast(props: Toast) {
 
 const toast = (props: Toast) => openToast(props)
 
-toast.info = (props: Toast) => openToast({
+toast.info = (title: string, props?: Toast) => openToast({
   ...props,
+  title,
   variant: 'default',
 })
 
-toast.success = (props: Toast) => openToast({
+toast.success = (title: string, props?: Toast) => openToast({
   ...props,
+  title,
   variant: 'success',
 })
 
-toast.error = (props: Toast) => openToast({
+toast.error = (title: string, props?: Toast) => openToast({
   ...props,
+  title,
   variant: 'destructive',
 })
 

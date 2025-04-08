@@ -2,6 +2,7 @@ import dayjs from 'dayjs'
 import { v4 } from 'uuid'
 import { z, ZodError } from 'zod'
 import api from '@/helpers/api'
+import { apiRoutesMap } from '@/helpers/api/apiRoutes'
 import { type SessionData, useAuthStore } from '@/stores/auth.store'
 import type { IUser } from '@/models/user.model'
 
@@ -42,30 +43,6 @@ export const registrationSchema = z.object({
 })
 
 export class AuthService {
-  private userFromCredentials(data: Credentials): IUser {
-    const user: IUser = {
-      id: v4(),
-      name: 'John',
-      lastName: 'Doe',
-      email: data.email,
-      createdAt: new Date(),
-    }
-
-    return user
-  }
-
-  private userFromRegistration(data: RegistrationData): IUser {
-    const user: IUser = {
-      id: v4(),
-      name: data.name,
-      lastName: data.lastName,
-      email: data.email,
-      createdAt: new Date(),
-    }
-
-    return user
-  }
-
   private createSession(user: IUser): SessionData {
     const session: SessionData = {
       id: v4(),
@@ -79,14 +56,14 @@ export class AuthService {
 
   async login(credentials: Credentials): Promise<SessionData | ZodError<Credentials>> {
     const authStore = useAuthStore()
-    
+
     const { data, error, success: isValid } = credentialsSchema.safeParse(credentials)
 
     if (!isValid) {
       return error
     }
 
-    const response = (await api.post<{ token: string }>('/api/auth/login', data)).data
+    const response = (await api.post<{ token: string }>(apiRoutesMap.authLogin, data)).data
 
     authStore.setToken(response.token)
     authStore.session = this.createSession(await this.getUser())
@@ -95,7 +72,7 @@ export class AuthService {
   }
 
   async getUser() {
-    const response = (await api.get<IUser>('/api/user')).data
+    const response = (await api.get<IUser>(apiRoutesMap.user)).data
     return response
   }
 
@@ -103,23 +80,23 @@ export class AuthService {
   async logout() {
     useAuthStore().clearData()
   }
-  
+
   async resetPassword(data: ResetPasswordData) {
     await new Promise((resolve) => setTimeout(resolve, 1500))
-    
+
     return data
   }
 
   async register(registrationData: RegistrationData): Promise<SessionData | ZodError<RegistrationData>> {
     const authStore = useAuthStore()
-    
+
     const { data, error, success: isValid } = registrationSchema.safeParse(registrationData)
 
     if (!isValid) {
       return error
     }
 
-    const { token } = (await api.post<{ token: string }>('/api/auth/register', data)).data
+    const { token } = (await api.post<{ token: string }>(apiRoutesMap.authRegister, data)).data
 
     authStore.setToken(token)
     authStore.session = this.createSession(await this.getUser())

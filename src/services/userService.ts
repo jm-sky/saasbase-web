@@ -1,4 +1,5 @@
 import api from '@/helpers/api'
+import { apiRoutesMap } from '@/helpers/api/apiRoutes'
 import { type IPublicUser, User } from '@/models/user.model'
 
 export interface IUserGetParams {
@@ -26,7 +27,7 @@ class UserService {
   }
 
   async index(params?: IUserGetParams): Promise<User[]> {
-    const users = (await api.get<{ users: IPublicUser[] }>('/api/users', { params })).data.users
+    const users = (await api.get<{ users: IPublicUser[] }>(apiRoutesMap.users, { params })).data.users
 
     return users.map(user => this.publicUserToUser(user))
   }

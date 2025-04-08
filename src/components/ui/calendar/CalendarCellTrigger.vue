@@ -7,6 +7,7 @@ import { cn } from '@/lib/utils'
 const props = defineProps<CalendarCellTriggerProps & { class?: HTMLAttributes['class'] }>()
 
 const delegatedProps = computed(() => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { class: _, ...delegated } = props // eslint-disable-line @typescript-eslint/no-unused-vars
 
   return delegated

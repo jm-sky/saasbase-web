@@ -12,6 +12,7 @@ const props = withDefaults(defineProps<ComboboxRootProps & { class?: HTMLAttribu
 const emits = defineEmits<ComboboxRootEmits>()
 
 const delegatedProps = computed(() => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { class: _, ...delegated } = props // eslint-disable-line @typescript-eslint/no-unused-vars
 
   return delegated

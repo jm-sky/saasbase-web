@@ -26,6 +26,14 @@ export default defineConfigWithVueTs(
 
       '@typescript-eslint/restrict-template-expressions': 'off',
       '@typescript-eslint/no-extraneous-class': 'off',
+      'vue/max-attributes-per-line': ['error', {
+        'singleline': {
+          'max': 3,
+        },
+        'multiline': {
+          'max': 1,
+        },
+      }],
       // ----------------------------------------
       'vue/require-default-prop': 'off',
       'vue/multi-word-component-names': 'off',

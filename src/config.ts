@@ -17,4 +17,7 @@ export const config = {
       linkedIn: false,
     },
   },
+  api: {
+    mockBackend: true,
+  },
 }

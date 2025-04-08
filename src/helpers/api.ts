@@ -1,8 +1,11 @@
-import axiosLib, { HttpStatusCode } from 'axios'
+import axios, { AxiosError } from 'axios'
+import { config } from '@/config'
+import { interceptUnauthorized } from '@/helpers/api/interceptUnauthorized'
+import { mockApi } from '@/helpers/api/mockApi'
 import { DEFAULT_LOCALE } from '@/plugins/i18n'
-import type { AxiosError, AxiosResponse } from 'axios'
+import type { AxiosInstance, AxiosResponse } from 'axios'
 
-const api = axiosLib.create({
+const api: AxiosInstance = axios.create({
   withCredentials: true,
   headers: {
     Accept: 'application/json',
@@ -14,20 +17,14 @@ const api = axiosLib.create({
 
 api.interceptors.response.use(
   (response: AxiosResponse): AxiosResponse => response,
-  (error: AxiosError): Promise<unknown> => {
-    const { response } = error
-
-    if (response?.status === HttpStatusCode.Unauthorized || response?.status === HttpStatusCode.Forbidden) {
-      if (window.location.pathname !== '/login') {
-        window.location.href = '/login'
-      }
-    }
-
-    throw error
-  },
+  (error: AxiosError) => interceptUnauthorized(error),
 )
 
-export const setAuthToken = (token?: string | null) => {
+if (config.api.mockBackend) {
+  mockApi(api)
+}
+
+export const setApiAuthorization = (token?: string | null) => {
   if (token) {
     api.defaults.headers.common.Authorization = `Bearer ${token}`
   } else {
