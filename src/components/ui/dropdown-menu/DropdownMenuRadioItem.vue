@@ -15,7 +15,6 @@ const props = defineProps<DropdownMenuRadioItemProps & { class?: HTMLAttributes[
 const emits = defineEmits<DropdownMenuRadioItemEmits>()
 
 const delegatedProps = computed(() => {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { class: _, ...delegated } = props // eslint-disable-line @typescript-eslint/no-unused-vars
 
   return delegated

@@ -23,7 +23,6 @@ const props = withDefaults(
 const emits = defineEmits<PopoverContentEmits>()
 
 const delegatedProps = computed(() => {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { class: _, ...delegated } = props // eslint-disable-line @typescript-eslint/no-unused-vars
 
   return delegated

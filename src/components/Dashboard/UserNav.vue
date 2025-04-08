@@ -14,9 +14,10 @@ import {
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
-  DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
+import DropdownMenuItemLink from '@/components/ui/dropdown-menu/DropdownMenuItemLink.vue'
+import { routeTo } from '@/router/routeMap'
 import { authService } from '@/services/authService'
 import { useAuthStore } from '@/stores/auth.store'
 
@@ -34,10 +35,7 @@ const logout = async () => {
 <template>
   <DropdownMenu>
     <DropdownMenuTrigger as-child>
-      <Button
-        variant="ghost"
-        class="relative size-8 rounded-full"
-      >
+      <Button variant="ghost" class="relative size-8 rounded-full">
         <Avatar class="size-8">
           <AvatarImage
             src="/avatars/01.png"
@@ -47,10 +45,7 @@ const logout = async () => {
         </Avatar>
       </Button>
     </DropdownMenuTrigger>
-    <DropdownMenuContent
-      class="w-56"
-      align="end"
-    >
+    <DropdownMenuContent class="w-56" align="end">
       <DropdownMenuLabel class="font-normal flex">
         <div class="flex flex-col space-y-1">
           <p class="text-sm font-medium leading-none">
@@ -63,24 +58,16 @@ const logout = async () => {
       </DropdownMenuLabel>
       <DropdownMenuSeparator />
       <DropdownMenuGroup>
-        <DropdownMenuItem>
+        <DropdownMenuItemLink :to="routeTo.settingsProfile()">
           Profile
-          <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
-        </DropdownMenuItem>
-        <DropdownMenuItem>
-          Billing
-          <DropdownMenuShortcut>⌘B</DropdownMenuShortcut>
-        </DropdownMenuItem>
-        <DropdownMenuItem>
+        </DropdownMenuItemLink>
+        <DropdownMenuItemLink :to="routeTo.settingsAccount()">
           Settings
-          <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
-        </DropdownMenuItem>
-        <DropdownMenuItem>New Team</DropdownMenuItem>
+        </DropdownMenuItemLink>
       </DropdownMenuGroup>
       <DropdownMenuSeparator />
-      <DropdownMenuItem @click="logout()">
+      <DropdownMenuItem class="cursor-pointer" @click="logout()">
         Log out
-        <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
       </DropdownMenuItem>
     </DropdownMenuContent>
   </DropdownMenu>

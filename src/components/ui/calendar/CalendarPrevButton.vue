@@ -8,7 +8,6 @@ import { cn } from '@/lib/utils'
 const props = defineProps<CalendarPrevProps & { class?: HTMLAttributes['class'] }>()
 
 const delegatedProps = computed(() => {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { class: _, ...delegated } = props // eslint-disable-line @typescript-eslint/no-unused-vars
 
   return delegated
