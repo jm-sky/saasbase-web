@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { toTypedSchema } from '@vee-validate/zod'
 import { AxiosError, isAxiosError } from 'axios'
 import { useForm } from 'vee-validate'
 import { computed } from 'vue'
@@ -27,7 +26,7 @@ const router = useRouter()
 const { toast } = useToast()
 
 const { setErrors, isSubmitting, handleSubmit } = useForm<Credentials>({
-  validationSchema: toTypedSchema(credentialsSchema),
+  validationSchema: credentialsSchema,
   initialValues: {
     email: import.meta.env.VITE_DEFAULT_LOGIN ?? '',
     password: import.meta.env.VITE_DEFAULT_PASSWORD ?? '',

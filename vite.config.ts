@@ -2,14 +2,11 @@ import tailwindcss from '@tailwindcss/vite'
 import vue from '@vitejs/plugin-vue'
 import { fileURLToPath, URL } from 'node:url'
 import { defineConfig } from 'vite'
-import vueDevTools from 'vite-plugin-vue-devtools'
-
 
 // https://vitejs.dev/config/
 export default defineConfig(() => ({
   plugins: [
     vue(),
-    vueDevTools(),
     tailwindcss(),
   ],
   resolve: {
@@ -18,6 +15,7 @@ export default defineConfig(() => ({
     },
   },
   server: {
+    port: parseInt(`${process.env.VITE_APP_PORT ?? 5176}`),
     proxy: {
       '/api': {
         target: process.env.VITE_API_HOST ?? 'http://localhost:8000',

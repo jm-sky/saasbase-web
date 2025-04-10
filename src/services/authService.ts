@@ -1,46 +1,13 @@
 import dayjs from 'dayjs'
 import { v4 } from 'uuid'
-import { z, ZodError } from 'zod'
+import { ZodError } from 'zod'
 import api from '@/helpers/api'
 import { apiRoutesMap } from '@/helpers/api/apiRoutes'
 import { type SessionData, useAuthStore } from '@/stores/auth.store'
 import type { IUser } from '@/models/user.model'
-
-export interface Credentials {
-  email: string
-  password: string
-  remember?: boolean
-}
-
-export interface ResetPasswordData {
-  email: string
-}
-
-export interface RegistrationData {
-  email: string
-  lastName: string
-  name: string
-  password: string
-}
+import type { Credentials, RegistrationData, ResetPasswordData } from '@/types/auth.type'
 
 const SESSION_LIFETIME = 15
-
-export const credentialsSchema = z.object({
-  email: z.string().email().min(1).max(50),
-  password: z.string().min(4).max(50),
-  remember: z.boolean().optional(),
-})
-
-export const resetPasswordSchema = z.object({
-  email: z.string().email().min(1).max(50),
-})
-
-export const registrationSchema = z.object({
-  name: z.string().min(1).max(50),
-  lastName: z.string().min(1).max(50),
-  email: z.string().min(1).max(50),
-  password: z.string().min(4).max(50),
-})
 
 export class AuthService {
   private createSession(user: IUser): SessionData {
@@ -57,13 +24,7 @@ export class AuthService {
   async login(credentials: Credentials): Promise<SessionData | ZodError<Credentials>> {
     const authStore = useAuthStore()
 
-    const { data, error, success: isValid } = credentialsSchema.safeParse(credentials)
-
-    if (!isValid) {
-      return error
-    }
-
-    const response = (await api.post<{ token: string }>(apiRoutesMap.authLogin, data)).data
+    const response = (await api.post<{ token: string }>(apiRoutesMap.authLogin, credentials)).data
 
     authStore.setToken(response.token)
     authStore.session = this.createSession(await this.getUser())
@@ -90,13 +51,7 @@ export class AuthService {
   async register(registrationData: RegistrationData): Promise<SessionData | ZodError<RegistrationData>> {
     const authStore = useAuthStore()
 
-    const { data, error, success: isValid } = registrationSchema.safeParse(registrationData)
-
-    if (!isValid) {
-      return error
-    }
-
-    const { token } = (await api.post<{ token: string }>(apiRoutesMap.authRegister, data)).data
+    const { token } = (await api.post<{ token: string }>(apiRoutesMap.authRegister, registrationData)).data
 
     authStore.setToken(token)
     authStore.session = this.createSession(await this.getUser())

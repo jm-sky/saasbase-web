@@ -10,7 +10,7 @@ class UserService {
   private publicUserToUser(publicUser: IPublicUser): User {
     return User.load({
       id: `${publicUser.id}`,
-      name: publicUser.firstName,
+      firstName: publicUser.firstName,
       lastName: publicUser.lastName,
       email: publicUser.email,
       phone: publicUser.phone,

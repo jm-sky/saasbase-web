@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { toTypedSchema } from '@vee-validate/zod'
 import { isAxiosError } from 'axios'
 import { useForm } from 'vee-validate'
 import { RouterLink, useRouter } from 'vue-router'
@@ -11,15 +10,17 @@ import { useToast } from '@/components/ui/toast/use-toast'
 import UIIcon from '@/components/UIIcon.vue'
 import { isValidationError } from '@/helpers/validation'
 import GuestLayout from '@/layouts/GuestLayout.vue'
-import { authService, type RegistrationData, registrationSchema } from '@/services/authService'
+import { registrationSchema } from '@/schemas/auth.schema'
+import { authService } from '@/services/authService'
+import type { RegistrationData } from '@/types/auth.type'
 
 const router = useRouter()
 const { toast } = useToast()
 
 const { isSubmitting, handleSubmit, resetForm, setErrors } = useForm<RegistrationData>({
-  validationSchema: toTypedSchema(registrationSchema),
+  validationSchema: registrationSchema,
   initialValues: {
-    name: import.meta.env.VITE_DEFAULT_NAME ?? 'John',
+    firstName: import.meta.env.VITE_DEFAULT_NAME ?? 'John',
     lastName: import.meta.env.VITE_DEFAULT_LAST_NAME ?? 'Doe',
     email: import.meta.env.VITE_DEFAULT_LOGIN ?? '',
     password: import.meta.env.VITE_DEFAULT_PASSWORD ?? '',
@@ -29,13 +30,10 @@ const { isSubmitting, handleSubmit, resetForm, setErrors } = useForm<Registratio
 const onSubmit = handleSubmit(async (values) => {
   try {
     await authService.register(values)
-  
     await router.push('/')
 
   } catch (error: unknown) {
-    if (isValidationError(error)) {
-      setErrors(error.response.data.errors)
-    }
+    if (isValidationError(error)) setErrors(error.response.data.errors)
     toast({
       title: 'Error',
       description: `${isAxiosError(error) && error.response?.data?.message ? error.response.data.message : 'Registration error'}`,
@@ -62,14 +60,11 @@ const onSubmit = handleSubmit(async (values) => {
           </ButtonLink>
         </p>
       </div>
-        
-      <form
-        class="flex flex-col gap-2"
-        @submit="onSubmit"
-      >
+
+      <form class="flex flex-col gap-2" @submit="onSubmit">
         <FormFieldLabeled
           v-slot="{ componentField }"
-          name="name"
+          name="firstName"
           label="Name"
           :disabled="isSubmitting"
         >

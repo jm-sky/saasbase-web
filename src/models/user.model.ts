@@ -18,8 +18,8 @@ export interface IPublicUser {
 }
 
 export interface IUserData {
-  id: string
-  name: string
+  id: number | string
+  firstName: string
   lastName: string
   email: string
   phone?: string
@@ -30,8 +30,8 @@ export interface IUserData {
 }
 
 export interface IUser {
-  id: string
-  name: string
+  id: number | string
+  firstName: string
   lastName: string
   email: string
   phone?: string
@@ -42,8 +42,8 @@ export interface IUser {
 }
 
 export class User implements IUser {
-  id: string
-  name: string
+  id: number | string
+  firstName: string
   lastName: string
   email: string
   phone?: string
@@ -54,7 +54,7 @@ export class User implements IUser {
 
   private constructor(payload: IUserData) {
     this.id = payload.id
-    this.name = payload.name
+    this.firstName = payload.firstName
     this.lastName = payload.lastName
     this.email = payload.email
     this.phone = payload.phone
@@ -77,10 +77,10 @@ export class User implements IUser {
   }
 
   get fullName(): string {
-    return `${this.name} ${this.lastName}`
+    return `${this.firstName} ${this.lastName}`
   }
 
   get initials(): string {
-    return `${this.name[0]}${this.lastName[0]}`
+    return `${this.firstName[0]}${this.lastName[0]}`
   }
 }

@@ -10,7 +10,7 @@ export interface ResetPasswordData {
 
 export interface RegistrationData {
   email: string
+  firstName: string
   lastName: string
-  name: string
   password: string
 }

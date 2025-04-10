@@ -177,12 +177,12 @@ export type Mail = (typeof mails)[number]
 
 export const accounts = [
   {
-    label: `${userData.name} ${userData.lastName}`,
+    label: `${userData.firstName} ${userData.lastName}`,
     email: userData.email,
     icon: 'bx:bxl-gmail',
   },
   {
-    label: `${userData.name} ${userData.lastName}`,
+    label: `${userData.firstName} ${userData.lastName}`,
     email: 'office@company.com',
     icon: 'mdi:google',
   },

@@ -1,58 +1,95 @@
+import { useLocalStorage } from '@vueuse/core'
 import { type AxiosInstance, type AxiosRequestConfig, HttpStatusCode } from 'axios'
 import AxiosMockAdapter from 'axios-mock-adapter'
+import { formatISO } from 'date-fns'
 import { v4 } from 'uuid'
-import { fakePublicUser } from '@/factories/fakePublicUser'
+import { config } from '@/config'
+import { fakeUser } from '@/factories/fakeUser'
 import { apiRoutesMap } from '@/helpers/api/apiRoutes'
+import { createMockUser } from '@/helpers/api/mocks/createMockUser'
+import { genJWTMock } from '@/helpers/api/mocks/genJWT'
+import { toPublicUser } from '@/helpers/api/mocks/toPublicUser'
+import { toUserData } from '@/helpers/api/mocks/toUserData'
+import { credentialsSchema, registrationSchema } from '@/schemas/auth.schema'
+import type { MockStorage, MockUserStored } from '@/helpers/api/mocks/mock.type'
 import type { IPublicUser, IUserData } from '@/models/user.model'
+import type { Credentials, RegistrationData } from '@/types/auth.type'
+
+const STORAGE: MockStorage = {
+  users: [],
+  tokens: [],
+}
+
+const validationError = (errors: object) => ({ status: HttpStatusCode.UnprocessableEntity, data: { errors } })
+
+const sendResponse = <T extends object>(response: T, title: string): T => {
+  console.log(`[mockApi][${title}] response:`, response)
+  return response
+}
 
 /**
  * https://github.com/ctimmerm/axios-mock-adapter
  */
 export const mockApi = (axios: AxiosInstance) => {
+  const storage = useLocalStorage<MockStorage>(`${config.appId}:mockStorage`, STORAGE)
   const mock = new AxiosMockAdapter(axios, { delayResponse: 200 })
 
-  mock.onPost(apiRoutesMap.authLogin).reply((config: AxiosRequestConfig) => {
-    console.log('[mockApi][authLogin]', config)
-    return [
-      HttpStatusCode.Ok,
-      {
-        token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE3NDM2MDExNDQsImlzcyI6NTE0LCJleHAiOjE3NTEzNzcxNDR9.ONVz-KipOiKak4SvGq4mpv7TnArReus6HPuMeJR2geo',
-      }
-    ]
+  mock.onPost(apiRoutesMap.authRegister).reply(async (config: AxiosRequestConfig) => {
+    const payload: RegistrationData = JSON.parse(config.data)
+    console.log('[mockApi][authRegister] payload:', payload)
+    const { value, errors } = await registrationSchema.parse(payload)
+
+    if (!value) return validationError(errors)
+
+    if (storage.value.users.find(u => u.email === value.email)) {
+      return sendResponse(validationError({ email: ['E-mail already taken'] }), 'authRegister')
+    }
+
+    const user = createMockUser(value)
+    storage.value.users.push(user)
+
+    const response = { status: HttpStatusCode.Created, data: user }
+    return sendResponse(response, 'authRegister')
+  })
+
+  mock.onPost(apiRoutesMap.authLogin).reply(async (config: AxiosRequestConfig) => {
+    const payload: Credentials = JSON.parse(config.data)
+    console.log('[mockApi][authLogin]', payload)
+    const { value, errors } = await credentialsSchema.parse(payload)
+
+    if (!value) return validationError(errors)
+
+    const user = storage.value.users.find(u => u.email === value.email)
+
+    if (!user) {
+      return sendResponse(validationError({ email: ['Invalid credentials'] }), 'authLogin')
+    }
+
+    const token = genJWTMock({ uid: user.id })
+    storage.value.tokens.push(token)
+
+    const response = { status: HttpStatusCode.Ok, data: { token } }
+    return sendResponse(response, 'authLogin')
   })
 
   mock.onGet(apiRoutesMap.user).reply((config: AxiosRequestConfig) => {
     console.log('[mockApi][user]', config)
-    const user: IUserData = {
-      id: v4(),
-      name: 'John',
-      lastName: 'Doe',
-      email: 'john.doe@example.com',
-      phone: '+48600700800',
-      birthDate: '1986-01-10',
-      address: {},
-      image: undefined,
-      createdAt: '2025-01-10T10:00:00Z',
-    }
-    return [HttpStatusCode.Ok, user]
+    const userData = storage.value.users.at(0) ?? fakeUser()
+    const user: IUserData = toUserData(userData)
+    const response = { status: HttpStatusCode.Ok, data: user }
+    return sendResponse(response, 'user')
   })
 
   mock.onGet(apiRoutesMap.users).reply(() => {
     const users: IPublicUser[] = [
-      {
-        id: v4(),
-        firstName: 'Amy',
-        lastName: 'Carmichael',
-        email: 'amy.carmichael@mail.com',
-        image: ''
-      },
-      fakePublicUser(true),
-      fakePublicUser(true),
-      fakePublicUser(),
-      fakePublicUser(true),
-      fakePublicUser(true),
+      toPublicUser(fakeUser()),
+      toPublicUser(fakeUser(true)),
+      toPublicUser(fakeUser(true)),
+      toPublicUser(fakeUser()),
+      toPublicUser(fakeUser(true)),
+      toPublicUser(fakeUser(true)),
     ]
 
-    return [HttpStatusCode.Ok, { users }]
+    return { status: HttpStatusCode.Ok, data: { users } }
   })
 }
