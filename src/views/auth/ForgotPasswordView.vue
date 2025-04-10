@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { toTypedSchema } from '@vee-validate/zod'
 import { isAxiosError } from 'axios'
 import { useForm } from 'vee-validate'
 import { RouterLink, useRouter } from 'vue-router'
@@ -9,19 +8,21 @@ import Input from '@/components/ui/input/Input.vue'
 import { useToast } from '@/components/ui/toast'
 import UIIcon from '@/components/UIIcon.vue'
 import GuestLayout from '@/layouts/GuestLayout.vue'
-import { authService, type ResetPasswordData, resetPasswordSchema } from '@/services/authService'
+import { resetPasswordSchema } from '@/schemas/auth.schema'
+import { authService } from '@/services/authService'
+import { type ResetPasswordData } from '@/types/auth.type'
 
 const router = useRouter()
 const { toast } = useToast()
 
 const { isSubmitting, handleSubmit } = useForm<ResetPasswordData>({
-  validationSchema: toTypedSchema(resetPasswordSchema),
+  validationSchema: resetPasswordSchema,
 })
 
 const onSubmit = handleSubmit(async (values) => {
   try {
     await authService.resetPassword(values)
-  
+
     await router.push('/')
 
     toast({
@@ -65,7 +66,7 @@ const onSubmit = handleSubmit(async (values) => {
           </RouterLink>
         </p>
       </div>
-        
+
       <form @submit="onSubmit">
         <div class="grid gap-2">
           <FormFieldLabeled
