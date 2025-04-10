@@ -19,9 +19,8 @@ export const routes: RouteRecordRaw[] = [
   ...publicRoutes,
   ...settingsRoutes,
 
-
   {
-    path: '/mailbox',
+    path: '/mailbox/:box?',
     name: 'mailbox',
     component: () => import('@/views/MailBoxView.vue'),
   },

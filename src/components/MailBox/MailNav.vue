@@ -10,9 +10,10 @@ import { cn } from '@/lib/utils'
 
 export interface LinkProp {
   icon: string
-  label?: string
+  count: string
+  box: string
   title: string
-  variant: 'default' | 'ghost'
+  active?: boolean
 }
 
 interface NavProps {
@@ -36,13 +37,12 @@ defineProps<NavProps>()
           :delay-duration="0"
         >
           <TooltipTrigger as-child>
-            <a
-              href="#"
+            <RouterLink
+              :to="`/mailbox/${link.box.toLowerCase()}`"
               :class="cn(
-                buttonVariants({ variant: link.variant, size: 'icon' }),
+                buttonVariants({ variant: link.active ? 'default' : 'ghost', size: 'icon' }),
                 'size-9',
-                link.variant === 'default'
-                  && 'dark:bg-muted dark:text-muted-foreground dark:hover:bg-muted dark:hover:text-white',
+                link.active && 'dark:bg-muted dark:text-muted-foreground dark:hover:bg-muted dark:hover:text-white',
               )"
             >
               <Icon
@@ -50,7 +50,7 @@ defineProps<NavProps>()
                 class="size-4"
               />
               <span class="sr-only">{{ link.title }}</span>
-            </a>
+            </RouterLink>
           </TooltipTrigger>
           <TooltipContent
             side="right"
@@ -58,22 +58,21 @@ defineProps<NavProps>()
           >
             {{ link.title }}
             <span
-              v-if="link.label"
+              v-if="link.count"
               class="ml-auto text-muted-foreground"
             >
-              {{ link.label }}
+              {{ link.count }}
             </span>
           </TooltipContent>
         </Tooltip>
 
-        <a
+        <RouterLink
           v-else
           :key="`2-${index}`"
-          href="#"
+          :to="`/mailbox/${link.box.toLowerCase()}`"
           :class="cn(
-            buttonVariants({ variant: link.variant, size: 'sm' }),
-            link.variant === 'default'
-              && 'dark:bg-muted dark:text-white dark:hover:bg-muted dark:hover:text-white',
+            buttonVariants({ variant: link.active ? 'default' : 'ghost', size: 'sm' }),
+            link.active && 'dark:bg-muted dark:text-white dark:hover:bg-muted dark:hover:text-white',
             'justify-start',
           )"
         >
@@ -83,16 +82,15 @@ defineProps<NavProps>()
           />
           {{ link.title }}
           <span
-            v-if="link.label"
+            v-if="link.count"
             :class="cn(
               'ml-auto',
-              link.variant === 'default'
-                && 'text-background dark:text-white',
+              link.active && 'text-background dark:text-white',
             )"
           >
-            {{ link.label }}
+            {{ link.count }}
           </span>
-        </a>
+        </RouterLink>
       </template>
     </nav>
   </div>

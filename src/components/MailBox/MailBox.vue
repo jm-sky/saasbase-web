@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { refDebounced } from '@vueuse/core'
+import { useRouteParams } from '@vueuse/router'
 import {
   Search,
 } from 'lucide-vue-next'
@@ -32,6 +33,8 @@ interface MailProps {
   mails: Mail[]
   navCollapsedSize: number
 }
+
+const box = useRouteParams<string>('box', 'INBOX')
 
 const props = withDefaults(defineProps<MailProps>(), {
   defaultCollapsed: false,
@@ -70,72 +73,74 @@ const selectedMailData = computed(() => props.mails.find(item => item.id === sel
 const links: LinkProp[] = [
   {
     title: 'Inbox',
-    label: '128',
+    box: 'inbox',
+    count: '128',
     icon: 'lucide:inbox',
-    variant: 'default',
   },
   {
     title: 'Drafts',
-    label: '9',
+    box: 'drafts',
+    count: '9',
     icon: 'lucide:file',
-    variant: 'ghost',
   },
   {
     title: 'Sent',
-    label: '',
+    box: 'sent',
+    count: '',
     icon: 'lucide:send',
-    variant: 'ghost',
   },
   {
     title: 'Junk',
-    label: '23',
+    box: 'junk',
+    count: '23',
     icon: 'lucide:archive',
-    variant: 'ghost',
   },
   {
     title: 'Trash',
-    label: '',
+    box: 'trash',
+    count: '',
     icon: 'lucide:trash',
-    variant: 'ghost',
   },
   {
     title: 'Archive',
-    label: '',
+    box: 'archive',
+    count: '',
     icon: 'lucide:archive',
-    variant: 'ghost',
   },
 ]
+
+const linksComputed = computed(() => links.map(link => ({ ...link, active: link.box === box.value })))
 
 const links2: LinkProp[] = [
   {
     title: 'Social',
-    label: '972',
+    box: 'social',
+    count: '972',
     icon: 'lucide:user-2',
-    variant: 'ghost',
   },
   {
     title: 'Updates',
-    label: '342',
+    box: 'updates',
+    count: '342',
     icon: 'lucide:alert-circle',
-    variant: 'ghost',
   },
   {
     title: 'Forums',
-    label: '128',
+    box: 'forums',
+    count: '128',
     icon: 'lucide:message-square',
-    variant: 'ghost',
   },
   {
     title: 'Shopping',
-    label: '8',
+    box: 'shopping',
+    count: '8',
     icon: 'lucide:shopping-cart',
-    variant: 'ghost',
   },
   {
     title: 'Promotions',
-    label: '21',
+    box: 'promotions',
+    count: '21',
     icon: 'lucide:archive',
-    variant: 'ghost',
   },
 ]
 
@@ -175,7 +180,7 @@ function onExpand() {
         <Separator />
         <MailNav
           :is-collapsed="isCollapsed"
-          :links="links"
+          :links="linksComputed"
         />
         <Separator />
         <MailNav

@@ -37,10 +37,7 @@ const logout = async () => {
     <DropdownMenuTrigger as-child>
       <Button variant="ghost" class="relative size-8 rounded-full">
         <Avatar class="size-8">
-          <AvatarImage
-            src="/avatars/01.png"
-            alt="@shadcn"
-          />
+          <AvatarImage :src="user?.image ?? ''" :alt="user?.fullName" />
           <AvatarFallback>{{ user?.initials }}</AvatarFallback>
         </Avatar>
       </Button>
