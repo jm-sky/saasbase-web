@@ -1,5 +1,6 @@
-import { z } from 'zod'
-import type { TUUID } from '@/types/common'
+import { toTypedSchema } from '@vee-validate/zod'
+import { z, ZodSchema } from 'zod'
+import type { IContractor } from '@/models/contractor.model'
 
 const uuidSchema = z.string().uuid()
 
@@ -32,7 +33,7 @@ const contractorContactPersonSchema = z.object({
   position: z.string().max(50).optional(),
 })
 
-export const contractorSchema = z.object({
+const baseContractorSchema = z.object({
   id: uuidSchema,
   tenantId: uuidSchema,
   name: z.string().min(1).max(100),
@@ -47,5 +48,9 @@ export const contractorSchema = z.object({
   updatedAt: z.string().datetime(),
 })
 
-export const createContractorSchema = contractorSchema.omit({ id: true, createdAt: true, updatedAt: true })
-export const updateContractorSchema = createContractorSchema.partial()
+const createContractorBaseSchema = baseContractorSchema.omit({ id: true, createdAt: true, updatedAt: true })
+const updateContractorBaseSchema = createContractorBaseSchema.partial()
+
+export const contractorSchema = toTypedSchema<ZodSchema, IContractor>(baseContractorSchema)
+export const createContractorSchema = toTypedSchema<ZodSchema, Omit<IContractor, 'id' | 'createdAt' | 'updatedAt'>>(createContractorBaseSchema)
+export const updateContractorSchema = toTypedSchema<ZodSchema, Partial<Omit<IContractor, 'id' | 'createdAt' | 'updatedAt'>>>(updateContractorBaseSchema)
