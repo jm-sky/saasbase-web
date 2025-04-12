@@ -1,13 +1,45 @@
-export interface IContractor {
-  id: string
-  tenantId: string
+import type { TUUID } from '@/types/common'
+
+export interface IContractorAddress {
+  id: TUUID
+  contractorId: TUUID
+  label: string
+  countryId: TUUID
+  street: string
+  city: string
+  zip: string
+  isDefault: boolean
+}
+
+export interface IContractorBankAccount {
+  id: TUUID
+  contractorId: TUUID
+  bankName: string
+  iban: string
+  currencies: string[]
+  isDefault: boolean
+}
+
+export interface IContractorContactPerson {
+  id: TUUID
+  contractorId: TUUID
   name: string
-  taxId?: string
   email?: string
   phone?: string
+  position?: string
+}
+
+export interface IContractor {
+  id: TUUID
+  tenantId: TUUID
+  name: string
+  taxId?: string
   description?: string
   isSupplier: boolean
   isBuyer: boolean
+  addresses?: IContractorAddress[]
+  bankAccounts?: IContractorBankAccount[]
+  contactPersons?: IContractorContactPerson[]
   createdAt: string
   updatedAt: string
 }
@@ -39,14 +71,6 @@ export class Contractor {
     return this.data.taxId ?? ''
   }
 
-  get email(): string {
-    return this.data.email ?? ''
-  }
-
-  get phone(): string {
-    return this.data.phone ?? ''
-  }
-
   get description(): string {
     return this.data.description ?? ''
   }
@@ -57,6 +81,18 @@ export class Contractor {
 
   get isBuyer(): boolean {
     return this.data.isBuyer
+  }
+
+  get addresses(): IContractorAddress[] {
+    return this.data.addresses ?? []
+  }
+
+  get bankAccounts(): IContractorBankAccount[] {
+    return this.data.bankAccounts ?? []
+  }
+
+  get contactPersons(): IContractorContactPerson[] {
+    return this.data.contactPersons ?? []
   }
 
   get createdAt(): Date {
@@ -76,16 +112,26 @@ export class Contractor {
   }
 
   isValid(): boolean {
-    return Boolean(
-      this.id &&
-      this.tenantId &&
-      this.name &&
-      this.createdAt &&
-      this.updatedAt
-    )
+    return Boolean(this.id && this.tenantId && this.name && this.createdAt && this.updatedAt)
   }
 
-  hasContactInfo(): boolean {
-    return Boolean(this.email || this.phone)
+  hasAddresses(): boolean {
+    return this.addresses.length > 0
+  }
+
+  hasBankAccounts(): boolean {
+    return this.bankAccounts.length > 0
+  }
+
+  hasContactPersons(): boolean {
+    return this.contactPersons.length > 0
+  }
+
+  getDefaultAddress(): IContractorAddress | undefined {
+    return this.addresses.find(addr => addr.isDefault)
+  }
+
+  getDefaultBankAccount(): IContractorBankAccount | undefined {
+    return this.bankAccounts.find(acc => acc.isDefault)
   }
 }
