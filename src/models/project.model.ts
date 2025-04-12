@@ -13,6 +13,12 @@ export interface IProject {
 
 export class Project {
   static load(data: IProject): Project {
+    if (!data.id) throw new Error('Project ID is required')
+    if (!data.tenantId) throw new Error('Tenant ID is required')
+    if (!data.name) throw new Error('Project name is required')
+    if (!data.ownerId) throw new Error('Owner ID is required')
+    if (!data.status) throw new Error('Project status is required')
+
     return new Project(data)
   }
 
@@ -30,8 +36,8 @@ export class Project {
     return this.data.name
   }
 
-  get description(): string | undefined {
-    return this.data.description
+  get description(): string {
+    return this.data.description ?? ''
   }
 
   get status(): TProjectStatus {
@@ -48,5 +54,25 @@ export class Project {
 
   get updatedAt(): Date {
     return new Date(this.data.updatedAt)
+  }
+
+  toJSON(): IProject {
+    return { ...this.data }
+  }
+
+  equals(other: Project): boolean {
+    return this.id === other.id
+  }
+
+  isValid(): boolean {
+    return Boolean(
+      this.id &&
+      this.tenantId &&
+      this.name &&
+      this.ownerId &&
+      this.status &&
+      this.createdAt &&
+      this.updatedAt
+    )
   }
 }

@@ -18,6 +18,17 @@ export interface IInvoice {
 
 export class Invoice {
   static load(data: IInvoice): Invoice {
+    if (!data.id) throw new Error('Invoice ID is required')
+    if (!data.tenantId) throw new Error('Tenant ID is required')
+    if (!data.contractorId) throw new Error('Contractor ID is required')
+    if (!data.invoiceTypeId) throw new Error('Invoice type ID is required')
+    if (!data.invoiceNumber) throw new Error('Invoice number is required')
+    if (!data.issueDate) throw new Error('Issue date is required')
+    if (!data.dueDate) throw new Error('Due date is required')
+    if (data.totalNet < 0) throw new Error('Total net amount must be non-negative')
+    if (data.totalTax < 0) throw new Error('Total tax amount must be non-negative')
+    if (data.totalGross < 0) throw new Error('Total gross amount must be non-negative')
+
     return new Invoice(data)
   }
 
@@ -73,5 +84,43 @@ export class Invoice {
 
   get updatedAt(): Date {
     return new Date(this.data.updatedAt)
+  }
+
+  toJSON(): IInvoice {
+    return { ...this.data }
+  }
+
+  equals(other: Invoice): boolean {
+    return this.id === other.id
+  }
+
+  isValid(): boolean {
+    return Boolean(
+      this.id &&
+      this.tenantId &&
+      this.contractorId &&
+      this.invoiceTypeId &&
+      this.invoiceNumber &&
+      this.issueDate &&
+      this.dueDate &&
+      this.totalNet >= 0 &&
+      this.totalTax >= 0 &&
+      this.totalGross >= 0 &&
+      this.status &&
+      this.createdAt &&
+      this.updatedAt
+    )
+  }
+
+  isOverdue(): boolean {
+    return this.dueDate < new Date() && this.status !== 'paid'
+  }
+
+  isPaid(): boolean {
+    return this.status === 'paid'
+  }
+
+  isDraft(): boolean {
+    return this.status === 'draft'
   }
 }

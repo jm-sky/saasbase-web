@@ -14,6 +14,10 @@ export interface IContractor {
 
 export class Contractor {
   static load(data: IContractor): Contractor {
+    if (!data.id) throw new Error('Contractor ID is required')
+    if (!data.tenantId) throw new Error('Tenant ID is required')
+    if (!data.name) throw new Error('Contractor name is required')
+
     return new Contractor(data)
   }
 
@@ -31,20 +35,20 @@ export class Contractor {
     return this.data.name
   }
 
-  get taxId(): string | undefined {
-    return this.data.taxId
+  get taxId(): string {
+    return this.data.taxId ?? ''
   }
 
-  get email(): string | undefined {
-    return this.data.email
+  get email(): string {
+    return this.data.email ?? ''
   }
 
-  get phone(): string | undefined {
-    return this.data.phone
+  get phone(): string {
+    return this.data.phone ?? ''
   }
 
-  get description(): string | undefined {
-    return this.data.description
+  get description(): string {
+    return this.data.description ?? ''
   }
 
   get isSupplier(): boolean {
@@ -61,5 +65,27 @@ export class Contractor {
 
   get updatedAt(): Date {
     return new Date(this.data.updatedAt)
+  }
+
+  toJSON(): IContractor {
+    return { ...this.data }
+  }
+
+  equals(other: Contractor): boolean {
+    return this.id === other.id
+  }
+
+  isValid(): boolean {
+    return Boolean(
+      this.id &&
+      this.tenantId &&
+      this.name &&
+      this.createdAt &&
+      this.updatedAt
+    )
+  }
+
+  hasContactInfo(): boolean {
+    return Boolean(this.email || this.phone)
   }
 }

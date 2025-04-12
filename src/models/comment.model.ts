@@ -9,6 +9,12 @@ export interface IComment {
 
 export class Comment {
   static load(data: IComment): Comment {
+    if (!data.id) throw new Error('Comment ID is required')
+    if (!data.userId) throw new Error('User ID is required')
+    if (!data.content) throw new Error('Comment content is required')
+    if (!data.commentableId) throw new Error('Commentable ID is required')
+    if (!data.commentableType) throw new Error('Commentable type is required')
+
     return new Comment(data)
   }
 
@@ -36,5 +42,40 @@ export class Comment {
 
   get createdAt(): Date {
     return new Date(this.data.createdAt)
+  }
+
+  toJSON(): IComment {
+    return { ...this.data }
+  }
+
+  equals(other: Comment): boolean {
+    return this.id === other.id
+  }
+
+  isValid(): boolean {
+    return Boolean(
+      this.id &&
+      this.userId &&
+      this.content &&
+      this.commentableId &&
+      this.commentableType &&
+      this.createdAt
+    )
+  }
+
+  isForProject(): boolean {
+    return this.commentableType === 'Project'
+  }
+
+  isForTask(): boolean {
+    return this.commentableType === 'Task'
+  }
+
+  isForContractor(): boolean {
+    return this.commentableType === 'Contractor'
+  }
+
+  isForInvoice(): boolean {
+    return this.commentableType === 'Invoice'
   }
 }
