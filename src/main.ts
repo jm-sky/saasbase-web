@@ -3,7 +3,7 @@ import './style/index.css'
 import '@fortawesome/fontawesome-free/css/all.min.css'
 import { createPinia } from 'pinia'
 import { createApp } from 'vue'
-import { i18n } from '@/plugins/i18n'
+import { i18n } from '@/i18n'
 import App from './App.vue'
 import router from './router'
 

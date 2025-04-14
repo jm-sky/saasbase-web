@@ -2,7 +2,7 @@ import axios, { AxiosError } from 'axios'
 import { config } from '@/config'
 import { interceptUnauthorized } from '@/helpers/api/interceptUnauthorized'
 import { mockApi } from '@/helpers/api/mockApi'
-import { DEFAULT_LOCALE } from '@/plugins/i18n'
+import { DEFAULT_LOCALE } from '@/i18n'
 import type { AxiosInstance, AxiosResponse } from 'axios'
 
 const api: AxiosInstance = axios.create({
