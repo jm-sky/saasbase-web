@@ -1,5 +1,6 @@
 import { routeMap } from '@/router/routeMap'
 import LoginView from '@/views/auth/LoginView.vue'
+import PrettyLoginView from '@/views/auth/PrettyLoginView.vue'
 import type { RouteRecordRaw } from 'vue-router'
 
 export const authRoutes: RouteRecordRaw[] = [
@@ -7,6 +8,10 @@ export const authRoutes: RouteRecordRaw[] = [
     path: '/login',
     name: routeMap.auth.login,
     component: LoginView,
+  },
+  {
+    path: '/pretty-login',
+    component: PrettyLoginView,
   },
   {
     path: '/password-forgot',
