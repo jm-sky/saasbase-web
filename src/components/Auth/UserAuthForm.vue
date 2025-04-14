@@ -2,6 +2,7 @@
 import { AxiosError, isAxiosError } from 'axios'
 import { useForm } from 'vee-validate'
 import { computed } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { RouterLink, useRouter } from 'vue-router'
 import FormFieldLabeled from '@/components/Form/FormFieldLabeled.vue'
 import FormFieldLabeledAfter from '@/components/Form/FormFieldLabeledAfter.vue'
@@ -23,6 +24,7 @@ interface AuthErrorResponse {
 const isAuthError = (error: unknown): error is AxiosError<AuthErrorResponse> => isAxiosError(error)
 
 const router = useRouter()
+const { t } = useI18n()
 const { toast } = useToast()
 
 const { setErrors, isSubmitting, handleSubmit } = useForm<Credentials>({
@@ -42,11 +44,11 @@ const onSubmit = handleSubmit(async (values) => {
   } catch (error: unknown) {
     console.warn('[LoginError]', error)
     setErrors({
-      email: 'Invalid credentials',
-      password: 'Invalid credentials',
+      email: t('auth.invalidCredentials'),
+      password: t('auth.invalidCredentials'),
     })
-    toast.error('Error', {
-      description: isAuthError(error) ? error.response?.data.detail ?? error.message : 'Invalid credentials.',
+    toast.error(t('common.error'), {
+      description: isAuthError(error) ? error.response?.data.detail ?? error.message : t('auth.invalidCredentials'),
     })
   }
 })
@@ -65,7 +67,7 @@ const useAuthProviders = computed<boolean>(() => Object.values(config.auth.provi
           <Input
             v-bind="componentField"
             autocomplete="username"
-            placeholder="name@example.com"
+            :placeholder="t('auth.emailPlaceholder')"
             class="bg-white/50 dark:bg-black/50"
           />
         </FormFieldLabeled>
@@ -78,7 +80,7 @@ const useAuthProviders = computed<boolean>(() => Object.values(config.auth.provi
             v-bind="componentField"
             type="password"
             autocomplete="current-password"
-            placeholder="Your secret password"
+            :placeholder="t('auth.passwordPlaceholder')"
             class="bg-white/50 dark:bg-black/50"
           />
         </FormFieldLabeled>
@@ -87,7 +89,7 @@ const useAuthProviders = computed<boolean>(() => Object.values(config.auth.provi
           <FormFieldLabeledAfter
             v-slot="{ componentField }"
             name="remember"
-            label="Remember me"
+            :label="t('auth.rememberMe')"
           >
             <Checkbox v-bind="componentField" />
           </FormFieldLabeledAfter>
@@ -97,7 +99,7 @@ const useAuthProviders = computed<boolean>(() => Object.values(config.auth.provi
               to="/password-forgot"
               class="text-sm font-bold text-gray-500 hover:text-primary"
             >
-              Forgot password?
+              {{ t('auth.forgotPassword') }}
             </RouterLink>
           </div>
         </div>
@@ -108,7 +110,7 @@ const useAuthProviders = computed<boolean>(() => Object.values(config.auth.provi
             icon="lucide:loader-circle"
             class="mr-2 size-4 animate-spin"
           />
-          Sign In with Email
+          {{ t('auth.signInWithEmail') }}
         </Button>
       </div>
     </form>
@@ -117,7 +119,7 @@ const useAuthProviders = computed<boolean>(() => Object.values(config.auth.provi
       <div class="flex flex-row justify-center items-center">
         <div class="border-b grow" />
         <div class="backdrop-blur-md rounded-lg py-0.5 px-2 text-xs uppercase text-muted-foreground">
-          Or continue with
+          {{ t('auth.continueWith') }}
         </div>
         <div class="border-b grow" />
       </div>

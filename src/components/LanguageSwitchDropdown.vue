@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { Icon } from '@iconify/vue'
+import { useI18n } from 'vue-i18n'
 import { Button } from '@/components/ui/button'
 import {
   DropdownMenu,
@@ -8,15 +9,12 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { useLanguageStore } from '@/stores/language.store'
+import type { TLocale } from '@/i18n'
 
+const { t } = useI18n()
 const languageStore = useLanguageStore()
 
-const languages = [
-  { code: 'en', label: 'English' },
-  { code: 'pl', label: 'Polish' }
-]
-
-const switchLanguage = (langCode: 'en' | 'pl') => {
+const switchLanguage = (langCode: TLocale) => {
   languageStore.setLocale(langCode)
 }
 </script>
@@ -31,13 +29,13 @@ const switchLanguage = (langCode: 'en' | 'pl') => {
     </DropdownMenuTrigger>
     <DropdownMenuContent align="end">
       <DropdownMenuItem
-        v-for="lang in languages"
-        :key="lang.code"
-        @click="switchLanguage(lang.code as 'en' | 'pl')"
+        v-for="locale in languageStore.availableLocales"
+        :key="locale"
+        @click="switchLanguage(locale)"
       >
         <Icon icon="lucide:languages" class="mr-2" />
-        <span>{{ lang.label }}</span>
-        <span class="ml-2 text-xs text-muted-foreground">({{ lang.code.toUpperCase() }})</span>
+        <span>{{ t(`common.language.${locale}`) }}</span>
+        <span class="ml-2 text-xs text-muted-foreground">({{ locale.toUpperCase() }})</span>
       </DropdownMenuItem>
     </DropdownMenuContent>
   </DropdownMenu>
