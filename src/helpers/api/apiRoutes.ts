@@ -10,6 +10,7 @@ export const apiRoutesMap = {
   products: '/api/products',
   comments: '/api/comments',
   tags: '/api/tags',
+  skills: '/api/skills',
 }
 
 export const apiRoutes = {
@@ -21,4 +22,5 @@ export const apiRoutes = {
   products: () => apiRoutesMap.products,
   comments: () => apiRoutesMap.comments,
   tags: () => apiRoutesMap.tags,
+  skills: () => apiRoutesMap.skills,
 }

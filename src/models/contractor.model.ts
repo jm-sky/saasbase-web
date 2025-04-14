@@ -1,4 +1,3 @@
-// @ts-expect-error - Module resolution error is expected due to TypeScript path aliases
 import type { TDateTime, TUUID } from '@/types/common'
 
 export interface IContractorAddress {
