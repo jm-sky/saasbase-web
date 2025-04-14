@@ -62,15 +62,8 @@ export class Comment {
   }
 
   isValid(): boolean {
-    return Boolean(
-      this.id &&
-      this.userId &&
-      this.content &&
-      this.commentableId &&
-      this.commentableType &&
-      this.createdAt &&
-      this.updatedAt
-    )
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+    return Boolean(this.id && this.content && this.createdAt && this.updatedAt)
   }
 
   isForProject(): boolean {

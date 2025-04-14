@@ -48,6 +48,7 @@ export class Team {
   }
 
   isValid(): boolean {
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     return Boolean(this.id && this.name && this.createdAt && this.updatedAt)
   }
 }

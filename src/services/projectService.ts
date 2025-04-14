@@ -1,6 +1,6 @@
 import api from '@/helpers/api'
 import { apiRoutesMap } from '@/helpers/api/apiRoutes'
-import { type IProject, type TProjectStatus } from '@/models/project.model'
+import { type IProject, Project, type TProjectStatus } from '@/models/project.model'
 
 export interface IProjectGetParams {
   status?: TProjectStatus
@@ -9,24 +9,24 @@ export interface IProjectGetParams {
 }
 
 class ProjectService {
-  async index(params?: IProjectGetParams): Promise<IProject[]> {
+  async index(params?: IProjectGetParams): Promise<Project[]> {
     const response = await api.get<{ projects: IProject[] }>(apiRoutesMap.projects, { params })
-    return response.data.projects
+    return response.data.projects.map(data => Project.load(data))
   }
 
-  async get(id: string): Promise<IProject> {
+  async get(id: string): Promise<Project> {
     const response = await api.get<IProject>(`${apiRoutesMap.projects}/${id}`)
-    return response.data
+    return Project.load(response.data)
   }
 
-  async create(project: Omit<IProject, 'id' | 'createdAt' | 'updatedAt'>): Promise<IProject> {
+  async create(project: Omit<IProject, 'id' | 'createdAt' | 'updatedAt'>): Promise<Project> {
     const response = await api.post<IProject>(apiRoutesMap.projects, project)
-    return response.data
+    return Project.load(response.data)
   }
 
-  async update(id: string, project: Partial<IProject>): Promise<IProject> {
+  async update(id: string, project: Partial<IProject>): Promise<Project> {
     const response = await api.patch<IProject>(`${apiRoutesMap.projects}/${id}`, project)
-    return response.data
+    return Project.load(response.data)
   }
 
   async delete(id: string): Promise<void> {

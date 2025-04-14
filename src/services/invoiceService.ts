@@ -1,6 +1,6 @@
 import api from '@/helpers/api'
 import { apiRoutesMap } from '@/helpers/api/apiRoutes'
-import { type IInvoice, type TInvoiceStatus } from '@/models/invoice.model'
+import { type IInvoice, Invoice, type TInvoiceStatus } from '@/models/invoice.model'
 
 export interface IInvoiceGetParams {
   contractorId?: string
@@ -12,24 +12,24 @@ export interface IInvoiceGetParams {
 }
 
 class InvoiceService {
-  async index(params?: IInvoiceGetParams): Promise<IInvoice[]> {
+  async index(params?: IInvoiceGetParams): Promise<Invoice[]> {
     const response = await api.get<{ invoices: IInvoice[] }>(apiRoutesMap.invoices, { params })
-    return response.data.invoices
+    return response.data.invoices.map(data => Invoice.load(data))
   }
 
-  async get(id: string): Promise<IInvoice> {
+  async get(id: string): Promise<Invoice> {
     const response = await api.get<IInvoice>(`${apiRoutesMap.invoices}/${id}`)
-    return response.data
+    return Invoice.load(response.data)
   }
 
-  async create(invoice: Omit<IInvoice, 'id' | 'createdAt' | 'updatedAt'>): Promise<IInvoice> {
+  async create(invoice: Omit<IInvoice, 'id' | 'createdAt' | 'updatedAt'>): Promise<Invoice> {
     const response = await api.post<IInvoice>(apiRoutesMap.invoices, invoice)
-    return response.data
+    return Invoice.load(response.data)
   }
 
-  async update(id: string, invoice: Partial<IInvoice>): Promise<IInvoice> {
+  async update(id: string, invoice: Partial<IInvoice>): Promise<Invoice> {
     const response = await api.patch<IInvoice>(`${apiRoutesMap.invoices}/${id}`, invoice)
-    return response.data
+    return Invoice.load(response.data)
   }
 
   async delete(id: string): Promise<void> {

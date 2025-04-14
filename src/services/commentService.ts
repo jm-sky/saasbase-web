@@ -1,6 +1,6 @@
 import api from '@/helpers/api'
 import { apiRoutesMap } from '@/helpers/api/apiRoutes'
-import { type IComment } from '@/models/comment.model'
+import { Comment, type IComment } from '@/models/comment.model'
 
 export interface ICommentGetParams {
   commentableId?: string
@@ -10,24 +10,24 @@ export interface ICommentGetParams {
 }
 
 class CommentService {
-  async index(params?: ICommentGetParams): Promise<IComment[]> {
+  async index(params?: ICommentGetParams): Promise<Comment[]> {
     const response = await api.get<{ comments: IComment[] }>(apiRoutesMap.comments, { params })
-    return response.data.comments
+    return response.data.comments.map(data => Comment.load(data))
   }
 
-  async get(id: string): Promise<IComment> {
+  async get(id: string): Promise<Comment> {
     const response = await api.get<IComment>(`${apiRoutesMap.comments}/${id}`)
-    return response.data
+    return Comment.load(response.data)
   }
 
-  async create(comment: Omit<IComment, 'id' | 'createdAt'>): Promise<IComment> {
+  async create(comment: Omit<IComment, 'id' | 'createdAt'>): Promise<Comment> {
     const response = await api.post<IComment>(apiRoutesMap.comments, comment)
-    return response.data
+    return Comment.load(response.data)
   }
 
-  async update(id: string, comment: Partial<IComment>): Promise<IComment> {
+  async update(id: string, comment: Partial<IComment>): Promise<Comment> {
     const response = await api.patch<IComment>(`${apiRoutesMap.comments}/${id}`, comment)
-    return response.data
+    return Comment.load(response.data)
   }
 
   async delete(id: string): Promise<void> {

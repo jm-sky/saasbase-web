@@ -22,7 +22,9 @@ export class Task {
     if (!data.id) throw new Error('Task ID is required')
     if (!data.projectId) throw new Error('Project ID is required')
     if (!data.title) throw new Error('Task title is required')
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (!data.status) throw new Error('Task status is required')
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (!data.priority) throw new Error('Task priority is required')
     if (!data.createdById) throw new Error('Creator ID is required')
 
@@ -84,16 +86,8 @@ export class Task {
   }
 
   isValid(): boolean {
-    return Boolean(
-      this.id &&
-      this.projectId &&
-      this.title &&
-      this.status &&
-      this.priority &&
-      this.createdById &&
-      this.createdAt &&
-      this.updatedAt
-    )
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+    return Boolean(this.id && this.projectId && this.title && this.status && this.priority && this.createdById && this.createdAt && this.updatedAt)
   }
 
   isOverdue(): boolean {

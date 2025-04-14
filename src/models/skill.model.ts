@@ -56,6 +56,7 @@ export class Skill {
   }
 
   isValid(): boolean {
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     return Boolean(this.id && this.categoryId && this.name && this.createdAt && this.updatedAt)
   }
 
@@ -79,6 +80,7 @@ export class UserSkill {
   static load(data: IUserSkill): UserSkill {
     if (!data.userId) throw new Error('User ID is required')
     if (!data.skillId) throw new Error('Skill ID is required')
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (!data.level) throw new Error('Skill level is required')
 
     return new UserSkill(data)
@@ -119,6 +121,7 @@ export class UserSkill {
   }
 
   isValid(): boolean {
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     return Boolean(this.userId && this.skillId && this.level && this.createdAt && this.updatedAt)
   }
 

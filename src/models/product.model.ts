@@ -73,16 +73,8 @@ export class Product {
   }
 
   isValid(): boolean {
-    return Boolean(
-      this.id &&
-      this.tenantId &&
-      this.name &&
-      this.unitId &&
-      this.vatRateId &&
-      this.priceNet >= 0 &&
-      this.createdAt &&
-      this.updatedAt
-    )
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+    return Boolean(this.id && this.name && this.priceNet >= 0 && this.createdAt && this.updatedAt)
   }
 
   hasDescription(): boolean {

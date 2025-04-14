@@ -3,14 +3,14 @@ import { v4 } from 'uuid'
 import { ZodError } from 'zod'
 import api from '@/helpers/api'
 import { apiRoutesMap } from '@/helpers/api/apiRoutes'
+import { type IUser, User } from '@/models/user.model'
 import { type SessionData, useAuthStore } from '@/stores/auth.store'
-import type { IUser } from '@/models/user.model'
 import type { Credentials, RegistrationData, ResetPasswordData } from '@/types/auth.type'
 
 const SESSION_LIFETIME = 15
 
 export class AuthService {
-  private createSession(user: IUser): SessionData {
+  private createSession(user: User): SessionData {
     const session: SessionData = {
       id: v4(),
       user,
@@ -34,7 +34,7 @@ export class AuthService {
 
   async getUser() {
     const response = (await api.get<IUser>(apiRoutesMap.user)).data
-    return response
+    return User.load(response)
   }
 
   // eslint-disable-next-line @typescript-eslint/require-await

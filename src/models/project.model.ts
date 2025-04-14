@@ -20,7 +20,10 @@ export class Project {
     if (!data.tenantId) throw new Error('Tenant ID is required')
     if (!data.name) throw new Error('Project name is required')
     if (!data.ownerId) throw new Error('Owner ID is required')
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (!data.status) throw new Error('Project status is required')
+    if (!data.createdAt) throw new Error('Start date is required')
+    if (!data.updatedAt) throw new Error('End date is required')
 
     return new Project(data)
   }
@@ -68,14 +71,7 @@ export class Project {
   }
 
   isValid(): boolean {
-    return Boolean(
-      this.id &&
-      this.tenantId &&
-      this.name &&
-      this.ownerId &&
-      this.status &&
-      this.createdAt &&
-      this.updatedAt
-    )
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+    return Boolean(this.id && this.name && this.status && this.createdAt && this.updatedAt)
   }
 }

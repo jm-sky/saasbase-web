@@ -104,12 +104,16 @@ export class Invoice {
       this.contractorId &&
       this.invoiceTypeId &&
       this.invoiceNumber &&
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       this.issueDate &&
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       this.dueDate &&
       this.totalNet >= 0 &&
       this.totalTax >= 0 &&
       this.totalGross >= 0 &&
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       this.status &&
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       this.createdAt &&
       this.updatedAt
     )
