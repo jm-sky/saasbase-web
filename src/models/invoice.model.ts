@@ -1,4 +1,5 @@
 import { type TInvoiceStatus } from '@/types'
+import { type TDate, type TDateTime } from '@/types/common'
 
 export interface IInvoice {
   id: string
@@ -6,15 +7,17 @@ export interface IInvoice {
   contractorId: string
   invoiceTypeId: string
   invoiceNumber: string
-  issueDate: string
-  dueDate: string
+  issueDate: TDate
+  dueDate: TDate
   totalNet: number
   totalTax: number
   totalGross: number
   status: TInvoiceStatus
-  createdAt: string
-  updatedAt: string
+  createdAt: TDateTime
+  updatedAt: TDateTime
 }
+
+export type IInvoiceCreate = Omit<IInvoice, 'id' | 'createdAt' | 'updatedAt'>
 
 export class Invoice {
   static load(data: IInvoice): Invoice {

@@ -1,6 +1,12 @@
 import { toTypedSchema } from '@vee-validate/zod'
 import { z, ZodSchema } from 'zod'
-import type { IContractor } from '@/models/contractor.model'
+import type {
+  IContractor,
+  IContractorAddressCreate,
+  IContractorBankAccountCreate,
+  IContractorContactPersonCreate,
+  IContractorCreate
+} from '@/models/contractor.model'
 
 const uuidSchema = z.string().uuid()
 
@@ -52,5 +58,15 @@ const createContractorBaseSchema = baseContractorSchema.omit({ id: true, created
 const updateContractorBaseSchema = createContractorBaseSchema.partial()
 
 export const contractorSchema = toTypedSchema<ZodSchema, IContractor>(baseContractorSchema)
-export const createContractorSchema = toTypedSchema<ZodSchema, Omit<IContractor, 'id' | 'createdAt' | 'updatedAt'>>(createContractorBaseSchema)
-export const updateContractorSchema = toTypedSchema<ZodSchema, Partial<Omit<IContractor, 'id' | 'createdAt' | 'updatedAt'>>>(updateContractorBaseSchema)
+export const createContractorSchema = toTypedSchema<ZodSchema, IContractorCreate>(createContractorBaseSchema)
+export const updateContractorSchema = toTypedSchema<ZodSchema, Partial<IContractorCreate>>(updateContractorBaseSchema)
+
+export const contractorAddressCreateSchema = toTypedSchema<ZodSchema, IContractorAddressCreate>(
+  contractorAddressSchema.omit({ id: true, contractorId: true })
+)
+export const contractorBankAccountCreateSchema = toTypedSchema<ZodSchema, IContractorBankAccountCreate>(
+  contractorBankAccountSchema.omit({ id: true, contractorId: true })
+)
+export const contractorContactPersonCreateSchema = toTypedSchema<ZodSchema, IContractorContactPersonCreate>(
+  contractorContactPersonSchema.omit({ id: true, contractorId: true })
+)

@@ -1,4 +1,5 @@
 import { type TProjectStatus } from '@/types'
+import { type TDateTime } from '@/types/common'
 
 export interface IProject {
   id: string
@@ -7,9 +8,11 @@ export interface IProject {
   description?: string
   status: TProjectStatus
   ownerId: string
-  createdAt: string
-  updatedAt: string
+  createdAt: TDateTime
+  updatedAt: TDateTime
 }
+
+export type IProjectCreate = Omit<IProject, 'id' | 'createdAt' | 'updatedAt'>
 
 export class Project {
   static load(data: IProject): Project {

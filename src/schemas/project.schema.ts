@@ -1,7 +1,9 @@
-import { z } from 'zod'
+import { toTypedSchema } from '@vee-validate/zod'
+import { z, ZodSchema } from 'zod'
 import { projectStatuses } from '@/constants/status'
+import type { IProject, IProjectCreate } from '@/models/project.model'
 
-export const projectSchema = z.object({
+const baseProjectSchema = z.object({
   id: z.string().uuid(),
   tenantId: z.string().uuid(),
   name: z.string().min(1).max(100),
@@ -12,5 +14,9 @@ export const projectSchema = z.object({
   updatedAt: z.string().datetime(),
 })
 
-export const createProjectSchema = projectSchema.omit({ id: true, createdAt: true, updatedAt: true })
-export const updateProjectSchema = createProjectSchema.partial()
+const createProjectBaseSchema = baseProjectSchema.omit({ id: true, createdAt: true, updatedAt: true })
+const updateProjectBaseSchema = createProjectBaseSchema.partial()
+
+export const projectSchema = toTypedSchema<ZodSchema, IProject>(baseProjectSchema)
+export const createProjectSchema = toTypedSchema<ZodSchema, IProjectCreate>(createProjectBaseSchema)
+export const updateProjectSchema = toTypedSchema<ZodSchema, Partial<IProjectCreate>>(updateProjectBaseSchema)

@@ -1,4 +1,4 @@
-import type { TUUID } from '@/types/common'
+import type { TDateTime, TUUID } from '@/types/common'
 
 export interface IContractorAddress {
   id: TUUID
@@ -11,6 +11,8 @@ export interface IContractorAddress {
   isDefault: boolean
 }
 
+export type IContractorAddressCreate = Omit<IContractorAddress, 'id' | 'contractorId'>
+
 export interface IContractorBankAccount {
   id: TUUID
   contractorId: TUUID
@@ -20,6 +22,8 @@ export interface IContractorBankAccount {
   isDefault: boolean
 }
 
+export type IContractorBankAccountCreate = Omit<IContractorBankAccount, 'id' | 'contractorId'>
+
 export interface IContractorContactPerson {
   id: TUUID
   contractorId: TUUID
@@ -28,6 +32,8 @@ export interface IContractorContactPerson {
   phone?: string
   position?: string
 }
+
+export type IContractorContactPersonCreate = Omit<IContractorContactPerson, 'id' | 'contractorId'>
 
 export interface IContractor {
   id: TUUID
@@ -40,9 +46,11 @@ export interface IContractor {
   addresses?: IContractorAddress[]
   bankAccounts?: IContractorBankAccount[]
   contactPersons?: IContractorContactPerson[]
-  createdAt: string
-  updatedAt: string
+  createdAt: TDateTime
+  updatedAt: TDateTime
 }
+
+export type IContractorCreate = Omit<IContractor, 'id' | 'createdAt' | 'updatedAt'>
 
 export class Contractor {
   static load(data: IContractor): Contractor {

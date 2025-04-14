@@ -1,3 +1,5 @@
+import { type TDateTime } from '@/types/common'
+
 export interface IProduct {
   id: string
   tenantId: string
@@ -6,9 +8,11 @@ export interface IProduct {
   unitId: string
   priceNet: number
   vatRateId: string
-  createdAt: string
-  updatedAt: string
+  createdAt: TDateTime
+  updatedAt: TDateTime
 }
+
+export type IProductCreate = Omit<IProduct, 'id' | 'createdAt' | 'updatedAt'>
 
 export class Product {
   static load(data: IProduct): Product {

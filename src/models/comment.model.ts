@@ -1,11 +1,16 @@
+import { type TDateTime } from '@/types/common'
+
 export interface IComment {
   id: string
   userId: string
   content: string
   commentableId: string
   commentableType: string
-  createdAt: string
+  createdAt: TDateTime
+  updatedAt: TDateTime
 }
+
+export type ICommentCreate = Omit<IComment, 'id' | 'createdAt' | 'updatedAt'>
 
 export class Comment {
   static load(data: IComment): Comment {
@@ -44,6 +49,10 @@ export class Comment {
     return new Date(this.data.createdAt)
   }
 
+  get updatedAt(): Date {
+    return new Date(this.data.updatedAt)
+  }
+
   toJSON(): IComment {
     return { ...this.data }
   }
@@ -59,7 +68,8 @@ export class Comment {
       this.content &&
       this.commentableId &&
       this.commentableType &&
-      this.createdAt
+      this.createdAt &&
+      this.updatedAt
     )
   }
 

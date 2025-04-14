@@ -1,6 +1,8 @@
-import { z } from 'zod'
+import { toTypedSchema } from '@vee-validate/zod'
+import { z, ZodSchema } from 'zod'
+import type { IComment, ICommentCreate } from '@/models/comment.model'
 
-export const commentSchema = z.object({
+const baseCommentSchema = z.object({
   id: z.string().uuid(),
   userId: z.string().uuid(),
   content: z.string().min(1).max(1000),
@@ -9,5 +11,9 @@ export const commentSchema = z.object({
   createdAt: z.string().datetime(),
 })
 
-export const createCommentSchema = commentSchema.omit({ id: true, createdAt: true })
-export const updateCommentSchema = createCommentSchema.partial()
+const createCommentBaseSchema = baseCommentSchema.omit({ id: true, createdAt: true })
+const updateCommentBaseSchema = createCommentBaseSchema.partial()
+
+export const commentSchema = toTypedSchema<ZodSchema, IComment>(baseCommentSchema)
+export const createCommentSchema = toTypedSchema<ZodSchema, ICommentCreate>(createCommentBaseSchema)
+export const updateCommentSchema = toTypedSchema<ZodSchema, Partial<ICommentCreate>>(updateCommentBaseSchema)

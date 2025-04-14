@@ -1,7 +1,9 @@
-import { z } from 'zod'
+import { toTypedSchema } from '@vee-validate/zod'
+import { z, ZodSchema } from 'zod'
 import { taskPriorities, taskStatuses } from '@/constants/status'
+import type { ITask, ITaskCreate } from '@/models/task.model'
 
-export const taskSchema = z.object({
+const baseTaskSchema = z.object({
   id: z.string().uuid(),
   projectId: z.string().uuid(),
   title: z.string().min(1).max(100),
@@ -15,5 +17,9 @@ export const taskSchema = z.object({
   updatedAt: z.string().datetime(),
 })
 
-export const createTaskSchema = taskSchema.omit({ id: true, createdAt: true, updatedAt: true })
-export const updateTaskSchema = createTaskSchema.partial()
+const createTaskBaseSchema = baseTaskSchema.omit({ id: true, createdAt: true, updatedAt: true })
+const updateTaskBaseSchema = createTaskBaseSchema.partial()
+
+export const taskSchema = toTypedSchema<ZodSchema, ITask>(baseTaskSchema)
+export const createTaskSchema = toTypedSchema<ZodSchema, ITaskCreate>(createTaskBaseSchema)
+export const updateTaskSchema = toTypedSchema<ZodSchema, Partial<ITaskCreate>>(updateTaskBaseSchema)

@@ -4,6 +4,8 @@ export interface ITag {
   color?: string
 }
 
+export type ITagCreate = Omit<ITag, 'id'>
+
 export class Tag {
   static load(data: ITag): Tag {
     if (!data.id) throw new Error('Tag ID is required')

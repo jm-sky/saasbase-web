@@ -1,4 +1,5 @@
 import { type TTaskPriority, type TTaskStatus } from '@/types'
+import { type TDateTime } from '@/types/common'
 
 export interface ITask {
   id: string
@@ -9,10 +10,12 @@ export interface ITask {
   priority: TTaskPriority
   assignedToId?: string
   createdById: string
-  dueDate?: string
-  createdAt: string
-  updatedAt: string
+  dueDate?: TDateTime
+  createdAt: TDateTime
+  updatedAt: TDateTime
 }
+
+export type ITaskCreate = Omit<ITask, 'id' | 'createdAt' | 'updatedAt'>
 
 export class Task {
   static load(data: ITask): Task {

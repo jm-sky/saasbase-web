@@ -1,11 +1,16 @@
 import { type TSkillLevel } from '@/types'
+import { type TDateTime } from '@/types/common'
 
 export interface ISkill {
   id: string
   categoryId: string
   name: string
   description?: string
+  createdAt: TDateTime
+  updatedAt: TDateTime
 }
+
+export type ISkillCreate = Omit<ISkill, 'id' | 'createdAt' | 'updatedAt'>
 
 export class Skill {
   static load(data: ISkill): Skill {
@@ -34,6 +39,14 @@ export class Skill {
     return this.data.description ?? ''
   }
 
+  get createdAt(): Date {
+    return new Date(this.data.createdAt)
+  }
+
+  get updatedAt(): Date {
+    return new Date(this.data.updatedAt)
+  }
+
   toJSON(): ISkill {
     return { ...this.data }
   }
@@ -43,7 +56,7 @@ export class Skill {
   }
 
   isValid(): boolean {
-    return Boolean(this.id && this.categoryId && this.name)
+    return Boolean(this.id && this.categoryId && this.name && this.createdAt && this.updatedAt)
   }
 
   hasDescription(): boolean {
@@ -55,8 +68,12 @@ export interface IUserSkill {
   userId: string
   skillId: string
   level: TSkillLevel
-  acquiredAt?: string
+  acquiredAt?: TDateTime
+  createdAt: TDateTime
+  updatedAt: TDateTime
 }
+
+export type IUserSkillCreate = Omit<IUserSkill, 'createdAt' | 'updatedAt'>
 
 export class UserSkill {
   static load(data: IUserSkill): UserSkill {
@@ -85,6 +102,14 @@ export class UserSkill {
     return this.data.acquiredAt ? new Date(this.data.acquiredAt) : undefined
   }
 
+  get createdAt(): Date {
+    return new Date(this.data.createdAt)
+  }
+
+  get updatedAt(): Date {
+    return new Date(this.data.updatedAt)
+  }
+
   toJSON(): IUserSkill {
     return { ...this.data }
   }
@@ -94,7 +119,7 @@ export class UserSkill {
   }
 
   isValid(): boolean {
-    return Boolean(this.userId && this.skillId && this.level)
+    return Boolean(this.userId && this.skillId && this.level && this.createdAt && this.updatedAt)
   }
 
   hasAcquiredDate(): boolean {
