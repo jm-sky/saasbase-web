@@ -3,6 +3,7 @@ import { useDark } from '@vueuse/core'
 import { RouterLink } from 'vue-router'
 import ApplicationLogo from '@/components/ApplicationLogo.vue'
 import DarkModeButton from '@/components/DarkModeButton.vue'
+import LanguageSwitchDropdown from '@/components/LanguageSwitchDropdown.vue'
 import LayoutConfigurator from '@/components/LayoutConfigurator/LayoutConfigurator.vue'
 
 const isDark = useDark()
@@ -40,6 +41,7 @@ const isDark = useDark()
 
     <div class="absolute top-1 right-1 flex flex-row gap-2 items-center p-1 bg-white/30 dark:bg-black/50 rounded-lg backdrop-blur-md transition-colors">
       <DarkModeButton />
+      <LanguageSwitchDropdown />
       <LayoutConfigurator />
     </div>
 
