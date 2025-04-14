@@ -6,14 +6,14 @@ import AvatarFallback from '@/components/ui/avatar/AvatarFallback.vue'
 import AvatarImage from '@/components/ui/avatar/AvatarImage.vue'
 import Button from '@/components/ui/button/Button.vue'
 import UIIcon from '@/components/UIIcon.vue'
+import { userService } from '@/domains/user/services/userService'
 import AuthenticatedLayout from '@/layouts/AuthenticatedLayout.vue'
-import { userService } from '@/services/userService'
-import type { User } from '@/models/user.model'
+import type { PublicUser } from '@/domains/user/models/publicUser.model'
 
 const route = useRoute()
 
 const isLoading = ref(false)
-const user = ref<undefined | User>()
+const user = ref<undefined | PublicUser>()
 
 const refresh = async () => {
   try {
@@ -127,8 +127,8 @@ onMounted(() => refresh())
             icon="fa-solid:calendar"
             class="w-4"
           />
-          {{ user?.createdAt.toLocaleDateString() ?? '-' }}
-          {{ user?.createdAt.toLocaleTimeString() }}
+          {{ user?.createdAt ?? '-' }}
+          {{ user?.createdAt }}
         </div>
       </div>
 

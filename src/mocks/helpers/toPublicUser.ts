@@ -1,12 +1,14 @@
-import type { MockUserStored } from '@/mocks/mock.type'
-import type { IPublicUser } from '@/models/user.model'
+import type { IPublicUser, IUserStored } from '@/domains/user/types/user.type'
 
-export const toPublicUser = (mockUser: MockUserStored): IPublicUser => ({
-  id: mockUser.id,
-  firstName: mockUser.firstName,
-  lastName: mockUser.lastName,
-  email: mockUser.email,
-  phone: mockUser.phone,
-  address: mockUser.address,
-  image: undefined,
+export const toPublicUser = (storedUser: IUserStored): IPublicUser => ({
+  id: storedUser.id,
+  firstName: storedUser.firstName,
+  lastName: storedUser.lastName,
+  email: storedUser.email,
+  phone: storedUser.phone,
+  description: storedUser.description,
+  address: storedUser.address,
+  image: storedUser.image,
+  role: storedUser.role,
+  createdAt: storedUser.createdAt,
 })

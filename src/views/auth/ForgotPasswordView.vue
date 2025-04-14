@@ -7,10 +7,10 @@ import { Button } from '@/components/ui/button'
 import Input from '@/components/ui/input/Input.vue'
 import { useToast } from '@/components/ui/toast'
 import UIIcon from '@/components/UIIcon.vue'
+import { authService } from '@/domains/auth/services/authService'
+import { type ResetPasswordData } from '@/domains/auth/types/auth.type'
+import { resetPasswordSchema } from '@/domains/auth/validation/auth.schema'
 import GuestLayout from '@/layouts/GuestLayout.vue'
-import { resetPasswordSchema } from '@/schemas/auth.schema'
-import { authService } from '@/services/authService'
-import { type ResetPasswordData } from '@/types/auth.type'
 
 const router = useRouter()
 const { toast } = useToast()

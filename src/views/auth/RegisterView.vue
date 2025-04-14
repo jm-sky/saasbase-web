@@ -8,11 +8,11 @@ import Button from '@/components/ui/button/Button.vue'
 import Input from '@/components/ui/input/Input.vue'
 import { useToast } from '@/components/ui/toast/use-toast'
 import UIIcon from '@/components/UIIcon.vue'
+import { authService } from '@/domains/auth/services/authService'
+import { registrationSchema } from '@/domains/auth/validation/auth.schema'
 import { isValidationError } from '@/helpers/validation'
 import GuestLayout from '@/layouts/GuestLayout.vue'
-import { registrationSchema } from '@/schemas/auth.schema'
-import { authService } from '@/services/authService'
-import type { RegistrationData } from '@/types/auth.type'
+import type { RegistrationData } from '@/domains/auth/types/auth.type'
 
 const router = useRouter()
 const { toast } = useToast()

@@ -17,9 +17,9 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import DropdownMenuItemLink from '@/components/ui/dropdown-menu/DropdownMenuItemLink.vue'
+import { authService } from '@/domains/auth/services/authService'
+import { useAuthStore } from '@/domains/auth/store/auth.store'
 import { routeTo } from '@/router/routeMap'
-import { authService } from '@/services/authService'
-import { useAuthStore } from '@/stores/auth.store'
 
 const authStore = useAuthStore()
 const router = useRouter()

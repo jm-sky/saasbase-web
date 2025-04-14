@@ -1,4 +1,4 @@
-import { useAuthStore } from '@/stores/auth.store'
+import { useAuthStore } from '@/domains/auth/store/auth.store'
 import type { RouterMiddlewareOptions } from '@/router/hooks/runMiddlewarePipeline'
 
 export const isAuthenticated = ({ next }: RouterMiddlewareOptions) => {

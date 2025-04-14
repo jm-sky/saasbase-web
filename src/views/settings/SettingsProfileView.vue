@@ -9,7 +9,7 @@ import { Input } from '@/components/ui/input'
 import { Separator } from '@/components/ui/separator'
 import { Textarea } from '@/components/ui/textarea'
 import { toast } from '@/components/ui/toast'
-import { useAuthStore } from '@/stores/auth.store'
+import { useAuthStore } from '@/domains/auth/store/auth.store'
 
 const authStore = useAuthStore()
 

@@ -1,8 +1,8 @@
 import axios, { AxiosError, HttpStatusCode } from 'axios'
 import { useI18n } from 'vue-i18n'
 import { useToast } from '@/components/ui/toast'
+import { useAuthStore } from '@/domains/auth/store/auth.store'
 import router from '@/router'
-import { useAuthStore } from '@/stores/auth.store'
 
 const AUTH_TOKEN_URL = '/api/auth/token'
 const AUTH_REFRESH_TOKEN_URL = '/api/auth/token/refresh'

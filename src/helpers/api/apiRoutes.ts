@@ -1,6 +1,7 @@
 export const apiRoutesMap = {
   authLogin: '/api/auth/login',
   authRegister: '/api/auth/register',
+  authLogout: '/api/auth/logout',
   user: '/api/user',
   users: '/api/users',
   projects: '/api/projects',
@@ -15,6 +16,7 @@ export const apiRoutesMap = {
 
 export const apiRoutes = {
   authLogin: () => apiRoutesMap.authLogin,
+  authLogout: () => apiRoutesMap.authLogout,
   projects: () => apiRoutesMap.projects,
   tasks: () => apiRoutesMap.tasks,
   contractors: () => apiRoutesMap.contractors,

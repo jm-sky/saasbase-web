@@ -14,13 +14,13 @@ import {
   CardTitle,
 } from '@/components/ui/card'
 import { useTranslate } from '@/composables/useTranslate'
-import { User } from '@/models/user.model'
-import { userService } from '@/services/userService'
+import { userService } from '@/domains/user/services/userService'
+import type { PublicUser } from '@/domains/user/models/publicUser.model'
 
 const tr = useTranslate()
 
 const isLoading = ref(false)
-const users = ref<User[]>([])
+const users = ref<PublicUser[]>([])
 
 const refresh = async () => {
   try {

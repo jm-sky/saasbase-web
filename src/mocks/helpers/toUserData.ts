@@ -1,14 +1,17 @@
-import type { MockUserStored } from '@/mocks/mock.type'
-import type { IUserData } from '@/models/user.model'
+import type { IUser, IUserStored } from '@/domains/user/types/user.type'
 
-export const toUserData = (mockUser: MockUserStored): IUserData => ({
-  id: mockUser.id,
-  firstName: mockUser.firstName,
-  lastName: mockUser.lastName,
-  email: mockUser.email,
-  phone: mockUser.phone,
-  birthDate: mockUser.birthDate,
-  address: mockUser.address,
-  image: undefined,
-  createdAt: mockUser.createdAt,
+export const toUserData = (storedUser: IUserStored): IUser => ({
+  id: storedUser.id,
+  firstName: storedUser.firstName,
+  lastName: storedUser.lastName,
+  email: storedUser.email,
+  phone: storedUser.phone,
+  birthDate: storedUser.birthDate,
+  description: storedUser.description,
+  image: storedUser.image,
+  role: storedUser.role,
+  isEmailVerified: storedUser.isEmailVerified,
+  lastLoginAt: storedUser.lastLoginAt,
+  createdAt: storedUser.createdAt,
+  updatedAt: storedUser.updatedAt,
 })

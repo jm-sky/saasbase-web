@@ -32,8 +32,8 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { userData } from '@/data/userData'
+import { User } from '@/domains/user/models/user.model'
 import { cn } from '@/lib/utils'
-import { User } from '@/models/user.model'
 import type { ArrayOrWrapped } from 'node_modules/radix-vue/dist/shared/types'
 
 const user = User.load({ ...userData })

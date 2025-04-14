@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import { RouterLink } from 'vue-router'
-import PrettyUserAuthForm from '@/components/Auth/PrettyUserAuthForm.vue'
 import ButtonLink from '@/components/ButtonLink.vue'
+import PrettyUserAuthForm from '@/domains/auth/components/PrettyUserAuthForm.vue'
 import GuestLayout from '@/layouts/GuestLayout.vue'
 
 const { t } = useI18n()
