@@ -18,7 +18,6 @@ const df = new DateFormatter('en-US', {
 
 const calendarDate = new CalendarDate(2023, 0, 20)
 
-// @ts-ignore - Suppressing type mismatch between CalendarDate and DateRange
 const value = ref({
   start: calendarDate,
   end: calendarDate.add({ days: 20 }),
@@ -57,7 +56,6 @@ const value = ref({
         class="w-auto p-0"
         align="end"
       >
-        {/* @ts-ignore - Suppressing type mismatch in v-model binding */}
         <RangeCalendar
           v-model="value"
           weekday-format="short"
