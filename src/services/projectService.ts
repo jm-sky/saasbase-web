@@ -1,6 +1,7 @@
 import api from '@/helpers/api'
 import { apiRoutesMap } from '@/helpers/api/apiRoutes'
-import { type IProject, Project, type TProjectStatus } from '@/models/project.model'
+import { type IProject, Project } from '@/models/project.model'
+import { type TProjectStatus } from '@/types/index'
 
 export interface IProjectGetParams {
   status?: TProjectStatus

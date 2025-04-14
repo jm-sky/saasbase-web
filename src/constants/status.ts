@@ -1,4 +1,4 @@
-import type { TInvoiceStatus, TProjectStatus, TSkillLevel, TTaskPriority, TTaskStatus } from '@/types'
+import type { TInvoiceStatus, TProjectStatus, TSkillLevel, TTaskPriority, TTaskStatus } from '@/types/index'
 
 export const projectStatuses: TProjectStatus[] = ['active', 'archived', 'completed']
 export const taskStatuses: TTaskStatus[] = ['todo', 'in_progress', 'done', 'archived']

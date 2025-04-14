@@ -1,5 +1,5 @@
-import { type TTaskPriority, type TTaskStatus } from '@/types'
 import { type TDateTime } from '@/types/common'
+import { type TTaskPriority, type TTaskStatus } from '@/types/index'
 
 export interface ITask {
   id: string

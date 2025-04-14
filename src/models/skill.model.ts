@@ -1,5 +1,5 @@
-import { type TSkillLevel } from '@/types'
 import { type TDateTime } from '@/types/common'
+import { type TSkillLevel } from '@/types/index'
 
 export interface ISkill {
   id: string

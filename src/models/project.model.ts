@@ -1,5 +1,5 @@
-import { type TProjectStatus } from '@/types'
 import { type TDateTime } from '@/types/common'
+import { type TProjectStatus } from '@/types/index'
 
 export interface IProject {
   id: string
