@@ -1,4 +1,4 @@
-import type { MockUserStored } from '@/helpers/api/mocks/mock.type'
+import type { MockUserStored } from '@/mocks/mock.type'
 import type { IUserData } from '@/models/user.model'
 
 export const toUserData = (mockUser: MockUserStored): IUserData => ({

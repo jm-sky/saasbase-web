@@ -1,10 +1,10 @@
 import { HttpStatusCode } from 'axios'
 import { type AxiosRequestConfig } from 'axios'
-import { createMockContractor } from '@/helpers/api/mocks/createMockContractor'
-import { sendResponse, validationError } from '@/helpers/api/mocks/utils'
+import { ContractorFactory } from '@/mocks/domains/contractor/contractorFactory'
+import { sendResponse, validationError } from '@/mocks/helpers/utils'
 import { createContractorSchema, updateContractorSchema } from '@/schemas/contractor.schema'
 import type AxiosMockAdapter from 'axios-mock-adapter'
-import type { MockStorage } from '@/helpers/api/mocks/mock.type'
+import type { MockStorage } from '@/mocks/mock.type'
 
 export const setupContractorMocks = (mock: AxiosMockAdapter, storage: MockStorage) => {
   // Create
@@ -14,7 +14,7 @@ export const setupContractorMocks = (mock: AxiosMockAdapter, storage: MockStorag
 
     if (!value) return validationError(errors)
 
-    const contractor = createMockContractor(value)
+    const contractor = ContractorFactory.createContractor(value)
     storage.contractors.push(contractor)
 
     const response = { status: HttpStatusCode.Created, data: contractor }

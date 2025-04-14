@@ -2,11 +2,11 @@ import { useLocalStorage } from '@vueuse/core'
 import { type AxiosInstance } from 'axios'
 import AxiosMockAdapter from 'axios-mock-adapter'
 import { config } from '@/config'
-import { setupAuthMocks } from '@/helpers/api/mocks/domains/auth.mock'
-import { setupContractorMocks } from '@/helpers/api/mocks/domains/contractor.mock'
-import { setupProjectMocks } from '@/helpers/api/mocks/domains/project.mock'
-import { setupUserMocks } from '@/helpers/api/mocks/domains/user.mock'
-import type { MockStorage } from '@/helpers/api/mocks/mock.type'
+import { setupAuthMocks } from '@/mocks/domains/auth/auth.mock'
+import { setupContractorMocks } from '@/mocks/domains/contractor/contractor.mock'
+import { setupProjectMocks } from '@/mocks/domains/project/project.mock'
+import { setupUserMocks } from '@/mocks/domains/user/user.mock'
+import type { MockStorage } from '@/mocks/mock.type'
 
 const STORAGE: MockStorage = {
   users: [],

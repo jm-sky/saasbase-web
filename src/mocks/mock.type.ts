@@ -4,8 +4,8 @@ import type { IUser } from '@/models/user.model'
 
 export interface MockUserStored extends Omit<IUser, 'birthDate' | 'createdAt'> {
   birthDate?: string
-  createdAt: string
   password: string
+  createdAt: string
 }
 
 export interface MockStorage {

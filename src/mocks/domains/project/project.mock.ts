@@ -1,20 +1,20 @@
 import { HttpStatusCode } from 'axios'
 import { type AxiosRequestConfig } from 'axios'
-import { createMockProject } from '@/helpers/api/mocks/createMockProject'
-import { sendResponse, validationError } from '@/helpers/api/mocks/utils'
+import { ProjectFactory } from '@/mocks/domains/project/projectFactory'
+import { sendResponse, validationError } from '@/mocks/helpers/utils'
 import { createProjectSchema, updateProjectSchema } from '@/schemas/project.schema'
 import type AxiosMockAdapter from 'axios-mock-adapter'
-import type { MockStorage } from '@/helpers/api/mocks/mock.type'
+import type { MockStorage } from '@/mocks/mock.type'
 
 export const setupProjectMocks = (mock: AxiosMockAdapter, storage: MockStorage) => {
   // Create
-  mock.onPost('/projects').reply((config: AxiosRequestConfig) => {
+  mock.onPost('/projects').reply(async (config: AxiosRequestConfig) => {
     const payload = JSON.parse(config.data)
-    const result = createProjectSchema.safeParse(payload)
+    const { value, errors } = await createProjectSchema.parse(payload)
 
-    if (!result.success) return validationError(result.error.format())
+    if (!value) return validationError(errors)
 
-    const project = createMockProject(result.data)
+    const project = ProjectFactory.createProject(value)
     storage.projects.push(project)
 
     const response = { status: HttpStatusCode.Created, data: project }
@@ -42,19 +42,19 @@ export const setupProjectMocks = (mock: AxiosMockAdapter, storage: MockStorage) 
   })
 
   // Update
-  mock.onPut(/\/projects\/\w+/).reply((config: AxiosRequestConfig) => {
+  mock.onPut(/\/projects\/\w+/).reply(async (config: AxiosRequestConfig) => {
     const id = config.url?.split('/').pop()
     const payload = JSON.parse(config.data)
-    const result = updateProjectSchema.safeParse(payload)
+    const { value, errors } = await updateProjectSchema.parse(payload)
 
-    if (!result.success) return validationError(result.error.format())
+    if (!value) return validationError(errors)
 
     const index = storage.projects.findIndex(p => p.id === id)
     if (index === -1) {
       return sendResponse({ status: HttpStatusCode.NotFound, data: { message: 'Project not found' } }, 'updateProject')
     }
 
-    const updatedProject = { ...storage.projects[index], ...result.data, updatedAt: new Date().toISOString() }
+    const updatedProject = { ...storage.projects[index], ...value, updatedAt: new Date().toISOString() }
     storage.projects[index] = updatedProject
 
     const response = { status: HttpStatusCode.Ok, data: updatedProject }

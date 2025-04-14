@@ -1,11 +1,11 @@
 import { HttpStatusCode } from 'axios'
 import { type AxiosRequestConfig } from 'axios'
-import { createMockUser } from '@/helpers/api/mocks/createMockUser'
-import { genJWTMock } from '@/helpers/api/mocks/genJWT'
-import { sendResponse, validationError } from '@/helpers/api/mocks/utils'
+import { UserFactory } from '@/mocks/domains/user/userFactory'
+import { genJWTMock } from '@/mocks/helpers/genJWT'
+import { sendResponse, validationError } from '@/mocks/helpers/utils'
 import { credentialsSchema, registrationSchema } from '@/schemas/auth.schema'
 import type AxiosMockAdapter from 'axios-mock-adapter'
-import type { MockStorage, MockUserStored } from '@/helpers/api/mocks/mock.type'
+import type { MockStorage, MockUserStored } from '@/mocks/mock.type'
 import type { Credentials, RegistrationData } from '@/types/auth.type'
 
 export const setupAuthMocks = (mock: AxiosMockAdapter, storage: MockStorage) => {
@@ -20,7 +20,7 @@ export const setupAuthMocks = (mock: AxiosMockAdapter, storage: MockStorage) => 
       return sendResponse(validationError({ email: ['E-mail already taken'] }), 'authRegister')
     }
 
-    const user = createMockUser(value)
+    const user = UserFactory.createUser(value)
     const storedUser: MockUserStored = {
       ...user,
       birthDate: user.birthDate ? new Date(user.birthDate).toISOString() : undefined,
