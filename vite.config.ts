@@ -19,10 +19,8 @@ export default defineConfig(() => ({
     proxy: {
       '/api': {
         target: process.env.VITE_API_HOST ?? 'http://localhost:8000',
-        // target: 'https://dummyjson.com',
         changeOrigin: true,
         secure: false,
-        // rewrite: path => path.replace(/^\/api/, ''),
       },
     },
   },

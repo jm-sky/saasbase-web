@@ -1,6 +1,6 @@
+import { apiRoutesMap } from '@/composables/api/apiRoutes'
 import { PublicUser } from '@/domains/user/models/publicUser.model'
 import api from '@/helpers/api'
-import { apiRoutesMap } from '@/helpers/api/apiRoutes'
 import type { IPublicUser } from '@/domains/user/types/user.type'
 
 export interface IUserGetParams {

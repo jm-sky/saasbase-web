@@ -1,5 +1,5 @@
+import { apiRoutesMap } from '@/composables/api/apiRoutes'
 import api from '@/helpers/api'
-import { apiRoutesMap } from '@/helpers/api/apiRoutes'
 import { Contractor, type IContractor } from '@/models/contractor.model'
 
 export interface IContractorGetParams {

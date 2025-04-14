@@ -1,5 +1,5 @@
+import { apiRoutesMap } from '@/composables/api/apiRoutes'
 import api from '@/helpers/api'
-import { apiRoutesMap } from '@/helpers/api/apiRoutes'
 import { type ISkill, Skill } from '@/models/skill.model'
 
 export interface ISkillGetParams {

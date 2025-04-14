@@ -1,6 +1,6 @@
+import { apiRoutesMap } from '@/composables/api/apiRoutes'
 import { Project } from '@/domains/project/models/project.model'
 import api from '@/helpers/api'
-import { apiRoutesMap } from '@/helpers/api/apiRoutes'
 import { type TProjectStatus } from '@/types/index'
 import type { IProject } from '@/domains/project/types/project.type'
 

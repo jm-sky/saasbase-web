@@ -1,6 +1,6 @@
+import { apiRoutesMap } from '@/composables/api/apiRoutes'
 import { Task } from '@/domains/task/models/task.model'
 import api from '@/helpers/api'
-import { apiRoutesMap } from '@/helpers/api/apiRoutes'
 import { type TTaskPriority, type TTaskStatus } from '@/types/index'
 import type { ITask } from '@/domains/task/types/task.type'
 

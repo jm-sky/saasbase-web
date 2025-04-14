@@ -1,5 +1,5 @@
+import { apiRoutesMap } from '@/composables/api/apiRoutes'
 import api from '@/helpers/api'
-import { apiRoutesMap } from '@/helpers/api/apiRoutes'
 import { type ITag, Tag } from '@/models/tag.model'
 
 export interface ITagGetParams {

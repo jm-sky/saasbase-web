@@ -1,11 +1,11 @@
 import dayjs from 'dayjs'
 import { v4 } from 'uuid'
 import { ZodError } from 'zod'
+import { apiRoutesMap } from '@/composables/api/apiRoutes'
 import { type SessionData, useAuthStore } from '@/domains/auth/store/auth.store'
 import { User } from '@/domains/user/models/user.model'
 import { type IUser } from '@/domains/user/types/user.type'
 import api from '@/helpers/api'
-import { apiRoutesMap } from '@/helpers/api/apiRoutes'
 import type { Credentials, RegistrationData, ResetPasswordData } from '@/domains/auth/types/auth.type'
 
 const SESSION_LIFETIME = 15
