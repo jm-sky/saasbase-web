@@ -33,6 +33,7 @@ const onSubmit = handleSubmit(async (values) => {
     await router.push('/')
 
   } catch (error: unknown) {
+    console.error('[RegisterView][onSubmit] error:', error)
     if (isValidationError(error)) setErrors(error.response.data.errors)
     toast({
       title: 'Error',

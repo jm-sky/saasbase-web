@@ -10,7 +10,7 @@ import type { IUserStored } from '@/domains/user/types/user.type'
 import type { MockStorage } from '@/mocks/mock.type'
 
 export const setupAuthMocks = (mock: AxiosMockAdapter, storage: MockStorage) => {
-  mock.onPost('/auth/register').reply(async (config: AxiosRequestConfig) => {
+  mock.onPost('/api/v1/auth/register').reply(async (config: AxiosRequestConfig) => {
     const payload: RegistrationData = JSON.parse(config.data)
     console.log('[mockApi][authRegister] payload:', payload)
     const { value, errors } = await registrationSchema.parse(payload)
@@ -34,7 +34,7 @@ export const setupAuthMocks = (mock: AxiosMockAdapter, storage: MockStorage) => 
     return sendResponse(response, 'authRegister')
   })
 
-  mock.onPost('/auth/login').reply(async (config: AxiosRequestConfig) => {
+  mock.onPost('/api/v1/auth/login').reply(async (config: AxiosRequestConfig) => {
     const payload: Credentials = JSON.parse(config.data)
     console.log('[mockApi][authLogin]', payload)
     const { value, errors } = await credentialsSchema.parse(payload)

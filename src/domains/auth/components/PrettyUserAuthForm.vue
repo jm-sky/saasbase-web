@@ -18,7 +18,7 @@ import { cn } from '@/lib/utils'
 import type { Credentials } from '@/domains/auth/types/auth.type'
 
 interface AuthErrorResponse {
-  detail?: string
+  message?: string
 }
 
 const isAuthError = (error: unknown): error is AxiosError<AuthErrorResponse> => isAxiosError(error)
@@ -48,7 +48,7 @@ const onSubmit = handleSubmit(async (values) => {
       password: t('auth.invalidCredentials'),
     })
     toast.error(t('common.error'), {
-      description: isAuthError(error) ? error.response?.data.detail ?? error.message : t('auth.invalidCredentials'),
+      description: isAuthError(error) ? error.response?.data.message ?? error.message : t('auth.invalidCredentials'),
     })
   }
 })

@@ -8,7 +8,7 @@ import type { MockStorage } from '@/mocks/mock.type'
 
 export const setupProjectMocks = (mock: AxiosMockAdapter, storage: MockStorage) => {
   // Create
-  mock.onPost('/projects').reply(async (config: AxiosRequestConfig) => {
+  mock.onPost('/api/v1/projects').reply(async (config: AxiosRequestConfig) => {
     const payload = JSON.parse(config.data)
     const { value, errors } = await createProjectSchema.parse(payload)
 
@@ -22,14 +22,14 @@ export const setupProjectMocks = (mock: AxiosMockAdapter, storage: MockStorage) 
   })
 
   // Read (List)
-  mock.onGet('/projects').reply(() => {
+  mock.onGet('/api/v1/projects').reply(() => {
     const projects = storage.projects
     const response = { status: HttpStatusCode.Ok, data: { projects } }
     return sendResponse(response, 'listProjects')
   })
 
   // Read (Single)
-  mock.onGet(/\/projects\/\w+/).reply((config: AxiosRequestConfig) => {
+  mock.onGet(/\/api\/v1\/projects\/\w+/).reply((config: AxiosRequestConfig) => {
     const id = config.url?.split('/').pop()
     const project = storage.projects.find(p => p.id === id)
 
@@ -42,7 +42,7 @@ export const setupProjectMocks = (mock: AxiosMockAdapter, storage: MockStorage) 
   })
 
   // Update
-  mock.onPut(/\/projects\/\w+/).reply(async (config: AxiosRequestConfig) => {
+  mock.onPut(/\/api\/v1\/projects\/\w+/).reply(async (config: AxiosRequestConfig) => {
     const id = config.url?.split('/').pop()
     const payload = JSON.parse(config.data)
     const { value, errors } = await updateProjectSchema.parse(payload)
@@ -62,7 +62,7 @@ export const setupProjectMocks = (mock: AxiosMockAdapter, storage: MockStorage) 
   })
 
   // Delete
-  mock.onDelete(/\/projects\/\w+/).reply((config: AxiosRequestConfig) => {
+  mock.onDelete(/\/api\/v1\/projects\/\w+/).reply((config: AxiosRequestConfig) => {
     const id = config.url?.split('/').pop()
     const index = storage.projects.findIndex(p => p.id === id)
 

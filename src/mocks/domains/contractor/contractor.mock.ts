@@ -8,7 +8,7 @@ import type { MockStorage } from '@/mocks/mock.type'
 
 export const setupContractorMocks = (mock: AxiosMockAdapter, storage: MockStorage) => {
   // Create
-  mock.onPost('/contractors').reply(async (config: AxiosRequestConfig) => {
+  mock.onPost('/api/v1/contractors').reply(async (config: AxiosRequestConfig) => {
     const payload = JSON.parse(config.data)
     const { value, errors } = await createContractorSchema.parse(payload)
 
@@ -22,14 +22,14 @@ export const setupContractorMocks = (mock: AxiosMockAdapter, storage: MockStorag
   })
 
   // Read (List)
-  mock.onGet('/contractors').reply(() => {
+  mock.onGet('/api/v1/contractors').reply(() => {
     const contractors = storage.contractors
     const response = { status: HttpStatusCode.Ok, data: { contractors } }
     return sendResponse(response, 'listContractors')
   })
 
   // Read (Single)
-  mock.onGet(/\/contractors\/\w+/).reply((config: AxiosRequestConfig) => {
+  mock.onGet(/\/api\/v1\/contractors\/\w+/).reply((config: AxiosRequestConfig) => {
     const id = config.url?.split('/').pop()
     const contractor = storage.contractors.find(c => c.id === id)
 
@@ -42,7 +42,7 @@ export const setupContractorMocks = (mock: AxiosMockAdapter, storage: MockStorag
   })
 
   // Update
-  mock.onPut(/\/contractors\/\w+/).reply(async (config: AxiosRequestConfig) => {
+  mock.onPut(/\/api\/v1\/contractors\/\w+/).reply(async (config: AxiosRequestConfig) => {
     const id = config.url?.split('/').pop()
     const payload = JSON.parse(config.data)
     const { value, errors } = await updateContractorSchema.parse(payload)
@@ -62,7 +62,7 @@ export const setupContractorMocks = (mock: AxiosMockAdapter, storage: MockStorag
   })
 
   // Delete
-  mock.onDelete(/\/contractors\/\w+/).reply((config: AxiosRequestConfig) => {
+  mock.onDelete(/\/api\/v1\/contractors\/\w+/).reply((config: AxiosRequestConfig) => {
     const id = config.url?.split('/').pop()
     const index = storage.contractors.findIndex(c => c.id === id)
 

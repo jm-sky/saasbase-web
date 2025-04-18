@@ -7,8 +7,8 @@ export interface IConfig {
 }
 
 export const config = {
-  appId: 'boilerplate',
-  appName: 'Boilerplate',
+  appId: 'saasbase',
+  appName: 'SaasBase',
   auth: {
     providers: {
       gitHub: true,

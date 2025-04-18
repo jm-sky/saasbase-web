@@ -9,7 +9,7 @@ import type { IPublicUser, IUser, IUserStored } from '@/domains/user/types/user.
 import type { MockStorage } from '@/mocks/mock.type'
 
 export const setupUserMocks = (mock: AxiosMockAdapter, storage: MockStorage) => {
-  mock.onGet('/user').reply((config: AxiosRequestConfig) => {
+  mock.onGet('/api/v1/user').reply((config: AxiosRequestConfig) => {
     console.log('[mockApi][user]', config)
     const userData: IUserStored = storage.users.at(0) ?? UserFactory.createUser()
     const user: IUser = toUserData({...userData})
@@ -17,7 +17,7 @@ export const setupUserMocks = (mock: AxiosMockAdapter, storage: MockStorage) => 
     return sendResponse(response, 'user')
   })
 
-  mock.onGet('/users').reply(() => {
+  mock.onGet('/api/v1/users').reply(() => {
     const users: IPublicUser[] = [
       toPublicUser(UserFactory.createUser()),
       toPublicUser(UserFactory.createUser(undefined, true)),
