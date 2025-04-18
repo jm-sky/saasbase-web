@@ -1,5 +1,7 @@
 import { isAuthenticated } from '@/router/middleware/isAuthenticated'
 import { authRoutes } from '@/router/routes/auth'
+import { contractorRoutes } from '@/router/routes/contractor'
+import { productRoutes } from '@/router/routes/product'
 import { publicRoutes } from '@/router/routes/public'
 import { settingsRoutes } from '@/router/routes/settings'
 import HomeView from '@/views/HomeView.vue'
@@ -18,6 +20,8 @@ export const routes: RouteRecordRaw[] = [
   ...authRoutes,
   ...publicRoutes,
   ...settingsRoutes,
+  ...contractorRoutes,
+  ...productRoutes,
 
   {
     path: '/mailbox/:box?',

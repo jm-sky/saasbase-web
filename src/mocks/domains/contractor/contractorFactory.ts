@@ -40,7 +40,7 @@ export class ContractorFactory {
     }
   }
 
-  static createContractor(overrides: Partial<IContractor> = {}): IContractor {
+  static create(overrides: Partial<IContractor> = {}): IContractor {
     const contractorId = v4()
     const tenantId = v4()
 

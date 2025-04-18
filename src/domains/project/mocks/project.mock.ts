@@ -14,7 +14,7 @@ export const setupProjectMocks = (mock: AxiosMockAdapter, storage: MockStorage) 
 
     if (!value) return validationError(errors)
 
-    const project = ProjectFactory.createProject(value)
+    const project = ProjectFactory.create(value)
     storage.projects.push(project)
 
     const response = { status: HttpStatusCode.Created, data: project }

@@ -4,7 +4,7 @@ import { v4 } from 'uuid'
 import { type IProject } from '../types/project.type'
 
 export class ProjectFactory {
-  static createProject(overrides: Partial<IProject> = {}): IProject {
+  static create(overrides: Partial<IProject> = {}): IProject {
     return {
       id: v4(),
       tenantId: v4(),

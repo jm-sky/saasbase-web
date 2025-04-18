@@ -1,0 +1,12 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+
+# Use approciate layouts
+
+- Our layouts are located in `src/layouts/` folder
+- Our layouts uses slots, so every page/view should import layout component
+- We have `AuthenticatedLayout.vue` for authenticated users.
+- We have `GuestLayout.vue` for guests.

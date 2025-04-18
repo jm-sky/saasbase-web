@@ -8,7 +8,7 @@ import type { IUserStored } from '@/domains/user/types/user.type'
  * https://www.dicebear.com/how-to-use/http-api/
  */
 export class UserFactory {
-  static createUser(overrides: Partial<IUserStored> = {}, withImage: boolean | undefined = undefined): IUserStored {
+  static create(overrides: Partial<IUserStored> = {}, withImage: boolean | undefined = undefined): IUserStored {
     const firstName = faker.person.firstName()
     const lastName = faker.person.lastName()
     const avatarStyle = faker.helpers.arrayElement(['adventurer', 'pixel-art', 'avataaars-neutral'])

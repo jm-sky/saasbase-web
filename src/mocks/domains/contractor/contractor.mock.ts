@@ -14,7 +14,7 @@ export const setupContractorMocks = (mock: AxiosMockAdapter, storage: MockStorag
 
     if (!value) return validationError(errors)
 
-    const contractor = ContractorFactory.createContractor(value)
+    const contractor = ContractorFactory.create(value)
     storage.contractors.push(contractor)
 
     const response = { status: HttpStatusCode.Created, data: contractor }

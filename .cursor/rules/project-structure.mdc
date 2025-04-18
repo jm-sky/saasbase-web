@@ -1,0 +1,10 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+
+# Domain project structure
+
+- We store domain files in folder `src/domains/[domain]/components|factories|mocks|models|services|types|validation`
+- We store Zod schemas in `validation` subfolder

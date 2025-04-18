@@ -21,7 +21,7 @@ export const setupAuthMocks = (mock: AxiosMockAdapter, storage: MockStorage) => 
       return sendResponse(validationError({ email: ['E-mail already taken'] }), 'authRegister')
     }
 
-    const user = UserFactory.createUser(value)
+    const user = UserFactory.create(value)
     const storedUser: IUserStored = {
       ...user,
       birthDate: user.birthDate ? new Date(user.birthDate).toISOString() : undefined,

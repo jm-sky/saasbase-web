@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import {
   Mail,
+  Package,
   Rocket,
   Settings2,
+  Users,
 } from 'lucide-vue-next'
 import NavMain from '@/components/Layout/NavMain.vue'
 import UserNav from '@/components/Layout/UserNav.vue'
@@ -26,6 +28,16 @@ const menu = {
       title: 'Dashboard',
       url: '/',
       icon: Rocket,
+    },
+    {
+      title: 'Contractors',
+      url: '/contractors',
+      icon: Users,
+    },
+    {
+      title: 'Products',
+      url: '/products',
+      icon: Package,
     },
     {
       title: 'Mailbox',
