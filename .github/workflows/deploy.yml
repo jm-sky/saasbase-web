@@ -1,4 +1,4 @@
-name: Deploy Vue App
+name: Build & Deploy Vue App
 
 on:
   workflow_dispatch:  # ręczne uruchamianie z interfejsu GitHub
@@ -34,6 +34,7 @@ jobs:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
+          port: ${{ secrets.SSH_PORT }}
           source: 'dist/*'
           target: ${{ secrets.SSH_TARGET }}
           strip_components: 1
