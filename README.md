@@ -2,7 +2,7 @@
 
 Frontend aplikacji SaaS (multi-tenant) dla systemu **SaaSBass**, stworzonego z użyciem **Vue 3**, **TypeScript**, **Pinia**, **TailwindCSS** oraz **Vite**. Aplikacja współpracuje z API backenda: [saasbase-api](https://github.com/jm-sky/saasbase-api).
 
-https://github.com/jm-sky/vue-ts-boilerplate/assets/17783569/c02801a0-894e-4395-93b0-6f7bcae4913d
+![obraz](https://github.com/jm-sky/vue-ts-boilerplate/assets/17783569/c02801a0-894e-4395-93b0-6f7bcae4913d)
 
 ## Technologie
 
