@@ -27,6 +27,8 @@ jobs:
 
       - name: Build app
         run: pnpm build
+        env:
+          VITE_API_URL: https://api.saasbase.madeyski.org
 
       - name: Deploy via SCP
         uses: appleboy/scp-action@v0.1.4
