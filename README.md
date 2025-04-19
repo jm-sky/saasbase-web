@@ -2,8 +2,7 @@
 
 Frontend aplikacji SaaS (multi-tenant) dla systemu **SaaSBass**, stworzonego z użyciem **Vue 3**, **TypeScript**, **Pinia**, **TailwindCSS** oraz **Vite**. Aplikacja współpracuje z API backenda: [saasbase-api](https://github.com/jm-sky/saasbase-api).
 
-![obraz](https://github.com/jm-sky/vue-ts-boilerplate/assets/17783569/c02801a0-894e-4395-93b0-6f7bcae4913d)
- 
+https://github.com/jm-sky/vue-ts-boilerplate/assets/17783569/c02801a0-894e-4395-93b0-6f7bcae4913d
 
 ## Technologie
 
@@ -19,7 +18,7 @@ Frontend aplikacji SaaS (multi-tenant) dla systemu **SaaSBass**, stworzonego z u
 
 ## Struktura projektu
 
-\`\`\`
+```
 .
 ├── public/                # Statyczne pliki publiczne
 ├── src/
@@ -29,24 +28,24 @@ Frontend aplikacji SaaS (multi-tenant) dla systemu **SaaSBass**, stworzonego z u
 │   ├── domains/          # Foldery domenowe (np. projects, tasks, invoices)
 │   │   └── każda domena: komponenty, stores, api, typy, itd.
 │   ├── layouts/          # Układy aplikacji (np. default, auth)
-│   ├── pages/            # Widoki routingu (np. \`/login\`, \`/dashboard\`)
+│   ├── pages/            # Widoki routingu (np. `/login`, `/dashboard`)
 │   ├── router/           # Konfiguracja tras
 │   ├── services/         # Globalne serwisy (np. auth, axios, api)
 │   ├── stores/           # Globalne stany Pinia
 │   ├── types/            # Typy globalne TypeScript
 │   ├── utils/            # Pomocnicze funkcje
 │   └── main.ts           # Punkt wejścia aplikacji
-\`\`\`
+```
 
 ### Konwencja domen
 
-Każda funkcjonalność aplikacji (np. Projekty, Zadania, Faktury) ma swój folder w \`src/domains/<domena>\` i zawiera:
+Każda funkcjonalność aplikacji (np. Projekty, Zadania, Faktury) ma swój folder w `src/domains/<domena>` i zawiera:
 
-- \`components/\` – komponenty związane z daną domeną  
-- \`pages/\` – widoki domenowe  
-- \`stores/\` – Pinia store’y domenowe  
-- \`api.ts\` – funkcje do komunikacji z backendem  
-- \`types.ts\` – lokalne typy i interfejsy  
+- `components/` – komponenty związane z daną domeną  
+- `pages/` – widoki domenowe  
+- `stores/` – Pinia store’y domenowe  
+- `api.ts` – funkcje do komunikacji z backendem  
+- `types.ts` – lokalne typy i interfejsy  
 
 Dzięki temu struktura jest skalowalna i łatwa w utrzymaniu.
 
@@ -54,63 +53,63 @@ Dzięki temu struktura jest skalowalna i łatwa w utrzymaniu.
 
 ### Wymagania
 
-- Node.js \`>=18\`
-- pnpm \`>=8\` (lub npm/yarn)
+- Node.js `>=18`
+- pnpm `>=8` (lub npm/yarn)
 
 ### Instalacja
 
-\`\`\`bash
+```bash
 pnpm install
-\`\`\`
+```
 
 ### Środowisko
 
-Stwórz plik \`.env\` na podstawie \`.env.example\`:
+Stwórz plik `.env` na podstawie `.env.example`:
 
-\`\`\`bash
+```bash
 cp .env.example .env
-\`\`\`
+```
 
 Ustaw adres backendu (API):
 
-\`\`\`
+```
 VITE_API_URL=http://localhost:8000/api
-\`\`\`
+```
 
 ### Start aplikacji developerskiej
 
-\`\`\`bash
+```bash
 pnpm dev
-\`\`\`
+```
 
 ### Budowanie produkcyjne
 
-\`\`\`bash
+```bash
 pnpm build
-\`\`\`
+```
 
 ### Preview wersji produkcyjnej
 
-\`\`\`bash
+```bash
 pnpm preview
-\`\`\`
+```
 
 ## Styl kodu
 
 Kod jest automatycznie formatowany przy użyciu Prettier i sprawdzany przez ESLint.
 
-\`\`\`bash
+```bash
 pnpm lint
 pnpm format
-\`\`\`
+```
 
 ## Testy
 
 Testy pisane są z użyciem **Vitest**.
 
-\`\`\`bash
+```bash
 pnpm test
-\`\`\`
+```
 
 ## Współpraca z backendem
 
