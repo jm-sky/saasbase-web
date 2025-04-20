@@ -27,6 +27,13 @@ Frontend aplikacji SaaS (multi-tenant) dla systemu **SaaSBass**, stworzonego z u
 │   ├── composables/      # Reużywalne funkcje (composition API)
 │   ├── domains/          # Foldery domenowe (np. projects, tasks, invoices)
 │   │   └── każda domena: komponenty, stores, api, typy, itd.
+│   │       ├── components
+│   │       ├── factories
+│   │       ├── mocks
+│   │       ├── models
+│   │       ├── services
+│   │       ├── types
+│   │       └── validation
 │   ├── layouts/          # Układy aplikacji (np. default, auth)
 │   ├── pages/            # Widoki routingu (np. `/login`, `/dashboard`)
 │   ├── router/           # Konfiguracja tras
