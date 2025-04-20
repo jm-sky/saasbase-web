@@ -18,6 +18,6 @@ export const config = {
     },
   },
   api: {
-    mockBackend: import.meta.env.VITE_API_MOCK ?? true,
+    mockBackend: import.meta.env.VITE_API_MOCK ?? false,
   },
 }
