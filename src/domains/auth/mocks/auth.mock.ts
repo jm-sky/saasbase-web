@@ -13,20 +13,20 @@ export const setupAuthMocks = (mock: AxiosMockAdapter, storage: MockStorage) => 
   mock.onPost('/api/v1/auth/register').reply(async (config: AxiosRequestConfig) => {
     const payload: RegistrationData = JSON.parse(config.data)
     console.log('[mockApi][authRegister] payload:', payload)
-    const { value, errors } = await registrationSchema.parse(payload)
+    const result = await registrationSchema.safeParse(payload)
 
-    if (!value) return validationError(errors)
+    if (!result.success) return validationError(result.error.errors)
 
-    if (storage.users.find(u => u.email === value.email)) {
+    if (storage.users.find(u => u.email === result.data.email)) {
       return sendResponse(validationError({ email: ['E-mail already taken'] }), 'authRegister')
     }
 
-    const user = UserFactory.create(value)
+    const user = UserFactory.create(result.data)
     const storedUser: IUserStored = {
       ...user,
       birthDate: user.birthDate ? new Date(user.birthDate).toISOString() : undefined,
       createdAt: new Date(user.createdAt).toISOString(),
-      password: value.password,
+      password: result.data.password,
     }
     storage.users.push(storedUser)
 
@@ -37,11 +37,11 @@ export const setupAuthMocks = (mock: AxiosMockAdapter, storage: MockStorage) => 
   mock.onPost('/api/v1/auth/login').reply(async (config: AxiosRequestConfig) => {
     const payload: Credentials = JSON.parse(config.data)
     console.log('[mockApi][authLogin]', payload)
-    const { value, errors } = await credentialsSchema.parse(payload)
+    const result = await credentialsSchema.safeParse(payload)
 
-    if (!value) return validationError(errors)
+    if (!result.success) return validationError(result.error.errors)
 
-    const user = storage.users.find(u => u.email === value.email)
+    const user = storage.users.find(u => u.email === result.data.email)
 
     if (!user) {
       return sendResponse(validationError({ email: ['Invalid credentials'] }), 'authLogin')

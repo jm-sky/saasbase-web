@@ -1,8 +1,8 @@
 import { HttpStatusCode } from 'axios'
 import { type AxiosRequestConfig } from 'axios'
-import { ProductFactory } from '@/mocks/domains/product/productFactory'
+import { ProductFactory } from '@/domains/product/factories/productFactory'
+import { createProductSchema, updateProductSchema } from '@/domains/product/validation/product.schema'
 import { sendResponse, validationError } from '@/mocks/helpers/utils'
-import { createProductSchema, updateProductSchema } from '@/schemas/product.schema'
 import type AxiosMockAdapter from 'axios-mock-adapter'
 import type { MockStorage } from '@/mocks/mock.type'
 

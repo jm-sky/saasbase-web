@@ -8,7 +8,7 @@ export interface IConfig {
 
 export const config = {
   appId: import.meta.env.VITE_APP_ID ?? 'saasbase',
-  appName: 'SaaS Base',
+  appName: import.meta.env.VITE_APP_NAME ?? 'SaaS Base',
   auth: {
     providers: {
       gitHub: true,
@@ -18,6 +18,6 @@ export const config = {
     },
   },
   api: {
-    mockBackend: import.meta.env.VITE_API_MOCK ?? false,
+    mockBackend: import.meta.env.VITE_API_MOCK === '1',
   },
 }
