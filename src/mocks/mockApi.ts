@@ -37,6 +37,7 @@ const seedMockStorage = (storage: Ref<MockStorage>) => {
  * https://github.com/ctimmerm/axios-mock-adapter
  */
 export const mockApi = (axios: AxiosInstance, seed = true) => {
+  console.log('[mockApi] Using backend mocking | config:', config)
   const storage = useLocalStorage<MockStorage>(`${config.appId}:mockStorage`, STORAGE)
   const mock = new AxiosMockAdapter(axios, { delayResponse: 200 })
 
