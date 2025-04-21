@@ -25,9 +25,9 @@ export class AuthService {
   async login(credentials: Credentials): Promise<SessionData | ZodError<Credentials>> {
     const authStore = useAuthStore()
 
-    const response = (await api.post<{ token: string }>(apiRoutesMap.authLogin, credentials)).data
+    const response = (await api.post<{ access_token: string }>(apiRoutesMap.authLogin, credentials)).data
 
-    authStore.setToken(response.token)
+    authStore.setToken(response.access_token)
     authStore.session = this.createSession(await this.getUser())
 
     return authStore.session
