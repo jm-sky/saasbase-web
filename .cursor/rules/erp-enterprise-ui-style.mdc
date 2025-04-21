@@ -1,0 +1,54 @@
+# Rule: erp_enterprise_ui_style
+
+## Description
+Design and implement frontend components with a professional enterprise-style UI. This includes dense data tables, detailed multi-section forms, and a desktop-like user experience suitable for admin panels, ERP, and CRM systems.
+
+## When
+- Creating admin panels or back-office UIs
+- Building ERP/CRM modules (contractors, invoices, products, etc.)
+- Generating forms and tables with complex data structures
+- Implementing data-heavy, desktop-first interfaces
+
+## Style
+- **Layout**: multi-column grid, tabbed or accordion sections
+- **Spacing**: compact, minimal whitespace
+- **Color scheme**: neutral grayscale with accent colors (e.g., red for critical actions)
+- **UI Components**: 
+  - Tables with sorting/filtering
+  - Detailed forms with field grouping
+  - Modals and side panels for edits
+  - Tabs for navigation within entities
+- **Behavior**:
+  - Desktop-first, responsive fallback
+  - In-line editing where applicable
+  - Tooltip-based guidance
+  - Consistent action placement (top-right or bottom bar)
+
+## Examples
+
+### Form layout
+
+```prompt
+Create a form to manage contractor details (name, tax ID, address, classification).
+```
+
+```suggestion
+Use a card layout with tabs: "General Info", "Tax Info", and "Address". Use a compact form with 2-column grid layout. Add Save/Cancel buttons pinned to the bottom right. Use select dropdowns for classification fields.
+```
+
+---
+
+### Table view
+
+```prompt
+Create a table listing contractors with columns: name, NIP, city, contact email.
+```
+
+```suggestion
+Use a dense table with sticky headers and sortable columns. Add row hover actions for "Edit" and "Delete". Include search and column filters in the header. Ensure it fits at least 20 rows on 1080p screen without scrolling.
+```
+
+---
+
+## Tags
+`erp` `crm` `admin-panel` `form` `table` `enterprise-ui` `desktop-style`
