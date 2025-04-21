@@ -11,10 +11,10 @@ import type { Credentials, RegistrationData, ResetPasswordData } from '@/domains
 const SESSION_LIFETIME = 15
 
 export type LoginResponse = {
-  access_token: string
-  refresh_token: string
-  token_type: string
-  expires_in: number
+  accessToken: string
+  refreshToken: string
+  tokenType: string
+  expiresIn: number
   user: unknown
 }
  
@@ -35,7 +35,9 @@ export class AuthService {
 
     const response = (await api.post<LoginResponse>(apiRoutesMap.authLogin, credentials)).data
 
-    authStore.setToken(response.access_token)
+    authStore.setToken(response.accessToken)
+    // Refresh token - saved in http-only cookie 
+    // authStore.setRefreshToken(response.refreshToken)
     authStore.session = this.createSession(await this.getUser())
 
     return authStore.session
