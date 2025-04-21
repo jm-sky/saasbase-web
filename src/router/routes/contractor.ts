@@ -10,4 +10,12 @@ export const contractorRoutes: RouteRecordRaw[] = [
       middlewares: [isAuthenticated],
     },
   },
+  {
+    path: '/contractors/add',
+    name: 'addContractor',
+    component: () => import('@/views/contractor/AddContractorView.vue'),
+    meta: {
+      middlewares: [isAuthenticated],
+    },
+  },
 ]
