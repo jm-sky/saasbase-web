@@ -11,10 +11,6 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-</script>
-Here is the rest of the corrected code to replace the "Add Contractor" button:
-
-```vue
 } from '@/components/ui/table'
 import { formatDate } from '@/helpers/date'
 import AuthenticatedLayout from '@/layouts/AuthenticatedLayout.vue'
