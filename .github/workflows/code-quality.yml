@@ -1,14 +1,19 @@
-name: Lint and Type Check
+name: Lint, Type Check, and Tests
 
 on:
   push:
     branches: [main]
+    paths-ignore:
+      - '.docs/**'
   pull_request:
     branches: [main]
+    paths-ignore:
+      - '.docs/**'
+  workflow_dispatch:
 
 jobs:
   lint-typecheck:
-    name: Lint and Type Check
+    name: Lint, Type Check
     runs-on: ubuntu-latest
 
     steps:
