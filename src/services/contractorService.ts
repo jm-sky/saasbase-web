@@ -11,8 +11,8 @@ export interface IContractorGetParams {
 
 class ContractorService {
   async index(params?: IContractorGetParams): Promise<Contractor[]> {
-    const response = await api.get<{ contractors: IContractor[] }>(apiRoutesMap.contractors, { params })
-    return response.data.contractors.map(data => Contractor.load(data))
+    const response = await api.get<{ data: IContractor[] }>(apiRoutesMap.contractors, { params })
+    return response.data.data.map(data => Contractor.load(data))
   }
 
   async get(id: string): Promise<Contractor> {
