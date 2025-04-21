@@ -12,7 +12,6 @@ const SESSION_LIFETIME = 15
 
 export type LoginResponse = {
   accessToken: string
-  refreshToken: string
   tokenType: string
   expiresIn: number
   user: unknown
@@ -36,8 +35,7 @@ export class AuthService {
     const response = (await api.post<LoginResponse>(apiRoutesMap.authLogin, credentials)).data
 
     authStore.setToken(response.accessToken)
-    // Refresh token - saved in http-only cookie 
-    // authStore.setRefreshToken(response.refreshToken)
+    // Refresh token - saved in http-only cookie
     authStore.session = this.createSession(await this.getUser())
 
     return authStore.session
