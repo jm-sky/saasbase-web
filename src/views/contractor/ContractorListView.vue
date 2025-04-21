@@ -3,6 +3,7 @@ import { RefreshCw } from 'lucide-vue-next'
 import { onMounted, ref } from 'vue'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
+import ButtonLink from '@/components/ButtonLink.vue' <!-- Ensure ButtonLink is imported -->
 import {
   Table,
   TableBody,
@@ -10,6 +11,10 @@ import {
   TableHead,
   TableHeader,
   TableRow,
+</script>
+Here is the rest of the corrected code to replace the "Add Contractor" button:
+
+```vue
 } from '@/components/ui/table'
 import { formatDate } from '@/helpers/date'
 import AuthenticatedLayout from '@/layouts/AuthenticatedLayout.vue'
@@ -49,7 +54,7 @@ onMounted(() => {
           <Button variant="outline" @click="fetchContractors">
             <RefreshCw class="h-4 w-4" />
           </Button>
-          <Button>Add Contractor</Button>
+          <ButtonLink to="/contractors/add">Add Contractor</ButtonLink> <!-- Updated to ButtonLink -->
         </div>
       </div>
 
