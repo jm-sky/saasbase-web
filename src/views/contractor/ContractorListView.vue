@@ -3,7 +3,7 @@ import { RefreshCw } from 'lucide-vue-next'
 import { onMounted, ref } from 'vue'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import ButtonLink from '@/components/ButtonLink.vue' <!-- Ensure ButtonLink is imported -->
+import ButtonLink from '@/components/ButtonLink.vue'
 import {
   Table,
   TableBody,
@@ -50,7 +50,7 @@ onMounted(() => {
           <Button variant="outline" @click="fetchContractors">
             <RefreshCw class="h-4 w-4" />
           </Button>
-          <ButtonLink to="/contractors/add">Add Contractor</ButtonLink> <!-- Updated to ButtonLink -->
+          <ButtonLink to="/contractors/add">Add Contractor</ButtonLink>
         </div>
       </div>
 
