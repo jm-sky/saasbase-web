@@ -9,8 +9,8 @@ export interface IProductGetParams {
 
 class ProductService {
   async index(params?: IProductGetParams): Promise<Product[]> {
-    const response = await api.get<{ products: IProduct[] }>(apiRoutesMap.products, { params })
-    return response.data.products.map(data => Product.load(data))
+    const response = await api.get<{ data: IProduct[] }>(apiRoutesMap.products, { params })
+    return response.data.data.map(data => Product.load(data))
   }
 
   async get(id: string): Promise<Product> {
