@@ -11,12 +11,6 @@ import { cn } from '@/lib/utils'
     <RouterLink to="/" class="group-has-data-[collapsible=icon]/sidebar-wrapper:py-3 py-5">
       Dashboard
     </RouterLink>
-    <RouterLink to="/mailbox/inbox" class="group-has-data-[collapsible=icon]/sidebar-wrapper:py-3 py-5">
-      MailBox
-    </RouterLink>
-    <RouterLink to="/settings" class="group-has-data-[collapsible=icon]/sidebar-wrapper:py-3 py-5">
-      Settings
-    </RouterLink>
   </nav>
 </template>
 
