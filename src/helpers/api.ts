@@ -1,5 +1,4 @@
 import axios, { AxiosError } from 'axios'
-import { config } from '@/config'
 import { interceptUnauthorized } from '@/helpers/api/interceptUnauthorized'
 import { DEFAULT_LOCALE } from '@/i18n'
 import type { AxiosInstance, AxiosResponse } from 'axios'
@@ -27,6 +26,5 @@ export const setApiAuthorization = (token?: string | null) => {
     delete api.defaults.headers.common.Authorization
   }
 }
-
 
 export default api
