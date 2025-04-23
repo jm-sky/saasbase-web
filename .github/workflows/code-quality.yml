@@ -41,8 +41,18 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
+      - name: Run ESLint --fix
+        run: pnpm lint-fix
+
+      - name: Commit ESLint fixes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add .
+          git diff --quiet && echo "No changes to commit" || git commit -m "chore: auto eslint fixes" && git push
+
       - name: Run ESLint
-        run: pnpm lint
+        run: pnpm lint-only
 
       - name: Run Type Check
         run: pnpm tsc --noEmit
