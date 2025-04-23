@@ -14,8 +14,8 @@ import {
 } from '@/components/ui/table'
 import { formatDate } from '@/helpers/date'
 import AuthenticatedLayout from '@/layouts/AuthenticatedLayout.vue'
-import { contractorService } from '@/services/contractorService'
-import type { Contractor } from '@/models/contractor.model'
+import { contractorService } from '@/domains/contractor/services/contractorService'
+import type { Contractor } from '@/domains/contractor/models/contractor.model'
 
 const contractors = ref<Contractor[]>([])
 const loading = ref(false)
