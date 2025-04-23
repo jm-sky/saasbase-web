@@ -11,6 +11,7 @@
     "type-check": "vue-tsc --build --force",
     "preview": "vite preview",
     "lint": "eslint . --fix",
+    "lint-fix": "eslint . --fix", 
     "lint-only": "eslint ." 
   },
   "dependencies": {
