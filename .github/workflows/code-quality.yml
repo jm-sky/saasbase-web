@@ -58,9 +58,6 @@ jobs:
           git add .
           git diff --quiet && echo "No changes to commit" || git commit -m "chore: auto eslint fixes" && git push origin ${{ steps.get_branch.outputs.branch_name }}
 
-      - name: Run ESLint
-        run: pnpm lint-only
-
       - name: Run Type Check
         run: pnpm tsc --noEmit
 
@@ -68,3 +65,6 @@ jobs:
       #   run: pnpm vitest run
       #   env:
       #     NODE_ENV: test
+
+      - name: Run Build
+        run: pnpm build
