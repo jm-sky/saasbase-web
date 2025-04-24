@@ -6,7 +6,7 @@ import type {
   IContractorBankAccountCreate,
   IContractorContactPersonCreate,
   IContractorCreate
-} from '@/models/contractor.model'
+} from '@/domains/contractor/models/contractor.model'
 
 const uuidSchema = z.string().uuid()
 
