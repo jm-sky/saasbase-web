@@ -1,15 +1,31 @@
 <script setup lang="ts">
 import { Mail } from 'lucide-vue-next'
+import { ref } from 'vue'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { useToast } from '@/components/ui/toast'
 import { useLogout } from '@/composables/useLogout'
+import { authService } from '@/domains/auth/services/authService'
+import { useAuthStore } from '@/domains/auth/store/auth.store'
 import GuestLayout from '@/layouts/GuestLayout.vue'
 
+const authStore = useAuthStore()
 const { logout } = useLogout()
+const { toast } = useToast()
 
-const handleResend = () => {
-  // TODO: Implement resend verification email
-  console.log('Resend verification email')
+const loading = ref(false)
+
+const handleResend = async () => {
+  try {
+    loading.value = true
+    await authService.resendEmailVerification(`${authStore.userData?.email}`)
+    toast.success('Verification email sent')
+  } catch (error) {
+    console.error(error)
+    toast.error('Failed to resend verification email')
+  } finally {
+    loading.value = false
+  }
 }
 </script>
 
@@ -31,7 +47,7 @@ const handleResend = () => {
             <p class="text-sm text-muted-foreground">
               If you haven't received the email, check your spam folder or click the button below to resend the verification link.
             </p>
-            <Button @click="handleResend">
+            <Button :disabled="loading" :loading @click="handleResend">
               Resend Verification Email
             </Button>
 

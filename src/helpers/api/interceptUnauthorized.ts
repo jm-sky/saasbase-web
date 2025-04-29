@@ -4,8 +4,8 @@ import { useToast } from '@/components/ui/toast'
 import { useAuthStore } from '@/domains/auth/store/auth.store'
 import router from '@/router'
 
-const AUTH_TOKEN_URL = '/api/auth/token'
-const AUTH_REFRESH_TOKEN_URL = '/api/auth/token/refresh'
+const AUTH_TOKEN_URL = '/api/v1/auth/token'
+const AUTH_REFRESH_TOKEN_URL = '/api/v1/auth/token/refresh'
 
 class TokenRefreshError extends Error {
   constructor(message = 'Failed to refresh token') {

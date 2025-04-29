@@ -43,6 +43,10 @@ export class AuthService {
 
     authStore.setToken(accessToken)
   }
+
+  async resendEmailVerification(email: string) {
+    await api.post(apiRoutesMap.authResendEmailVerification, { email })
+  }
 }
 
 export const authService = new AuthService()

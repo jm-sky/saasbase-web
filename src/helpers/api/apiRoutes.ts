@@ -2,6 +2,7 @@ export const apiRoutesMap = {
   authLogin: '/auth/login',
   authRegister: '/auth/register',
   authLogout: '/auth/logout',
+  authResendEmailVerification: '/email/verification-notification',
   me: '/me',
   users: '/users',
   projects: '/projects',
