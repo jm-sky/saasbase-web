@@ -3,7 +3,7 @@ import { AxiosError, isAxiosError } from 'axios'
 import { useForm } from 'vee-validate'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { RouterLink, useRouter } from 'vue-router'
+import { RouterLink } from 'vue-router'
 import FormFieldLabeled from '@/components/Form/FormFieldLabeled.vue'
 import FormFieldLabeledAfter from '@/components/Form/FormFieldLabeledAfter.vue'
 import { Button } from '@/components/ui/button'
@@ -11,8 +11,8 @@ import { Checkbox } from '@/components/ui/checkbox'
 import { Input } from '@/components/ui/input'
 import { useToast } from '@/components/ui/toast'
 import UIIcon from '@/components/UIIcon.vue'
+import { useLogin } from '@/composables/useLogin'
 import { config } from '@/config'
-import { authService } from '@/domains/auth/services/authService'
 import { credentialsSchema } from '@/domains/auth/validation/auth.schema'
 import { cn } from '@/lib/utils'
 import type { Credentials } from '@/domains/auth/types/auth.type'
@@ -23,9 +23,9 @@ interface AuthErrorResponse {
 
 const isAuthError = (error: unknown): error is AxiosError<AuthErrorResponse> => isAxiosError(error)
 
-const router = useRouter()
 const { t } = useI18n()
 const { toast } = useToast()
+const { login } = useLogin()
 
 const { setErrors, isSubmitting, handleSubmit } = useForm<Credentials>({
   validationSchema: credentialsSchema,
@@ -38,8 +38,7 @@ const { setErrors, isSubmitting, handleSubmit } = useForm<Credentials>({
 
 const onSubmit = handleSubmit(async (values) => {
   try {
-    await authService.login(values)
-    await router.push('/')
+    await login(values)
 
   } catch (error: unknown) {
     console.warn('[LoginError]', error)
