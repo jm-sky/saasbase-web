@@ -46,7 +46,7 @@ const isDark = useDark()
     </div>
 
     <div
-      class="w-full sm:max-w-md mt-6 px-6 py-4 bg-white/60 dark:bg-black/60 backdrop-blur-lg shadow-md overflow-hidden sm:rounded-lg transition-colors duration-1000"
+      class="w-full sm:max-w-md mt-6 px-6 py-4 bg-white/65 dark:bg-black/65 backdrop-blur-lg shadow-md overflow-hidden sm:rounded-lg transition-colors duration-1000"
     >
       <slot />
     </div>

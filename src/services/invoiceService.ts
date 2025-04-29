@@ -1,6 +1,6 @@
+import { type IInvoice, Invoice } from '@/domains/invoice/models/invoice.model'
 import api from '@/helpers/api'
 import { apiRoutesMap } from '@/helpers/api/apiRoutes'
-import { type IInvoice, Invoice } from '@/models/invoice.model'
 import type { TInvoiceStatus } from '@/types'
 
 export interface IInvoiceGetParams {

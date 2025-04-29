@@ -5,6 +5,8 @@ export const routeMap = {
     login: 'login',
     passwordForgot: 'passwordForgot',
     register: 'register',
+    verifyEmail: 'verifyEmail',
+    selectTenant: 'selectTenant',
   },
   settings: {
     index: 'settings-index',
@@ -20,6 +22,7 @@ export const routeTo = {
   login: (): RouteLocationRaw => ({ name: routeMap.auth.login }),
   passwordForgot: (): RouteLocationRaw => ({ name: routeMap.auth.passwordForgot }),
   register: (): RouteLocationRaw => ({ name: routeMap.auth.register }),
+  selectTenant: (): RouteLocationRaw => ({ name: routeMap.auth.selectTenant }),
   userProfile: (): RouteLocationRaw => ({ name: routeMap.userProfile }),
   settingsIndex: (): RouteLocationRaw => ({ name: routeMap.settings.index }),
   settingsProfile: (): RouteLocationRaw => ({ name: routeMap.settings.profile }),

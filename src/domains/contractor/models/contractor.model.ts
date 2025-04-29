@@ -1,4 +1,4 @@
-import type { TDateTime, TUUID } from '@/types/common'
+import type { TDateTime, TUUID } from '@/domains/shared/types/common'
 
 export interface IContractorAddress {
   id: TUUID

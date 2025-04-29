@@ -1,7 +1,7 @@
 import { faker } from '@faker-js/faker'
 import { formatISO } from 'date-fns'
 import { v4 } from 'uuid'
-import type { IProduct } from '@/models/product.model'
+import type { IProduct } from '@/domains/product/models/product.model'
 
 export class ProductFactory {
   static create(overrides: Partial<IProduct> = {}): IProduct {

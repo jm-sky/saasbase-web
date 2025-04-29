@@ -1,6 +1,6 @@
+import { Comment, type IComment } from '@/domains/comment/models/comment.model'
 import api from '@/helpers/api'
 import { apiRoutesMap } from '@/helpers/api/apiRoutes'
-import { Comment, type IComment } from '@/models/comment.model'
 
 export interface ICommentGetParams {
   commentableId?: string

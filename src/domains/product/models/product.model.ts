@@ -1,4 +1,4 @@
-import { type TDateTime } from '@/types/common'
+import { type TDateTime } from '@/domains/shared/types/common'
 
 export interface IProduct {
   id: string

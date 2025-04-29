@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { RefreshCw } from 'lucide-vue-next'
 import { onMounted, ref } from 'vue'
+import ButtonLink from '@/components/ButtonLink.vue'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import ButtonLink from '@/components/ButtonLink.vue'
 import {
   Table,
   TableBody,
@@ -15,7 +15,7 @@ import {
 import { formatDate } from '@/helpers/date'
 import AuthenticatedLayout from '@/layouts/AuthenticatedLayout.vue'
 import { contractorService } from '@/services/contractorService'
-import type { Contractor } from '@/models/contractor.model'
+import type { Contractor } from '@/domains/contractor/models/contractor.model'
 
 const contractors = ref<Contractor[]>([])
 const loading = ref(false)
@@ -50,7 +50,9 @@ onMounted(() => {
           <Button variant="outline" @click="fetchContractors">
             <RefreshCw class="h-4 w-4" />
           </Button>
-          <ButtonLink to="/contractors/add">Add Contractor</ButtonLink>
+          <ButtonLink to="/contractors/add">
+            Add Contractor
+          </ButtonLink>
         </div>
       </div>
 

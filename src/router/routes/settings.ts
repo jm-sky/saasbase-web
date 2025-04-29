@@ -1,4 +1,5 @@
 import { isAuthenticated } from '@/router/middleware/isAuthenticated'
+import { isVerified } from '@/router/middleware/isVerified'
 import type { RouteRecordRaw } from 'vue-router'
 
 export const settingsRoutes: RouteRecordRaw[] =  [
@@ -6,7 +7,7 @@ export const settingsRoutes: RouteRecordRaw[] =  [
     path: '/settings',
     component: () => import('@/views/settings/SettingsView.vue'),
     meta: {
-      middlewares: [isAuthenticated],
+      middlewares: [isAuthenticated, isVerified],
     },
     children: [
       {

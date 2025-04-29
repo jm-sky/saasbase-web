@@ -2,7 +2,7 @@ export const apiRoutesMap = {
   authLogin: '/auth/login',
   authRegister: '/auth/register',
   authLogout: '/auth/logout',
-  user: '/user',
+  me: '/me',
   users: '/users',
   projects: '/projects',
   tasks: '/tasks',
