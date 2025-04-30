@@ -6,6 +6,7 @@ export const routeMap = {
     passwordForgot: 'passwordForgot',
     register: 'register',
     verifyEmail: 'verifyEmail',
+    mfaVerify: 'mfaVerify',
     selectTenant: 'selectTenant',
   },
   settings: {
