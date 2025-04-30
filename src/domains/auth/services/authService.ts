@@ -10,6 +10,16 @@ export interface AuthResponse {
   expiresIn: number
 }
 
+export interface MfaVerifyResponse {
+  message: string
+}
+
+export interface MfaSetupResponse {
+  secret: string
+  qrCodeUrl: string
+  recoveryCodes: string[]
+}
+
 export class AuthService {
   async login(credentials: Credentials): Promise<void> {
     const authStore = useAuthStore()
@@ -31,9 +41,12 @@ export class AuthService {
   }
 
   async resetPassword(data: ResetPasswordData) {
-    await new Promise((resolve) => setTimeout(resolve, 1500))
+    const response = await api.post<{ message: string }>(apiRoutesMap.authResetPassword, data)
+    return response
+  }
 
-    return data
+  async forgotPassword(email: string): Promise<void> {
+    await api.post<{ message: string }>(apiRoutesMap.authForgotPassword, { email })
   }
 
   async register(registrationData: RegistrationData): Promise<void> {
@@ -46,6 +59,16 @@ export class AuthService {
 
   async resendEmailVerification(email: string) {
     await api.post(apiRoutesMap.authResendEmailVerification, { email })
+  }
+
+  async verify2fa(code: string) {
+    const response = await api.post<MfaVerifyResponse>(apiRoutesMap.auth2faVerify, { code })
+    return response.data
+  }
+
+  async setup2fa() {
+    const response = await api.post<MfaSetupResponse>(apiRoutesMap.auth2faSetup)
+    return response.data
   }
 }
 

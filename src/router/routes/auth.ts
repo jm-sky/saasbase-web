@@ -34,6 +34,14 @@ export const authRoutes: RouteRecordRaw[] = [
     },
   },
   {
+    path: '/2fa-verify',
+    name: routeMap.auth.mfaVerify,
+    component: () => import('@/views/auth/2faVerifyView.vue'),
+    meta: {
+      middlewares: [isAuthenticated, isVerified],
+    },
+  },
+  {
     path: '/select-tenant',
     name: routeMap.auth.selectTenant,
     component: () => import('@/views/tenant/SelectTenantView.vue'),

@@ -19,6 +19,7 @@ export interface JwtPayload extends BaseJwtPayload {
   ev: 0 | 1;      // Email verification status (0: not verified, 1: verified)
   mfa?: 1 | 2;    // Two factor status (1: enabled but not passed, 2: enabled and passed)
   tid?: string;   // Tenant ID (UUID, only present in tenant-scoped tokens)
+  rem?: 0 | 1;    // Remember me status (0: not remembered, 1: remembered)
 }
 
 
