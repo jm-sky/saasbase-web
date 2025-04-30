@@ -7,7 +7,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { PinInput } from '@/components/ui/pin-input'
 import { useToast } from '@/components/ui/toast'
 import UIIcon from '@/components/UIIcon.vue'
-import { authService } from '@/domains/auth/services/auth.service'
+import { authService } from '@/domains/auth/services/authService'
 import GuestLayout from '@/layouts/GuestLayout.vue'
 
 const { t } = useI18n()
