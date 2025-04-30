@@ -7,7 +7,7 @@ export const useLogin = () => {
     const authStore = useAuthStore()
 
     await authService.login(credentials)
-    authStore.userData = await authService.getMe()
+    authStore.setUser(await authService.getMe())
   }
 
   return { login }

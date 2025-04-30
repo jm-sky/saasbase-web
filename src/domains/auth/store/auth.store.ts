@@ -1,4 +1,4 @@
-import { useLocalStorage } from '@vueuse/core'
+import { StorageSerializers, useLocalStorage } from '@vueuse/core'
 import { defineStore } from 'pinia'
 import { computed, watch } from 'vue'
 import { config } from '@/config'
@@ -38,7 +38,7 @@ const extractJwt = (token?: string | null): JwtPayload | null => {
 
 export const useAuthStore = defineStore('auth', () => {
   const token = useLocalStorage<null | string>(`${config.appId}:token`, null)
-  const userData = useLocalStorage<null | IUser>(`${config.appId}:user`, null)
+  const userData = useLocalStorage<null | IUser>(`${config.appId}:user`, null, { serializer: StorageSerializers.object})
 
   const isAuthenticated = computed<boolean>(() => !!token.value)
   const jwtPayload = computed<null | JwtPayload>(() => extractJwt(token.value))
@@ -61,6 +61,8 @@ export const useAuthStore = defineStore('auth', () => {
     userData.value = null
   }
 
+  const setUser = (newUser: IUser) => userData.value = newUser
+
   // eslint-disable-next-line @typescript-eslint/no-confusing-void-expression
   watch(token, () => setApiAuthorization(token.value), {
     immediate: true,
@@ -78,6 +80,7 @@ export const useAuthStore = defineStore('auth', () => {
     isInTenant,
     tenantId,
     setToken,
+    setUser,
     clearToken,
     clearData,
   }
