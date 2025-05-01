@@ -3,6 +3,9 @@ import { onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { verifyEmail } from '@/domains/auth/services/verifyEmail'
 import GuestLayout from '@/layouts/GuestLayout.vue'
+import ButtonLink from '@/components/ButtonLink.vue'
+
+const REDIRECT_DELAY = 4000
 
 const route = useRoute()
 const router = useRouter()
@@ -11,13 +14,17 @@ const error = ref<string | null>(null)
 
 onMounted(async () => {
   try {
-    const { id, hash } = route.params
-    await verifyEmail({ id: id as string, hash: hash as string })
+    const email = route.query.email + 'x' as string
+    const token = route.query.token as string
+
+    if (!email || !token) {
+      throw new Error('Missing email or token')
+    }
+
+    await verifyEmail({ email, token })
     isVerified.value = true
-    // Redirect to login after 2 seconds
-    setTimeout(async () => {
-      await router.push('/login')
-    }, 2000)
+
+    setTimeout(async () => await router.push('/login'), REDIRECT_DELAY)
   } catch (err) {
     console.error('Email verification failed:', err)
     error.value = 'Failed to verify email. The link might be expired or invalid.'
@@ -27,22 +34,32 @@ onMounted(async () => {
 
 <template>
   <GuestLayout>
-    <div class="flex min-h-full flex-col justify-center py-12 sm:px-6 lg:px-8">
+    <div class="flex min-h-full flex-col justify-center py-6 sm:px-6 lg:px-8">
       <div class="sm:mx-auto sm:w-full sm:max-w-md">
-        <h2 class="mt-6 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
+        <h2 class="text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
           Email Verification
         </h2>
-        <div class="mt-4 text-center">
-          <template v-if="error">
-            <p class="text-red-600">{{ error }}</p>
-          </template>
-          <template v-else-if="isVerified">
-            <p class="text-green-600">Your email has been verified successfully!</p>
-            <p class="mt-2 text-gray-600">Redirecting to login...</p>
-          </template>
+        <div class="mt-8 text-center">
+          <div v-if="error" class="px-4 py-2 text-red-600 rounded-md bg-red-50/80">
+            {{ error }}
+          </div>
+          <div v-else-if="isVerified" class="px-4 py-2 text-green-600 rounded-md bg-green-50/80">
+            <p class="font-medium">
+              Your email has been verified successfully!
+            </p>
+            <p class="mt-2 text-gray-600">
+              Redirecting to login...
+            </p>
+          </div>
           <template v-else>
-            <p class="text-gray-600">Confirming your email address...</p>
+            <p class="text-gray-600">
+              Confirming your email address...
+            </p>
           </template>
+
+          <ButtonLink to="/login" class="mt-6">
+            Go to login
+          </ButtonLink>
         </div>
       </div>
     </div>

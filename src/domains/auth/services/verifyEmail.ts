@@ -1,11 +1,11 @@
 import api from '@/helpers/api'
 
 export interface VerifyEmailParams {
-  id: string
-  hash: string
+  email: string
+  token: string
 }
 
-export const verifyEmail = async ({ id, hash }: VerifyEmailParams) => {
-  const response = await api.get(`/email/verify/${id}/${hash}`)
+export const verifyEmail = async ({ email, token }: VerifyEmailParams) => {
+  const response = await api.post('/email/verify', { email, token })
   return response.data
 }

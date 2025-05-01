@@ -50,7 +50,7 @@ export const authRoutes: RouteRecordRaw[] = [
     },
   },
   {
-    path: '/email/verify/:id/:hash',
+    path: '/email/verify',
     name: 'verify-email',
     component: () => import('@/views/auth/EmailVerificationView.vue'),
     meta: {
