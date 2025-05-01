@@ -49,4 +49,13 @@ export const authRoutes: RouteRecordRaw[] = [
       middlewares: [isAuthenticated, isVerified],
     },
   },
+  {
+    path: '/email/verify/:id/:hash',
+    name: 'verify-email',
+    component: () => import('@/views/auth/EmailVerificationView.vue'),
+    meta: {
+      requiresAuth: false,
+      title: 'Verify Email'
+    }
+  },
 ]
