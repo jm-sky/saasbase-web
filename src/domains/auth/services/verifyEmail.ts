@@ -1,4 +1,4 @@
-import { api } from '@/lib/axios'
+import api from '@/helpers/api'
 
 export interface VerifyEmailParams {
   id: string
