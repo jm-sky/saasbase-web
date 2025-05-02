@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
-import { useRouter } from 'vue-router'
 import {
   Avatar,
   AvatarFallback,
@@ -17,19 +16,14 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import DropdownMenuItemLink from '@/components/ui/dropdown-menu/DropdownMenuItemLink.vue'
-import { authService } from '@/domains/auth/services/authService'
+import { useLogout } from '@/composables/useLogout'
 import { useAuthStore } from '@/domains/auth/store/auth.store'
 import { routeTo } from '@/router/routeMap'
 
 const authStore = useAuthStore()
-const router = useRouter()
 
+const { logout } = useLogout()
 const { user } = storeToRefs(authStore)
-
-const logout = async () => {
-  await authService.logout()
-  await router.push('/login')
-}
 </script>
 
 <template>

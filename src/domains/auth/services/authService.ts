@@ -1,49 +1,38 @@
-import dayjs from 'dayjs'
-import { v4 } from 'uuid'
-import { ZodError } from 'zod'
-import { type SessionData, useAuthStore } from '@/domains/auth/store/auth.store'
-import { User } from '@/domains/user/models/user.model'
+import { useAuthStore } from '@/domains/auth/store/auth.store'
 import { type IUser } from '@/domains/user/types/user.type'
 import api from '@/helpers/api'
 import { apiRoutesMap } from '@/helpers/api/apiRoutes'
 import type { Credentials, RegistrationData, ResetPasswordData } from '@/domains/auth/types/auth.type'
 
-const SESSION_LIFETIME = 15
-
-export type LoginResponse = {
+export interface AuthResponse {
   accessToken: string
   tokenType: string
   expiresIn: number
-  user: unknown
 }
- 
+
+export interface MfaVerifyResponse {
+  message: string
+}
+
+export interface MfaSetupResponse {
+  secret: string
+  qrCodeUrl: string
+  recoveryCodes: string[]
+}
+
 export class AuthService {
-  private createSession(user: User): SessionData {
-    const session: SessionData = {
-      id: v4(),
-      user,
-      startedAt: (new Date()).toISOString(),
-      expiresAt: dayjs().add(SESSION_LIFETIME, 'minutes').toISOString(),
-    }
-
-    return session
-  }
-
-  async login(credentials: Credentials): Promise<SessionData | ZodError<Credentials>> {
+  async login(credentials: Credentials): Promise<void> {
     const authStore = useAuthStore()
 
-    const response = (await api.post<LoginResponse>(apiRoutesMap.authLogin, credentials)).data
+    const { accessToken } = (await api.post<AuthResponse>(apiRoutesMap.authLogin, credentials)).data
 
-    authStore.setToken(response.accessToken)
+    authStore.setToken(accessToken)
     // Refresh token - saved in http-only cookie
-    authStore.session = this.createSession(await this.getUser())
-
-    return authStore.session
   }
 
-  async getUser() {
-    const response = (await api.get<IUser>(apiRoutesMap.user)).data
-    return User.load(response)
+  async getMe(): Promise<IUser> {
+    const user = (await api.get<IUser>(apiRoutesMap.me)).data
+    return user
   }
 
   // eslint-disable-next-line @typescript-eslint/require-await
@@ -52,20 +41,34 @@ export class AuthService {
   }
 
   async resetPassword(data: ResetPasswordData) {
-    await new Promise((resolve) => setTimeout(resolve, 1500))
-
-    return data
+    const response = await api.post<{ message: string }>(apiRoutesMap.authResetPassword, data)
+    return response
   }
 
-  async register(registrationData: RegistrationData): Promise<SessionData | ZodError<RegistrationData>> {
+  async forgotPassword(email: string): Promise<void> {
+    await api.post<{ message: string }>(apiRoutesMap.authForgotPassword, { email })
+  }
+
+  async register(registrationData: RegistrationData): Promise<void> {
     const authStore = useAuthStore()
 
-    const { token } = (await api.post<{ token: string }>(apiRoutesMap.authRegister, registrationData)).data
+    const { accessToken } = (await api.post<AuthResponse>(apiRoutesMap.authRegister, registrationData)).data
 
-    authStore.setToken(token)
-    authStore.session = this.createSession(await this.getUser())
+    authStore.setToken(accessToken)
+  }
 
-    return authStore.session
+  async resendEmailVerification(email: string) {
+    await api.post(apiRoutesMap.authResendEmailVerification, { email })
+  }
+
+  async verify2fa(code: string) {
+    const response = await api.post<MfaVerifyResponse>(apiRoutesMap.auth2faVerify, { code })
+    return response.data
+  }
+
+  async setup2fa() {
+    const response = await api.post<MfaSetupResponse>(apiRoutesMap.auth2faSetup)
+    return response.data
   }
 }
 

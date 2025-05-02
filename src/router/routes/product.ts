@@ -1,4 +1,6 @@
 import { isAuthenticated } from '@/router/middleware/isAuthenticated'
+import { isInTenant } from '@/router/middleware/isInTenant'
+import { isVerified } from '@/router/middleware/isVerified'
 import type { RouteRecordRaw } from 'vue-router'
 
 export const productRoutes: RouteRecordRaw[] = [
@@ -7,7 +9,7 @@ export const productRoutes: RouteRecordRaw[] = [
     name: 'products',
     component: () => import('@/views/product/ProductListView.vue'),
     meta: {
-      middlewares: [isAuthenticated],
+      middlewares: [isAuthenticated, isVerified, isInTenant],
     },
   },
 ]

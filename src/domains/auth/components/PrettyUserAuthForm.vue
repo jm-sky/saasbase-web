@@ -11,8 +11,8 @@ import { Checkbox } from '@/components/ui/checkbox'
 import { Input } from '@/components/ui/input'
 import { useToast } from '@/components/ui/toast'
 import UIIcon from '@/components/UIIcon.vue'
+import { useLogin } from '@/composables/useLogin'
 import { config } from '@/config'
-import { authService } from '@/domains/auth/services/authService'
 import { credentialsSchema } from '@/domains/auth/validation/auth.schema'
 import { cn } from '@/lib/utils'
 import type { Credentials } from '@/domains/auth/types/auth.type'
@@ -23,9 +23,10 @@ interface AuthErrorResponse {
 
 const isAuthError = (error: unknown): error is AxiosError<AuthErrorResponse> => isAxiosError(error)
 
-const router = useRouter()
 const { t } = useI18n()
 const { toast } = useToast()
+const { login } = useLogin()
+const router = useRouter()
 
 const { setErrors, isSubmitting, handleSubmit } = useForm<Credentials>({
   validationSchema: credentialsSchema,
@@ -38,7 +39,7 @@ const { setErrors, isSubmitting, handleSubmit } = useForm<Credentials>({
 
 const onSubmit = handleSubmit(async (values) => {
   try {
-    await authService.login(values)
+    await login(values)
     await router.push('/')
 
   } catch (error: unknown) {

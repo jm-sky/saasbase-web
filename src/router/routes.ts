@@ -1,4 +1,5 @@
 import { isAuthenticated } from '@/router/middleware/isAuthenticated'
+import { isVerified } from '@/router/middleware/isVerified'
 import { authRoutes } from '@/router/routes/auth'
 import { contractorRoutes } from '@/router/routes/contractor'
 import { productRoutes } from '@/router/routes/product'
@@ -13,7 +14,7 @@ export const routes: RouteRecordRaw[] = [
     name: 'home',
     component: HomeView,
     meta: {
-      middlewares: [isAuthenticated],
+      middlewares: [isAuthenticated, isVerified],
     },
   },
 
@@ -27,10 +28,16 @@ export const routes: RouteRecordRaw[] = [
     path: '/mailbox/:box?',
     name: 'mailbox',
     component: () => import('@/views/MailBoxView.vue'),
+    meta: {
+      middlewares: [isAuthenticated, isVerified],
+    },
   },
   {
     path: '/users/:id',
     name: 'userProfile',
     component: () => import('@/views/users/UserProfileView.vue'),
+    meta: {
+      middlewares: [isAuthenticated, isVerified],
+    },
   },
 ]

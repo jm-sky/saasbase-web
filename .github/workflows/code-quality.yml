@@ -41,6 +41,13 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
+      - name: Get current branch
+        id: get_branch
+        run: echo "branch_name=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}" >> $GITHUB_OUTPUT
+
+      - name: Checkout branch
+        run: git checkout ${{ steps.get_branch.outputs.branch_name }}
+
       - name: Run ESLint --fix
         run: pnpm lint-fix
 
@@ -49,10 +56,7 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add .
-          git diff --quiet && echo "No changes to commit" || git commit -m "chore: auto eslint fixes" && git push
-
-      - name: Run ESLint
-        run: pnpm lint-only
+          git diff --quiet && echo "No changes to commit" || git commit -m "chore: auto eslint fixes" && git push origin ${{ steps.get_branch.outputs.branch_name }}
 
       - name: Run Type Check
         run: pnpm tsc --noEmit
@@ -61,3 +65,6 @@ jobs:
       #   run: pnpm vitest run
       #   env:
       #     NODE_ENV: test
+
+      - name: Run Build
+        run: pnpm build

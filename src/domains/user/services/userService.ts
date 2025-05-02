@@ -9,7 +9,7 @@ export interface IUserGetParams {
 
 class UserService {
   async index(params?: IUserGetParams): Promise<PublicUser[]> {
-    const users = (await api.get<{ users: IPublicUser[] }>(apiRoutesMap.users, { params })).data.users
+    const users = (await api.get<{ data: IPublicUser[] }>(apiRoutesMap.users, { params })).data.data
 
     return users.map(user => PublicUser.load(user))
   }

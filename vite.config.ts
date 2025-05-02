@@ -18,7 +18,7 @@ export default defineConfig(() => ({
     port: parseInt(`${process.env.VITE_APP_PORT ?? 5176}`),
     proxy: {
       '/api': {
-        target: process.env.VITE_API_HOST ?? 'http://localhost:8000',
+        target: process.env.VITE_API_HOST ?? 'http://localhost:8989',
         // target: 'https://dummyjson.com',
         changeOrigin: true,
         secure: false,
