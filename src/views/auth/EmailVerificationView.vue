@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import ButtonLink from '@/components/ButtonLink.vue'
 import { verifyEmail } from '@/domains/auth/services/verifyEmail'
 import GuestLayout from '@/layouts/GuestLayout.vue'
-import ButtonLink from '@/components/ButtonLink.vue'
 
 const REDIRECT_DELAY = 4000
 

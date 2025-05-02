@@ -6,12 +6,14 @@ import ButtonLink from '@/components/ButtonLink.vue'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { useToast } from '@/components/ui/toast'
+import { useLogout } from '@/composables/useLogout'
 import { tenantService } from '@/domains/tenant/services/tenantService'
 import GuestLayout from '@/layouts/GuestLayout.vue'
 import type { ITenant } from '@/domains/tenant/types/tenant.type'
 
 const router = useRouter()
-const { toast } = useToast() 
+const { toast } = useToast()
+const { logout } = useLogout()
 
 const tenants = ref<ITenant[]>([])
 
@@ -36,7 +38,7 @@ onMounted(async () => {
 
 <template>
   <GuestLayout>
-    <Card class="w-full max-w-md bg-transparent border-none">
+    <Card class="w-full max-w-md bg-transparent border-none shadow-none">
       <CardHeader>
         <CardTitle class="flex items-center gap-2">
           <Building2 class="h-5 w-5" />
@@ -74,6 +76,12 @@ onMounted(async () => {
             </div>
             <Button variant="ghost" size="sm">
               Select
+            </Button>
+          </div>
+
+          <div class="text-center mt-4">
+            <Button variant="ghost" size="sm" @click="logout">
+              Log out
             </Button>
           </div>
         </div>

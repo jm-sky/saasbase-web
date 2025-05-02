@@ -1,6 +1,6 @@
+import { type ITag, Tag } from '@/domains/shared/types/tag.model'
 import api from '@/helpers/api'
 import { apiRoutesMap } from '@/helpers/api/apiRoutes'
-import { type ITag, Tag } from '@/models/tag.model'
 
 export interface ITagGetParams {
   limit?: number
