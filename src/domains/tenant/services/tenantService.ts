@@ -4,12 +4,12 @@ import type { ITenant } from '@/domains/tenant/types/tenant.type'
 
 class TenantService {
   async index(): Promise<ITenant[]> {
-    const response = await api.get<{ data: ITenant[] }>(apiRoutesMap.products)
+    const response = await api.get<{ data: ITenant[] }>(apiRoutesMap.tenants)
     return response.data.data
   }
 
   async get(id: string): Promise<ITenant> {
-    const response = await api.get<ITenant>(`${apiRoutesMap.products}/${id}`)
+    const response = await api.get<ITenant>(`${apiRoutesMap.tenants}/${id}`)
     return response.data
   }
 }
