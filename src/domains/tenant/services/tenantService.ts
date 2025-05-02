@@ -1,3 +1,4 @@
+import { useAuthStore } from '@/domains/auth/store/auth.store'
 import api from '@/helpers/api'
 import { apiRoutes } from '@/helpers/api/apiRoutes'
 import type { ITenant } from '@/domains/tenant/types/tenant.type'
@@ -13,9 +14,10 @@ class TenantService {
     return response.data
   }
 
-  async switch(id: string) {
+  async switch(id: string): Promise<void> {
+    const authStore = useAuthStore()
     const { accessToken } = (await api.post(apiRoutes.tenantsSwitch(id))).data
-    // authStore.setToken(accessToken)
+    authStore.setToken(accessToken)
   }
 }
 
