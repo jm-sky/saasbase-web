@@ -5,18 +5,23 @@ import { useRouter } from 'vue-router'
 import ButtonLink from '@/components/ButtonLink.vue'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { useToast } from '@/components/ui/toast'
 import { tenantService } from '@/domains/tenant/services/tenantService'
 import GuestLayout from '@/layouts/GuestLayout.vue'
 import type { ITenant } from '@/domains/tenant/types/tenant.type'
 
 const router = useRouter()
+const { toast } = useToast() 
 
 const tenants = ref<ITenant[]>([])
 
-const handleSelectTenant = (tenantId: string) => {
-  // TODO: Implement tenant selection logic
-  console.log('Selected tenant:', tenantId)
-  void router.push('/')
+const handleSelectTenant = async (tenantId: string) => {
+  try {
+    await tenantService.switch(tenantId)
+    await router.push('/')
+  } catch {
+    toast.error('Could not switch tenant')
+  }
 }
 
 const fetchTenants = async () => {
