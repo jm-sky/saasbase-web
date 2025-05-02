@@ -14,7 +14,7 @@ const error = ref<string | null>(null)
 
 onMounted(async () => {
   try {
-    const email = route.query.email + 'x' as string
+    const email = route.query.email as string
     const token = route.query.token as string
 
     if (!email || !token) {
