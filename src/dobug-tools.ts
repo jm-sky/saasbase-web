@@ -1,4 +1,3 @@
-// debug-tools.ts
 (function () {
   const urlParams = new URLSearchParams(window.location.search);
   const isDebug = urlParams.get('debug') === '1';
@@ -6,13 +5,13 @@
 
   const logDiv = document.createElement('div');
   logDiv.id = 'debug-log';
-  logDiv.style.whiteSpace = 'pre-wrap';
-  logDiv.style.fontSize = '12px';
-  logDiv.style.background = '#f0f0f0';
-  logDiv.style.padding = '10px';
-  logDiv.style.borderTop = '2px solid #ccc';
-  logDiv.style.maxHeight = '300px';
-  logDiv.style.overflowY = 'auto';
+
+  // Apply Tailwind classes
+  logDiv.className = [
+    'fixed', 'bottom-0', 'left-0', 'w-full', 'max-h-64', 'overflow-y-auto',
+    'bg-gray-900', 'text-white', 'text-xs', 'p-2', 'z-50', 'font-mono', 'whitespace-pre-wrap', 'border-t', 'border-gray-700'
+  ].join(' ');
+
   document.body.appendChild(logDiv);
 
   const appendToDOM = (type: string, args: any[]) => {
@@ -24,6 +23,7 @@
       }
     }).join(' ')}\n`;
     logDiv.textContent += entry;
+    logDiv.scrollTop = logDiv.scrollHeight; // auto-scroll
   };
 
   ['log', 'warn', 'error'].forEach(type => {
