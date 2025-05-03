@@ -55,6 +55,9 @@ const { user } = storeToRefs(authStore)
         <DropdownMenuItemLink :to="routeTo.settingsAccount()">
           Settings
         </DropdownMenuItemLink>
+        <DropdownMenuItemLink :to="routeTo.selectTenant()">
+          Change Tenant
+        </DropdownMenuItemLink>
       </DropdownMenuGroup>
       <DropdownMenuSeparator />
       <DropdownMenuItem class="cursor-pointer" @click="logout()">
