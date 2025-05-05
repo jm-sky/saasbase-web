@@ -10,17 +10,12 @@ export interface AuthResponse {
   expiresIn: number
 }
 
-export interface MfaVerifyResponse {
-  message: string
+export interface VerifyEmailParams {
+  email: string
+  token: string
 }
 
-export interface MfaSetupResponse {
-  secret: string
-  qrCodeUrl: string
-  recoveryCodes: string[]
-}
-
-export class AuthService {
+class AuthService {
   async login(credentials: Credentials): Promise<void> {
     const authStore = useAuthStore()
 
@@ -61,15 +56,12 @@ export class AuthService {
     await api.post(apiRoutesMap.authResendEmailVerification, { email })
   }
 
-  async verify2fa(code: string) {
-    const response = await api.post<MfaVerifyResponse>(apiRoutesMap.auth2faVerify, { code })
+
+  async verifyEmail({ email, token }: VerifyEmailParams) {
+    const response = await api.post(apiRoutesMap.authVerifyEmail, { email, token })
     return response.data
   }
 
-  async setup2fa() {
-    const response = await api.post<MfaSetupResponse>(apiRoutesMap.auth2faSetup)
-    return response.data
-  }
 }
 
 export const authService = new AuthService()

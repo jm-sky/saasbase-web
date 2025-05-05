@@ -15,6 +15,7 @@ export const routeMap = {
     account: 'settings-account',
     appearance: 'settings-appearance',
     notifications: 'settings-notifications',
+    mfaSetup: 'mfaSetup',
   },
   userProfile: 'userProfile',
 }

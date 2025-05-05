@@ -10,7 +10,7 @@ export class PublicUser implements IPublicUser {
   phone?: string
   description?: string
   address?: UserAddress
-  image?: string
+  avatarUrl?: string
   role: string
   createdAt: TDateTime
 
@@ -22,7 +22,7 @@ export class PublicUser implements IPublicUser {
     this.phone = data.phone
     this.description = data.description
     this.address = data.address ? UserAddress.load(data.address) : undefined
-    this.image = data.image
+    this.avatarUrl = data.avatarUrl
     this.role = data.role
     this.createdAt = data.createdAt
   }
@@ -40,7 +40,7 @@ export class PublicUser implements IPublicUser {
       phone: this.phone,
       description: this.description,
       address: this.address?.toJSON(),
-      image: this.image,
+      avatarUrl: this.avatarUrl,
       role: this.role,
       createdAt: this.createdAt,
     }

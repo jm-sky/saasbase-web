@@ -62,7 +62,7 @@ onMounted(async () => refresh())
           <RouterLink :to="`/users/${user.id}`">
             <Avatar class="size-9">
               <AvatarImage
-                :src="user.image ?? ''"
+                :src="user.avatarUrl ?? ''"
                 :alt="user?.initials"
               />
               <AvatarFallback>{{ user.initials }}</AvatarFallback>

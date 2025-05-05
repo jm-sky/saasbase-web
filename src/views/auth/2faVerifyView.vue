@@ -7,7 +7,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { PinInput } from '@/components/ui/pin-input'
 import { useToast } from '@/components/ui/toast'
 import UIIcon from '@/components/UIIcon.vue'
-import { authService } from '@/domains/auth/services/authService'
+import { mfaService } from '@/domains/auth/services/mfaService'
 import GuestLayout from '@/layouts/GuestLayout.vue'
 
 const { t } = useI18n()
@@ -22,7 +22,7 @@ const { values, isSubmitting, handleSubmit } = useForm({
 
 const onSubmit = handleSubmit(async (values) => {
   try {
-    await authService.verify2fa(values.code.join(''))
+    await mfaService.verify2fa(values.code.join(''))
     await router.push({ name: 'dashboard' })
   } catch (error) {
     console.error('2FA verification failed:', error)

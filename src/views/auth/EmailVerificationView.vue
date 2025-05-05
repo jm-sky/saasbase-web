@@ -2,7 +2,7 @@
 import { onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import ButtonLink from '@/components/ButtonLink.vue'
-import { verifyEmail } from '@/domains/auth/services/verifyEmail'
+import { authService } from '@/domains/auth/services/authService'
 import GuestLayout from '@/layouts/GuestLayout.vue'
 
 const REDIRECT_DELAY = 4000
@@ -21,7 +21,7 @@ onMounted(async () => {
       throw new Error('Missing email or token')
     }
 
-    await verifyEmail({ email, token })
+    await authService.verifyEmail({ email, token })
     isVerified.value = true
 
     setTimeout(async () => await router.push('/login'), REDIRECT_DELAY)

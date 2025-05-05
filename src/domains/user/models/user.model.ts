@@ -11,10 +11,9 @@ export class User implements IUser {
   birthDate?: string
   description?: string
   address?: UserAddress
-  image?: string
-  role: string
+  avatarUrl?: string
   isEmailVerified: boolean
-  lastLoginAt?: TDateTime
+  isTwoFactorEnabled: boolean
   createdAt: TDateTime
   updatedAt: TDateTime
 
@@ -27,10 +26,9 @@ export class User implements IUser {
     this.birthDate = data.birthDate
     this.description = data.description
     this.address = data.address ? UserAddress.load(data.address) : undefined
-    this.image = data.image
-    this.role = data.role
+    this.avatarUrl = data.avatarUrl
     this.isEmailVerified = data.isEmailVerified
-    this.lastLoginAt = data.lastLoginAt
+    this.isTwoFactorEnabled = data.isTwoFactorEnabled
     this.createdAt = data.createdAt
     this.updatedAt = data.updatedAt
   }
@@ -45,10 +43,9 @@ export class User implements IUser {
       firstName: this.firstName,
       lastName: this.lastName,
       email: this.email,
-      image: this.image,
-      role: this.role,
+      avatarUrl: this.avatarUrl,
       isEmailVerified: this.isEmailVerified,
-      lastLoginAt: this.lastLoginAt,
+      isTwoFactorEnabled: this.isTwoFactorEnabled,
       createdAt: this.createdAt,
       updatedAt: this.updatedAt,
     }

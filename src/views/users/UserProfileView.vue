@@ -34,7 +34,7 @@ onMounted(() => refresh())
         <div class="flex flex-row items-center gap-2">
           <Avatar class="size-9">
             <AvatarImage
-              :src="user?.image ?? ''"
+              :src="user?.avatarUrl ?? ''"
               :alt="user?.initials"
             />
             <AvatarFallback>{{ user?.initials }}</AvatarFallback>
