@@ -9,11 +9,6 @@ class TenantService {
     return response.data.data
   }
 
-  async get(id: string): Promise<ITenant> {
-    const response = await api.get<ITenant>(apiRoutes.tenantsGet(id))
-    return response.data
-  }
-
   async switch(id: string): Promise<void> {
     const authStore = useAuthStore()
     const { accessToken } = (await api.post(apiRoutes.tenantsSwitch(id))).data

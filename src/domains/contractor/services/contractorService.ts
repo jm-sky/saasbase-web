@@ -16,18 +16,18 @@ class ContractorService {
   }
 
   async get(id: string): Promise<Contractor> {
-    const response = await api.get<IContractor>(`${apiRoutesMap.contractors}/${id}`)
-    return Contractor.load(response.data)
+    const response = await api.get<{ data: IContractor }>(`${apiRoutesMap.contractors}/${id}`)
+    return Contractor.load(response.data.data)
   }
 
   async create(contractor: Omit<IContractor, 'id' | 'createdAt' | 'updatedAt'>): Promise<Contractor> {
-    const response = await api.post<IContractor>(apiRoutesMap.contractors, contractor)
-    return Contractor.load(response.data)
+    const response = await api.post<{ data: IContractor }>(apiRoutesMap.contractors, contractor)
+    return Contractor.load(response.data.data)
   }
 
   async update(id: string, contractor: Partial<IContractor>): Promise<Contractor> {
-    const response = await api.patch<IContractor>(`${apiRoutesMap.contractors}/${id}`, contractor)
-    return Contractor.load(response.data)
+    const response = await api.patch<{ data: IContractor }>(`${apiRoutesMap.contractors}/${id}`, contractor)
+    return Contractor.load(response.data.data)
   }
 
   async delete(id: string): Promise<void> {

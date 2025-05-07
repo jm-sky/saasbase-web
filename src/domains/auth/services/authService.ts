@@ -26,7 +26,7 @@ class AuthService {
   }
 
   async getMe(): Promise<IUser> {
-    const user = (await api.get<IUser>(apiRoutesMap.me)).data
+    const user = (await api.get<{ data: IUser}>(apiRoutesMap.me)).data.data
     return user
   }
 

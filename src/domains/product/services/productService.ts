@@ -14,18 +14,18 @@ class ProductService {
   }
 
   async get(id: string): Promise<Product> {
-    const response = await api.get<IProduct>(`${apiRoutesMap.products}/${id}`)
-    return Product.load(response.data)
+    const response = await api.get<{ data: IProduct }>(`${apiRoutesMap.products}/${id}`)
+    return Product.load(response.data.data)
   }
 
   async create(product: Omit<IProduct, 'id' | 'createdAt' | 'updatedAt'>): Promise<Product> {
-    const response = await api.post<IProduct>(apiRoutesMap.products, product)
-    return Product.load(response.data)
+    const response = await api.post<{ data: IProduct }>(apiRoutesMap.products, product)
+    return Product.load(response.data.data)
   }
 
   async update(id: string, product: Partial<IProduct>): Promise<Product> {
-    const response = await api.patch<IProduct>(`${apiRoutesMap.products}/${id}`, product)
-    return Product.load(response.data)
+    const response = await api.patch<{ data: IProduct }>(`${apiRoutesMap.products}/${id}`, product)
+    return Product.load(response.data.data)
   }
 
   async delete(id: string): Promise<void> {

@@ -10,23 +10,23 @@ export interface ISkillGetParams {
 
 class SkillService {
   async index(params?: ISkillGetParams): Promise<Skill[]> {
-    const response = await api.get<{ skills: ISkill[] }>(apiRoutesMap.skills, { params })
-    return response.data.skills.map(data => Skill.load(data))
+    const response = await api.get<{ data: ISkill[] }>(apiRoutesMap.skills, { params })
+    return response.data.data.map(data => Skill.load(data))
   }
 
   async get(id: string): Promise<Skill> {
-    const response = await api.get<ISkill>(`${apiRoutesMap.skills}/${id}`)
-    return Skill.load(response.data)
+    const response = await api.get<{ data: ISkill }>(`${apiRoutesMap.skills}/${id}`)
+    return Skill.load(response.data.data)
   }
 
-  async create(skill: Omit<ISkill, 'id'>): Promise<Skill> {
-    const response = await api.post<ISkill>(apiRoutesMap.skills, skill)
-    return Skill.load(response.data)
+  async create(skill: Omit<ISkill, 'id' | 'createdAt' | 'updatedAt'>): Promise<Skill> {
+    const response = await api.post<{ data: ISkill }>(apiRoutesMap.skills, skill)
+    return Skill.load(response.data.data)
   }
 
   async update(id: string, skill: Partial<ISkill>): Promise<Skill> {
-    const response = await api.patch<ISkill>(`${apiRoutesMap.skills}/${id}`, skill)
-    return Skill.load(response.data)
+    const response = await api.patch<{ data: ISkill }>(`${apiRoutesMap.skills}/${id}`, skill)
+    return Skill.load(response.data.data)
   }
 
   async delete(id: string): Promise<void> {

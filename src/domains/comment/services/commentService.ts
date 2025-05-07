@@ -11,23 +11,23 @@ export interface ICommentGetParams {
 
 class CommentService {
   async index(params?: ICommentGetParams): Promise<Comment[]> {
-    const response = await api.get<{ comments: IComment[] }>(apiRoutesMap.comments, { params })
-    return response.data.comments.map(data => Comment.load(data))
+    const response = await api.get<{ data: IComment[] }>(apiRoutesMap.comments, { params })
+    return response.data.data.map(data => Comment.load(data))
   }
 
   async get(id: string): Promise<Comment> {
-    const response = await api.get<IComment>(`${apiRoutesMap.comments}/${id}`)
-    return Comment.load(response.data)
+    const response = await api.get<{ data: IComment }>(`${apiRoutesMap.comments}/${id}`)
+    return Comment.load(response.data.data)
   }
 
-  async create(comment: Omit<IComment, 'id' | 'createdAt'>): Promise<Comment> {
-    const response = await api.post<IComment>(apiRoutesMap.comments, comment)
-    return Comment.load(response.data)
+  async create(comment: Omit<IComment, 'id' | 'createdAt' | 'updatedAt'>): Promise<Comment> {
+    const response = await api.post<{ data: IComment }>(apiRoutesMap.comments, comment)
+    return Comment.load(response.data.data)
   }
 
   async update(id: string, comment: Partial<IComment>): Promise<Comment> {
-    const response = await api.patch<IComment>(`${apiRoutesMap.comments}/${id}`, comment)
-    return Comment.load(response.data)
+    const response = await api.patch<{ data: IComment }>(`${apiRoutesMap.comments}/${id}`, comment)
+    return Comment.load(response.data.data)
   }
 
   async delete(id: string): Promise<void> {
