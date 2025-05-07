@@ -1,6 +1,6 @@
 import { type IProduct, Product } from '@/domains/product/models/product.model'
-import api from '@/helpers/api'
-import { apiRoutesMap } from '@/helpers/api/apiRoutes'
+import api from '@/lib/api'
+import { apiRoutesMap } from '@/lib/api/apiRoutes'
 
 export interface IProductGetParams {
   limit?: number

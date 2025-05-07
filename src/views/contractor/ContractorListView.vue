@@ -13,8 +13,8 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import { contractorService } from '@/domains/contractor/services/contractorService'
-import { formatDate } from '@/helpers/date'
 import AuthenticatedLayout from '@/layouts/AuthenticatedLayout.vue'
+import { formatDate } from '@/lib/date'
 import type { Contractor } from '@/domains/contractor/models/contractor.model'
 
 const contractors = ref<Contractor[]>([])

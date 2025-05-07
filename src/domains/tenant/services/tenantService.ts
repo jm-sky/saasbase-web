@@ -1,6 +1,6 @@
 import { useAuthStore } from '@/domains/auth/store/auth.store'
-import api from '@/helpers/api'
-import { apiRoutes } from '@/helpers/api/apiRoutes'
+import api from '@/lib/api'
+import { apiRoutes } from '@/lib/api/apiRoutes'
 import type { ITenant } from '@/domains/tenant/types/tenant.type'
 
 class TenantService {

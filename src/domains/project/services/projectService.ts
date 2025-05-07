@@ -1,6 +1,6 @@
 import { Project } from '@/domains/project/models/project.model'
-import api from '@/helpers/api'
-import { apiRoutesMap } from '@/helpers/api/apiRoutes'
+import api from '@/lib/api'
+import { apiRoutesMap } from '@/lib/api/apiRoutes'
 import { type TProjectStatus } from '@/types/index'
 import type { IProject } from '@/domains/project/types/project.type'
 

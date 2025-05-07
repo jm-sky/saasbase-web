@@ -4,7 +4,7 @@ import { computed, watch } from 'vue'
 import { config } from '@/config'
 import { User } from '@/domains/user/models/user.model'
 import { type IUser } from '@/domains/user/types/user.type'
-import { setApiAuthorization } from '@/helpers/api'
+import { setApiAuthorization } from '@/lib/api'
 
 export interface BaseJwtPayload {
   iss: string;    // Issuer of the token

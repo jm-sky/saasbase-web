@@ -19,7 +19,7 @@ import {
   TabsList,
   TabsTrigger,
 } from '@/components/ui/tabs'
-import { useTranslate } from '@/composables/useTranslate'
+import { useTranslate } from '@/i18n/useTranslate'
 
 const tr = useTranslate()
 </script>

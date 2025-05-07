@@ -1,7 +1,7 @@
 import { useAuthStore } from '@/domains/auth/store/auth.store'
 import { type IUser } from '@/domains/user/types/user.type'
-import api from '@/helpers/api'
-import { apiRoutesMap } from '@/helpers/api/apiRoutes'
+import api from '@/lib/api'
+import { apiRoutesMap } from '@/lib/api/apiRoutes'
 import type { Credentials, RegistrationData, ResetPasswordData } from '@/domains/auth/types/auth.type'
 
 export interface AuthResponse {

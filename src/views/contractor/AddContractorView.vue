@@ -7,8 +7,8 @@ import Button from '@/components/ui/button/Button.vue'
 import Input from '@/components/ui/input/Input.vue'
 import { useToast } from '@/components/ui/toast/use-toast'
 import { contractorService } from '@/domains/contractor/services/contractorService'
-import { isValidationError } from '@/helpers/validation'
 import AuthenticatedLayout from '@/layouts/AuthenticatedLayout.vue'
+import { isValidationError } from '@/lib/validation'
 import type { IContractor } from '@/domains/contractor/models/contractor.model'
 
 const router = useRouter()

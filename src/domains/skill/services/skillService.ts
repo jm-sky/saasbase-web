@@ -1,6 +1,6 @@
 import { type ISkill, Skill } from '@/domains/skill/models/skill.model'
-import api from '@/helpers/api'
-import { apiRoutesMap } from '@/helpers/api/apiRoutes'
+import api from '@/lib/api'
+import { apiRoutesMap } from '@/lib/api/apiRoutes'
 
 export interface ISkillGetParams {
   categoryId?: string

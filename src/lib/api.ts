@@ -1,6 +1,6 @@
 import axios, { AxiosError } from 'axios'
-import { interceptUnauthorized } from '@/helpers/api/interceptUnauthorized'
 import { DEFAULT_LOCALE } from '@/i18n'
+import { interceptUnauthorized } from '@/lib/api/interceptUnauthorized'
 import type { AxiosInstance, AxiosResponse } from 'axios'
 
 const api: AxiosInstance = axios.create({

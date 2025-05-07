@@ -1,6 +1,6 @@
 import { Task } from '@/domains/task/models/task.model'
-import api from '@/helpers/api'
-import { apiRoutesMap } from '@/helpers/api/apiRoutes'
+import api from '@/lib/api'
+import { apiRoutesMap } from '@/lib/api/apiRoutes'
 import { type TTaskPriority, type TTaskStatus } from '@/types/index'
 import type { ITask } from '@/domains/task/types/task.type'
 

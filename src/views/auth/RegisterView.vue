@@ -10,8 +10,8 @@ import { useToast } from '@/components/ui/toast/use-toast'
 import UIIcon from '@/components/UIIcon.vue'
 import { authService } from '@/domains/auth/services/authService'
 import { registrationSchema } from '@/domains/auth/validation/auth.schema'
-import { isValidationError } from '@/helpers/validation'
 import GuestLayout from '@/layouts/GuestLayout.vue'
+import { isValidationError } from '@/lib/validation'
 import type { RegistrationData } from '@/domains/auth/types/auth.type'
 
 const router = useRouter()

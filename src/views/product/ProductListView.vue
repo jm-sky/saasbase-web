@@ -11,8 +11,8 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import { productService } from '@/domains/product/services/productService'
-import { formatDate } from '@/helpers/date'
 import AuthenticatedLayout from '@/layouts/AuthenticatedLayout.vue'
+import { formatDate } from '@/lib/date'
 import type { Product } from '@/domains/product/models/product.model'
 
 const products = ref<Product[]>([])

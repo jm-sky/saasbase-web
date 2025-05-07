@@ -16,7 +16,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import DropdownMenuItemLink from '@/components/ui/dropdown-menu/DropdownMenuItemLink.vue'
-import { useLogout } from '@/composables/useLogout'
+import { useLogout } from '@/domains/auth/composables/useLogout'
 import { useAuthStore } from '@/domains/auth/store/auth.store'
 import { routeTo } from '@/router/routeMap'
 

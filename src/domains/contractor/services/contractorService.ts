@@ -1,6 +1,6 @@
 import { Contractor, type IContractor } from '@/domains/contractor/models/contractor.model'
-import api from '@/helpers/api'
-import { apiRoutesMap } from '@/helpers/api/apiRoutes'
+import api from '@/lib/api'
+import { apiRoutesMap } from '@/lib/api/apiRoutes'
 
 export interface IContractorGetParams {
   isSupplier?: boolean

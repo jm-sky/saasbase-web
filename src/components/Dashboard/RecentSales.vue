@@ -13,8 +13,8 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
-import { useTranslate } from '@/composables/useTranslate'
 import { userService } from '@/domains/user/services/userService'
+import { useTranslate } from '@/i18n/useTranslate'
 import type { PublicUser } from '@/domains/user/models/publicUser.model'
 
 const tr = useTranslate()
