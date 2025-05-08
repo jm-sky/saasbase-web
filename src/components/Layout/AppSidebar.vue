@@ -45,6 +45,11 @@ const menu = {
       icon: Mail,
     },
     {
+      title: 'Chat',
+      url: '/chat',
+      icon: Mail,
+    },
+    {
       title: 'Settings',
       url: '#',
       icon: Settings2,

@@ -1,4 +1,5 @@
 import { isAuthenticated } from '@/router/middleware/isAuthenticated'
+import { isInTenant } from '@/router/middleware/isInTenant'
 import { isVerified } from '@/router/middleware/isVerified'
 import { authRoutes } from '@/router/routes/auth'
 import { contractorRoutes } from '@/router/routes/contractor'
@@ -23,6 +24,15 @@ export const routes: RouteRecordRaw[] = [
   ...settingsRoutes,
   ...contractorRoutes,
   ...productRoutes,
+
+  {
+    path: '/chat',
+    name: 'chat',
+    component: () => import('@/views/chat/ChatView.vue'),
+    meta: {
+      middlewares: [isAuthenticated, isVerified, isInTenant],
+    },
+  },
 
   {
     path: '/mailbox/:box?',
