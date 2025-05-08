@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useForm } from 'vee-validate'
-import { h, ref } from 'vue'
+import { ref } from 'vue'
 import { FileUpload } from '@/components/Inputs'
 import Avatar from '@/components/ui/avatar/Avatar.vue'
 import AvatarFallback from '@/components/ui/avatar/AvatarFallback.vue'
@@ -13,6 +13,7 @@ import { Textarea } from '@/components/ui/textarea'
 import { toast } from '@/components/ui/toast'
 import { useAuthStore } from '@/domains/auth/store/auth.store'
 import { userProfileImageService } from '@/domains/user/services/userProfileImageService'
+import { userProfileService } from '@/domains/user/services/userProfileService'
 import { userProfilechema } from '@/domains/user/validation/profileSchema'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
 import SettingsHeader from './partials/SettingsHeader.vue'
@@ -20,7 +21,6 @@ import SettingsHeader from './partials/SettingsHeader.vue'
 const authStore = useAuthStore()
 const isUploading = ref(false)
 const avatarFile = ref<File[]>()
-
 
 const { handleSubmit, resetForm } = useForm({
   validationSchema: userProfilechema,
@@ -43,11 +43,15 @@ const handleAvatarUpload = async () => {
   }
 }
 
-const onSubmit = handleSubmit((values) => {
-  toast({
-    title: 'You submitted the following values:',
-    description: h('pre', { class: 'mt-2 w-[340px] rounded-md bg-slate-950 p-4' }, h('code', { class: 'text-white' }, JSON.stringify(values, null, 2))),
-  })
+const onSubmit = handleSubmit(async (values) => {
+  try {
+    await userProfileService.update(values)
+    toast.success('Profile updated successfully')
+  } catch (error: unknown) {
+    handleErrorWithToast('Failed to update profile', error)
+  } finally {
+    await authStore.refresh()
+  }
 })
 </script>
 
@@ -89,6 +93,26 @@ const onSubmit = handleSubmit((values) => {
         <FormDescription>
           This is your public display family name.
         </FormDescription>
+        <FormMessage />
+      </FormItem>
+    </FormField>
+
+    <FormField v-slot="{ componentField }" name="birthDate">
+      <FormItem class="col-span-full">
+        <FormLabel>Birth date</FormLabel>
+        <FormControl>
+          <Input type="date" v-bind="componentField" />
+        </FormControl>
+        <FormMessage />
+      </FormItem>
+    </FormField>
+
+    <FormField v-slot="{ componentField }" name="phone">
+      <FormItem class="col-span-full">
+        <FormLabel>Phone</FormLabel>
+        <FormControl>
+          <Input type="tel" v-bind="componentField" />
+        </FormControl>
         <FormMessage />
       </FormItem>
     </FormField>
