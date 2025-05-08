@@ -5,7 +5,13 @@ export const pl = {
       pl: 'Polski'
     },
     or: 'lub',
-    error: 'Błąd'
+    error: 'Błąd',
+    fileUpload: {
+      dragAndDrop: 'Przeciągnij i upuść pliki tutaj lub kliknij, aby przeglądać',
+      allFilesAccepted: 'Wszystkie pliki akceptowane',
+      acceptedFormats: 'Akceptowane formaty: {formats}',
+      remove: 'Usuń'
+    }
   },
   auth: {
     login: 'Logowanie',
@@ -33,5 +39,30 @@ export const pl = {
     darkMode: 'Tryb ciemny',
     lightMode: 'Tryb jasny',
     layoutConfig: 'Konfiguracja układu'
+  },
+  settings: {
+    profile: {
+      title: 'Profil',
+      description: 'Tak będą Cię widzieć inni na stronie.',
+      updateProfile: 'Aktualizuj profil',
+      resetForm: 'Resetuj formularz',
+      user: {
+        firstName: 'Imię',
+        firstNameDescription: 'To jest Twoje publiczne imię.',
+        lastName: 'Nazwisko',
+        lastNameDescription: 'To jest Twoje publiczne nazwisko.',
+        birthDate: 'Data urodzenia',
+        phone: 'Telefon',
+        description: 'Opis',
+        descriptionPlaceholder: 'Powiedz nam coś o sobie',
+      },
+      profileImage: {
+        title: 'Zdjęcie profilowe',
+        description: 'Prześlij nowe zdjęcie profilowe. Wspierane formaty: JPG, PNG, GIF',
+        maxSize: 'Maksymalny rozmiar pliku: 5MB',
+        uploadImage: 'Prześlij zdjęcie',
+        removeImage: 'Usuń zdjęcie'
+      }
+    }
   }
 }

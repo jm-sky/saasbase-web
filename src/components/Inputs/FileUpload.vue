@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useVModel } from '@vueuse/core'
 import { ref } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { cn } from '@/lib/utils'
 import type { HTMLAttributes } from 'vue'
 
@@ -14,12 +15,14 @@ const props = defineProps<{
 }>()
 
 const emits = defineEmits<(e: 'update:modelValue', payload: File[]) => void>()
+const { t } = useI18n()
 
 const files = useVModel(props, 'modelValue', emits, {
   defaultValue: [] as File[],
 })
 
 const isDragging = ref(false)
+const fileInput = ref<HTMLInputElement>()
 
 const handleDrop = (e: DragEvent) => {
   e.preventDefault()
@@ -46,6 +49,9 @@ const handleFileInput = (e: Event) => {
   } else {
     files.value = [newFiles[0]]
   }
+
+  // Clear the input value to allow selecting the same file again
+  input.value = ''
 }
 
 const removeFile = (index: number) => {
@@ -77,6 +83,7 @@ const formatFileSize = (bytes: number): string => {
     @drop="!disabled && handleDrop"
   >
     <input
+      ref="fileInput"
       type="file"
       :accept="accept"
       :multiple="multiple"
@@ -87,14 +94,14 @@ const formatFileSize = (bytes: number): string => {
 
     <div class="text-center transition-transform" :class="(files?.length ?? 0) > 0 ? 'scale-80' : ''">
       <div class="text-gray-500">
-        Drag and drop files here or click to browse
+        {{ t('common.fileUpload.dragAndDrop') }}
       </div>
       <div class="text-sm text-gray-400 mt-1">
-        {{ accept ? `Accepted formats: ${accept}` : 'All files accepted' }}
+        {{ accept ? t('common.fileUpload.acceptedFormats', { formats: accept }) : t('common.fileUpload.allFilesAccepted') }}
       </div>
     </div>
 
-    <div v-if="(files?.length ?? 0) > 0" class="mt-4 w-full space-y-2">
+    <div v-if="(files?.length ?? 0) > 0" class="mt-4 w-full space-y-2 relative z-10">
       <div
         v-for="(file, index) in files"
         :key="index"
@@ -106,11 +113,11 @@ const formatFileSize = (bytes: number): string => {
         </div>
         <button
           type="button"
-          class="text-gray-500 hover:text-destructive disabled:cursor-not-allowed disabled:opacity-50"
+          class="text-gray-500 hover:text-destructive disabled:cursor-not-allowed disabled:opacity-50 relative z-20"
           :disabled="disabled"
           @click.stop="removeFile(index)"
         >
-          Remove
+          {{ t('common.fileUpload.remove') }}
         </button>
       </div>
     </div>

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useForm } from 'vee-validate'
 import { ref } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { FileUpload } from '@/components/Inputs'
 import Avatar from '@/components/ui/avatar/Avatar.vue'
 import AvatarFallback from '@/components/ui/avatar/AvatarFallback.vue'
@@ -21,6 +22,8 @@ import SettingsHeader from './partials/SettingsHeader.vue'
 const authStore = useAuthStore()
 const isUploading = ref(false)
 const avatarFile = ref<File[]>()
+const isRemoving = ref(false)
+const { t } = useI18n()
 
 const { handleSubmit, resetForm } = useForm({
   validationSchema: userProfilechema,
@@ -53,10 +56,23 @@ const onSubmit = handleSubmit(async (values) => {
     await authStore.refresh()
   }
 })
+
+const removeAvatar = async () => {
+  try {
+    isRemoving.value = true
+    await userProfileImageService.delete()
+    toast.success('Profile image removed successfully')
+    await authStore.refresh()
+  } catch (error: unknown) {
+    handleErrorWithToast('Failed to remove profile image', error)
+  } finally {
+    isRemoving.value = false
+  }
+}
 </script>
 
 <template>
-  <SettingsHeader title="Profile" description="This is how others will see you on the site.">
+  <SettingsHeader :title="t('settings.profile.title')" :description="t('settings.profile.description')">
     <template #right>
       <Avatar class="size-16">
         <AvatarImage
@@ -73,12 +89,12 @@ const onSubmit = handleSubmit(async (values) => {
   <form class="grid grid-cols-2 gap-x-4 gap-y-8" @submit="onSubmit">
     <FormField v-slot="{ componentField }" name="firstName">
       <FormItem>
-        <FormLabel>First name</FormLabel>
+        <FormLabel>{{ t('settings.profile.user.firstName') }}</FormLabel>
         <FormControl>
           <Input type="text" v-bind="componentField" />
         </FormControl>
         <FormDescription>
-          This is your public display name.
+          {{ t('settings.profile.user.firstNameDescription') }}
         </FormDescription>
         <FormMessage />
       </FormItem>
@@ -86,12 +102,12 @@ const onSubmit = handleSubmit(async (values) => {
 
     <FormField v-slot="{ componentField }" name="lastName">
       <FormItem>
-        <FormLabel>Last name</FormLabel>
+        <FormLabel>{{ t('settings.profile.user.lastName') }}</FormLabel>
         <FormControl>
           <Input type="text" v-bind="componentField" />
         </FormControl>
         <FormDescription>
-          This is your public display family name.
+          {{ t('settings.profile.user.lastNameDescription') }}
         </FormDescription>
         <FormMessage />
       </FormItem>
@@ -99,7 +115,7 @@ const onSubmit = handleSubmit(async (values) => {
 
     <FormField v-slot="{ componentField }" name="birthDate">
       <FormItem class="col-span-full">
-        <FormLabel>Birth date</FormLabel>
+        <FormLabel>{{ t('settings.profile.user.birthDate') }}</FormLabel>
         <FormControl>
           <Input type="date" v-bind="componentField" />
         </FormControl>
@@ -109,7 +125,7 @@ const onSubmit = handleSubmit(async (values) => {
 
     <FormField v-slot="{ componentField }" name="phone">
       <FormItem class="col-span-full">
-        <FormLabel>Phone</FormLabel>
+        <FormLabel>{{ t('settings.profile.user.phone') }}</FormLabel>
         <FormControl>
           <Input type="tel" v-bind="componentField" />
         </FormControl>
@@ -119,10 +135,10 @@ const onSubmit = handleSubmit(async (values) => {
 
     <FormField v-slot="{ componentField }" name="description">
       <FormItem class="col-span-full">
-        <FormLabel>Description</FormLabel>
+        <FormLabel>{{ t('settings.profile.user.description') }}</FormLabel>
         <FormControl>
           <Textarea
-            placeholder="Tell us a little bit about yourself"
+            :placeholder="t('settings.profile.user.descriptionPlaceholder')"
             v-bind="componentField"
           />
         </FormControl>
@@ -132,7 +148,7 @@ const onSubmit = handleSubmit(async (values) => {
 
     <div class="col-span-full flex gap-2 justify-start">
       <Button type="submit">
-        Update profile
+        {{ t('settings.profile.updateProfile') }}
       </Button>
 
       <Button
@@ -140,16 +156,18 @@ const onSubmit = handleSubmit(async (values) => {
         variant="outline"
         @click="resetForm"
       >
-        Reset form
+        {{ t('settings.profile.resetForm') }}
       </Button>
     </div>
+
+    <Separator class="col-span-full" />
 
     <!-- Profile Image Upload Section -->
     <div class="col-span-full flex flex-col gap-4">
       <div class="flex items-center gap-4">
         <div class="flex-1">
           <h4 class="text-sm font-medium mb-2">
-            Profile Image
+            {{ t('settings.profile.profileImage.title') }}
           </h4>
           <div class="grid grid-cols-2 gap-4">
             <div class="flex flex-col gap-2">
@@ -164,16 +182,30 @@ const onSubmit = handleSubmit(async (values) => {
                 :loading="isUploading"
                 @click="handleAvatarUpload"
               >
-                Upload Image
+                {{ t('settings.profile.profileImage.uploadImage') }}
               </Button>
             </div>
             <div class="flex flex-col gap-1">
-              <p class="text-sm text-muted-foreground">
-                Upload a new profile image. Supported formats: JPG, PNG, GIF
-              </p>
-              <p class="text-sm text-muted-foreground">
-                Maximum file size: 5MB
-              </p>
+              <div class="flex flex-col gap-1 p-2">
+                <p class="text-sm text-muted-foreground">
+                  {{ t('settings.profile.profileImage.description') }}
+                </p>
+                <p class="text-sm text-muted-foreground">
+                  {{ t('settings.profile.profileImage.maxSize') }}
+                </p>
+              </div>
+              <div v-if="authStore.user?.avatarUrl" class="flex justify-end mt-auto">
+                <Button
+                  type="button"
+                  variant="destructive"
+                  class="w-full"
+                  :disabled="isRemoving"
+                  :loading="isRemoving"
+                  @click="removeAvatar"
+                >
+                  {{ t('settings.profile.profileImage.removeImage') }}
+                </Button>
+              </div>
             </div>
           </div>
         </div>

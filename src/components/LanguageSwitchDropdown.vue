@@ -31,9 +31,9 @@ const switchLanguage = (langCode: TLocale) => {
       <DropdownMenuItem
         v-for="locale in languageStore.availableLocales"
         :key="locale"
+        class="cursor-pointer"
         @click="switchLanguage(locale)"
       >
-        <Icon icon="lucide:languages" class="mr-2" />
         <span>{{ t(`common.language.${locale}`) }}</span>
         <span class="ml-2 text-xs text-muted-foreground">({{ locale.toUpperCase() }})</span>
       </DropdownMenuItem>

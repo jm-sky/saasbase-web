@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import DarkModeButton from '@/components/DarkModeButton.vue'
+import LanguageSwitchDropdown from '@/components/LanguageSwitchDropdown.vue'
 import AppSidebar from '@/components/Layout/AppSidebar.vue'
 import Search from '@/components/Layout/Search.vue'
 import UserNav from '@/components/Layout/UserNav.vue'
@@ -34,6 +35,7 @@ import TopbarNav from '@/layouts/partials/TopbarNav.vue'
           <Search />
           <DarkModeButton />
           <ThemeColorButton />
+          <LanguageSwitchDropdown />
           <UserNav />
         </div>
       </header>
