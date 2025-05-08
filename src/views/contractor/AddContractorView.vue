@@ -26,7 +26,7 @@ const { isSubmitting, handleSubmit, setErrors, resetForm } = useForm<Omit<IContr
 const onSubmit = handleSubmit(async (values) => {
   try {
     await contractorService.create(values)
-    toast({ title: 'Success', description: 'Contractor added successfully', variant: 'success' })
+    toast.success('Contractor added successfully')
     resetForm()
     await router.push('/contractors') // Navigate to the contractors list
   } catch (error: unknown) {
