@@ -19,5 +19,6 @@ export const config = {
   },
   api: {
     mockBackend: import.meta.env.VITE_API_MOCK === '1',
+    logoutOnUnauthorized: false,
   },
 }

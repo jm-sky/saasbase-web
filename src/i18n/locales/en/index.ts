@@ -33,6 +33,7 @@ export const en = {
     termsAgree: 'By clicking continue, you agree to our',
     termsOfService: 'Terms of Service',
     privacyPolicy: 'Privacy Policy',
+    sessionExpired: 'Session expired.',
     and: 'and'
   },
   layout: {
