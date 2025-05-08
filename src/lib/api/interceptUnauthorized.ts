@@ -1,7 +1,7 @@
 import axios, { AxiosError, HttpStatusCode } from 'axios'
-import { useI18n } from 'vue-i18n'
 import { useToast } from '@/components/ui/toast'
 import { useAuthStore } from '@/domains/auth/store/auth.store'
+import { i18n } from '@/i18n'
 import router from '@/router'
 
 const AUTH_TOKEN_URL = '/api/v1/auth/token'
@@ -23,8 +23,7 @@ interface FailedQueueItem {
 const isUnauthorized = (error: unknown): boolean => {
   return (
     error instanceof AxiosError &&
-    (error.response?.status === HttpStatusCode.Unauthorized ||
-      error.response?.status === HttpStatusCode.Forbidden)
+    (error.response?.status === HttpStatusCode.Unauthorized)
   )
 }
 
@@ -109,8 +108,7 @@ export const interceptUnauthorized = async (error: AxiosError): Promise<unknown>
     throw new TokenRefreshError()
   } catch (refreshError: unknown) {
     processQueue(refreshError, null)
-    const { t } = useI18n()
-    useToast().toast.error(t('auth.sessionExpired'))
+    useToast().toast.error(i18n.global.t('auth.sessionExpired'))
     authStore.clearData()
     await redirectToLoginPage(window.location)
     throw refreshError instanceof Error ? refreshError : new Error(String(refreshError))

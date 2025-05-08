@@ -28,7 +28,7 @@ const { toast } = useToast()
 const { login } = useLogin()
 const router = useRouter()
 
-const { setErrors, isSubmitting, handleSubmit } = useForm<Credentials>({
+const { setErrors, isSubmitting, handleSubmit, values } = useForm<Credentials>({
   validationSchema: credentialsSchema,
   initialValues: {
     email: import.meta.env.VITE_DEFAULT_LOGIN ?? '',
@@ -61,6 +61,7 @@ const useAuthProviders = computed<boolean>(() => Object.values(config.auth.provi
   <div :class="cn('grid gap-6', $attrs.class ?? '')">
     <form @submit="onSubmit">
       <div class="grid gap-2">
+        <pre>{{ values }}</pre>
         <FormFieldLabeled
           v-slot="{ componentField }"
           name="email"
@@ -104,7 +105,12 @@ const useAuthProviders = computed<boolean>(() => Object.values(config.auth.provi
             name="remember"
             :label="t('auth.rememberMe')"
           >
-            <Checkbox v-bind="componentField" class="transition-shadow" />
+            <Checkbox
+              v-bind="componentField"
+              class="transition-shadow"
+              :checked="values.remember"
+              @update:checked="(checked) => setFieldValue('remember', checked)"
+            />
           </FormFieldLabeledAfter>
 
           <div>

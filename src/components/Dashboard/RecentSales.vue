@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { isAxiosError } from 'axios'
 import { onMounted, ref } from 'vue'
 import { RouterLink } from 'vue-router'
 import {
@@ -13,11 +14,13 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
+import { useToast } from '@/components/ui/toast'
 import { userService } from '@/domains/user/services/userService'
 import { useTranslate } from '@/i18n/useTranslate'
 import type { PublicUser } from '@/domains/user/models/publicUser.model'
 
 const tr = useTranslate()
+const { toast } = useToast()
 
 const isLoading = ref(false)
 const users = ref<PublicUser[]>([])
@@ -26,6 +29,11 @@ const refresh = async () => {
   try {
     isLoading.value = true
     users.value = await userService.index({ limit: 5 })
+  } catch (error: unknown) {
+    console.error('[RecentSalesError]', error)
+    toast.error(tr('ErrorLoadingRecentSales'), {
+      description: isAxiosError(error) ? error.response?.data.message ?? error.message : 'Unknown error',
+    })
   } finally {
     isLoading.value = false
   }
