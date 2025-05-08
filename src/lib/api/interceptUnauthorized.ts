@@ -98,7 +98,7 @@ export const interceptUnauthorized = async (error: AxiosError): Promise<unknown>
   try {
     // Attempt to refresh the token
     const response = await axios.post(AUTH_REFRESH_TOKEN_URL)
-    const newToken = response.data?.token
+    const newToken = response.data?.accessToken
 
     if (originalRequest && typeof newToken === 'string') {
       authStore.setToken(newToken)
