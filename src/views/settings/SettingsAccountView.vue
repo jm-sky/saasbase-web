@@ -12,6 +12,7 @@ import { authService } from '@/domains/auth/services/authService'
 import { mfaService } from '@/domains/auth/services/mfaService'
 import { useAuthStore } from '@/domains/auth/store/auth.store'
 import { routeMap } from '@/router/routeMap'
+import SettingsHeader from './partials/SettingsHeader.vue'
 
 const router = useRouter()
 const authStore = useAuthStore()
@@ -62,14 +63,7 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div>
-    <h3 class="text-lg font-medium">
-      Account
-    </h3>
-    <p class="text-sm text-muted-foreground">
-      Update your account settings. Set your preferred language and timezone.
-    </p>
-  </div>
+  <SettingsHeader title="Account" description="Update your account settings. Set your preferred language and timezone." />
 
   <Separator />
 

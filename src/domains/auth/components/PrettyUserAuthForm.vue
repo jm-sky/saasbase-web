@@ -28,7 +28,7 @@ const { toast } = useToast()
 const { login } = useLogin()
 const router = useRouter()
 
-const { setErrors, isSubmitting, handleSubmit, values } = useForm<Credentials>({
+const { setErrors, setFieldValue, isSubmitting, handleSubmit, values } = useForm<Credentials>({
   validationSchema: credentialsSchema,
   initialValues: {
     email: import.meta.env.VITE_DEFAULT_LOGIN ?? '',
@@ -61,7 +61,6 @@ const useAuthProviders = computed<boolean>(() => Object.values(config.auth.provi
   <div :class="cn('grid gap-6', $attrs.class ?? '')">
     <form @submit="onSubmit">
       <div class="grid gap-2">
-        <pre>{{ values }}</pre>
         <FormFieldLabeled
           v-slot="{ componentField }"
           name="email"

@@ -36,7 +36,7 @@ const sidebarNavItems: Item[] = [
       :to
       variant="ghost"
       class="w-full text-left justify-start"
-      active-class="bg-secondary"
+      active-class="bg-secondary/80 text-primary"
       :disabled
     >
       {{ title }}

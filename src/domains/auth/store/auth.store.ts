@@ -5,6 +5,7 @@ import { config } from '@/config'
 import { User } from '@/domains/user/models/user.model'
 import { type IUser } from '@/domains/user/types/user.type'
 import { setApiAuthorization } from '@/lib/api'
+import { authService } from '../services/authService'
 
 export interface BaseJwtPayload {
   iss: string;    // Issuer of the token
@@ -62,6 +63,7 @@ export const useAuthStore = defineStore('auth', () => {
   }
 
   const setUser = (newUser: IUser) => userData.value = newUser
+  const refresh = async () => setUser(await authService.getMe())
 
   // eslint-disable-next-line @typescript-eslint/no-confusing-void-expression
   watch(token, () => setApiAuthorization(token.value), {
@@ -83,5 +85,6 @@ export const useAuthStore = defineStore('auth', () => {
     setUser,
     clearToken,
     clearData,
+    refresh,
   }
 })
