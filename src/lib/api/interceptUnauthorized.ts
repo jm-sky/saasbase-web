@@ -1,5 +1,6 @@
 import axios, { AxiosError, HttpStatusCode } from 'axios'
 import { useToast } from '@/components/ui/toast'
+import { config } from '@/config'
 import { useAuthStore } from '@/domains/auth/store/auth.store'
 import { i18n } from '@/i18n'
 import router from '@/router'
@@ -109,8 +110,10 @@ export const interceptUnauthorized = async (error: AxiosError): Promise<unknown>
   } catch (refreshError: unknown) {
     processQueue(refreshError, null)
     useToast().toast.error(i18n.global.t('auth.sessionExpired'))
-    authStore.clearData()
-    await redirectToLoginPage(window.location)
+    if (config.api.logoutOnUnauthorized) {
+      authStore.clearData()
+      await redirectToLoginPage(window.location)
+    }
     throw refreshError instanceof Error ? refreshError : new Error(String(refreshError))
   } finally {
     isRefreshing = false
