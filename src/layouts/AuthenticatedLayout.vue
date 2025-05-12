@@ -32,7 +32,7 @@ import FloatingChatWidget from './partials/FloatingChatWidget.vue'
           orientation="vertical"
           class="w-full data-[orientation=vertical]:h-4"
         />
-        <TopbarNav class="mx-6" />
+        <TopbarNav class="hidden md:block mx-6" />
         <div class="ml-auto flex items-center gap-2">
           <Search />
           <DarkModeButton />
