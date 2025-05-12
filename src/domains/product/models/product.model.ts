@@ -7,7 +7,7 @@ export interface IProduct {
   description?: string
   unitId: string
   priceNet: number
-  vatRateId: string
+  vatRateId?: string
   createdAt: TDateTime
   updatedAt: TDateTime
 }
@@ -20,7 +20,6 @@ export class Product {
     if (!data.tenantId) throw new Error('Tenant ID is required')
     if (!data.name) throw new Error('Product name is required')
     if (!data.unitId) throw new Error('Unit ID is required')
-    if (!data.vatRateId) throw new Error('VAT rate ID is required')
     if (data.priceNet < 0) throw new Error('Price must be non-negative')
 
     return new Product(data)
@@ -52,7 +51,7 @@ export class Product {
     return this.data.priceNet
   }
 
-  get vatRateId(): string {
+  get vatRateId(): string | undefined {
     return this.data.vatRateId
   }
 

@@ -50,7 +50,7 @@ onMounted(() => {
           <Button variant="outline" @click="fetchContractors">
             <RefreshCw class="h-4 w-4" />
           </Button>
-          <ButtonLink to="/contractors/add">
+          <ButtonLink variant="default" to="/contractors/add">
             Add Contractor
           </ButtonLink>
         </div>

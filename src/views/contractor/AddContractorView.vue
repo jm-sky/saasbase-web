@@ -5,6 +5,8 @@ import { useRouter } from 'vue-router'
 import FormFieldLabeled from '@/components/Form/FormFieldLabeled.vue'
 import Button from '@/components/ui/button/Button.vue'
 import Input from '@/components/ui/input/Input.vue'
+import Switch from '@/components/ui/switch/Switch.vue'
+import Textarea from '@/components/ui/textarea/Textarea.vue'
 import { useToast } from '@/components/ui/toast/use-toast'
 import { contractorService } from '@/domains/contractor/services/contractorService'
 import AuthenticatedLayout from '@/layouts/AuthenticatedLayout.vue'
@@ -43,11 +45,11 @@ const onSubmit = handleSubmit(async (values) => {
 
 <template>
   <AuthenticatedLayout>
-    <div class="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
+    <div class="px-8 py-6 mx-auto flex w-full flex-col justify-center space-y-6">
       <h1 class="text-2xl font-semibold tracking-tight text-center">
         Add Contractor
       </h1>
-      <form class="flex flex-col gap-4" @submit.prevent="onSubmit">
+      <form class="flex flex-col gap-y-2 gap-x-8" @submit.prevent="onSubmit">
         <FormFieldLabeled
           v-slot="{ componentField }"
           name="name"
@@ -63,16 +65,53 @@ const onSubmit = handleSubmit(async (values) => {
           label="Description"
           :disabled="isSubmitting"
         >
-          <Input v-bind="componentField" class="bg-white/50 dark:bg-black/50" />
+          <Textarea v-bind="componentField" class="bg-white/50 dark:bg-black/50" />
         </FormFieldLabeled>
 
+        <div class="grid grid-cols-2 gap-x-8 gap-y-2">
+          <div class="flex flex-col gap-4">
+            <FormFieldLabeled
+              v-slot="{ componentField }"
+              name="taxId"
+              label="Tax ID"
+              :disabled="isSubmitting"
+            >
+              <Input v-bind="componentField" class="bg-white/50 dark:bg-black/50" />
+            </FormFieldLabeled>
+          </div>
+
+          <div class="flex flex-col gap-2">
+            <FormFieldLabeled
+              v-slot="{ componentField }"
+              name="email"
+              label="Email"
+              :disabled="isSubmitting"
+            >
+              <Input v-bind="componentField" class="bg-white/50 dark:bg-black/50" />
+            </FormFieldLabeled>
+
+            <FormFieldLabeled
+              v-slot="{ componentField }"
+              name="phone"
+              label="Phone"
+              :disabled="isSubmitting"
+            >
+              <Input v-bind="componentField" class="bg-white/50 dark:bg-black/50" />
+            </FormFieldLabeled>
+          </div>
+        </div>
+
+        <div class="col-span-2 font-semibold mt-2 mb-2">
+          Roles
+        </div>
         <FormFieldLabeled
           v-slot="{ componentField }"
           name="isSupplier"
           label="Is Supplier?"
           :disabled="isSubmitting"
+          class="grid grid-cols-2 gap-2"
         >
-          <Input type="checkbox" v-bind="componentField" />
+          <Switch type="checkbox" v-bind="componentField" />
         </FormFieldLabeled>
 
         <FormFieldLabeled
@@ -80,13 +119,16 @@ const onSubmit = handleSubmit(async (values) => {
           name="isBuyer"
           label="Is Buyer?"
           :disabled="isSubmitting"
+          class="grid grid-cols-2 gap-2"
         >
-          <Input type="checkbox" v-bind="componentField" />
+          <Switch type="checkbox" v-bind="componentField" />
         </FormFieldLabeled>
 
-        <Button type="submit" :disabled="isSubmitting" class="w-full">
-          Add Contractor
-        </Button>
+        <div class="col-span-2">
+          <Button type="submit" :disabled="isSubmitting" class="w-full">
+            Add Contractor
+          </Button>
+        </div>
       </form>
     </div>
   </AuthenticatedLayout>

@@ -39,13 +39,13 @@ export interface IContractor {
   id: TUUID
   tenantId: TUUID
   name: string
+  email?: string
+  phone?: string
+  country?: string
   taxId?: string
   description?: string
   isSupplier: boolean
   isBuyer: boolean
-  addresses?: IContractorAddress[]
-  bankAccounts?: IContractorBankAccount[]
-  contactPersons?: IContractorContactPerson[]
   createdAt: TDateTime
   updatedAt: TDateTime
 }
@@ -83,24 +83,24 @@ export class Contractor {
     return this.data.description ?? ''
   }
 
+  get email(): string {
+    return this.data.email ?? ''
+  }
+
+  get phone(): string {
+    return this.data.phone ?? ''
+  }
+
+  get country(): string {
+    return this.data.country ?? ''
+  }
+
   get isSupplier(): boolean {
     return this.data.isSupplier
   }
 
   get isBuyer(): boolean {
     return this.data.isBuyer
-  }
-
-  get addresses(): IContractorAddress[] {
-    return this.data.addresses ?? []
-  }
-
-  get bankAccounts(): IContractorBankAccount[] {
-    return this.data.bankAccounts ?? []
-  }
-
-  get contactPersons(): IContractorContactPerson[] {
-    return this.data.contactPersons ?? []
   }
 
   get createdAt(): Date {
@@ -122,25 +122,5 @@ export class Contractor {
   isValid(): boolean {
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     return Boolean(this.id && this.tenantId && this.name && this.createdAt && this.updatedAt)
-  }
-
-  hasAddresses(): boolean {
-    return this.addresses.length > 0
-  }
-
-  hasBankAccounts(): boolean {
-    return this.bankAccounts.length > 0
-  }
-
-  hasContactPersons(): boolean {
-    return this.contactPersons.length > 0
-  }
-
-  getDefaultAddress(): IContractorAddress | undefined {
-    return this.addresses.find(addr => addr.isDefault)
-  }
-
-  getDefaultBankAccount(): IContractorBankAccount | undefined {
-    return this.bankAccounts.find(acc => acc.isDefault)
   }
 }

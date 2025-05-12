@@ -48,7 +48,9 @@ onMounted(() => {
           <Button variant="outline" @click="fetchProducts">
             <RefreshCw class="h-4 w-4" />
           </Button>
-          <Button>Add Product</Button>
+          <Button disabled>
+            Add Product
+          </Button>
         </div>
       </div>
 
@@ -65,7 +67,9 @@ onMounted(() => {
           <TableHeader>
             <TableRow>
               <TableHead>Name</TableHead>
-              <TableHead>Description</TableHead>
+              <TableHead class="w-64">
+                Description
+              </TableHead>
               <TableHead>Price</TableHead>
               <TableHead>Created At</TableHead>
               <TableHead>Actions</TableHead>
@@ -74,7 +78,11 @@ onMounted(() => {
           <TableBody>
             <TableRow v-for="product in products" :key="product.id">
               <TableCell>{{ product.name }}</TableCell>
-              <TableCell>{{ product.description || '-' }}</TableCell>
+              <TableCell>
+                <div class="text-ellipsis overflow-hidden whitespace-nowrap max-w-48">
+                  {{ product.description.slice(0, 100) }}
+                </div>
+              </TableCell>
               <TableCell>{{ product.priceNet.toFixed(2) }}</TableCell>
               <TableCell>{{ formatDate(product.createdAt) }}</TableCell>
               <TableCell>
