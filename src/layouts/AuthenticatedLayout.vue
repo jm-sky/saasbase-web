@@ -17,7 +17,9 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from '@/components/ui/sidebar'
+import { config } from '@/config'
 import TopbarNav from '@/layouts/partials/TopbarNav.vue'
+import FloatingChatWidget from './partials/FloatingChatWidget.vue'
 </script>
 
 <template>
@@ -55,5 +57,6 @@ import TopbarNav from '@/layouts/partials/TopbarNav.vue'
         <slot />
       </main>
     </SidebarInset>
+    <FloatingChatWidget v-if="config.chat.enabled" />
   </SidebarProvider>
 </template>

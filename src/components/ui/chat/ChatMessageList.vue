@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { ArrowDown } from 'lucide-vue-next'
 import { defineProps } from 'vue'
 import Button from '@/components/ui/button/Button.vue'
 import { cn } from '@/lib/utils'
@@ -37,7 +38,9 @@ const {
       aria-label="Scroll to bottom"
       @click="scrollToBottom"
     >
-      <slot name="arrow-icon" />
+      <slot name="arrow-icon">
+        <ArrowDown class="size-4" />
+      </slot>
     </Button>
   </div>
 </template>

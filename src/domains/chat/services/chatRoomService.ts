@@ -8,7 +8,7 @@ class ChatRoomService {
   }
 
   async create(userId: string) {
-    const response = (await api.post('/chat/rooms', { userId })).data
+    const response = (await api.post<{ data: IChatRoom}>('/chat/rooms', { userId })).data
     return response
   }
 
