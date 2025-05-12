@@ -25,6 +25,12 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
+      - name: Generate version.json
+        run: |
+          COMMIT_HASH=$(git rev-parse --short HEAD)
+          BUILD_DATE=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+          echo "{ \"commit\": \"$COMMIT_HASH\", \"buildDate\": \"$BUILD_DATE\" }" > public/version.json
+
       - name: Build app
         run: pnpm build
         env:
