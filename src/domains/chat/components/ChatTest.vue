@@ -1,9 +1,11 @@
 <script setup lang="ts">
-import { formatDate, parseISO } from 'date-fns'
 import { computed, onMounted, onUnmounted, ref } from 'vue'
-import Badge from '@/components/ui/badge/Badge.vue'
+import { useRoute, useRouter } from 'vue-router'
 import Button from '@/components/ui/button/Button.vue'
-import Separator from '@/components/ui/separator/Separator.vue'
+import ChatBubble from '@/components/ui/chat/ChatBubble.vue'
+import ChatBubbleAvatar from '@/components/ui/chat/ChatBubbleAvatar.vue'
+import ChatBubbleMessage from '@/components/ui/chat/ChatBubbleMessage.vue'
+import ChatMessageList from '@/components/ui/chat/ChatMessageList.vue'
 import { Textarea } from '@/components/ui/textarea'
 import { useToast } from '@/components/ui/toast'
 import { useAuthStore } from '@/domains/auth/store/auth.store'
@@ -11,9 +13,13 @@ import { userService } from '@/domains/user/services/userService'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
 import echo from '@/plugins/echo.js'
 import type { IChatMessage, IChatRoom, IMessageSentEvent } from '../types/chat.type'
+import { ChatMessage } from '../models/chat.model'
 import { chatRoomService } from '../services/chatRoomService'
+import ChatSidebar from './ChatSidebar.vue'
 import type { PublicUser } from '@/domains/user/models/publicUser.model'
 
+const router = useRouter()
+const route = useRoute()
 const authStore = useAuthStore()
 const { toast } = useToast()
 
@@ -24,7 +30,7 @@ const messages = ref<Record<string, IChatMessage[]>>({})
 const roomId = ref('')
 const message = ref('Hello there!')
 
-const currentRoomMessages = computed<IChatMessage[]>(() => messages.value[roomId.value] ?? [])
+const currentRoomMessages = computed<ChatMessage[]>(() => (messages.value[roomId.value] ?? []).map(message => ChatMessage.load(message)))
 
 const getUsers = async () => users.value = await userService.index()
 const getRooms = async () => rooms.value = await chatRoomService.index()
@@ -39,19 +45,24 @@ const createRoom = async (userId: string) => {
   rooms.value = await chatRoomService.index()
 }
 
-const joinRoom = (room: string) => {
+const getMessages = async (roomId: string) => {
+  messages.value[roomId] = await chatRoomService.getMessages(roomId)
+}
+
+const joinRoom = async (room: string) => {
   if (roomId.value) {
     echo.leave(`chat.room.${roomId.value}`)
   }
 
+  await router.replace({ params: { roomId: room } })
   roomId.value = room
   messages.value[roomId.value] = messages.value[roomId.value] ?? []
 
   const channel = echo.private(`chat.room.${room}`)
-
   channel.listen('.ChatMessageSent', handleMessageSent)
-
   channel.error(() => toast.error('Could not join room'))
+
+  await getMessages(roomId.value)
 }
 
 const sendMessage = async () => {
@@ -67,6 +78,9 @@ const sendMessage = async () => {
 }
 
 onMounted(async () => {
+  if (route.params.roomId) {
+    await joinRoom(route.params.roomId as string)
+  }
   await getUsers()
   await getRooms()
 })
@@ -83,85 +97,43 @@ onUnmounted(() => {
     </h2>
 
     <div class="grid grid-cols-[3fr_1fr] gap-2">
-      <div class="border rounded-lg p-4 shadow bg-white">
-        <div class="font-bold">
-          Messages
-        </div>
-
-        <div class="flex flex-col gap-2">
-          <div
+      <div class="border rounded-lg overflow-hidden shadow bg-white max-h-[600px]">
+        <ChatMessageList>
+          <ChatBubble
             v-for="msg in currentRoomMessages"
             :key="msg.id"
-            class="p-2 rounded-lg bg-gray-100 mb-2 w-3/4"
-            :class="{ 'self-end text-right bg-sky-50': msg.userId === authStore.user?.id }"
+            :variant="msg.getVariant(authStore.user?.id ?? '')"
           >
-            <div class="text-xs text-gray-500 border-b pb-2">
-              {{ `${msg.user?.firstName ?? ''} ${msg.user?.lastName ?? ''}`.trim() ?? msg.userId }} @ {{ formatDate(parseISO(msg.createdAt), 'dd.MM.yyyy, HH:mm') }}
-            </div>
-            <div class="text-sm pt-2">
+            <ChatBubbleAvatar :src="msg.user?.avatarUrl" :fallback="msg.user?.initials" :title="msg.user?.fullName" />
+            <ChatBubbleMessage :variant="msg.getVariant(authStore.user?.id ?? '')" :created-at="msg.createdAt">
               {{ msg.content }}
-            </div>
-          </div>
-        </div>
+            </ChatBubbleMessage>
+          </ChatBubble>
+
+          <!-- <ChatBubble variant="received">
+            <ChatBubbleAvatar fallback="AI" />
+            <ChatBubbleMessage is-loading />
+          </ChatBubble> -->
+        </ChatMessageList>
 
         <div v-if="currentRoomMessages.length === 0" class="text-center text-gray-500 text-sm p-3">
           No messages yet
         </div>
-
-        <div class="border-t p-2 flex flex-row gap-2">
-          <Textarea v-model="message" :disabled="!roomId || isSending" />
-          <Button :disabled="!roomId || isSending" :loading="isSending" @click="sendMessage">
-            Send
-          </Button>
-        </div>
       </div>
 
-      <div class="border rounded-lg p-4 shadow bg-white">
-        <div class="font-bold">
-          Rooms
-        </div>
-        <div v-if="rooms.length === 0" class="text-gray-500 text-sm py-1">
-          No rooms
-        </div>
-        <ul class="flex flex-col gap-1">
-          <li
-            v-for="room in rooms"
-            :key="room.id"
-            class="p-2 rounded bg-gray-100 text-sm hover:bg-sky-200 cursor-pointer flex items-center gap-1"
-            :class="{ 'bg-sky-200': room.id === roomId }"
-            :title="room.id"
-            @click="joinRoom(room.id)"
-          >
-            With:
-            <Badge v-for="participant in room.participants" :key="participant.id">
-              {{ participant.firstName }} {{ participant.lastName }}
-            </Badge>
-            <i v-if="room.id === roomId" class="fa-solid fa-check ml-1" />
-          </li>
-        </ul>
+      <ChatSidebar
+        :rooms="rooms"
+        :users="users"
+        :room-id="roomId"
+        :join-room="joinRoom"
+        :create-room="createRoom"
+      />
 
-        <Separator class="my-4" />
-
-        <div class="font-bold">
-          Users
-        </div>
-        <div v-if="users.length === 0" class="text-gray-500 text-sm py-1">
-          No users
-        </div>
-        <ul class="flex flex-col gap-1">
-          <li
-            v-for="user in users"
-            :key="user.id"
-            class="p-2 rounded bg-gray-100 text-sm hover:bg-sky-200 cursor-pointer"
-            @click="createRoom(user.id)"
-          >
-            {{ user.firstName }} {{ user.lastName }}
-          </li>
-        </ul>
-
-        <div class="mt-4 border-t text-xs pt-2 text-gray-500">
-          You are: {{ authStore.user?.fullName ?? '-' }}
-        </div>
+      <div class="col-span-full mt-2 p-2 flex flex-row gap-2">
+        <Textarea v-model="message" :disabled="!roomId || isSending" />
+        <Button :disabled="!roomId || isSending" :loading="isSending" @click="sendMessage">
+          Send
+        </Button>
       </div>
     </div>
   </div>

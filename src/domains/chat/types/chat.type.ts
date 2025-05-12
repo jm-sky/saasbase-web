@@ -1,9 +1,9 @@
-import type { PublicUser } from '@/domains/user/models/publicUser.model'
+import type { IPublicUser } from '@/domains/user/types/user.type'
 
 export interface IChatMessage {
   id: string
   userId: string
-  user?: PublicUser
+  user?: IPublicUser
   content: string
   parentId: string
   createdAt: string

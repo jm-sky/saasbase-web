@@ -26,7 +26,7 @@ export const routes: RouteRecordRaw[] = [
   ...productRoutes,
 
   {
-    path: '/chat',
+    path: '/chat/:roomId?',
     name: 'chat',
     component: () => import('@/views/chat/ChatView.vue'),
     meta: {
