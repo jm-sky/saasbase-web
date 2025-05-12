@@ -15,7 +15,7 @@ const SHOW_NAV = false
       <div class="ml-auto flex items-center gap-2">
         <Search class="hidden md:block" />
         <DarkModeButton />
-        <ThemeColorButton />
+        <ThemeColorButton class="hidden md:block" />
         <UserNav />
       </div>
     </div>
