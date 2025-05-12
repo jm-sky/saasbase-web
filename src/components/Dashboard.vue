@@ -6,7 +6,6 @@ import TotalRevenueCard from '@/components/Dashboard/Cards/TotalRevenueCard.vue'
 import DateRangePicker from '@/components/Dashboard/DateRangePicker.vue'
 import Overview from '@/components/Dashboard/Overview.vue'
 import RecentSales from '@/components/Dashboard/RecentSales.vue'
-import { Button } from '@/components/ui/button'
 import {
   Card,
   CardContent,
@@ -30,9 +29,8 @@ const tr = useTranslate()
       <h2 class="text-3xl font-bold tracking-tight">
         Dashboard
       </h2>
-      <div class="flex items-center space-x-2">
-        <DateRangePicker />
-        <Button>Download</Button>
+      <div class="flex flex-col md:flex-row items-center gap-2">
+        <DateRangePicker disabled />
       </div>
     </div>
     <Tabs

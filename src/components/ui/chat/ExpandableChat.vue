@@ -40,8 +40,21 @@ const props = withDefaults(defineProps<{
   size: 'md',
 })
 
+const emit = defineEmits<{
+  opened: []
+  closed: []
+}>()
+
 const isOpen = ref(false)
-const toggleChat = () => { isOpen.value = !isOpen.value }
+
+const toggleChat = () => {
+  isOpen.value = !isOpen.value
+  if (isOpen.value) {
+    emit('opened')
+  } else {
+    emit('closed')
+  }
+}
 </script>
 
 <template>

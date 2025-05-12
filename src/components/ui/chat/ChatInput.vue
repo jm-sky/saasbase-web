@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { defineProps, withDefaults } from 'vue'
 import { Textarea } from '@/components/ui/textarea'
 import type { HTMLAttributes } from 'vue'
 

@@ -22,6 +22,10 @@ const value = ref({
   start: calendarDate,
   end: calendarDate.add({ days: 20 }),
 }) as Ref<DateRange>
+
+defineProps<{
+  disabled?: boolean
+}>()
 </script>
 
 <template>
@@ -35,6 +39,7 @@ const value = ref({
             'w-[300px] justify-start text-left font-normal',
             !value && 'text-muted-foreground',
           )"
+          :disabled
         >
           <CalendarIcon class="mr-2 size-4" />
 

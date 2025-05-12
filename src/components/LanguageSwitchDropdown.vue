@@ -23,7 +23,7 @@ const switchLanguage = (langCode: TLocale) => {
   <DropdownMenu>
     <DropdownMenuTrigger as-child>
       <Button variant="ghost" class="h-9 px-3 gap-1">
-        <Icon icon="lucide:languages" class="mr-2" />
+        <Icon icon="lucide:languages" class="hidden md:block mr-2" />
         {{ languageStore.currentLocale.toUpperCase() }}
       </Button>
     </DropdownMenuTrigger>

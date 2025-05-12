@@ -34,9 +34,9 @@ import FloatingChatWidget from './partials/FloatingChatWidget.vue'
         />
         <TopbarNav class="hidden md:block mx-6" />
         <div class="ml-auto flex items-center gap-2">
-          <Search />
+          <Search disabled />
           <DarkModeButton />
-          <ThemeColorButton />
+          <ThemeColorButton class="hidden md:inline-flex" />
           <LanguageSwitchDropdown />
           <UserNav />
         </div>

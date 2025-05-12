@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Send } from 'lucide-vue-next'
-import { computed, onMounted, ref } from 'vue'
+import { computed, ref } from 'vue'
 import Button from '@/components/ui/button/Button.vue'
 import ChatBubble from '@/components/ui/chat/ChatBubble.vue'
 import ChatBubbleAvatar from '@/components/ui/chat/ChatBubbleAvatar.vue'
@@ -48,14 +48,14 @@ const joinRoom = async () => {
   await getMessages()
 }
 
-onMounted(async () => {
+const onOpened = async () => {
   await createRoom()
   await joinRoom()
-})
+}
 </script>
 
 <template>
-  <ExpandableChat size="md" position="bottom-right">
+  <ExpandableChat size="md" position="bottom-right" @opened="onOpened">
     <ExpandableChatHeader class="flex-col text-center justify-center">
       <h1 class="text-xl font-semibold">
         Chat with our AI ✨

@@ -7,6 +7,7 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover'
 import LayoutColorSection from './LayoutColorSection.vue'
+
 </script>
 
 <template>
@@ -15,6 +16,7 @@ import LayoutColorSection from './LayoutColorSection.vue'
       <Button
         variant="ghost"
         size="icon"
+        :class="$attrs.class"
       >
         <Icon icon="lucide:paintbrush" />
       </Button>
