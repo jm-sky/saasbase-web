@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { ArrowDown } from 'lucide-vue-next'
-import { defineProps } from 'vue'
 import Button from '@/components/ui/button/Button.vue'
 import { cn } from '@/lib/utils'
 import useAutoScroll from './useAutoScroll'

@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { defineProps } from 'vue'
 import Button from '@/components/ui/button/Button.vue'
 import type { ButtonVariants } from '@/components/ui/button'
 

@@ -23,6 +23,7 @@ export const pl = {
     alreadyRegistered: 'Masz już konto?',
     notRegistered: 'Nie masz jeszcze konta?',
     signIn: 'Zaloguj się',
+    signOut: 'Wyloguj się',
     signInWithEmail: 'Zaloguj się przez Email',
     createAccount: 'Utwórz nowe konto',
     enterCredentials: 'Wprowadź swoje dane logowania',
@@ -34,7 +35,14 @@ export const pl = {
     termsOfService: 'Regulamin',
     privacyPolicy: 'Politykę Prywatności',
     sessionExpired: 'Twoja sesja wygasła.',
-    and: 'oraz'
+    and: 'oraz',
+    selectTenant: {
+      title: 'Wybierz zespół',
+      description: 'Wybierz zespół, aby kontynuować. Możesz przełączać się między zespołami w dowolnym momencie.',
+      createTenant: 'Utwórz zespół',
+      selectTenant: 'Wybierz',
+      noTenants: 'Nie znaleziono zespołów.',
+    }
   },
   layout: {
     darkMode: 'Tryb ciemny',

@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { defineProps } from 'vue'
 import { cn } from '@/lib/utils'
 
 const chatBubbleVariant = (variant: 'received' | 'sent' = 'received', layout: 'default' | 'ai' = 'default', className = '') => {

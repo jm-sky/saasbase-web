@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { formatDate, parseISO } from 'date-fns'
-import { computed, defineProps } from 'vue'
+import { computed } from 'vue'
 import MessageLoading from '@/components/ui/chat/MessageLoading.vue'
 import { cn } from '@/lib/utils'
 

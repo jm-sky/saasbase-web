@@ -113,6 +113,8 @@ export const interceptUnauthorized = async (error: AxiosError): Promise<unknown>
     if (config.api.logoutOnUnauthorized) {
       authStore.clearData()
       await redirectToLoginPage(window.location)
+    } else {
+      authStore.showAuthModal = true
     }
     throw refreshError instanceof Error ? refreshError : new Error(String(refreshError))
   } finally {

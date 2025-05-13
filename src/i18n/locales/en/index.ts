@@ -23,6 +23,7 @@ export const en = {
     alreadyRegistered: 'Already registered?',
     notRegistered: 'Not registered yet?',
     signIn: 'Sign in',
+    signOut: 'Log out',
     signInWithEmail: 'Sign In with Email',
     createAccount: 'Create new account',
     enterCredentials: 'Enter Your credentials below to login',
@@ -34,7 +35,14 @@ export const en = {
     termsOfService: 'Terms of Service',
     privacyPolicy: 'Privacy Policy',
     sessionExpired: 'Session expired.',
-    and: 'and'
+    and: 'and',
+    selectTenant: {
+      title: 'Select Tenant',
+      description: 'Choose a tenant to continue. You can switch between tenants at any time.',
+      createTenant: 'Create Tenant',
+      selectTenant: 'Select',
+      noTenants: 'No tenants found.',
+    }
   },
   layout: {
     darkMode: 'Dark Mode',

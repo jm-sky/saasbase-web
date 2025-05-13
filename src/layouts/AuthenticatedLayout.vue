@@ -18,8 +18,13 @@ import {
   SidebarTrigger,
 } from '@/components/ui/sidebar'
 import { config } from '@/config'
+import UserAuthModal from '@/domains/auth/components/UserAuthModal.vue'
+import { useAuthStore } from '@/domains/auth/store/auth.store'
+import SelectTenantModal from '@/domains/tenant/components/SelectTenantModal.vue'
 import TopbarNav from '@/layouts/partials/TopbarNav.vue'
 import FloatingChatWidget from './partials/FloatingChatWidget.vue'
+
+const authStore = useAuthStore()
 </script>
 
 <template>
@@ -57,6 +62,8 @@ import FloatingChatWidget from './partials/FloatingChatWidget.vue'
         <slot />
       </main>
     </SidebarInset>
+    <UserAuthModal v-if="authStore.showAuthModal" />
+    <SelectTenantModal v-if="authStore.showSelectTenantModal" />
     <FloatingChatWidget v-if="config.chat.enabled" />
   </SidebarProvider>
 </template>

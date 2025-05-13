@@ -2,7 +2,7 @@ import { isAuthenticated } from '@/router/middleware/isAuthenticated'
 import { isVerified } from '@/router/middleware/isVerified'
 import { routeMap } from '@/router/routeMap'
 import LoginView from '@/views/auth/LoginView.vue'
-import PrettyLoginView from '@/views/auth/PrettyLoginView.vue'
+import PrettyLoginView from '@/views/auth/LoginView.vue'
 import type { RouteRecordRaw } from 'vue-router'
 
 export const authRoutes: RouteRecordRaw[] = [

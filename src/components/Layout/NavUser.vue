@@ -7,6 +7,7 @@ import {
   LogOut,
   Sparkles,
 } from 'lucide-vue-next'
+import { useI18n } from 'vue-i18n'
 import {
   Avatar,
   AvatarFallback,
@@ -27,6 +28,8 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from '@/components/ui/sidebar'
+
+const { t } = useI18n()
 
 defineProps<{
   user: {
@@ -106,7 +109,7 @@ const { isMobile } = useSidebar()
           <DropdownMenuSeparator />
           <DropdownMenuItem>
             <LogOut />
-            Log out
+            {{ t('auth.signOut') }}
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>

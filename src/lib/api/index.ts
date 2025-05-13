@@ -1,6 +1,7 @@
 import axios, { AxiosError } from 'axios'
 import { DEFAULT_LOCALE } from '@/i18n'
 import { interceptUnauthorized } from '@/lib/api/interceptUnauthorized'
+import { interceptTenantRequired } from './interceptTenantRequired'
 import type { AxiosInstance, AxiosResponse } from 'axios'
 
 const api: AxiosInstance = axios.create({
@@ -17,6 +18,11 @@ const api: AxiosInstance = axios.create({
 api.interceptors.response.use(
   (response: AxiosResponse): AxiosResponse => response,
   (error: AxiosError) => interceptUnauthorized(error),
+)
+
+api.interceptors.response.use(
+  (response: AxiosResponse): AxiosResponse => response,
+  (error: AxiosError) => interceptTenantRequired(error),
 )
 
 export const setApiAuthorization = (token?: string | null) => {

@@ -11,7 +11,6 @@ export class PublicUser implements IPublicUser {
   description?: string
   address?: UserAddress
   avatarUrl?: string
-  role: string
   createdAt: TDateTime
 
   constructor(data: IPublicUser) {
@@ -23,7 +22,6 @@ export class PublicUser implements IPublicUser {
     this.description = data.description
     this.address = data.address ? UserAddress.load(data.address) : undefined
     this.avatarUrl = data.avatarUrl
-    this.role = data.role
     this.createdAt = data.createdAt
   }
 
@@ -41,7 +39,6 @@ export class PublicUser implements IPublicUser {
       description: this.description,
       address: this.address?.toJSON(),
       avatarUrl: this.avatarUrl,
-      role: this.role,
       createdAt: this.createdAt,
     }
   }
