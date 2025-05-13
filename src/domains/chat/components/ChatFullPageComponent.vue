@@ -49,8 +49,9 @@ const handleMessageSent = (event: IMessageSentEvent) => {
 }
 
 const createRoom = async (userId: string) => {
-  await chatRoomService.create(userId)
+  const room = await chatRoomService.create(userId)
   rooms.value = await chatRoomService.index()
+  await joinRoom(room.id)
 }
 
 const getMessages = async (roomId: string) => {
@@ -102,7 +103,7 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div class="p-2 relative flex flex-col h-full max-w-full">
+  <div class="p-2 relative flex flex-col h-full max-w-full overflow-x-hidden">
     <ChatMessageList ref="messagesContainer" class="w-full md:w-5xl mx-auto">
       <ChatBubble
         v-for="msg in currentRoomMessages"
@@ -120,7 +121,7 @@ onUnmounted(() => {
       </div>
 
       <div class="mt-2 p-2 flex flex-row gap-2 w-full">
-        <Textarea v-model="message" :disabled="!roomId || isSending" />
+        <Textarea v-model="message" :disabled="!roomId || isSending" @focus="showSidebar = true" />
         <Button :disabled="!roomId || isSending" :loading="isSending" @click="sendMessage">
           Send
         </Button>
@@ -147,13 +148,12 @@ onUnmounted(() => {
     </Button>
 
     <ChatSidebar
-      v-if="showSidebar"
+      v-model:open="showSidebar"
       :rooms="rooms"
       :users="users"
       :room-id="roomId"
       :join-room="joinRoom"
       :create-room="createRoom"
-      @close="showSidebar = false"
     />
   </div>
 </template>

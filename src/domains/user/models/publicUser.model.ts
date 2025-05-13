@@ -49,6 +49,7 @@ export class PublicUser implements IPublicUser {
   }
 
   get initials(): string {
-    return `${this.firstName[0]}${this.lastName[0]}`.toUpperCase()
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+    return `${this.firstName[0] ?? ''}${this.lastName[0] ?? ''}`.toUpperCase()
   }
 }

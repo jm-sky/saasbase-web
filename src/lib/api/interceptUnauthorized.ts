@@ -106,16 +106,19 @@ export const interceptUnauthorized = async (error: AxiosError): Promise<unknown>
       processQueue(null, newToken)
       return await axios(originalRequest)
     }
+
     throw new TokenRefreshError()
   } catch (refreshError: unknown) {
     processQueue(refreshError, null)
     useToast().toast.error(i18n.global.t('auth.sessionExpired'))
+
     if (config.api.logoutOnUnauthorized) {
       authStore.clearData()
       await redirectToLoginPage(window.location)
     } else {
       authStore.showAuthModal = true
     }
+
     throw refreshError instanceof Error ? refreshError : new Error(String(refreshError))
   } finally {
     isRefreshing = false

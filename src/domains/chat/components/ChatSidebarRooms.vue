@@ -1,12 +1,18 @@
 <script setup lang="ts">
+import { fullName } from '@/lib/fullName'
 import type { IChatRoom } from '../types/chat.type'
 
 defineProps<{
   rooms: IChatRoom[]
   roomId: string
   joinRoom: (roomId: string) => void
-  createRoom: (userId: string) => void
 }>()
+
+const emit = defineEmits<{
+  join: []
+}>()
+
+const showParticipants = (selectedRoom: IChatRoom) => selectedRoom.participants.map(p => fullName(p)).join(', ')
 </script>
 
 <template>
@@ -25,10 +31,10 @@ defineProps<{
       class="px-3 py-2 rounded bg-gray-100 text-sm hover:bg-sky-200 cursor-pointer flex items-center gap-1"
       :class="{ 'bg-sky-200': room.id === roomId }"
       :title="room.id"
-      @click="joinRoom(room.id)"
+      @click="[joinRoom(room.id), emit('join')]"
     >
-      <div v-for="participant in room.participants" :key="participant.id">
-        {{ participant.firstName }} {{ participant.lastName }}
+      <div>
+        {{ showParticipants(room) }}
       </div>
       <i v-if="room.id === roomId" class="fa-solid fa-check ml-1" />
     </li>

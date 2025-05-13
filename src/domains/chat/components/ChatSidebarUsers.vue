@@ -4,8 +4,11 @@ import type { IPublicUser } from '@/domains/user/types/user.type'
 defineProps<{
   users: IPublicUser[]
   roomId: string
-  joinRoom: (roomId: string) => void
   createRoom: (userId: string) => void
+}>()
+
+const emit = defineEmits<{
+  create: []
 }>()
 </script>
 
@@ -23,7 +26,7 @@ defineProps<{
       v-for="user in users"
       :key="user.id"
       class="px-3 py-2 rounded bg-gray-100 text-sm hover:bg-sky-200 cursor-pointer"
-      @click="createRoom(user.id)"
+      @click="[createRoom(user.id), emit('create')]"
     >
       {{ user.firstName }} {{ user.lastName }}
     </li>

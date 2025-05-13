@@ -16,8 +16,8 @@ class AiChatService {
   //   return response.data
   // }
 
-  async sendMessage(content: string) {
-    const response = (await api.post('/ai/chat', { content })).data
+  async sendMessage(message: string) {
+    const response = (await api.post('/ai/chat', { message })).data
     return response
   }
 

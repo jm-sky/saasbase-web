@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { Send } from 'lucide-vue-next'
+import { v4 } from 'uuid'
 import { computed, ref } from 'vue'
 import Button from '@/components/ui/button/Button.vue'
 import ChatBubble from '@/components/ui/chat/ChatBubble.vue'
@@ -15,19 +16,43 @@ import { useToast } from '@/components/ui/toast'
 import { useAuthStore } from '@/domains/auth/store/auth.store'
 import { ChatMessage } from '@/domains/chat/models/chat.model'
 import { aiChatService } from '@/domains/chat/services/aiChatService'
+import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
 import echo from '@/plugins/echo.js'
-import type { IChatMessage, IMessageSentEvent } from '@/domains/chat/types/chat.type'
+import type { IChatMessage } from '../types/chat.type'
+import type { IAiChatMessage } from '@/domains/chat/types/aiChat.type'
 
 const { toast } = useToast()
 const authStore = useAuthStore()
 
+const createNewAiMessage = (): IChatMessage => ({
+  id: v4(),
+  userId: 'ai',
+  user: {
+    id: 'ai',
+    firstName: 'AI',
+    lastName: '',
+    email: '',
+    createdAt: new Date().toISOString(),
+  },
+  content: '',
+  createdAt: new Date().toISOString(),
+})
+
 const message = ref('')
 const messages = ref<IChatMessage[]>([])
+const isSendingMessage = ref(false)
 
-const messageList = computed<ChatMessage[]>(() => (messages.value).map(message => ChatMessage.load(message)))
+const currentAiMessage = ref<IChatMessage>(createNewAiMessage())
 
-const handleMessageSent = (event: IMessageSentEvent) => {
-  messages.value.push(event.data)
+const messageList = computed(() => messages.value.map(message => ChatMessage.load(message)))
+
+const startNewResponse = () => {
+  currentAiMessage.value = createNewAiMessage()
+  messages.value.push(currentAiMessage.value)
+}
+
+const handleMessageSent = (chatMessage: IAiChatMessage) => {
+  currentAiMessage.value.content = `${currentAiMessage.value.content}${chatMessage.content}`
 }
 
 const joinRoom = () => {
@@ -37,8 +62,24 @@ const joinRoom = () => {
 }
 
 const sendMessage = async () => {
-  const response = await aiChatService.sendMessage(message.value)
-  messages.value.push(response.data)
+  try {
+    isSendingMessage.value = true
+    messages.value.push({
+      id: v4(),
+      userId: authStore.userData?.id ?? '',
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      user: authStore.userData!,
+      content: message.value,
+      createdAt: new Date().toISOString(),
+    })
+    startNewResponse()
+    await aiChatService.sendMessage(message.value)
+    message.value = ''
+  } catch (error) {
+    handleErrorWithToast('Error sending message', error)
+  } finally {
+    isSendingMessage.value = false
+  }
 }
 
 const onOpened = () => {
@@ -62,7 +103,7 @@ const onOpened = () => {
           :key="msg.id"
           :variant="msg.getVariant(authStore.user?.id ?? '')"
         >
-          <ChatBubbleAvatar :src="msg.user?.avatarUrl" :fallback="msg.user?.initials" :title="msg.user?.fullName" />
+          <ChatBubbleAvatar :src="msg.user?.avatarUrl" :fallback="msg.user?.initials ?? 'AI'" :title="msg.user?.fullName" />
           <ChatBubbleMessage :variant="msg.getVariant(authStore.user?.id ?? '')" :created-at="msg.createdAt">
             {{ msg.content }}
           </ChatBubbleMessage>
@@ -71,14 +112,21 @@ const onOpened = () => {
     </ExpandableChatBody>
 
     <ExpandableChatFooter>
-      <form class="flex relative gap-2">
-        <ChatInput v-model="message" class="min-h-12 bg-background shadow-none" />
+      <form class="flex relative gap-2" @submit.prevent="sendMessage">
+        <ChatInput
+          v-model="message"
+          :disabled="isSendingMessage"
+          class="min-h-12 bg-background shadow-none"
+          @keydown.ctrl.enter="sendMessage"
+        />
         <Button
-          type="button"
+          type="submit"
           class="absolute top-1/2 right-2 transform size-8 -translate-y-1/2"
           size="icon"
+          :disabled="isSendingMessage"
+          :loading="isSendingMessage"
         >
-          <Send class="size-4" @click="sendMessage" />
+          <Send class="size-4" />
         </Button>
       </form>
     </ExpandableChatFooter>

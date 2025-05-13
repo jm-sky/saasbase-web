@@ -5,9 +5,9 @@ export interface IChatMessage {
   userId: string
   user?: IPublicUser
   content: string
-  parentId: string
+  parentId?: string
   createdAt: string
-  editedAt: string
+  editedAt?: string
 }
 
 export interface IMessageSentEvent {

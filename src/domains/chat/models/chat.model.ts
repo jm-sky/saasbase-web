@@ -6,9 +6,9 @@ export class ChatMessage implements IChatMessage {
   userId: string
   user?: PublicUser
   content: string
-  parentId: string
+  parentId?: string
   createdAt: string
-  editedAt: string
+  editedAt?: string
 
   constructor(data: IChatMessage) {
     this.id = data.id
