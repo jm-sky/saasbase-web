@@ -1,7 +1,7 @@
 import { UserAddress } from '@/domains/user/models/userAddress.model'
+import { fullName } from '@/lib/fullName'
 import type { IPublicUser } from '../types/user.type'
 import type { TDateTime, TUUID } from '@/types/common'
-import { fullName } from '@/lib/fullName'
 
 export class PublicUser implements IPublicUser {
   id: TUUID
@@ -49,6 +49,7 @@ export class PublicUser implements IPublicUser {
   }
 
   get initials(): string {
-    return `${this.firstName[0]}${this.lastName[0]}`.toUpperCase()
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+    return `${this.firstName[0] ?? ''}${this.lastName[0] ?? ''}`.toUpperCase()
   }
 }

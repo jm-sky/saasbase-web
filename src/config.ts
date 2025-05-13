@@ -15,6 +15,9 @@ export const config = {
     enabled: import.meta.env.VITE_CHAT_ENABLED === '1',
     botId: import.meta.env.VITE_CHAT_BOT_ID ?? DEFAULT_CHAT_BOT_ID,
   },
+  aiChat: {
+    enabled: import.meta.env.VITE_AI_CHAT_ENABLED === '1',
+  },
   auth: {
     providers: {
       gitHub: true,

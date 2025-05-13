@@ -16,20 +16,21 @@ defineProps<{
   createRoom: (userId: string) => void
 }>()
 
-const emit = defineEmits<{
-  close: []
-}>()
+const isOpen = defineModel<boolean>('open', { required: true })
 
 const authStore = useAuthStore()
 </script>
 
 <template>
-  <div class="absolute top-0 right-0 flex flex-col gap-1 p-3 w-full md:w-2xl h-full z-10 bg-white overflow-auto border-l shadow-lg">
+  <div
+    class="absolute top-0 right-0 flex flex-col gap-1 p-3 w-full md:w-lg h-full z-10 bg-white overflow-auto border-l shadow-lg transition-transform duration-300 ease-in-out"
+    :class="isOpen ? 'translate-x-0' : 'translate-x-full'"
+  >
     <Button
       variant="ghost"
       size="sm"
       class="absolute top-2 right-2"
-      @click="emit('close')"
+      @click="isOpen = false"
     >
       <X />
     </Button>
@@ -38,7 +39,7 @@ const authStore = useAuthStore()
       :rooms="rooms"
       :room-id="roomId"
       :join-room="joinRoom"
-      :create-room="createRoom"
+      @join="isOpen = false"
     />
 
     <Separator class="my-4" />
@@ -46,8 +47,8 @@ const authStore = useAuthStore()
     <ChatSidebarUsers
       :users="users"
       :room-id="roomId"
-      :join-room="joinRoom"
       :create-room="createRoom"
+      @create="isOpen = false"
     />
 
     <div class="mb-0 mt-auto border-t text-xs pt-2 text-center text-gray-500">

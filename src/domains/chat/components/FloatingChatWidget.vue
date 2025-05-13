@@ -16,6 +16,7 @@ import { config } from '@/config'
 import { useAuthStore } from '@/domains/auth/store/auth.store'
 import { ChatMessage } from '@/domains/chat/models/chat.model'
 import { chatRoomService } from '@/domains/chat/services/chatRoomService'
+import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
 import echo from '@/plugins/echo.js'
 import type { IChatMessage, IMessageSentEvent } from '@/domains/chat/types/chat.type'
 
@@ -25,12 +26,13 @@ const authStore = useAuthStore()
 const message = ref('')
 const messages = ref<IChatMessage[]>([])
 const roomId = ref()
+const isSendingMessage = ref(false)
 
 const messageList = computed<ChatMessage[]>(() => (messages.value).map(message => ChatMessage.load(message)))
 
 const createRoom = async () => {
   const response = await chatRoomService.create(config.chat.botId)
-  roomId.value = response.data.id
+  roomId.value = response.id
 }
 
 const getMessages = async () => {
@@ -48,6 +50,18 @@ const joinRoom = async () => {
   await getMessages()
 }
 
+const sendMessage = async () => {
+  try {
+    isSendingMessage.value = true
+    await chatRoomService.sendMessage(roomId.value, message.value)
+    message.value = ''
+  } catch (error) {
+    handleErrorWithToast('Error sending message', error)
+  } finally {
+    isSendingMessage.value = false
+  }
+}
+
 const onOpened = async () => {
   await createRoom()
   await joinRoom()
@@ -58,9 +72,8 @@ const onOpened = async () => {
   <ExpandableChat size="md" position="bottom-right" @opened="onOpened">
     <ExpandableChatHeader class="flex-col text-center justify-center">
       <h1 class="text-xl font-semibold">
-        Chat with our AI ✨
+        Chat with Your friends
       </h1>
-      <p>Ask any question for our AI to answer</p>
     </ExpandableChatHeader>
 
     <ExpandableChatBody>
@@ -85,6 +98,9 @@ const onOpened = async () => {
           type="button"
           class="absolute top-1/2 right-2 transform size-8 -translate-y-1/2"
           size="icon"
+          :disabled="isSendingMessage"
+          :loading="isSendingMessage"
+          @click="sendMessage"
         >
           <Send class="size-4" />
         </Button>

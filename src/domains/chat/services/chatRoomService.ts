@@ -3,23 +3,23 @@ import type { IChatMessage, IChatRoom } from '../types/chat.type'
 
 class ChatRoomService {
   async index() {
-    const response = (await api.get<{ data: IChatRoom[]}>('/chat/rooms')).data
-    return response.data
+    const rooms = (await api.get<{ data: IChatRoom[]}>('/chat/rooms')).data
+    return rooms.data
   }
 
   async create(userId: string) {
-    const response = (await api.post<{ data: IChatRoom}>('/chat/rooms', { userId })).data
-    return response
+    const room = (await api.post<{ data: IChatRoom}>('/chat/rooms', { userId })).data
+    return room.data
   }
 
   async getMessages(roomId: string) {
-    const response = (await api.get<{ data: IChatMessage[] }>(`/chat/rooms/${roomId}/messages`)).data
-    return response.data
+    const messages = (await api.get<{ data: IChatMessage[] }>(`/chat/rooms/${roomId}/messages`)).data
+    return messages.data
   }
 
   async sendMessage(roomId: string, content: string) {
-    const response = (await api.post(`/chat/rooms/${roomId}/messages`, { content })).data
-    return response
+    const message = (await api.post<{ data: IChatMessage }>(`/chat/rooms/${roomId}/messages`, { content })).data
+    return message.data
   }
 }
 

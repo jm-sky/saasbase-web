@@ -1,3 +1,4 @@
+import HomeView from '@/pages/HomePage.vue'
 import { isAuthenticated } from '@/router/middleware/isAuthenticated'
 import { isInTenant } from '@/router/middleware/isInTenant'
 import { isVerified } from '@/router/middleware/isVerified'
@@ -6,7 +7,6 @@ import { contractorRoutes } from '@/router/routes/contractor'
 import { productRoutes } from '@/router/routes/product'
 import { publicRoutes } from '@/router/routes/public'
 import { settingsRoutes } from '@/router/routes/settings'
-import HomeView from '@/pages/HomeView.vue'
 import type { RouteRecordRaw } from 'vue-router'
 
 export const routes: RouteRecordRaw[] = [
@@ -28,7 +28,7 @@ export const routes: RouteRecordRaw[] = [
   {
     path: '/chat/:roomId?',
     name: 'chat',
-    component: () => import('@/pages/chat/ChatView.vue'),
+    component: () => import('@/pages/chat/ChatPage.vue'),
     meta: {
       middlewares: [isAuthenticated, isVerified, isInTenant],
     },
@@ -37,7 +37,7 @@ export const routes: RouteRecordRaw[] = [
   {
     path: '/mailbox/:box?',
     name: 'mailbox',
-    component: () => import('@/pages/MailBoxView.vue'),
+    component: () => import('@/pages/MailBoxPage.vue'),
     meta: {
       middlewares: [isAuthenticated, isVerified],
     },
@@ -45,7 +45,7 @@ export const routes: RouteRecordRaw[] = [
   {
     path: '/users/:id',
     name: 'userProfile',
-    component: () => import('@/pages/users/UserProfileView.vue'),
+    component: () => import('@/pages/users/UserProfilePage.vue'),
     meta: {
       middlewares: [isAuthenticated, isVerified],
     },

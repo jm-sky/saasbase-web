@@ -6,7 +6,7 @@ import type { RouteRecordRaw } from 'vue-router'
 export const settingsRoutes: RouteRecordRaw[] =  [
   {
     path: '/settings',
-    component: () => import('@/pages/settings/SettingsView.vue'),
+    component: () => import('@/pages/settings/SettingsPage.vue'),
     meta: {
       middlewares: [isAuthenticated, isVerified],
     },
@@ -19,27 +19,27 @@ export const settingsRoutes: RouteRecordRaw[] =  [
       {
         path: 'profile',
         name: routeMap.settings.profile,
-        component: () => import('@/pages/settings/SettingsProfileView.vue'),
+        component: () => import('@/pages/settings/SettingsProfilePage.vue'),
       },
       {
         path: 'account',
         name: routeMap.settings.account,
-        component: () => import('@/pages/settings/SettingsAccountView.vue'),
+        component: () => import('@/pages/settings/SettingsAccountPage.vue'),
       },
       {
         path: 'appearance',
         name: routeMap.settings.appearance,
-        component: () => import('@/pages/settings/SettingsAppearanceView.vue'),
+        component: () => import('@/pages/settings/SettingsAppearancePage.vue'),
       },
       {
         path: 'notifications',
         name: routeMap.settings.notifications,
-        component: () => import('@/pages/settings/SettingsNotificationsView.vue'),
+        component: () => import('@/pages/settings/SettingsNotificationsPage.vue'),
       },
       {
         path: '2fa-setup',
         name: routeMap.settings.mfaSetup,
-        component: () => import('@/pages/settings/MfaSetupView.vue'),
+        component: () => import('@/pages/settings/MfaSetupPage.vue'),
       },
     ],
   }
