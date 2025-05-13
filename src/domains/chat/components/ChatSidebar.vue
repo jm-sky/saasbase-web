@@ -1,8 +1,11 @@
 <script setup lang="ts">
-import Badge from '@/components/ui/badge/Badge.vue'
+import { X } from 'lucide-vue-next'
+import Button from '@/components/ui/button/Button.vue'
 import Separator from '@/components/ui/separator/Separator.vue'
 import { useAuthStore } from '@/domains/auth/store/auth.store'
 import type { IChatRoom } from '../types/chat.type'
+import ChatSidebarRooms from './ChatSidebarRooms.vue'
+import ChatSidebarUsers from './ChatSidebarUsers.vue'
 import type { IPublicUser } from '@/domains/user/types/user.type'
 
 defineProps<{
@@ -13,54 +16,41 @@ defineProps<{
   createRoom: (userId: string) => void
 }>()
 
+const emit = defineEmits<{
+  close: []
+}>()
+
 const authStore = useAuthStore()
 </script>
 
 <template>
-  <div class="border rounded-lg p-3 shadow bg-white">
-    <div class="font-bold mb-1">
-      Rooms
-    </div>
-    <div v-if="rooms.length === 0" class="text-gray-500 text-sm py-1">
-      No rooms
-    </div>
-    <ul class="flex flex-col gap-1">
-      <li
-        v-for="room in rooms"
-        :key="room.id"
-        class="p-2 rounded bg-gray-100 text-sm hover:bg-sky-200 cursor-pointer flex items-center gap-1"
-        :class="{ 'bg-sky-200': room.id === roomId }"
-        :title="room.id"
-        @click="joinRoom(room.id)"
-      >
-        With:
-        <Badge v-for="participant in room.participants" :key="participant.id">
-          {{ participant.firstName }} {{ participant.lastName }}
-        </Badge>
-        <i v-if="room.id === roomId" class="fa-solid fa-check ml-1" />
-      </li>
-    </ul>
+  <div class="absolute top-0 right-0 flex flex-col gap-1 p-3 w-full md:w-2xl h-full z-10 bg-white overflow-auto border-l shadow-lg">
+    <Button
+      variant="ghost"
+      size="sm"
+      class="absolute top-2 right-2"
+      @click="emit('close')"
+    >
+      <X />
+    </Button>
+
+    <ChatSidebarRooms
+      :rooms="rooms"
+      :room-id="roomId"
+      :join-room="joinRoom"
+      :create-room="createRoom"
+    />
 
     <Separator class="my-4" />
 
-    <div class="font-bold mb-1">
-      Users
-    </div>
-    <div v-if="users.length === 0" class="text-gray-500 text-sm py-1">
-      No users
-    </div>
-    <ul class="flex flex-col gap-1">
-      <li
-        v-for="user in users"
-        :key="user.id"
-        class="p-2 rounded bg-gray-100 text-sm hover:bg-sky-200 cursor-pointer"
-        @click="createRoom(user.id)"
-      >
-        {{ user.firstName }} {{ user.lastName }}
-      </li>
-    </ul>
+    <ChatSidebarUsers
+      :users="users"
+      :room-id="roomId"
+      :join-room="joinRoom"
+      :create-room="createRoom"
+    />
 
-    <div class="mt-4 border-t text-xs pt-2 text-gray-500">
+    <div class="mb-0 mt-auto border-t text-xs pt-2 text-center text-gray-500">
       You are: {{ authStore.user?.fullName ?? '-' }}
     </div>
   </div>

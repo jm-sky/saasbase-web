@@ -1,8 +1,8 @@
 import { isAuthenticated } from '@/router/middleware/isAuthenticated'
 import { isVerified } from '@/router/middleware/isVerified'
 import { routeMap } from '@/router/routeMap'
-import LoginView from '@/views/auth/LoginView.vue'
-import PrettyLoginView from '@/views/auth/LoginView.vue'
+import LoginView from '@/pages/auth/LoginView.vue'
+import PrettyLoginView from '@/pages/auth/LoginView.vue'
 import type { RouteRecordRaw } from 'vue-router'
 
 export const authRoutes: RouteRecordRaw[] = [
@@ -18,17 +18,17 @@ export const authRoutes: RouteRecordRaw[] = [
   {
     path: '/password-forgot',
     name: routeMap.auth.passwordForgot,
-    component: () => import('@/views/auth/ForgotPasswordView.vue'),
+    component: () => import('@/pages/auth/ForgotPasswordView.vue'),
   },
   {
     path: '/register',
     name: routeMap.auth.register,
-    component: () => import('@/views/auth/RegisterView.vue'),
+    component: () => import('@/pages/auth/RegisterView.vue'),
   },
   {
     path: '/verify-email',
     name: routeMap.auth.verifyEmail,
-    component: () => import('@/views/auth/VerifyEmailView.vue'),
+    component: () => import('@/pages/auth/VerifyEmailView.vue'),
     meta: {
       middlewares: [isAuthenticated],
     },
@@ -36,7 +36,7 @@ export const authRoutes: RouteRecordRaw[] = [
   {
     path: '/2fa-verify',
     name: routeMap.auth.mfaVerify,
-    component: () => import('@/views/auth/2faVerifyView.vue'),
+    component: () => import('@/pages/auth/2faVerifyView.vue'),
     meta: {
       middlewares: [isAuthenticated, isVerified],
     },
@@ -44,7 +44,7 @@ export const authRoutes: RouteRecordRaw[] = [
   {
     path: '/select-tenant',
     name: routeMap.auth.selectTenant,
-    component: () => import('@/views/tenant/SelectTenantView.vue'),
+    component: () => import('@/pages/tenant/SelectTenantView.vue'),
     meta: {
       middlewares: [isAuthenticated, isVerified],
     },
@@ -52,7 +52,7 @@ export const authRoutes: RouteRecordRaw[] = [
   {
     path: '/email/verify',
     name: 'verify-email',
-    component: () => import('@/views/auth/EmailVerificationView.vue'),
+    component: () => import('@/pages/auth/EmailVerificationView.vue'),
     meta: {
       requiresAuth: false,
       title: 'Verify Email'

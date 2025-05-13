@@ -15,6 +15,10 @@ const {
   scrollToBottom,
   disableAutoScroll,
 } = useAutoScroll({ smooth: props.smooth })
+
+defineExpose({
+  scrollToBottom,
+})
 </script>
 
 <template>

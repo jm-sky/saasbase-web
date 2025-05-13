@@ -1,6 +1,7 @@
 import { UserAddress } from '@/domains/user/models/userAddress.model'
 import type { IUser } from '../types/user.type'
 import type { TDateTime, TUUID } from '@/types/common'
+import { fullName } from '@/lib/fullName'
 
 export class User implements IUser {
   id: TUUID
@@ -52,7 +53,7 @@ export class User implements IUser {
   }
 
   get fullName(): string {
-    return `${this.firstName} ${this.lastName}`
+    return fullName(this)
   }
 
   get initials(): string {

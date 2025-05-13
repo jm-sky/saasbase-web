@@ -7,7 +7,7 @@ export const productRoutes: RouteRecordRaw[] = [
   {
     path: '/products',
     name: 'products',
-    component: () => import('@/views/product/ProductListView.vue'),
+    component: () => import('@/pages/product/ProductListView.vue'),
     meta: {
       middlewares: [isAuthenticated, isVerified, isInTenant],
     },
