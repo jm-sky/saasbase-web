@@ -121,7 +121,7 @@ onUnmounted(() => {
       </div>
 
       <div class="mt-2 p-2 flex flex-row gap-2 w-full">
-        <Textarea v-model="message" :disabled="!roomId || isSending" @focus="showSidebar = true" />
+        <Textarea v-model="message" :disabled="!roomId || isSending" @focus="showSidebar = false" />
         <Button :disabled="!roomId || isSending" :loading="isSending" @click="sendMessage">
           Send
         </Button>

@@ -34,6 +34,13 @@ const filters = ref<IContractorFilters>({
   perPage: 10,
 })
 
+const columnFilters = ref<Record<string, { value: string, operator: string }>>({
+  name: { value: '', operator: 'eq' },
+  taxId: { value: '', operator: 'eq' },
+  type: { value: '', operator: 'eq' },
+  createdAt: { value: '', operator: 'eq' },
+})
+
 const columns: ColumnDef<IContractor>[] = [
   {
     accessorKey: 'name',
@@ -95,10 +102,12 @@ watch(filters, () => refresh(), { deep: true })
       <DataTable
         v-model:page="filters.page"
         v-model:page-size="filters.perPage"
+        v-model:column-filters="columnFilters"
         :columns="columns"
         :data="contractors"
         :total="meta.total"
         :page-size-options="[10, 20, 30, 40, 50]"
+        :show-column-filters="true"
       >
         <template #name="{ data }">
           <ButtonLink :to="`/contractors/${data.id}/show`">

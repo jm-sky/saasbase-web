@@ -36,11 +36,11 @@ const emit = defineEmits<{
       </div>
     </div>
 
-    <div v-if="loading" class="text-center py-8">
+    <div v-if="loading" class="my-6 text-center py-8">
       {{ t('common.loading') }}
     </div>
 
-    <div v-else-if="error" class="text-center py-8 text-red-500">
+    <div v-else-if="error" class="my-6 text-center px-6 py-3 text-red-500 border-red-500 border-2 rounded-md">
       {{ error }}
     </div>
 

@@ -14,6 +14,8 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import { valueUpdater } from '@/lib/utils'
+import ColumnFilter from './DataLists/Filters/ColumnFilter.vue'
+import TablePagination from './ui/table/TablePagination.vue'
 import type { ColumnDef, VisibilityState } from '@tanstack/vue-table'
 
 const page = defineModel<number>('page', { default: 1 })
@@ -25,7 +27,10 @@ const props = defineProps<{
   initialColumnVisibility?: VisibilityState
   total?: number
   pageSizeOptions?: number[]
+  showColumnFilters?: boolean
 }>()
+
+const columnFilters = defineModel<Record<string, { value: string, operator: string }>>('column-filters', { default: {} })
 
 const columnVisibility = ref<VisibilityState>({ ...props.initialColumnVisibility })
 
@@ -41,18 +46,11 @@ const table = useVueTable({
 
 const total = computed(() => props.total ?? 0)
 const pageSizeOptions = computed(() => props.pageSizeOptions ?? [10, 20, 30, 40, 50])
-
 const pageCount = computed(() => Math.max(1, Math.ceil(total.value / pageSize.value)))
-
-function goToPage(idx: number) {
-  if (idx < 1) idx = 1
-  if (idx > pageCount.value) idx = pageCount.value
-  page.value = idx
-}
 </script>
 
 <template>
-  <div class="border rounded-md">
+  <div class="border rounded-md shadow-xs">
     <Table>
       <TableHeader>
         <TableRow
@@ -70,6 +68,15 @@ function goToPage(idx: number) {
             />
           </TableHead>
         </TableRow>
+        <template v-if="props.showColumnFilters">
+          <TableRow v-for="headerGroup in table.getHeaderGroups()" :key="headerGroup.id">
+            <TableHead v-for="header in headerGroup.headers" :key="header.id" class="bg-gray-50">
+              <slot :name="`${header.id}-filter`" :header="header">
+                <ColumnFilter v-model="columnFilters[header.id]" />
+              </slot>
+            </TableHead>
+          </TableRow>
+        </template>
       </TableHeader>
       <TableBody>
         <template v-if="table.getRowModel().rows?.length">
@@ -108,53 +115,13 @@ function goToPage(idx: number) {
         </template>
       </TableBody>
     </Table>
-    <!-- Pagination Controls -->
-    <div v-if="total > 0" class="flex items-center justify-between px-2 py-2 border-t bg-gray-50">
-      <div class="flex items-center space-x-2">
-        <span class="text-sm font-medium">Rows per page</span>
-        <select
-          class="h-8 w-[70px] border rounded px-2 text-sm"
-          :value="pageSize"
-          @change="pageSize = Number(($event.target as HTMLSelectElement).value)"
-        >
-          <option v-for="size in pageSizeOptions" :key="size" :value="size">
-            {{ size }}
-          </option>
-        </select>
-      </div>
-      <div class="flex w-[100px] items-center justify-center text-sm font-medium">
-        Page {{ page }} of {{ pageCount }}
-      </div>
-      <div class="flex items-center space-x-2">
-        <button
-          class="w-8 h-8 p-0 border rounded disabled:opacity-50"
-          :disabled="page <= 1"
-          @click="goToPage(1)"
-        >
-          &#171;
-        </button>
-        <button
-          class="w-8 h-8 p-0 border rounded disabled:opacity-50"
-          :disabled="page <= 1"
-          @click="goToPage(page - 1)"
-        >
-          &#8249;
-        </button>
-        <button
-          class="w-8 h-8 p-0 border rounded disabled:opacity-50"
-          :disabled="page >= pageCount"
-          @click="goToPage(page + 1)"
-        >
-          &#8250;
-        </button>
-        <button
-          class="w-8 h-8 p-0 border rounded disabled:opacity-50"
-          :disabled="page >= pageCount"
-          @click="goToPage(pageCount)"
-        >
-          &#187;
-        </button>
-      </div>
-    </div>
+
+    <TablePagination
+      v-model:page="page"
+      v-model:page-size="pageSize"
+      :page-size-options="pageSizeOptions"
+      :total="total"
+      :page-count="pageCount"
+    />
   </div>
 </template>
