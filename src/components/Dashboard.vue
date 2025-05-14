@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { ref } from 'vue'
 import ActiveNowCard from '@/components/Dashboard/Cards/ActiveNowCard.vue'
 import SalesCard from '@/components/Dashboard/Cards/SalesCard.vue'
 import SubscriptionsCard from '@/components/Dashboard/Cards/SubscriptionsCard.vue'
@@ -21,6 +22,9 @@ import {
 import { useTranslate } from '@/i18n/useTranslate'
 
 const tr = useTranslate()
+
+const startDate = ref(new Date(new Date().setDate(new Date().getDate() - 30)))
+const endDate = ref(new Date())
 </script>
 
 <template>
@@ -30,7 +34,11 @@ const tr = useTranslate()
         Dashboard
       </h2>
       <div class="flex flex-col md:flex-row items-center gap-2">
-        <DateRangePicker disabled />
+        <DateRangePicker
+          v-model:start-date="startDate"
+          v-model:end-date="endDate"
+          disabled
+        />
       </div>
     </div>
     <Tabs

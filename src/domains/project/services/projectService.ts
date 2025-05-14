@@ -1,8 +1,8 @@
 import { Project } from '@/domains/project/models/project.model'
 import api from '@/lib/api'
 import { apiRoutesMap } from '@/lib/api/apiRoutes'
-import { type TProjectStatus } from '@/types/index'
 import type { IProject } from '@/domains/project/types/project.type'
+import type { TProjectStatus } from '@/domains/project/types/project.type'
 
 export interface IProjectGetParams {
   status?: TProjectStatus

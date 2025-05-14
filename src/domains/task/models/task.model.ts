@@ -1,5 +1,5 @@
-import type { ITask } from '../types/task.type'
-import type { TTaskPriority, TTaskStatus } from '@/types/index'
+import type { TTaskPriority, TTaskStatus } from '@/domains/task/types/task.type'
+import type { ITask } from '@/domains/task/types/task.type'
 
 export class Task {
   id: string

@@ -56,6 +56,9 @@ importers:
       dayjs:
         specifier: ^1.11.13
         version: 1.11.13
+      floating-vue:
+        specifier: ^5.2.2
+        version: 5.2.2(vue@3.5.13(typescript@5.8.3))
       laravel-echo:
         specifier: ^2.1.0
         version: 2.1.0(pusher-js@8.4.0)(socket.io-client@4.8.1)
@@ -630,6 +633,9 @@ packages:
 
   '@floating-ui/core@1.6.9':
     resolution: {integrity: sha512-uMXCuQ3BItDUbAMhIXw7UPXRfAlOAvZzdK9BWpE60MCn+Svt3aLn9jsPTi/WNGlRUu2uI0v5S7JiIUsbsvh3fw==}
+
+  '@floating-ui/dom@1.1.1':
+    resolution: {integrity: sha512-TpIO93+DIujg3g7SykEAGZMDtbJRrmnYRCNYSjJlvIbGhBjRSNTLVbNeDQBrzy9qDgUbiWdc7KA0uZHZ2tJmiw==}
 
   '@floating-ui/dom@1.6.13':
     resolution: {integrity: sha512-umqzocjDgNRGTuO7Q8CU32dkHkECqI8ZdMZ5Swb6QAM0t5rnlrN3lGo1hdpscRd3WS8T6DKYK4ephgIH9iRh3w==}
@@ -2259,6 +2265,15 @@ packages:
   flatted@3.3.1:
     resolution: {integrity: sha512-X8cqMLLie7KsNUDSdzeN8FYK9rEt4Dt67OsG/DNGnYTSDBG4uFAJFBnUeiV+zCVAvwFy56IjM9sH51jVaEhNxw==}
 
+  floating-vue@5.2.2:
+    resolution: {integrity: sha512-afW+h2CFafo+7Y9Lvw/xsqjaQlKLdJV7h1fCHfcYQ1C4SVMlu7OAekqWgu5d4SgvkBVU0pVpLlVsrSTBURFRkg==}
+    peerDependencies:
+      '@nuxt/kit': ^3.2.0
+      vue: ^3.2.0
+    peerDependenciesMeta:
+      '@nuxt/kit':
+        optional: true
+
   follow-redirects@1.15.6:
     resolution: {integrity: sha512-wWN62YITEaOpSK584EZXJafH1AGpO8RVgElfkuXbTOrPX4fIfOyEpW/CsiNd8JdYrAoOvafRTOEnvsO++qCqFA==}
     engines: {node: '>=4.0'}
@@ -3461,6 +3476,11 @@ packages:
     peerDependencies:
       vue: ^3.0.0
 
+  vue-resize@2.0.0-alpha.1:
+    resolution: {integrity: sha512-7+iqOueLU7uc9NrMfrzbG8hwMqchfVfSzpVlCMeJQe4pyibqyoifDNbKTZvwxZKDvGkB+PdFeKvnGZMoEb8esg==}
+    peerDependencies:
+      vue: ^3.0.0
+
   vue-router@4.5.0:
     resolution: {integrity: sha512-HDuk+PuH5monfNuY+ct49mNmkCRK4xJAV9Ts4z9UFc4rzdDnxQLyCMGGc8pKhZhHTVzfanpNwB/lwqevcBwI4w==}
     peerDependencies:
@@ -4019,6 +4039,10 @@ snapshots:
   '@floating-ui/core@1.6.9':
     dependencies:
       '@floating-ui/utils': 0.2.9
+
+  '@floating-ui/dom@1.1.1':
+    dependencies:
+      '@floating-ui/core': 1.6.9
 
   '@floating-ui/dom@1.6.13':
     dependencies:
@@ -5875,6 +5899,12 @@ snapshots:
 
   flatted@3.3.1: {}
 
+  floating-vue@5.2.2(vue@3.5.13(typescript@5.8.3)):
+    dependencies:
+      '@floating-ui/dom': 1.1.1
+      vue: 3.5.13(typescript@5.8.3)
+      vue-resize: 2.0.0-alpha.1(vue@3.5.13(typescript@5.8.3))
+
   follow-redirects@1.15.6: {}
 
   for-each@0.3.3:
@@ -7027,6 +7057,10 @@ snapshots:
       '@intlify/core-base': 9.14.4
       '@intlify/shared': 9.14.4
       '@vue/devtools-api': 6.6.1
+      vue: 3.5.13(typescript@5.8.3)
+
+  vue-resize@2.0.0-alpha.1(vue@3.5.13(typescript@5.8.3)):
+    dependencies:
       vue: 3.5.13(typescript@5.8.3)
 
   vue-router@4.5.0(vue@3.5.13(typescript@5.8.3)):

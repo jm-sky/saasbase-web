@@ -1,7 +1,7 @@
 import { type IInvoice, Invoice } from '@/domains/invoice/models/invoice.model'
 import api from '@/lib/api'
 import { apiRoutesMap } from '@/lib/api/apiRoutes'
-import type { TInvoiceStatus } from '@/types'
+import type { TInvoiceStatus } from '@/domains/invoice/types/invoice.type'
 
 export interface IInvoiceGetParams {
   contractorId?: string

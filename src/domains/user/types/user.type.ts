@@ -1,4 +1,4 @@
-import type { TDate, TDateTime, TUUID } from '@/types/common'
+import type { TDate, TDateTime, TUUID } from '@/domains/shared/types/common'
 
 export interface IUserStored {
   id: TUUID

@@ -2,7 +2,7 @@ import { faker } from '@faker-js/faker'
 import { formatISO } from 'date-fns'
 import { v4 } from 'uuid'
 import type { IContractor, IContractorAddress, IContractorBankAccount, IContractorContactPerson } from '@/domains/contractor/models/contractor.model'
-import type { TUUID } from '@/types/common'
+import type { TUUID } from '@/domains/shared/types/common'
 
 export class ContractorFactory {
   private static createAddress(contractorId: TUUID): IContractorAddress {
@@ -52,18 +52,6 @@ export class ContractorFactory {
       description: faker.helpers.arrayElement([faker.lorem.paragraph(), undefined]),
       isSupplier: faker.datatype.boolean(),
       isBuyer: faker.datatype.boolean(),
-      addresses: faker.helpers.arrayElement([
-        Array.from({ length: faker.number.int({ min: 1, max: 3 }) }, () => this.createAddress(contractorId)),
-        undefined,
-      ]),
-      bankAccounts: faker.helpers.arrayElement([
-        Array.from({ length: faker.number.int({ min: 1, max: 2 }) }, () => this.createBankAccount(contractorId)),
-        undefined,
-      ]),
-      contactPersons: faker.helpers.arrayElement([
-        Array.from({ length: faker.number.int({ min: 1, max: 3 }) }, () => this.createContactPerson(contractorId)),
-        undefined,
-      ]),
       createdAt: formatISO(new Date()),
       updatedAt: formatISO(new Date()),
       ...overrides,

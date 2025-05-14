@@ -1,5 +1,7 @@
 import './style/index.css'
 import '@fortawesome/fontawesome-free/css/all.min.css'
+import 'floating-vue/dist/style.css'
+import { vTooltip } from 'floating-vue'
 import { createPinia } from 'pinia'
 import { createApp } from 'vue'
 import { i18n } from '@/i18n'
@@ -13,5 +15,5 @@ app.use(createPinia())
 app.use(router)
 app.use(i18n)
 app.use(DebugConsolePlugin)
-
+app.directive('tooltip', vTooltip)
 app.mount('#app')

@@ -1,7 +1,7 @@
 import { UserAddress } from '@/domains/user/models/userAddress.model'
 import { fullName } from '@/lib/fullName'
 import type { IPublicUser } from '../types/user.type'
-import type { TDateTime, TUUID } from '@/types/common'
+import type { TDateTime, TUUID } from '@/domains/shared/types/common'
 
 export class PublicUser implements IPublicUser {
   id: TUUID

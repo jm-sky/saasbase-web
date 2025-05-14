@@ -16,8 +16,15 @@ import { contractorService } from '@/domains/contractor/services/contractorServi
 import AuthenticatedLayout from '@/layouts/AuthenticatedLayout.vue'
 import { formatDate } from '@/lib/date'
 import type { Contractor } from '@/domains/contractor/models/contractor.model'
+import type { IResourceMeta } from '@/domains/shared/types/resource.type'
 
 const contractors = ref<Contractor[]>([])
+const meta = ref<IResourceMeta>({
+  total: 0,
+  page: 1,
+  limit: 10,
+})
+
 const loading = ref(false)
 const error = ref<string | null>(null)
 
@@ -25,7 +32,9 @@ const fetchContractors = async () => {
   try {
     loading.value = true
     error.value = null
-    contractors.value = await contractorService.index()
+    const response = await contractorService.index()
+    contractors.value = response.data
+    meta.value = response.meta
   } catch (err) {
     error.value = 'Failed to load contractors'
     console.error(err)

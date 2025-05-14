@@ -1,6 +1,7 @@
 import { Contractor, type IContractor } from '@/domains/contractor/models/contractor.model'
 import api from '@/lib/api'
 import { apiRoutesMap } from '@/lib/api/apiRoutes'
+import type { IResource } from '@/domains/shared/types/resource.type'
 
 export interface IContractorGetParams {
   isSupplier?: boolean
@@ -10,9 +11,12 @@ export interface IContractorGetParams {
 }
 
 class ContractorService {
-  async index(params?: IContractorGetParams): Promise<Contractor[]> {
-    const response = await api.get<{ data: IContractor[] }>(apiRoutesMap.contractors, { params })
-    return response.data.data.map(data => Contractor.load(data))
+  async index(params?: IContractorGetParams): Promise<IResource<Contractor>> {
+    const response = await api.get<IResource<IContractor>>(apiRoutesMap.contractors, { params })
+    return {
+      data: response.data.data.map(data => Contractor.load(data)),
+      meta: response.data.meta,
+    }
   }
 
   async get(id: string): Promise<Contractor> {

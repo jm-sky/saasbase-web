@@ -1,8 +1,8 @@
 import { Task } from '@/domains/task/models/task.model'
 import api from '@/lib/api'
 import { apiRoutesMap } from '@/lib/api/apiRoutes'
-import { type TTaskPriority, type TTaskStatus } from '@/types/index'
 import type { ITask } from '@/domains/task/types/task.type'
+import type { TTaskPriority, TTaskStatus } from '@/domains/task/types/task.type'
 
 export interface ITaskGetParams {
   projectId?: string

@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { CalendarDate, DateFormatter, getLocalTimeZone } from '@internationalized/date'
+import { DateFormatter, getLocalTimeZone } from '@internationalized/date'
+import { fromDate } from '@internationalized/date'
 import { Calendar as CalendarIcon } from 'lucide-vue-next'
-import { type Ref, ref } from 'vue'
+import { computed } from 'vue'
 import { Button } from '@/components/ui/button'
 import {
   Popover,
@@ -9,23 +10,35 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover'
 import { RangeCalendar } from '@/components/ui/range-calendar'
+import { config } from '@/config'
 import { cn } from '@/lib/utils'
-import type { DateRange } from 'radix-vue'
-
-const df = new DateFormatter('en-US', {
-  dateStyle: 'medium',
-})
-
-const calendarDate = new CalendarDate(2023, 0, 20)
-
-const value = ref({
-  start: calendarDate,
-  end: calendarDate.add({ days: 20 }),
-}) as Ref<DateRange>
+import type { DateRange } from 'reka-ui'
 
 defineProps<{
   disabled?: boolean
 }>()
+
+const startDate = defineModel<Date | undefined>('start-date', { required: true })
+const endDate = defineModel<Date | undefined>('end-date', { required: true })
+
+const df = new DateFormatter('pl-PL', {
+  dateStyle: 'medium',
+})
+
+
+const value = computed<DateRange>({
+  get() {
+    return {
+      start: fromDate(startDate.value ?? new Date(), config.timeZone),
+      end: fromDate(endDate.value ?? new Date(), config.timeZone),
+    }
+  },
+  set(value: DateRange) {
+    startDate.value = value.start?.toDate(config.timeZone)
+    endDate.value = value.end?.toDate(config.timeZone)
+  },
+})
+
 </script>
 
 <template>
@@ -35,11 +48,11 @@ defineProps<{
         <Button
           id="date"
           :variant="'outline'"
+          :disabled="disabled"
           :class="cn(
             'w-[300px] justify-start text-left font-normal',
             !value && 'text-muted-foreground',
           )"
-          :disabled
         >
           <CalendarIcon class="mr-2 size-4" />
 
@@ -57,10 +70,7 @@ defineProps<{
           </template>
         </Button>
       </PopoverTrigger>
-      <PopoverContent
-        class="w-auto p-0"
-        align="end"
-      >
+      <PopoverContent class="w-auto p-0" align="end">
         <RangeCalendar
           v-model="value"
           weekday-format="short"

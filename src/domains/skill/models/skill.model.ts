@@ -1,5 +1,5 @@
-import { type TDateTime } from '@/types/common'
-import { type TSkillLevel } from '@/types/index'
+import type { TDateTime } from '@/domains/shared/types/common'
+import type { TSkillLevel } from '@/domains/skill/types/skill.type'
 
 export interface ISkill {
   id: string
@@ -130,10 +130,10 @@ export class UserSkill {
   }
 
   isExpert(): boolean {
-    return this.level >= 4
+    return this.level === 'advanced'
   }
 
   isBeginner(): boolean {
-    return this.level <= 2
+    return this.level === 'beginner'
   }
 }

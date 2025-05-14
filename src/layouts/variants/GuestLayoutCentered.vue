@@ -10,7 +10,7 @@ const isDark = useDark()
 </script>
 
 <template>
-  <div class="isolate min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100 dark:bg-gray-900">
+  <div class="mx-auto isolate min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100 dark:bg-gray-900">
     <div class="mb-2">
       <TransitionGroup
         enter-from-class="opacity-0"
