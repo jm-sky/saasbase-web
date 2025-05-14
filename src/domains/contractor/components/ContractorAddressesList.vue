@@ -45,7 +45,7 @@ const handleDelete = async (address: IContractorAddress) => {
         Add
       </Button>
     </div>
-    <div v-if="loading">
+    <div v-if="loading" class="my-4 text-center text-sm text-muted-foreground">
       Loading...
     </div>
     <div v-else>
@@ -69,7 +69,7 @@ const handleDelete = async (address: IContractorAddress) => {
             <td>{{ address.zip }}</td>
             <td>{{ address.countryId }}</td>
             <td>{{ address.isDefault ? 'Yes' : 'No' }}</td>
-            <td>
+            <td class="flex flex-row gap-1 justify-end">
               <Button
                 size="sm"
                 variant="secondary"

@@ -45,15 +45,15 @@ const handleDelete = async (account: IContractorBankAccount) => {
         Add
       </Button>
     </div>
-    <div v-if="loading">
+    <div v-if="loading" class="my-4 text-center text-sm text-muted-foreground">
       Loading...
     </div>
     <div v-else>
       <table class="min-w-full text-sm">
         <thead>
           <tr>
-            <th>Bank name</th>
             <th>IBAN</th>
+            <th>Bank name</th>
             <th>Currencies</th>
             <th>Default</th>
             <th>Actions</th>
@@ -61,8 +61,8 @@ const handleDelete = async (account: IContractorBankAccount) => {
         </thead>
         <tbody>
           <tr v-for="account in bankAccounts" :key="account.id">
-            <td>{{ account.bankName }}</td>
             <td>{{ account.iban }}</td>
+            <td>{{ account.bankName }}</td>
             <td>{{ account.currencies.join(', ') }}</td>
             <td>{{ account.isDefault ? 'Yes' : 'No' }}</td>
             <td>
@@ -81,7 +81,7 @@ const handleDelete = async (account: IContractorBankAccount) => {
           </tr>
         </tbody>
       </table>
-      <div v-if="!loading && bankAccounts.length === 0" class="mt-4 text-center text-sm text-muted-foreground">
+      <div v-if="!loading && bankAccounts.length === 0" class="my-4 text-center text-sm text-muted-foreground">
         No bank accounts found
       </div>
     </div>

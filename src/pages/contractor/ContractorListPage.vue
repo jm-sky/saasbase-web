@@ -110,7 +110,7 @@ watch(filters, () => refresh(), { deep: true })
         :show-column-filters="true"
       >
         <template #name="{ data }">
-          <ButtonLink :to="`/contractors/${data.id}/show`">
+          <ButtonLink :to="`/contractors/${data.id}/show/overview`">
             {{ data.name }}
           </ButtonLink>
         </template>
