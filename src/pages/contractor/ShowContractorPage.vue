@@ -8,9 +8,6 @@ import Avatar from '@/components/ui/avatar/Avatar.vue'
 import AvatarFallback from '@/components/ui/avatar/AvatarFallback.vue'
 import AvatarImage from '@/components/ui/avatar/AvatarImage.vue'
 import Separator from '@/components/ui/separator/Separator.vue'
-import ContractorAttachmentsList from '@/domains/contractor/components/ContractorAttachmentsList.vue'
-import ContractorBankAccountsList from '@/domains/contractor/components/ContractorBankAccountsList.vue'
-import ContractorContactsList from '@/domains/contractor/components/ContractorContactsList.vue'
 import { contractorService } from '@/domains/contractor/services/contractorService'
 import AuthenticatedLayout from '@/layouts/AuthenticatedLayout.vue'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
@@ -87,38 +84,28 @@ onMounted(async () => {
         </div>
 
         <div class="flex flex-col gap-4">
-          <div class="flex flex-row items-center gap-2 font-semibold text-primary">
+          <div class="flex flex-row items-center gap-2 font-semibold">
             <!-- TODO: add tabs -->
-            <div class="px-2 py-1 border-b-2 border-primary">
-              Details
-            </div>
-            <div class="px-2 py-1 text-muted-foreground">
+            <RouterLink
+              :to="`/contractors/${contractorId}/show/overview`"
+              class="border-b-2 border-transparent hover:border-muted-foreground px-2 py-1"
+              exact-active-class="text-primary border-primary!"
+            >
+              Overview
+            </RouterLink>
+            <RouterLink
+              :to="`/contractors/${contractorId}/show/comments`"
+              class="border-b-2 border-transparent hover:border-muted-foreground px-2 py-1"
+              exact-active-class="text-primary border-primary!"
+            >
               Comments
-            </div>
-            <div class="px-2 py-1 text-muted-foreground">
+            </RouterLink>
+            <div class="px-2 py-1 text-muted-foreground opacity-50 cursor-not-allowed">
               Logs
             </div>
           </div>
-          <div class="flex flex-col gap-2 border rounded-md p-4 shadow-xs">
-            <div class="font-bold">
-              Description
-            </div>
-            <div class="text-muted-foreground">
-              {{ contractor?.description }}
-            </div>
 
-            <Separator class="my-4" />
-
-            <ContractorBankAccountsList />
-
-            <Separator class="my-4" />
-
-            <ContractorContactsList />
-
-            <Separator class="my-4" />
-
-            <ContractorAttachmentsList />
-          </div>
+          <RouterView :contractor />
         </div>
       </div>
     </div>

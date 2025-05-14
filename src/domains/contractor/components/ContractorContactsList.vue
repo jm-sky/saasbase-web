@@ -44,7 +44,7 @@ const handleDelete = async (contact: IContractorContactPerson) => {
         Add
       </Button>
     </div>
-    <div v-if="loading">
+    <div v-if="loading" class="my-4 text-center text-sm text-muted-foreground">
       Loading...
     </div>
     <div v-else>
@@ -80,7 +80,7 @@ const handleDelete = async (contact: IContractorContactPerson) => {
           </tr>
         </tbody>
       </table>
-      <div v-if="!loading && contacts.length === 0" class="mt-4 text-center text-sm text-muted-foreground">
+      <div v-if="!loading && contacts.length === 0" class="my-4 text-center text-sm text-muted-foreground">
         No contact persons found
       </div>
     </div>
