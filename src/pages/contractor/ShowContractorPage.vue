@@ -3,6 +3,11 @@ import { onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
 import ButtonLink from '@/components/ButtonLink.vue'
+import InfoSection from '@/components/Sections/InfoSection.vue'
+import Avatar from '@/components/ui/avatar/Avatar.vue'
+import AvatarFallback from '@/components/ui/avatar/AvatarFallback.vue'
+import AvatarImage from '@/components/ui/avatar/AvatarImage.vue'
+import Separator from '@/components/ui/separator/Separator.vue'
 import { contractorService } from '@/domains/contractor/services/contractorService'
 import AuthenticatedLayout from '@/layouts/AuthenticatedLayout.vue'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
@@ -36,47 +41,80 @@ onMounted(async () => {
 
 <template>
   <AuthenticatedLayout>
-    <div class="p-6 flex flex-col gap-y-4">
-      <div class="border px-4 py-2 rounded-md">
-        <div class="flex justify-between items-center">
-          <div class="font-semibold">
-            {{ contractor?.name ?? '...' }}
+    <div class="p-6 flex flex-col gap-y-6">
+      <div class="flex flex-row gap-4 items-center justify-between">
+        <div>
+          <div class="font-bold">
+            Contractor details
           </div>
-          <div class="flex gap-2">
-            <ButtonLink variant="default" :to="`/contractors/${contractorId}/edit`">
-              Edit
-            </ButtonLink>
+          <div class="text-sm text-muted-foreground">
+            <RouterLink to="/contractors">
+              Contractors
+            </RouterLink>
           </div>
         </div>
-        <!-- TODO: Add tabs to show addresses and bank accounts and contact persons -->
+        <div class="flex flex-row items-center justify-end gap-2">
+          <ButtonLink variant="default" :to="`/contractors/${contractorId}/edit`">
+            Edit
+          </ButtonLink>
+        </div>
       </div>
 
-      <div class="border px-4 py-2 rounded-md grid grid-cols-2 gap-x-8 gap-y-2">
-        <div class="flex flex-col gap-2">
-          <div class="font-semibold">
-            Name
+
+      <div class="grid grid-cols-[1fr_4fr] gap-6">
+        <div class="flex flex-col text-center gap-2 border rounded-md p-4 shadow-xs">
+          <Avatar size="lg" class="mx-auto">
+            <AvatarImage :src="contractor?.logo ?? ''" :alt="contractor?.name" />
+            <AvatarFallback>{{ contractor?.name.slice(0, 2) ?? 'X' }}</AvatarFallback>
+          </Avatar>
+          <div class="font-bold">
+            {{ contractor?.name ?? '...' }}
           </div>
-          <div>{{ contractor?.name }}</div>
-          <div class="font-semibold">
-            Description
+          <div class="text-sm text-muted-foreground">
+            {{ contractor?.email ?? '...' }}
           </div>
-          <div>{{ contractor?.description }}</div>
-          <div class="font-semibold">
-            Tax ID
+
+          <Separator class="my-2" />
+
+          <div class="flex flex-col gap-3 text-left">
+            <InfoSection label="Description" :value="contractor?.description" />
+            <InfoSection label="Tax ID" :value="contractor?.taxId" />
+            <InfoSection label="Email" :value="contractor?.email" />
+            <InfoSection label="Phone" :value="contractor?.phone" />
           </div>
-          <div>{{ contractor?.taxId }}</div>
         </div>
-        <div class="flex flex-col gap-2">
-          <div class="font-semibold">
-            Email
+        <div class="flex flex-col gap-4">
+          <div class="flex flex-row items-center gap-2 font-semibold text-primary">
+            <div class="px-2 py-1 border-b-2 border-primary">
+              Details
+            </div>
           </div>
-          <div>{{ contractor?.email }}</div>
-        </div>
-        <div class="flex flex-col gap-2">
-          <div class="font-semibold">
-            Phone
+          <div class="flex flex-col gap-2 border rounded-md p-4 shadow-xs">
+            <div class="font-bold">
+              Description
+            </div>
+            <div class="text-muted-foreground">
+              {{ contractor?.description }}
+            </div>
+
+            <Separator class="my-2" />
+
+            <div class="font-bold">
+              Bank accounts
+            </div>
+            <div class="text-muted-foreground">
+              Not implemented...
+            </div>
+
+            <Separator class="my-2" />
+
+            <div class="font-bold">
+              Contact persons
+            </div>
+            <div class="text-muted-foreground">
+              Not implemented...
+            </div>
           </div>
-          <div>{{ contractor?.phone }}</div>
         </div>
       </div>
     </div>

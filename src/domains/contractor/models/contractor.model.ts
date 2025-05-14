@@ -46,6 +46,7 @@ export interface IContractor {
   description?: string
   isSupplier: boolean
   isBuyer: boolean
+  logo?: string
   createdAt: TDateTime
   updatedAt: TDateTime
 }
