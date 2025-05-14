@@ -1,5 +1,9 @@
+import { contractor } from './contractor'
+import { product } from './product'
+
 export const pl = {
   common: {
+    loading: 'Ładowanie...',
     language: {
       en: 'Angielski',
       pl: 'Polski'
@@ -11,7 +15,9 @@ export const pl = {
       allFilesAccepted: 'Wszystkie pliki akceptowane',
       acceptedFormats: 'Akceptowane formaty: {formats}',
       remove: 'Usuń'
-    }
+    },
+    edit: 'Edytuj',
+    delete: 'Usuń'
   },
   auth: {
     login: 'Logowanie',
@@ -73,5 +79,7 @@ export const pl = {
         removeImage: 'Usuń zdjęcie'
       }
     }
-  }
+  },
+  contractor,
+  product,
 }

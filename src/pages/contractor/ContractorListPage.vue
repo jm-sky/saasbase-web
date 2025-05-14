@@ -1,38 +1,68 @@
 <script setup lang="ts">
 import { RefreshCw } from 'lucide-vue-next'
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, type Ref, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
 import ButtonLink from '@/components/ButtonLink.vue'
+import DataListsWrapper from '@/components/DataLists/DataListsWrapper.vue'
+import DataTable from '@/components/DataTable.vue'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table'
-import { contractorService } from '@/domains/contractor/services/contractorService'
+import DeleteContractorButton from '@/domains/contractor/components/DeleteContractorButton.vue'
+import EditContractorButton from '@/domains/contractor/components/EditContractorButton.vue'
+import { contractorService, type IContractorFilters } from '@/domains/contractor/services/contractorService'
 import AuthenticatedLayout from '@/layouts/AuthenticatedLayout.vue'
-import { formatDate } from '@/lib/date'
-import type { Contractor } from '@/domains/contractor/models/contractor.model'
+import { toDateString } from '@/lib/toDateString'
+import type { ColumnDef } from '@tanstack/vue-table'
+import type { IContractor } from '@/domains/contractor/models/contractor.model'
 import type { IResourceMeta } from '@/domains/shared/types/resource.type'
 
-const contractors = ref<Contractor[]>([])
-const meta = ref<IResourceMeta>({
+const { t } = useI18n()
+
+const contractors: Ref<IContractor[]> = ref([])
+const meta: Ref<IResourceMeta> = ref({
+  currentPage: 1,
+  lastPage: 1,
+  perPage: 10,
   total: 0,
-  page: 1,
-  limit: 10,
 })
 
 const loading = ref(false)
 const error = ref<string | null>(null)
+const filters = ref<IContractorFilters>({
+  search: '',
+  page: 1,
+  perPage: 10,
+})
 
-const fetchContractors = async () => {
+const columns: ColumnDef<IContractor>[] = [
+  {
+    accessorKey: 'name',
+    header: 'Name',
+  },
+  {
+    accessorKey: 'taxId',
+    header: 'Tax ID',
+  },
+  {
+    id: 'type',
+    header: 'Type',
+  },
+  {
+    accessorKey: 'createdAt',
+    header: 'Created At',
+    cell: (info: { row: { original: IContractor } }) => toDateString(info.row.original.createdAt),
+  },
+  {
+    id: 'actions',
+    header: 'Actions',
+  },
+]
+
+const refresh = async () => {
   try {
     loading.value = true
     error.value = null
-    const response = await contractorService.index()
+    const response = await contractorService.index(filters.value)
     contractors.value = response.data
     meta.value = response.meta
   } catch (err) {
@@ -44,75 +74,59 @@ const fetchContractors = async () => {
 }
 
 onMounted(() => {
-  void fetchContractors()
+  void refresh()
 })
+
+watch(filters, () => refresh(), { deep: true })
 </script>
 
 <template>
   <AuthenticatedLayout>
-    <div class="container mx-auto py-6">
-      <div class="flex justify-between items-center mb-6">
-        <h1 class="text-2xl font-bold">
-          Contractors
-        </h1>
-        <div class="flex gap-2">
-          <Button variant="outline" @click="fetchContractors">
-            <RefreshCw class="h-4 w-4" />
-          </Button>
-          <ButtonLink variant="default" to="/contractors/add">
-            Add Contractor
+    <DataListsWrapper :title="t('contractor.title')" :loading :error>
+      <template #actions>
+        <Button variant="outline" @click="refresh">
+          <RefreshCw class="h-4 w-4" />
+        </Button>
+        <ButtonLink v-tooltip="t('contractor.add.description')" variant="default" to="/contractors/add">
+          {{ t('contractor.add.title') }}
+        </ButtonLink>
+      </template>
+
+      <DataTable
+        v-model:page="filters.page"
+        v-model:page-size="filters.perPage"
+        :columns="columns"
+        :data="contractors"
+        :total="meta.total"
+        :page-size-options="[10, 20, 30, 40, 50]"
+      >
+        <template #name="{ data }">
+          <ButtonLink :to="`/contractors/${data.id}/show`">
+            {{ data.name }}
           </ButtonLink>
-        </div>
-      </div>
-
-      <div v-if="loading" class="text-center py-8">
-        Loading contractors...
-      </div>
-
-      <div v-else-if="error" class="text-center py-8 text-red-500">
-        {{ error }}
-      </div>
-
-      <div v-else class="rounded-md border">
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Name</TableHead>
-              <TableHead>Tax ID</TableHead>
-              <TableHead>Type</TableHead>
-              <TableHead>Created At</TableHead>
-              <TableHead>Actions</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            <TableRow v-for="contractor in contractors" :key="contractor.id">
-              <TableCell>{{ contractor.name }}</TableCell>
-              <TableCell>{{ contractor.taxId || '-' }}</TableCell>
-              <TableCell>
-                <div class="flex gap-2">
-                  <Badge v-if="contractor.isSupplier" variant="secondary">
-                    Supplier
-                  </Badge>
-                  <Badge v-if="contractor.isBuyer" variant="secondary">
-                    Buyer
-                  </Badge>
-                </div>
-              </TableCell>
-              <TableCell>{{ formatDate(contractor.createdAt) }}</TableCell>
-              <TableCell>
-                <div class="flex gap-2">
-                  <Button variant="outline" size="sm">
-                    Edit
-                  </Button>
-                  <Button variant="destructive" size="sm">
-                    Delete
-                  </Button>
-                </div>
-              </TableCell>
-            </TableRow>
-          </TableBody>
-        </Table>
-      </div>
-    </div>
+        </template>
+        <template #type="{ data }">
+          <div class="flex gap-2">
+            <Badge v-if="data.isSupplier" variant="secondary">
+              Supplier
+            </Badge>
+            <Badge v-if="data.isBuyer" variant="secondary">
+              Buyer
+            </Badge>
+          </div>
+        </template>
+        <template #actions="{ data }">
+          <div class="flex gap-2 justify-end w-full whitespace-nowrap min-w-0">
+            <EditContractorButton :id="data.id" />
+            <DeleteContractorButton :id="data.id" />
+          </div>
+        </template>
+        <template #actions-header>
+          <div class="w-full text-right">
+            Actions
+          </div>
+        </template>
+      </DataTable>
+    </DataListsWrapper>
   </AuthenticatedLayout>
 </template>

@@ -1,29 +1,69 @@
 <script setup lang="ts">
 import { RefreshCw } from 'lucide-vue-next'
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
+import ButtonLink from '@/components/ButtonLink.vue'
+import DataListsWrapper from '@/components/DataLists/DataListsWrapper.vue'
+import DataTable from '@/components/DataTable.vue'
 import { Button } from '@/components/ui/button'
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table'
-import { productService } from '@/domains/product/services/productService'
+import DeleteProductButton from '@/domains/product/components/DeleteProductButton.vue'
+import EditProductButton from '@/domains/product/components/EditProductButton.vue'
+import { type IProductFilters, productService } from '@/domains/product/services/productService'
 import AuthenticatedLayout from '@/layouts/AuthenticatedLayout.vue'
-import { formatDate } from '@/lib/date'
-import type { Product } from '@/domains/product/models/product.model'
+import { toDateString } from '@/lib/toDateString'
+import type { ColumnDef } from '@tanstack/vue-table'
+import type { IProduct } from '@/domains/product/models/product.model'
+import type { IResourceMeta } from '@/domains/shared/types/resource.type'
 
-const products = ref<Product[]>([])
+const { t } = useI18n()
+
+const products = ref<IProduct[]>([])
+const meta = ref<IResourceMeta>({
+  currentPage: 1,
+  lastPage: 1,
+  perPage: 10,
+  total: 0,
+})
 const loading = ref(false)
 const error = ref<string | null>(null)
+const filters = ref<IProductFilters>({
+  search: '',
+  page: 1,
+  perPage: 10,
+})
 
-const fetchProducts = async () => {
+const columns: ColumnDef<IProduct>[] = [
+  {
+    accessorKey: 'name',
+    header: t('product.name'),
+  },
+  {
+    accessorKey: 'description',
+    header: t('product.description'),
+  },
+  {
+    accessorKey: 'priceNet',
+    header: t('product.price'),
+    cell: (info: { row: { original: IProduct } }) => info.row.original.priceNet.toFixed(2),
+  },
+  {
+    accessorKey: 'createdAt',
+    header: t('product.createdAt'),
+    cell: (info: { row: { original: IProduct } }) => toDateString(info.row.original.createdAt),
+  },
+  {
+    id: 'actions',
+    header: t('actions'),
+  },
+]
+
+const refresh = async () => {
   try {
     loading.value = true
     error.value = null
-    products.value = await productService.index()
+    const response = await productService.index(filters.value)
+    products.value = response.data
+    meta.value = response.meta
   } catch (err) {
     error.value = 'Failed to load products'
     console.error(err)
@@ -33,72 +73,53 @@ const fetchProducts = async () => {
 }
 
 onMounted(() => {
-  void fetchProducts()
+  void refresh()
 })
+
+watch(filters, () => refresh(), { deep: true })
 </script>
 
 <template>
   <AuthenticatedLayout>
-    <div class="container mx-auto py-6">
-      <div class="flex justify-between items-center mb-6">
-        <h1 class="text-2xl font-bold">
-          Products
-        </h1>
-        <div class="flex gap-2">
-          <Button variant="outline" @click="fetchProducts">
-            <RefreshCw class="h-4 w-4" />
-          </Button>
-          <Button disabled>
-            Add Product
-          </Button>
-        </div>
-      </div>
-
-      <div v-if="loading" class="text-center py-8">
-        Loading products...
-      </div>
-
-      <div v-else-if="error" class="text-center py-8 text-red-500">
-        {{ error }}
-      </div>
-
-      <div v-else class="rounded-md border">
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Name</TableHead>
-              <TableHead class="w-64">
-                Description
-              </TableHead>
-              <TableHead>Price</TableHead>
-              <TableHead>Created At</TableHead>
-              <TableHead>Actions</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            <TableRow v-for="product in products" :key="product.id">
-              <TableCell>{{ product.name }}</TableCell>
-              <TableCell>
-                <div class="text-ellipsis overflow-hidden whitespace-nowrap max-w-48">
-                  {{ product.description.slice(0, 100) }}
-                </div>
-              </TableCell>
-              <TableCell>{{ product.priceNet.toFixed(2) }}</TableCell>
-              <TableCell>{{ formatDate(product.createdAt) }}</TableCell>
-              <TableCell>
-                <div class="flex gap-2">
-                  <Button variant="outline" size="sm">
-                    Edit
-                  </Button>
-                  <Button variant="destructive" size="sm">
-                    Delete
-                  </Button>
-                </div>
-              </TableCell>
-            </TableRow>
-          </TableBody>
-        </Table>
-      </div>
-    </div>
+    <DataListsWrapper :title="t('product.title')" :loading :error>
+      <template #actions>
+        <Button variant="outline" @click="refresh">
+          <RefreshCw class="h-4 w-4" />
+        </Button>
+        <ButtonLink v-tooltip="t('product.add.description')" variant="default" to="/products/add">
+          {{ t('product.add.title') }}
+        </ButtonLink>
+      </template>
+      <DataTable
+        v-model:page="filters.page"
+        v-model:page-size="filters.perPage"
+        :columns="columns"
+        :data="products"
+        :total="meta.total"
+        :page-size-options="[10, 20, 30, 40, 50]"
+      >
+        <template #name="{ data }">
+          <ButtonLink :to="`/products/${data.id}/show`">
+            {{ data.name }}
+          </ButtonLink>
+        </template>
+        <template #description="{ data }">
+          <div class="text-ellipsis overflow-hidden whitespace-nowrap max-w-48">
+            {{ data.description?.slice(0, 100) ?? '-' }}
+          </div>
+        </template>
+        <template #actions="{ data }">
+          <div class="flex gap-2 justify-end w-full whitespace-nowrap min-w-0">
+            <EditProductButton :id="data.id" />
+            <DeleteProductButton :id="data.id" />
+          </div>
+        </template>
+        <template #actions-header>
+          <div class="w-full text-right">
+            {{ t('actions') }}
+          </div>
+        </template>
+      </DataTable>
+    </DataListsWrapper>
   </AuthenticatedLayout>
 </template>

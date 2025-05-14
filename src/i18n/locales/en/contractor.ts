@@ -1,0 +1,15 @@
+export const contractor = {
+  title: 'Contractors',
+  add: {
+    title: 'Add Contractor',
+    description: 'Add a new contractor to the system.'
+  },
+  delete: {
+    success: 'Contractor deleted successfully',
+    error: 'Failed to delete contractor',
+    confirm: 'Are you sure you want to delete this contractor?'
+  },
+  show: {
+    error: 'Could not load contractor',
+  },
+}

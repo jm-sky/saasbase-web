@@ -12,4 +12,28 @@ export const productRoutes: RouteRecordRaw[] = [
       middlewares: [isAuthenticated, isVerified, isInTenant],
     },
   },
+  {
+    path: '/products/add',
+    name: 'addProduct',
+    component: () => import('@/pages/product/AddProductPage.vue'),
+    meta: {
+      middlewares: [isAuthenticated, isVerified, isInTenant],
+    },
+  },
+  {
+    path: '/products/:id/show',
+    name: 'showProduct',
+    component: () => import('@/pages/product/ShowProductPage.vue'),
+    meta: {
+      middlewares: [isAuthenticated, isVerified, isInTenant],
+    },
+  },
+  {
+    path: '/products/:id/edit',
+    name: 'editProduct',
+    component: () => import('@/pages/product/EditProductPage.vue'),
+    meta: {
+      middlewares: [isAuthenticated, isVerified, isInTenant],
+    },
+  },
 ]

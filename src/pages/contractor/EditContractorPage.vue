@@ -1,22 +1,29 @@
 <script setup lang="ts">
 import { useForm } from 'vee-validate'
-import { useRouter } from 'vue-router'
+import { onMounted, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { useRoute } from 'vue-router'
 import FormFieldLabeled from '@/components/Form/FormFieldLabeled.vue'
 import Button from '@/components/ui/button/Button.vue'
 import Input from '@/components/ui/input/Input.vue'
 import Switch from '@/components/ui/switch/Switch.vue'
 import Textarea from '@/components/ui/textarea/Textarea.vue'
-import { useToast } from '@/components/ui/toast/use-toast'
+import { useToast } from '@/components/ui/toast'
 import { contractorService } from '@/domains/contractor/services/contractorService'
 import AuthenticatedLayout from '@/layouts/AuthenticatedLayout.vue'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
 import { isValidationError } from '@/lib/validation'
 import type { IContractor } from '@/domains/contractor/models/contractor.model'
 
-const router = useRouter()
+const { t } = useI18n()
 const { toast } = useToast()
+const route = useRoute()
+const contractorId = route.params.id as string
 
-const { isSubmitting, handleSubmit, setErrors, resetForm } = useForm<Omit<IContractor, 'id' | 'createdAt' | 'updatedAt'>>({
+const loading = ref(false)
+const error = ref<string | null>(null)
+
+const { isSubmitting, handleSubmit, setValues, setErrors, resetForm } = useForm<Omit<IContractor, 'createdAt' | 'updatedAt'>>({
   initialValues: {
     name: '',
     description: '',
@@ -25,27 +32,44 @@ const { isSubmitting, handleSubmit, setErrors, resetForm } = useForm<Omit<IContr
   },
 })
 
+const refresh = async () => {
+  try {
+    loading.value = true
+    error.value = null
+    const response = await contractorService.get(contractorId)
+    setValues(response)
+  } catch (err) {
+    handleErrorWithToast(t('contractor.show.error'), err)
+    error.value = 'Failed to load contractor'
+  } finally {
+    loading.value = false
+  }
+}
+
 const onSubmit = handleSubmit(async (values) => {
   try {
     await contractorService.create(values)
     toast.success('Contractor added successfully')
     resetForm()
-    await router.push('/contractors') // Navigate to the contractors list
   } catch (error: unknown) {
     console.error('[AddContractorView][onSubmit] error:', error)
     if (isValidationError(error)) setErrors(error.response.data.errors)
-    handleErrorWithToast('Could not add contractor', error)
-
+    handleErrorWithToast('Could not edit contractor', error)
   }
+})
+
+onMounted(async () => {
+  await refresh()
 })
 </script>
 
 <template>
   <AuthenticatedLayout>
-    <div class="px-8 py-6 mx-auto flex w-full flex-col justify-center space-y-6">
+    <div class="p-6">
       <h1 class="text-2xl font-semibold tracking-tight text-center">
-        Add Contractor
+        Edit Contractor
       </h1>
+
       <form class="flex flex-col gap-y-2 gap-x-8" @submit.prevent="onSubmit">
         <FormFieldLabeled
           v-slot="{ componentField }"
@@ -123,7 +147,7 @@ const onSubmit = handleSubmit(async (values) => {
 
         <div class="col-span-2">
           <Button type="submit" :disabled="isSubmitting" class="w-full">
-            Add Contractor
+            Save
           </Button>
         </div>
       </form>

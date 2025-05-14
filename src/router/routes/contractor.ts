@@ -20,4 +20,20 @@ export const contractorRoutes: RouteRecordRaw[] = [
       middlewares: [isAuthenticated, isVerified, isInTenant],
     },
   },
+  {
+    path: '/contractors/:id/show',
+    name: 'showContractor',
+    component: () => import('@/pages/contractor/ShowContractorPage.vue'),
+    meta: {
+      middlewares: [isAuthenticated, isVerified, isInTenant],
+    },
+  },
+  {
+    path: '/contractors/:id/edit',
+    name: 'editContractor',
+    component: () => import('@/pages/contractor/EditContractorPage.vue'),
+    meta: {
+      middlewares: [isAuthenticated, isVerified, isInTenant],
+    },
+  },
 ]

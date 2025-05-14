@@ -1,3 +1,6 @@
+import { contractor } from './contractor'
+import { product } from './product'
+
 export const en = {
   common: {
     language: {
@@ -11,7 +14,9 @@ export const en = {
       allFilesAccepted: 'All files accepted',
       acceptedFormats: 'Accepted formats: {formats}',
       remove: 'Remove'
-    }
+    },
+    edit: 'Edit',
+    delete: 'Delete'
   },
   auth: {
     login: 'Login',
@@ -73,5 +78,7 @@ export const en = {
         removeImage: 'Remove Image'
       }
     }
-  }
+  },
+  contractor,
+  product,
 }

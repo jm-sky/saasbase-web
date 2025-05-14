@@ -1,37 +1,34 @@
-import { Contractor, type IContractor } from '@/domains/contractor/models/contractor.model'
+import { type IContractor } from '@/domains/contractor/models/contractor.model'
 import api from '@/lib/api'
 import { apiRoutesMap } from '@/lib/api/apiRoutes'
 import type { IResource } from '@/domains/shared/types/resource.type'
-
-export interface IContractorGetParams {
+export interface IContractorFilters {
+  search?: string
+  page?: number
+  perPage?: number
   isSupplier?: boolean
   isBuyer?: boolean
-  limit?: number
-  offset?: number
 }
 
 class ContractorService {
-  async index(params?: IContractorGetParams): Promise<IResource<Contractor>> {
-    const response = await api.get<IResource<IContractor>>(apiRoutesMap.contractors, { params })
-    return {
-      data: response.data.data.map(data => Contractor.load(data)),
-      meta: response.data.meta,
-    }
+  async index(params?: IContractorFilters): Promise<IResource<IContractor>> {
+    const response = (await api.get<IResource<IContractor>>(apiRoutesMap.contractors, { params })).data
+    return response
   }
 
-  async get(id: string): Promise<Contractor> {
-    const response = await api.get<{ data: IContractor }>(`${apiRoutesMap.contractors}/${id}`)
-    return Contractor.load(response.data.data)
+  async get(id: string): Promise<IContractor> {
+    const response = (await api.get<{ data: IContractor }>(`${apiRoutesMap.contractors}/${id}`)).data
+    return response.data
   }
 
-  async create(contractor: Omit<IContractor, 'id' | 'createdAt' | 'updatedAt'>): Promise<Contractor> {
-    const response = await api.post<{ data: IContractor }>(apiRoutesMap.contractors, contractor)
-    return Contractor.load(response.data.data)
+  async create(contractor: Omit<IContractor, 'id' | 'createdAt' | 'updatedAt'>): Promise<IContractor> {
+    const response = (await api.post<{ data: IContractor }>(apiRoutesMap.contractors, contractor)).data
+    return response.data
   }
 
-  async update(id: string, contractor: Partial<IContractor>): Promise<Contractor> {
-    const response = await api.patch<{ data: IContractor }>(`${apiRoutesMap.contractors}/${id}`, contractor)
-    return Contractor.load(response.data.data)
+  async update(id: string, contractor: Partial<IContractor>): Promise<IContractor> {
+    const response = (await api.patch<{ data: IContractor }>(`${apiRoutesMap.contractors}/${id}`, contractor)).data
+    return response.data
   }
 
   async delete(id: string): Promise<void> {
