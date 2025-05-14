@@ -8,6 +8,7 @@ import Avatar from '@/components/ui/avatar/Avatar.vue'
 import AvatarFallback from '@/components/ui/avatar/AvatarFallback.vue'
 import AvatarImage from '@/components/ui/avatar/AvatarImage.vue'
 import Separator from '@/components/ui/separator/Separator.vue'
+import ContractorAttachmentsList from '@/domains/contractor/components/ContractorAttachmentsList.vue'
 import ContractorBankAccountsList from '@/domains/contractor/components/ContractorBankAccountsList.vue'
 import ContractorContactsList from '@/domains/contractor/components/ContractorContactsList.vue'
 import { contractorService } from '@/domains/contractor/services/contractorService'
@@ -83,6 +84,8 @@ onMounted(async () => {
             <InfoSection label="Email" :value="contractor?.email" />
             <InfoSection label="Phone" :value="contractor?.phone" />
           </div>
+          <Separator class="my-2" />
+          <ContractorAttachmentsList />
         </div>
         <div class="flex flex-col gap-4">
           <div class="flex flex-row items-center gap-2 font-semibold text-primary">
