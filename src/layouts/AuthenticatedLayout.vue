@@ -11,6 +11,7 @@ import {
   BreadcrumbLink,
   BreadcrumbList,
 } from '@/components/ui/breadcrumb'
+import ScrollArea from '@/components/ui/scroll-area/ScrollArea.vue'
 import { Separator } from '@/components/ui/separator'
 import {
   SidebarInset,
@@ -60,9 +61,9 @@ const authStore = useAuthStore()
         </Breadcrumb>
       </nav>
 
-      <main class="bg-background border rounded-xl md:mr-4 md:mb-2 flex flex-col h-full grow">
+      <ScrollArea class="flex flex-col h-full md:h-[var(--content-height)] pr-1 md:mr-4 md:mb-2 bg-background border rounded-xl grow">
         <slot />
-      </main>
+      </ScrollArea>
     </SidebarInset>
     <UserAuthModal v-if="authStore.showAuthModal" />
     <SelectTenantModal v-if="authStore.showSelectTenantModal" />

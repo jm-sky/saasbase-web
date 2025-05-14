@@ -103,7 +103,7 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div class="p-2 relative flex flex-col h-full max-w-full overflow-x-hidden">
+  <div class="p-2 flex flex-col h-full max-w-full overflow-x-hidden">
     <ChatMessageList ref="messagesContainer" class="w-full md:w-5xl mx-auto">
       <ChatBubble
         v-for="msg in currentRoomMessages"

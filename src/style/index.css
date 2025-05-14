@@ -17,6 +17,9 @@
   --primary-900: var(--sky-900);
   --primary-950: var(--sky-950);
 
+  --topbar-height: 68px;
+  --content-height: calc(100vh - var(--topbar-height));
+
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
