@@ -8,6 +8,9 @@ import Avatar from '@/components/ui/avatar/Avatar.vue'
 import AvatarFallback from '@/components/ui/avatar/AvatarFallback.vue'
 import AvatarImage from '@/components/ui/avatar/AvatarImage.vue'
 import Separator from '@/components/ui/separator/Separator.vue'
+import ContractorAttachmentsList from '@/domains/contractor/components/ContractorAttachmentsList.vue'
+import ContractorBankAccountsList from '@/domains/contractor/components/ContractorBankAccountsList.vue'
+import ContractorContactsList from '@/domains/contractor/components/ContractorContactsList.vue'
 import { contractorService } from '@/domains/contractor/services/contractorService'
 import AuthenticatedLayout from '@/layouts/AuthenticatedLayout.vue'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
@@ -60,7 +63,7 @@ onMounted(async () => {
         </div>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-[1fr_4fr] gap-6">
+      <div class="grid grid-cols-1 md:grid-cols-[20rem_1fr] gap-6">
         <div class="flex flex-col text-center gap-2 border rounded-md p-4 shadow-xs">
           <Avatar size="lg" class="mx-auto">
             <AvatarImage :src="contractor?.logo ?? ''" :alt="contractor?.name" />
@@ -82,10 +85,18 @@ onMounted(async () => {
             <InfoSection label="Phone" :value="contractor?.phone" />
           </div>
         </div>
+
         <div class="flex flex-col gap-4">
           <div class="flex flex-row items-center gap-2 font-semibold text-primary">
+            <!-- TODO: add tabs -->
             <div class="px-2 py-1 border-b-2 border-primary">
               Details
+            </div>
+            <div class="px-2 py-1 text-muted-foreground">
+              Comments
+            </div>
+            <div class="px-2 py-1 text-muted-foreground">
+              Logs
             </div>
           </div>
           <div class="flex flex-col gap-2 border rounded-md p-4 shadow-xs">
@@ -96,23 +107,17 @@ onMounted(async () => {
               {{ contractor?.description }}
             </div>
 
-            <Separator class="my-2" />
+            <Separator class="my-4" />
 
-            <div class="font-bold">
-              Bank accounts
-            </div>
-            <div class="text-muted-foreground">
-              Not implemented...
-            </div>
+            <ContractorBankAccountsList />
 
-            <Separator class="my-2" />
+            <Separator class="my-4" />
 
-            <div class="font-bold">
-              Contact persons
-            </div>
-            <div class="text-muted-foreground">
-              Not implemented...
-            </div>
+            <ContractorContactsList />
+
+            <Separator class="my-4" />
+
+            <ContractorAttachmentsList />
           </div>
         </div>
       </div>
