@@ -20,6 +20,9 @@ export const apiRoutesMap = {
   comments: '/comments',
   tags: '/tags',
   skills: '/skills',
+  contractorAddresses: '/contractors/:contractorId/addresses',
+  contractorContacts: '/contractors/:contractorId/contacts',
+  contractorBankAccounts: '/contractors/:contractorId/bank-accounts',
 }
 
 export const apiRoutes = {

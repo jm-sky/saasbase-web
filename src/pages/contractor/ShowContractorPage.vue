@@ -8,6 +8,8 @@ import Avatar from '@/components/ui/avatar/Avatar.vue'
 import AvatarFallback from '@/components/ui/avatar/AvatarFallback.vue'
 import AvatarImage from '@/components/ui/avatar/AvatarImage.vue'
 import Separator from '@/components/ui/separator/Separator.vue'
+import ContractorBankAccountsList from '@/domains/contractor/components/ContractorBankAccountsList.vue'
+import ContractorContactsList from '@/domains/contractor/components/ContractorContactsList.vue'
 import { contractorService } from '@/domains/contractor/services/contractorService'
 import AuthenticatedLayout from '@/layouts/AuthenticatedLayout.vue'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
@@ -98,21 +100,11 @@ onMounted(async () => {
 
             <Separator class="my-2" />
 
-            <div class="font-bold">
-              Bank accounts
-            </div>
-            <div class="text-muted-foreground">
-              Not implemented...
-            </div>
+            <ContractorBankAccountsList />
 
             <Separator class="my-2" />
 
-            <div class="font-bold">
-              Contact persons
-            </div>
-            <div class="text-muted-foreground">
-              Not implemented...
-            </div>
+            <ContractorContactsList />
           </div>
         </div>
       </div>
