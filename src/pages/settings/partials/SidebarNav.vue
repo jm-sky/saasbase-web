@@ -29,13 +29,13 @@ const sidebarNavItems: Item[] = [
 </script>
 
 <template>
-  <nav class="flex space-x-2 lg:flex-col lg:space-x-0 lg:space-y-1">
+  <nav class="flex flex-wrap space-x-2 lg:flex-col lg:space-x-0 lg:space-y-1">
     <ButtonLink
       v-for="({ title, to, disabled }) in sidebarNavItems"
       :key="title"
       :to
       variant="ghost"
-      class="w-full text-left justify-start"
+      class="md:w-full text-left justify-start"
       active-class="bg-secondary/80 text-primary"
       :disabled
     >

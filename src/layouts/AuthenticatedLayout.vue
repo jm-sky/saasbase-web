@@ -31,8 +31,8 @@ const authStore = useAuthStore()
 <template>
   <SidebarProvider>
     <AppSidebar />
-    <SidebarInset>
-      <header class="px-4 flex h-16 shrink-0 items-center gap-2 border-b transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12">
+    <SidebarInset class="bg-sidebar">
+      <header class="px-4 flex h-16 shrink-0 items-center gap-2 bg-sidebar transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12">
         <SidebarTrigger class="-ml-1" />
         <Separator
           orientation="vertical"
@@ -59,7 +59,8 @@ const authStore = useAuthStore()
           </BreadcrumbList>
         </Breadcrumb>
       </nav>
-      <main class="flex flex-col h-full grow">
+
+      <main class="bg-background border rounded-xl md:mr-4 md:mb-2 flex flex-col h-full grow">
         <slot />
       </main>
     </SidebarInset>

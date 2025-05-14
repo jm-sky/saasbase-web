@@ -17,8 +17,8 @@ const chatConfig = {
     full: 'sm:w-full sm:h-full',
   },
   positions: {
-    'bottom-right': 'bottom-5 right-5',
-    'bottom-left': 'bottom-5 left-5',
+    'bottom-right': 'bottom-3 right-5',
+    'bottom-left': 'bottom-3 left-5',
   },
   chatPositions: {
     'bottom-right': 'sm:bottom-[calc(100%+10px)] sm:right-0',

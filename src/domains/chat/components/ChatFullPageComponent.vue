@@ -128,7 +128,7 @@ onUnmounted(() => {
       </div>
     </ChatMessageList>
 
-    <h2 class="w-full md:w-auto px-2 text-lg font-bold absolute py-2 top-0 left-0 md:left-6 bg-white/80 md:bg-transparent backdrop-blur-md">
+    <h2 class="w-full md:w-auto px-2 text-lg font-bold absolute py-2 top-2 left-0 md:left-6 bg-white/80 md:bg-transparent backdrop-blur-md">
       Chat
       <template v-if="selectedRoom">
         with
@@ -141,7 +141,7 @@ onUnmounted(() => {
     <Button
       variant="ghost"
       size="sm"
-      class="absolute top-2 right-4"
+      class="absolute top-4 right-4"
       @click="showSidebar = !showSidebar"
     >
       <Menu />

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ChevronRight, type LucideIcon } from 'lucide-vue-next'
+import { ChevronRight } from 'lucide-vue-next'
 import { RouterLink } from 'vue-router'
 import {
   Collapsible,
@@ -16,18 +16,10 @@ import {
   SidebarMenuSubButton,
   SidebarMenuSubItem,
 } from '@/components/ui/sidebar'
+import type { MenuItem } from './menu.type'
 
 defineProps<{
-  items: {
-    title: string
-    url: string
-    icon?: LucideIcon
-    isActive?: boolean
-    items?: {
-      title: string
-      url: string
-    }[]
-  }[]
+  items: MenuItem[]
 }>()
 </script>
 
@@ -74,6 +66,7 @@ defineProps<{
               :href
               @click="navigate"
             >
+              <component :is="item.icon" v-if="item.icon" />
               <span>{{ item.title }}</span>
             </SidebarMenuButton>
           </RouterLink>
