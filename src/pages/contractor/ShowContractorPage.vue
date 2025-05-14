@@ -60,8 +60,7 @@ onMounted(async () => {
         </div>
       </div>
 
-
-      <div class="grid grid-cols-[1fr_4fr] gap-6">
+      <div class="grid grid-cols-1 md:grid-cols-[1fr_4fr] gap-6">
         <div class="flex flex-col text-center gap-2 border rounded-md p-4 shadow-xs">
           <Avatar size="lg" class="mx-auto">
             <AvatarImage :src="contractor?.logo ?? ''" :alt="contractor?.name" />
