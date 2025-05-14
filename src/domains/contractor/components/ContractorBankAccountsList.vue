@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
+import Button from '@/components/ui/button/Button.vue'
 import { contractorBankAccountsService } from '@/domains/contractor/services/ContractorBankAccountsService'
 import type { IContractorBankAccount } from '@/domains/contractor/models/contractor.model'
 
@@ -33,15 +34,16 @@ const handleDelete = async (account: IContractorBankAccount) => {
   await fetchBankAccounts()
 }
 </script>
+
 <template>
   <div>
     <div class="flex justify-between items-center mb-2">
       <div class="font-bold">
         Bank accounts
       </div>
-      <button class="btn btn-primary" @click="handleAdd">
+      <Button size="sm" variant="default" @click="handleAdd">
         Add
-      </button>
+      </Button>
     </div>
     <div v-if="loading">
       Loading...
@@ -64,16 +66,24 @@ const handleDelete = async (account: IContractorBankAccount) => {
             <td>{{ account.currencies.join(', ') }}</td>
             <td>{{ account.isDefault ? 'Yes' : 'No' }}</td>
             <td>
-              <button class="btn btn-xs btn-secondary mr-1" @click="handleEdit(account)">
+              <Button
+                size="sm"
+                variant="secondary"
+                class="mr-1"
+                @click="handleEdit(account)"
+              >
                 Edit
-              </button>
-              <button class="btn btn-xs btn-danger" @click="handleDelete(account)">
+              </Button>
+              <Button size="sm" variant="destructive" @click="handleDelete(account)">
                 Delete
-              </button>
+              </Button>
             </td>
           </tr>
         </tbody>
       </table>
+      <div v-if="!loading && bankAccounts.length === 0" class="mt-4 text-center text-sm text-muted-foreground">
+        No bank accounts found
+      </div>
     </div>
   </div>
 </template>

@@ -2,6 +2,7 @@
 import { onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import FileUpload from '@/components/Inputs/FileUpload.vue'
+import Button from '@/components/ui/button/Button.vue'
 import { contractorAttachmentsService, type IContractorAttachment } from '@/domains/contractor/services/ContractorAttachmentsService'
 
 const route = useRoute()
@@ -59,14 +60,10 @@ onMounted(fetchAttachments)
         Attachments
       </div>
     </div>
-    <FileUpload v-model="files" :disabled="uploading" />
-    <button class="btn btn-primary mt-2" :disabled="!files.length || uploading" @click="handleUpload">
-      Upload
-    </button>
     <div v-if="loading" class="mt-4">
       Loading...
     </div>
-    <div v-else class="mt-4">
+    <div v-else class="my-4">
       <table class="min-w-full text-sm">
         <thead>
           <tr>
@@ -94,6 +91,19 @@ onMounted(fetchAttachments)
           </tr>
         </tbody>
       </table>
+      <div v-if="!loading && attachments.length === 0" class="mt-4 text-center text-sm text-muted-foreground">
+        No attachments found
+      </div>
     </div>
+
+    <FileUpload v-model="files" :disabled="uploading" />
+    <Button
+      variant="default"
+      class="mt-2 mx-auto"
+      :disabled="!files.length || uploading"
+      @click="handleUpload"
+    >
+      Upload
+    </Button>
   </div>
 </template>

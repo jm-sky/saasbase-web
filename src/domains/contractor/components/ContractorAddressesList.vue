@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
+import Button from '@/components/ui/button/Button.vue'
 import { contractorAddressesService } from '@/domains/contractor/services/ContractorAddressesService'
 import type { IContractorAddress } from '@/domains/contractor/models/contractor.model'
 
@@ -33,15 +34,16 @@ const handleDelete = async (address: IContractorAddress) => {
   await fetchAddresses()
 }
 </script>
+
 <template>
   <div>
     <div class="flex justify-between items-center mb-2">
       <div class="font-bold">
         Addresses
       </div>
-      <button class="btn btn-primary" @click="handleAdd">
+      <Button size="sm" variant="default" @click="handleAdd">
         Add
-      </button>
+      </Button>
     </div>
     <div v-if="loading">
       Loading...
@@ -68,12 +70,21 @@ const handleDelete = async (address: IContractorAddress) => {
             <td>{{ address.countryId }}</td>
             <td>{{ address.isDefault ? 'Yes' : 'No' }}</td>
             <td>
-              <button class="btn btn-xs btn-secondary mr-1" @click="handleEdit(address)">
+              <Button
+                size="sm"
+                variant="secondary"
+                class="mr-1"
+                @click="handleEdit(address)"
+              >
                 Edit
-              </button>
-              <button class="btn btn-xs btn-danger" @click="handleDelete(address)">
+              </Button>
+              <Button
+                size="sm"
+                variant="destructive"
+                @click="handleDelete(address)"
+              >
                 Delete
-              </button>
+              </Button>
             </td>
           </tr>
         </tbody>

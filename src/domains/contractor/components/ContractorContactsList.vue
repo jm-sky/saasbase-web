@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
+import Button from '@/components/ui/button/Button.vue'
 import { contractorContactsService } from '@/domains/contractor/services/ContractorContactsService'
 import type { IContractorContactPerson } from '@/domains/contractor/models/contractor.model'
 
@@ -39,9 +40,9 @@ const handleDelete = async (contact: IContractorContactPerson) => {
       <div class="font-bold">
         Contact persons
       </div>
-      <button class="btn btn-primary" @click="handleAdd">
+      <Button size="sm" variant="default" @click="handleAdd">
         Add
-      </button>
+      </Button>
     </div>
     <div v-if="loading">
       Loading...
@@ -64,16 +65,24 @@ const handleDelete = async (contact: IContractorContactPerson) => {
             <td>{{ contact.phone }}</td>
             <td>{{ contact.position }}</td>
             <td>
-              <button class="btn btn-xs btn-secondary mr-1" @click="handleEdit(contact)">
+              <Button
+                size="sm"
+                variant="secondary"
+                class="mr-1"
+                @click="handleEdit(contact)"
+              >
                 Edit
-              </button>
-              <button class="btn btn-xs btn-danger" @click="handleDelete(contact)">
+              </Button>
+              <Button size="sm" variant="destructive" @click="handleDelete(contact)">
                 Delete
-              </button>
+              </Button>
             </td>
           </tr>
         </tbody>
       </table>
+      <div v-if="!loading && contacts.length === 0" class="mt-4 text-center text-sm text-muted-foreground">
+        No contact persons found
+      </div>
     </div>
   </div>
 </template>

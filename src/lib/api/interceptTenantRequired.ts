@@ -10,7 +10,6 @@ const isTenantRequired = (error: unknown): boolean => {
   )
 }
 
-
 export const interceptTenantRequired = (error: AxiosError): Promise<unknown> => {
   if (!isTenantRequired(error)) {
     throw error
