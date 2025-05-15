@@ -64,7 +64,7 @@ const value = computed<string>({
 
 <template>
   <div class="flex items-center gap-2">
-    <Input v-model="value" class="w-full h-8" />
+    <Input v-model.lazy.trim="value" class="w-full h-8" />
     <select v-model="modelValue.operator" class="w-4 h-8">
       <option v-for="operator in operators" :key="operator.value" :value="operator.value">
         {{ operator.value }}
