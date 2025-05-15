@@ -34,13 +34,12 @@ const filters = ref<IContractorFilters>({
   search: '',
   page: 1,
   perPage: 10,
-})
-
-const columnFilters = ref<Record<string, { value: string, operator: string }>>({
-  name: { value: '', operator: 'eq' },
-  taxId: { value: '', operator: 'eq' },
-  type: { value: '', operator: 'eq' },
-  createdAt: { value: '', operator: 'eq' },
+  filter: {
+    name: { value: '', operator: 'eq' },
+    taxId: { value: '', operator: 'eq' },
+    type: { value: '', operator: 'eq' },
+    createdAt: { value: '', operator: 'eq' },
+  },
 })
 
 const columns: ColumnDef<IContractor>[] = [
@@ -109,7 +108,7 @@ watch(filters, () => debouncedRefresh(), { deep: true })
       <DataTable
         v-model:page="filters.page"
         v-model:page-size="filters.perPage"
-        v-model:column-filters="columnFilters"
+        v-model:column-filters="filters.filter"
         :columns="columns"
         :data="contractors"
         :total="meta.total"
