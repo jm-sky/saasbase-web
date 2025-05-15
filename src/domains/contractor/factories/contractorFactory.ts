@@ -18,6 +18,7 @@ export class ContractorFactory {
       flat: faker.location.secondaryAddress(),
       description: faker.lorem.sentence(),
       isDefault: faker.datatype.boolean(),
+      tags: [],
       meta: {},
       createdAt: formatISO(new Date()),
       updatedAt: formatISO(new Date()),
