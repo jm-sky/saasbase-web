@@ -1,7 +1,7 @@
 import { faker } from '@faker-js/faker'
 import { formatISO } from 'date-fns'
 import { v4 } from 'uuid'
-import type { IContractor, IContractorAddress, IContractorBankAccount, IContractorContactPerson } from '@/domains/contractor/models/contractor.model'
+import type { IContractor, IContractorAddress, IContractorBankAccount, IContractorContact } from '@/domains/contractor/models/contractor.model'
 import type { TUUID } from '@/domains/shared/types/common'
 
 export class ContractorFactory {
@@ -24,12 +24,12 @@ export class ContractorFactory {
       contractorId,
       bankName: faker.company.name(),
       iban: faker.finance.iban(),
-      currencies: faker.helpers.arrayElements(['USD', 'EUR', 'PLN'], { min: 1, max: 3 }),
+      currency: faker.helpers.arrayElements(['USD', 'EUR', 'PLN'], { min: 1, max: 3 }),
       isDefault: faker.datatype.boolean(),
     }
   }
 
-  private static createContactPerson(contractorId: TUUID): IContractorContactPerson {
+  private static createContactPerson(contractorId: TUUID): IContractorContact {
     return {
       id: v4(),
       contractorId,

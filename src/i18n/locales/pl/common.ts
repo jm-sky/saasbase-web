@@ -1,16 +1,13 @@
 export const common = {
+  add: 'Dodaj',
   edit: 'Edytuj',
   delete: 'Usuń',
+  download: 'Pobierz',
   save: 'Zapisz',
   loading: 'Ładowanie...',
+  refresh: 'Odśwież',
   or: 'lub',
   error: 'Błąd',
-  fileUpload: {
-    dragAndDrop: 'Przeciągnij i upuść pliki tutaj lub kliknij, aby przeglądać',
-    allFilesAccepted: 'Wszystkie pliki akceptowane',
-    acceptedFormats: 'Akceptowane formaty: {formats}',
-    remove: 'Usuń'
-  },
   copyToClipboard: {
     copy: 'Kopiuj',
     copied: 'Skopiowano',
@@ -19,5 +16,11 @@ export const common = {
   language: {
     en: 'Angielski',
     pl: 'Polski'
+  },
+  fileUpload: {
+    dragAndDrop: 'Przeciągnij i upuść pliki tutaj lub kliknij, aby przeglądać',
+    allFilesAccepted: 'Wszystkie pliki akceptowane',
+    acceptedFormats: 'Akceptowane formaty: {formats}',
+    remove: 'Usuń'
   },
 }

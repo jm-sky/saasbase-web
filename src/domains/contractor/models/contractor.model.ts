@@ -14,22 +14,26 @@ export interface IContractorBankAccount {
   contractorId: TUUID
   bankName?: string
   iban: string
-  currencies?: string[]
+  currency?: string
   isDefault: boolean
+  description?: string
+  createdAt: TDateTime
+  updatedAt: TDateTime
 }
 
-export type IContractorBankAccountCreate = Omit<IContractorBankAccount, 'id' | 'contractorId'>
+export type IContractorBankAccountCreate = Omit<IContractorBankAccount, 'id' | 'contractorId' | 'createdAt' | 'updatedAt'>
 
-export interface IContractorContactPerson {
+export interface IContractorContact {
   id: TUUID
   contractorId: TUUID
   name: string
   email?: string
   phone?: string
   position?: string
+  description?: string
 }
 
-export type IContractorContactPersonCreate = Omit<IContractorContactPerson, 'id' | 'contractorId'>
+export type IContractorContactCreate = Omit<IContractorContact, 'id' | 'contractorId'>
 
 export interface IContractor {
   id: TUUID

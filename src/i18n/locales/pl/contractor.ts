@@ -17,5 +17,9 @@ export const contractor = {
       title: 'Dodaj adres',
       description: 'Dodaj nowy adres do kontrahenta.',
     },
+    edit: {
+      title: 'Edytuj adres',
+      description: 'Edytuj adres kontrahenta.',
+    },
   }
 }

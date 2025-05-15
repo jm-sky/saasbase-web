@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import { Icon } from '@iconify/vue'
+import { useI18n } from 'vue-i18n'
 import Button from '@/components/ui/button/Button.vue'
+
+const { t } = useI18n()
 
 const { withAddButton = true, withRefreshButton = true } = defineProps<{
   title: string
@@ -26,7 +29,7 @@ const emit = defineEmits<{
         <slot name="actions">
           <Button
             v-if="withRefreshButton"
-            v-tooltip="'Refresh'"
+            v-tooltip="t('common.refresh')"
             size="sm"
             variant="outline"
             @click="emit('refresh')"
@@ -36,14 +39,14 @@ const emit = defineEmits<{
 
           <Button
             v-if="withAddButton"
-            v-tooltip="'Add'"
+            v-tooltip="t('common.add')"
             size="sm"
             variant="outline"
             @click="emit('add')"
           >
             <Icon icon="lucide:plus" />
             <span class="hidden md:block">
-              Add
+              {{ t('common.add') }}
             </span>
           </Button>
         </slot>

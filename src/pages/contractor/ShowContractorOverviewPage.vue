@@ -11,7 +11,7 @@ defineProps<{
 </script>
 
 <template>
-  <div class="flex flex-col gap-2 border rounded-md p-4 shadow-xs">
+  <div class="flex flex-col gap-2 border rounded-md p-4 shadow-lg/5">
     <div class="font-bold">
       Description
     </div>
@@ -20,21 +20,21 @@ defineProps<{
     </div>
   </div>
 
-  <div class="border rounded-md p-2 shadow-xs">
+  <div class="border rounded-md p-2 shadow-lg/5">
     <ContractorAddressesList />
   </div>
 
   <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-    <div class="border rounded-md p-2 shadow-xs">
+    <div class="border rounded-md p-2 shadow-lg/5">
       <ContractorBankAccountsList />
     </div>
 
-    <div class="border rounded-md p-2 shadow-xs">
+    <div class="border rounded-md p-2 shadow-lg/5">
       <ContractorContactsList />
     </div>
   </div>
 
-  <div class="border rounded-md p-2 shadow-xs">
+  <div class="border rounded-md p-2 shadow-lg/5">
     <ContractorAttachmentsList />
   </div>
 </template>

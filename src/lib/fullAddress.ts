@@ -10,12 +10,12 @@ export const fullAddress = (address: IAddress): string => {
 
   const addressParts: string = [
     street,
-    ',',
+    street ? ',' : null,
     address.postalCode,
     address.city,
     address.country ? ',' : null,
     address.country,
-  ].filter(Boolean).join(' ')
+  ].filter(Boolean).join(' ').replaceAll(' , ', ', ')
 
   return addressParts
 }

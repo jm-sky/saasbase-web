@@ -4,7 +4,7 @@ import type {
   IContractor,
   IContractorAddressCreate,
   IContractorBankAccountCreate,
-  IContractorContactPersonCreate,
+  IContractorContactCreate,
   IContractorCreate
 } from '@/domains/contractor/models/contractor.model'
 
@@ -67,6 +67,6 @@ export const contractorAddressCreateSchema = toTypedSchema<ZodSchema, IContracto
 export const contractorBankAccountCreateSchema = toTypedSchema<ZodSchema, IContractorBankAccountCreate>(
   contractorBankAccountSchema.omit({ id: true, contractorId: true })
 )
-export const contractorContactPersonCreateSchema = toTypedSchema<ZodSchema, IContractorContactPersonCreate>(
+export const contractorContactPersonCreateSchema = toTypedSchema<ZodSchema, IContractorContactCreate>(
   contractorContactPersonSchema.omit({ id: true, contractorId: true })
 )

@@ -1,22 +1,30 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
 import FileUpload from '@/components/Inputs/FileUpload.vue'
 import Button from '@/components/ui/button/Button.vue'
 import { contractorAttachmentsService, type IContractorAttachment } from '@/domains/contractor/services/ContractorAttachmentsService'
+import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
+import DataListSection from '../DataListSection.vue'
+import ContractorAttachmentsListItem from './ContractorAttachmentsListItem.vue'
 
 const route = useRoute()
+const { t } = useI18n()
+
 const contractorId = route.params.id as string
 const attachments = ref<IContractorAttachment[]>([])
 const loading = ref(false)
 const uploading = ref(false)
 const files = ref<File[]>([])
 
-const fetchAttachments = async () => {
-  loading.value = true
+const refresh = async () => {
   try {
+    loading.value = true
     const res = await contractorAttachmentsService.index(contractorId)
     attachments.value = res.data
+  } catch (error) {
+    handleErrorWithToast(t('attachments.list.error'), error)
   } finally {
     loading.value = false
   }
@@ -24,21 +32,28 @@ const fetchAttachments = async () => {
 
 const handleUpload = async () => {
   if (!files.value.length) return
-  uploading.value = true
   try {
+    uploading.value = true
     for (const file of files.value) {
       await contractorAttachmentsService.upload(contractorId, file)
     }
     files.value = []
-    await fetchAttachments()
+    await refresh()
+  } catch (error) {
+    handleErrorWithToast(t('attachments.upload.error'), error)
   } finally {
     uploading.value = false
   }
 }
 
 const handleDelete = async (attachment: IContractorAttachment) => {
-  await contractorAttachmentsService.delete(contractorId, attachment.id)
-  await fetchAttachments()
+  if (!confirm(t('attachments.delete.confirm'))) return
+  try {
+    await contractorAttachmentsService.delete(contractorId, attachment.id)
+    await refresh()
+  } catch (error) {
+    handleErrorWithToast(t('attachments.delete.error'), error)
+  }
 }
 
 const handleDownload = async (attachment: IContractorAttachment) => {
@@ -51,49 +66,29 @@ const handleDownload = async (attachment: IContractorAttachment) => {
   window.URL.revokeObjectURL(url)
 }
 
-onMounted(fetchAttachments)
+onMounted(refresh)
 </script>
+
 <template>
-  <div>
-    <div class="flex justify-between items-center mb-2">
-      <div class="font-bold">
-        Attachments
-      </div>
+  <DataListSection
+    :title="t('attachments.title')"
+    :loading="loading"
+    :with-add-button="false"
+    @refresh="refresh"
+  >
+    <div class="flex flex-col gap-1">
+      <ContractorAttachmentsListItem
+        v-for="attachment in attachments"
+        :key="attachment.id"
+        :attachment="attachment"
+        :contractor-id="contractorId"
+        @download="handleDownload"
+        @delete="handleDelete"
+      />
     </div>
-    <div v-if="loading" class="mt-4">
-      Loading...
-    </div>
-    <div v-else class="my-4">
-      <table class="min-w-full text-sm">
-        <thead>
-          <tr>
-            <th>File name</th>
-            <th>Size</th>
-            <th>Type</th>
-            <th>Uploaded</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="attachment in attachments" :key="attachment.id">
-            <td>{{ attachment.fileName }}</td>
-            <td>{{ (attachment.fileSize / 1024).toFixed(1) }} KB</td>
-            <td>{{ attachment.mimeType }}</td>
-            <td>{{ new Date(attachment.createdAt).toLocaleString() }}</td>
-            <td>
-              <button class="btn btn-xs btn-secondary mr-1" @click="handleDownload(attachment)">
-                Download
-              </button>
-              <button class="btn btn-xs btn-danger" @click="handleDelete(attachment)">
-                Remove
-              </button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-      <div v-if="!loading && attachments.length === 0" class="mt-4 text-center text-sm text-muted-foreground">
-        No attachments found
-      </div>
+
+    <div v-if="!loading && attachments.length === 0" class="mt-4 text-center text-sm text-muted-foreground">
+      {{ t('attachments.list.noAttachments') }}
     </div>
 
     <FileUpload v-model="files" :disabled="uploading" />
@@ -105,5 +100,5 @@ onMounted(fetchAttachments)
     >
       Upload
     </Button>
-  </div>
+  </DataListSection>
 </template>

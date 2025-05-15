@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useForm } from 'vee-validate'
+import { watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import FormFieldLabeled from '@/components/Form/FormFieldLabeled.vue'
 import ModalComponent from '@/components/ModalComponent.vue'
@@ -24,7 +25,7 @@ const emit = defineEmits<{
   update: [IContractorAddress]
 }>()
 
-const { handleSubmit, setErrors, isSubmitting } = useForm<IContractorAddress>({
+const { handleSubmit, setErrors, setValues, isSubmitting } = useForm<IContractorAddress>({
   // TODO: add validation schema
   initialValues: {
     id: address.id,
@@ -48,6 +49,12 @@ const onSubmit = handleSubmit(async (values: IContractorAddress) => {
   } catch (error) {
     if (isValidationError(error)) setErrors(error.response.data.errors)
     handleErrorWithToast(t('contractor.addresses.edit.error'), error)
+  }
+})
+
+watch(open, (value) => {
+  if (value) {
+    setValues(address)
   }
 })
 </script>

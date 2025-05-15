@@ -1,15 +1,17 @@
 import api from '@/lib/api'
 import { apiRoutesMap } from '@/lib/api/apiRoutes'
+import type { TDateTime } from '@/domains/shared/types/common'
 import type { IResource } from '@/domains/shared/types/resource.type'
 
 export interface IContractorAttachment {
   id: string
-  contractorId: string
   fileName: string
-  fileSize: number
+  size: number
   mimeType: string
-  url: string
-  createdAt: string
+  fileUrl: string
+  collectionName: string
+  createdAt: TDateTime
+  updatedAt: TDateTime
 }
 
 class ContractorAttachmentsService {

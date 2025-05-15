@@ -1,7 +1,11 @@
 export const common = {
+  add: 'Add',
   edit: 'Edit',
   delete: 'Delete',
+  download: 'Download',
   save: 'Save',
+  loading: 'Loading...',
+  refresh: 'Refresh',
   or: 'or',
   error: 'Error',
   copyToClipboard: {

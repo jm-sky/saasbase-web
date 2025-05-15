@@ -1,18 +1,26 @@
 <script setup lang="ts">
-import { MessageSquare, Pencil, Trash2 } from 'lucide-vue-next'
+import { Icon } from '@iconify/vue'
+import { useForm } from 'vee-validate'
 import { onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useRoute } from 'vue-router'
+import FormFieldLabeled from '@/components/Form/FormFieldLabeled.vue'
 import Button from '@/components/ui/button/Button.vue'
 import TablePagination from '@/components/ui/table/TablePagination.vue'
-import { contractorCommentsService, type IContractorComment } from '@/domains/contractor/services/ContractorCommentsService'
+import Textarea from '@/components/ui/textarea/Textarea.vue'
+import { contractorCommentsService } from '@/domains/contractor/services/ContractorCommentsService'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
+import { isValidationError } from '@/lib/validation'
+import type { IContractor } from '../../models/contractor.model'
+import ContractorCommentsListItem from './ContractorCommentsListItem.vue'
+import type { IComment } from '@/domains/comment/models/comment.model'
 
 const { t } = useI18n()
-const route = useRoute()
-const contractorId = route.params.id as string
 
-const comments = ref<IContractorComment[]>([])
+const { contractor } =defineProps<{
+  contractor: IContractor
+}>()
+
+const comments = ref<IComment[]>([])
 const loading = ref(false)
 const total = ref(0)
 const page = ref(1)
@@ -22,11 +30,11 @@ const pageSizeOptions = [10, 20, 50]
 const refresh = async () => {
   loading.value = true
   try {
-    const res = await contractorCommentsService.index(contractorId, page.value, pageSize.value)
+    const res = await contractorCommentsService.index(contractor.id, page.value, pageSize.value)
     comments.value = res.data
     total.value = res.meta.total
   } catch (err) {
-    handleErrorWithToast(t('contractor.comments.error'), err)
+    handleErrorWithToast(t('comments.list.error'), err)
   } finally {
     loading.value = false
   }
@@ -34,43 +42,37 @@ const refresh = async () => {
 
 onMounted(refresh)
 
-const handleAdd = () => {
-  // TODO: implement modal/form
-}
+const { values, handleSubmit, setErrors, isSubmitting, resetForm } = useForm({
+  initialValues: {
+    content: '',
+  },
+})
 
-const handleEdit = (_comment: IContractorComment) => {
-  // TODO: implement modal/form
-  console.log(_comment)
-}
-
-const handleDelete = async (comment: IContractorComment) => {
+const handleAdd = handleSubmit(async (values) => {
   try {
-    await contractorCommentsService.delete(contractorId, comment.id)
+    loading.value = true
+    await contractorCommentsService.create(contractor.id, values.content)
+    resetForm()
     await refresh()
-  } catch (err) {
-    handleErrorWithToast(t('contractor.comments.deleteError'), err)
+  } catch (error: unknown) {
+    if (isValidationError(error)) setErrors(error.response.data.errors)
+    handleErrorWithToast(t('comments.add.error'), error)
+  } finally {
+    loading.value = false
   }
-}
-
-const formatDate = (date: string) => {
-  return new Date(date).toLocaleString()
-}
+})
 </script>
 
 <template>
-  <div class="flex flex-col gap-4">
+  <div class="flex flex-col gap-4" :class="{ 'opacity-50': loading }">
     <div class="flex flex-row items-center justify-between">
       <div class="flex flex-row items-center gap-2">
-        <MessageSquare class="size-5" />
         <div class="font-bold">
           Comments
         </div>
       </div>
-      <Button
-        variant="default"
-        @click="handleAdd"
-      >
-        Add Comment
+      <Button :loading variant="ghost" @click="refresh">
+        <Icon icon="lucide:refresh-cw" />
       </Button>
     </div>
 
@@ -79,41 +81,13 @@ const formatDate = (date: string) => {
     </div>
 
     <div v-else class="flex flex-col gap-4">
-      <div
+      <ContractorCommentsListItem
         v-for="comment in comments"
         :key="comment.id"
-        class="flex flex-col gap-2 border rounded-md p-4"
-      >
-        <div class="flex flex-row items-start justify-between">
-          <div class="flex flex-col gap-1">
-            <div class="font-medium">
-              {{ comment.createdBy.firstName }} {{ comment.createdBy.lastName }}
-            </div>
-            <div class="text-sm text-muted-foreground">
-              {{ formatDate(comment.createdAt) }}
-            </div>
-          </div>
-          <div class="flex flex-row gap-2">
-            <Button
-              variant="ghost"
-              size="icon"
-              @click="handleEdit(comment)"
-            >
-              <Pencil class="size-4" />
-            </Button>
-            <Button
-              variant="ghost"
-              size="icon"
-              @click="handleDelete(comment)"
-            >
-              <Trash2 class="size-4" />
-            </Button>
-          </div>
-        </div>
-        <div class="text-muted-foreground">
-          {{ comment.content }}
-        </div>
-      </div>
+        :contractor="contractor"
+        :comment="comment"
+        @refresh="refresh"
+      />
 
       <TablePagination
         v-model:page="page"
@@ -121,9 +95,30 @@ const formatDate = (date: string) => {
         :total="total"
         :page-count="Math.ceil(total / pageSize)"
         :page-size-options="pageSizeOptions"
+        class="border rounded-md my-4"
         @update:page="refresh"
         @update:page-size="refresh"
       />
     </div>
+
+    <form class="flex flex-col gap-2" @submit.prevent="handleAdd">
+      <FormFieldLabeled
+        v-slot="{ componentField }"
+        name="content"
+        :label="t('comments.add.label')"
+      >
+        <Textarea
+          v-bind="componentField"
+          :placeholder="t('comments.add.placeholder')"
+        />
+      </FormFieldLabeled>
+      <Button
+        :disabled="!values.content || isSubmitting"
+        :loading="isSubmitting"
+        type="submit"
+      >
+        Add Comment
+      </Button>
+    </form>
   </div>
 </template>

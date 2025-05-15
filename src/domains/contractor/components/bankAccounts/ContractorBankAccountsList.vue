@@ -1,89 +1,86 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
-import Button from '@/components/ui/button/Button.vue'
 import { contractorBankAccountsService } from '@/domains/contractor/services/ContractorBankAccountsService'
+import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
+import DataListSection from '../DataListSection.vue'
+import ContractorAddBankAccountModal from './ContractorAddBankAccountModal.vue'
+import ContractorBankAccountsListItem from './ContractorBankAccountsListItem.vue'
+import ContractorEditBankAccountModal from './ContractorEditBankAccountModal.vue'
 import type { IContractorBankAccount } from '@/domains/contractor/models/contractor.model'
 
 const route = useRoute()
+const { t } = useI18n()
+
 const contractorId = route.params.id as string
 const bankAccounts = ref<IContractorBankAccount[]>([])
 const loading = ref(false)
+const addModalOpen = ref(false)
+const editModalOpen = ref(false)
+const editBankAccount = ref<IContractorBankAccount>()
 
-const fetchBankAccounts = async () => {
+const refresh = async () => {
   loading.value = true
   try {
     const res = await contractorBankAccountsService.index(contractorId)
     bankAccounts.value = res.data
+  } catch (error) {
+    handleErrorWithToast(t('bankAccounts.error.fetchingBankAccounts'), error)
   } finally {
     loading.value = false
   }
 }
 
-onMounted(fetchBankAccounts)
+onMounted(refresh)
 
-const handleAdd = () => {
-  // TODO: implement modal/form
+const handleEdit = (bankAccount: IContractorBankAccount) => {
+  editBankAccount.value = bankAccount
+  editModalOpen.value = true
 }
-const handleEdit = (_account: IContractorBankAccount) => {
-  // TODO: implement modal/form
-  console.log(_account)
+
+const handleSetDefault = async (bankAccount: IContractorBankAccount) => {
+  try {
+    await contractorBankAccountsService.setDefault(contractorId, bankAccount.id)
+    await refresh()
+  } catch (error) {
+    handleErrorWithToast(t('bankAccounts.error.settingDefaultBankAccount'), error)
+  }
 }
-const handleDelete = async (account: IContractorBankAccount) => {
-  await contractorBankAccountsService.delete(contractorId, account.id)
-  await fetchBankAccounts()
-}
+
 </script>
 
 <template>
-  <div>
-    <div class="flex justify-between items-center mb-2">
-      <div class="font-bold">
-        Bank accounts
-      </div>
-      <Button size="sm" variant="default" @click="handleAdd">
-        Add
-      </Button>
+  <DataListSection
+    :title="t('bankAccounts.title')"
+    :loading="loading"
+    @refresh="refresh"
+    @add="addModalOpen = true"
+  >
+    <div class="flex flex-col gap-2" :class="{ 'opacity-50': loading }">
+      <ContractorBankAccountsListItem
+        v-for="bankAccount in bankAccounts"
+        :key="bankAccount.id"
+        :contractor-id="contractorId"
+        :bank-account="bankAccount"
+        @set-default="handleSetDefault"
+        @edit="handleEdit"
+        @deleted="refresh"
+      />
     </div>
-    <div v-if="loading" class="my-4 text-center text-sm text-muted-foreground">
-      Loading...
-    </div>
-    <div v-else>
-      <table class="min-w-full text-sm">
-        <thead>
-          <tr>
-            <th>IBAN</th>
-            <th>Bank name</th>
-            <th>Currencies</th>
-            <th>Default</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="account in bankAccounts" :key="account.id">
-            <td>{{ account.iban }}</td>
-            <td>{{ account.bankName }}</td>
-            <td>{{ account.currencies?.join(', ') ?? '-' }}</td>
-            <td>{{ account.isDefault ? 'Yes' : 'No' }}</td>
-            <td>
-              <Button
-                size="sm"
-                variant="secondary"
-                class="mr-1"
-                @click="handleEdit(account)"
-              >
-                Edit
-              </Button>
-              <Button size="sm" variant="destructive" @click="handleDelete(account)">
-                Delete
-              </Button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-      <div v-if="!loading && bankAccounts.length === 0" class="my-4 text-center text-sm text-muted-foreground">
-        No bank accounts found
-      </div>
-    </div>
-  </div>
+
+    <ContractorAddBankAccountModal
+      v-model:open="addModalOpen"
+      :contractor-id="contractorId"
+      @create="refresh"
+    />
+
+    <ContractorEditBankAccountModal
+      v-if="editBankAccount"
+      v-model:open="editModalOpen"
+      :contractor-id="contractorId"
+      :bank-account="editBankAccount"
+      @update="refresh"
+    />
+  </DataListSection>
 </template>
