@@ -1,11 +1,7 @@
 import { type IContractor } from '@/domains/contractor/models/contractor.model'
 import api from '@/lib/api'
 import { apiRoutesMap } from '@/lib/api/apiRoutes'
-import type { IResource } from '@/domains/shared/types/resource.type'
-
-export type FilterValue = string | boolean | number | Date
-export type FilterOperator = 'eq' | 'like' | 'gte' | 'lte' | string
-export type FilterDefinition = { value?: FilterValue; operator?: FilterOperator }
+import type { FilterDefinition, IResource } from '@/domains/shared/types/resource.type'
 
 export interface IContractorFilters {
   search?: string
