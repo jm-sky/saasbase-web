@@ -2,7 +2,6 @@
 import { RefreshCw } from 'lucide-vue-next'
 import { onMounted, ref, type Ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useDebounce } from '@vueuse/core'
 import ButtonLink from '@/components/ButtonLink.vue'
 import DataListsWrapper from '@/components/DataLists/DataListsWrapper.vue'
 import DataTable from '@/components/DataTable.vue'
@@ -89,9 +88,7 @@ onMounted(() => {
   void refresh()
 })
 
-const debouncedRefresh = useDebounce(refresh, 400)
-   
-watch(filters, () => debouncedRefresh(), { deep: true })
+watch(filters, () => refresh(), { deep: true })
 </script>
 
 <template>
