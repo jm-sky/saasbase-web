@@ -63,6 +63,7 @@ const columns: ColumnDef<IContractor>[] = [
   {
     accessorKey: 'tags',
     header: 'Tags',
+  },
   {
     id: 'actions',
     header: 'Actions',
