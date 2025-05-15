@@ -27,6 +27,10 @@ class ContractorAddressesService {
   async delete(contractorId: string, id: string): Promise<void> {
     await api.delete(`${apiRoutesMap.contractors}/${contractorId}/addresses/${id}`)
   }
+
+  async setDefault(contractorId: string, id: string): Promise<void> {
+    await api.post(`${apiRoutesMap.contractors}/${contractorId}/addresses/${id}/set-default`)
+  }
 }
 
 export const contractorAddressesService = new ContractorAddressesService()

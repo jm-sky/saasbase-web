@@ -12,4 +12,14 @@ export const contractor = {
   show: {
     error: 'Could not load contractor',
   },
+  addresses: {
+    add: {
+      title: 'Add Address',
+      description: 'Add a new address to the contractor.',
+    },
+    edit: {
+      title: 'Edit Address',
+      description: 'Edit the address of the contractor.',
+    },
+  }
 }

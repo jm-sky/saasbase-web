@@ -1,24 +1,20 @@
+import type { IAddress } from '@/domains/shared/types/address.type'
 import type { TDateTime, TUUID } from '@/domains/shared/types/common'
 
-export interface IContractorAddress {
+export interface IContractorAddress extends IAddress {
   id: TUUID
-  contractorId: TUUID
-  label: string
-  countryId: TUUID
-  street: string
-  city: string
-  zip: string
-  isDefault: boolean
+  tenantId: TUUID
+  meta: Record<string, unknown>
 }
 
-export type IContractorAddressCreate = Omit<IContractorAddress, 'id' | 'contractorId'>
+export type IContractorAddressCreate = Omit<IContractorAddress, 'id' | 'tenantId' | 'meta' | 'createdAt' | 'updatedAt'>
 
 export interface IContractorBankAccount {
   id: TUUID
   contractorId: TUUID
-  bankName: string
+  bankName?: string
   iban: string
-  currencies: string[]
+  currencies?: string[]
   isDefault: boolean
 }
 

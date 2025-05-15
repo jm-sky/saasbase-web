@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import ContractorAddressesList from '@/domains/contractor/components/ContractorAddressesList.vue'
-import ContractorAttachmentsList from '@/domains/contractor/components/ContractorAttachmentsList.vue'
-import ContractorBankAccountsList from '@/domains/contractor/components/ContractorBankAccountsList.vue'
-import ContractorContactsList from '@/domains/contractor/components/ContractorContactsList.vue'
+import ContractorAddressesList from '@/domains/contractor/components/addresses/ContractorAddressesList.vue'
+import ContractorAttachmentsList from '@/domains/contractor/components/attachments/ContractorAttachmentsList.vue'
+import ContractorBankAccountsList from '@/domains/contractor/components/bankAccounts/ContractorBankAccountsList.vue'
+import ContractorContactsList from '@/domains/contractor/components/contacts/ContractorContactsList.vue'
 import type { IContractor } from '@/domains/contractor/models/contractor.model'
 
 defineProps<{

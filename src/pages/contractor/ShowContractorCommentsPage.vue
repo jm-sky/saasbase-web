@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import ContractorCommentsList from '@/domains/contractor/components/ContractorCommentsList.vue'
+import ContractorCommentsList from '@/domains/contractor/components/comments/ContractorCommentsList.vue'
 </script>
 
 <template>

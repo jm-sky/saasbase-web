@@ -9,12 +9,22 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog'
 
-defineProps<{
+const { size = 'md' } = defineProps<{
   title: string
   description?: string
+  size?: 'sm' | 'md' | 'lg' | 'xl'
 }>()
 
 const isOpen = defineModel<boolean>('open', { default: true })
+
+const variants = {
+  size: {
+    sm: 'sm:max-w-[425px]',
+    md: 'sm:max-w-[500px]',
+    lg: 'sm:max-w-[600px]',
+    xl: 'sm:max-w-[800px]'
+  }
+}
 </script>
 
 <template>
@@ -23,7 +33,7 @@ const isOpen = defineModel<boolean>('open', { default: true })
       <slot name="trigger" />
     </DialogTrigger>
 
-    <DialogContent class="sm:max-w-[425px]">
+    <DialogContent :class="variants.size[size]">
       <DialogHeader>
         <DialogTitle>{{ title }}</DialogTitle>
         <DialogDescription v-if="description">

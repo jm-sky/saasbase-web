@@ -12,4 +12,10 @@ export const contractor = {
   show: {
     error: 'Nie udało się załadować kontrahenta',
   },
+  addresses: {
+    add: {
+      title: 'Dodaj adres',
+      description: 'Dodaj nowy adres do kontrahenta.',
+    },
+  }
 }

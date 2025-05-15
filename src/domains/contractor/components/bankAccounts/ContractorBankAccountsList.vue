@@ -63,7 +63,7 @@ const handleDelete = async (account: IContractorBankAccount) => {
           <tr v-for="account in bankAccounts" :key="account.id">
             <td>{{ account.iban }}</td>
             <td>{{ account.bankName }}</td>
-            <td>{{ account.currencies.join(', ') }}</td>
+            <td>{{ account.currencies?.join(', ') ?? '-' }}</td>
             <td>{{ account.isDefault ? 'Yes' : 'No' }}</td>
             <td>
               <Button

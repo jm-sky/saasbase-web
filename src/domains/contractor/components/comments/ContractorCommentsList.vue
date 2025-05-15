@@ -19,12 +19,12 @@ const page = ref(1)
 const pageSize = ref(10)
 const pageSizeOptions = [10, 20, 50]
 
-const fetchComments = async () => {
+const refresh = async () => {
   loading.value = true
   try {
     const res = await contractorCommentsService.index(contractorId, page.value, pageSize.value)
     comments.value = res.data
-    total.value = res.total
+    total.value = res.meta.total
   } catch (err) {
     handleErrorWithToast(t('contractor.comments.error'), err)
   } finally {
@@ -32,7 +32,7 @@ const fetchComments = async () => {
   }
 }
 
-onMounted(fetchComments)
+onMounted(refresh)
 
 const handleAdd = () => {
   // TODO: implement modal/form
@@ -46,7 +46,7 @@ const handleEdit = (_comment: IContractorComment) => {
 const handleDelete = async (comment: IContractorComment) => {
   try {
     await contractorCommentsService.delete(contractorId, comment.id)
-    await fetchComments()
+    await refresh()
   } catch (err) {
     handleErrorWithToast(t('contractor.comments.deleteError'), err)
   }
@@ -74,12 +74,10 @@ const formatDate = (date: string) => {
       </Button>
     </div>
 
-    <div v-if="loading" class="flex justify-center py-4">
-      Loading...
-    </div>
-    <div v-else-if="comments.length === 0" class="flex justify-center py-4 text-muted-foreground">
+    <div v-if="comments.length === 0" class="flex justify-center py-4 text-muted-foreground">
       No comments yet
     </div>
+
     <div v-else class="flex flex-col gap-4">
       <div
         v-for="comment in comments"
@@ -89,7 +87,7 @@ const formatDate = (date: string) => {
         <div class="flex flex-row items-start justify-between">
           <div class="flex flex-col gap-1">
             <div class="font-medium">
-              {{ comment.createdBy.name }}
+              {{ comment.createdBy.firstName }} {{ comment.createdBy.lastName }}
             </div>
             <div class="text-sm text-muted-foreground">
               {{ formatDate(comment.createdAt) }}
@@ -123,8 +121,8 @@ const formatDate = (date: string) => {
         :total="total"
         :page-count="Math.ceil(total / pageSize)"
         :page-size-options="pageSizeOptions"
-        @update:page="fetchComments"
-        @update:page-size="fetchComments"
+        @update:page="refresh"
+        @update:page-size="refresh"
       />
     </div>
   </div>

@@ -27,6 +27,10 @@ class ContractorBankAccountsService {
   async delete(contractorId: string, id: string): Promise<void> {
     await api.delete(`${apiRoutesMap.contractors}/${contractorId}/bank-accounts/${id}`)
   }
+
+  async setDefault(contractorId: string, id: string): Promise<void> {
+    await api.post(`${apiRoutesMap.contractors}/${contractorId}/bank-accounts/${id}/set-default`)
+  }
 }
 
 export const contractorBankAccountsService = new ContractorBankAccountsService()
