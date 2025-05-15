@@ -2,11 +2,13 @@
 import { RefreshCw } from 'lucide-vue-next'
 import { onMounted, ref, type Ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { useDebounce } from '@vueuse/core'
 import ButtonLink from '@/components/ButtonLink.vue'
 import DataListsWrapper from '@/components/DataLists/DataListsWrapper.vue'
 import DataTable from '@/components/DataTable.vue'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
+import TagList from '@/components/TagList.vue'
 import DeleteContractorButton from '@/domains/contractor/components/actions/DeleteContractorButton.vue'
 import EditContractorButton from '@/domains/contractor/components/actions/EditContractorButton.vue'
 import { contractorService, type IContractorFilters } from '@/domains/contractor/services/contractorService'
@@ -51,7 +53,7 @@ const columns: ColumnDef<IContractor>[] = [
     header: 'Tax ID',
   },
   {
-    id: 'type',
+    accessorKey: 'type',
     header: 'Type',
   },
   {
@@ -59,6 +61,9 @@ const columns: ColumnDef<IContractor>[] = [
     header: 'Created At',
     cell: (info: { row: { original: IContractor } }) => toDateString(info.row.original.createdAt),
   },
+  {
+    accessorKey: 'tags',
+    header: 'Tags',
   {
     id: 'actions',
     header: 'Actions',
@@ -84,7 +89,9 @@ onMounted(() => {
   void refresh()
 })
 
-watch(filters, () => refresh(), { deep: true })
+const debouncedRefresh = useDebounce(refresh, 400)
+   
+watch(filters, () => debouncedRefresh(), { deep: true })
 </script>
 
 <template>
@@ -123,6 +130,9 @@ watch(filters, () => refresh(), { deep: true })
               Buyer
             </Badge>
           </div>
+        </template>
+        <template #tags="{ data }">
+          <TagList :tags="data.tags" />
         </template>
         <template #actions="{ data }">
           <div class="flex gap-2 justify-end w-full whitespace-nowrap min-w-0">
