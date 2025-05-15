@@ -17,6 +17,7 @@ import { valueUpdater } from '@/lib/utils'
 import ColumnFilter from './DataLists/Filters/ColumnFilter.vue'
 import TablePagination from './ui/table/TablePagination.vue'
 import type { ColumnDef, VisibilityState } from '@tanstack/vue-table'
+import type { FilterDefinition } from '@/domains/shared/types/resource.type'
 
 const page = defineModel<number>('page', { default: 1 })
 const pageSize = defineModel<number>('pageSize', { default: 10 })
@@ -30,7 +31,7 @@ const props = defineProps<{
   showColumnFilters?: boolean
 }>()
 
-const columnFilters = defineModel<Record<string, { value: string, operator: string }>>('column-filters', { default: {} })
+const columnFilters = defineModel<Record<string, FilterDefinition>>('column-filters', { default: {} })
 
 const columnVisibility = ref<VisibilityState>({ ...props.initialColumnVisibility })
 
