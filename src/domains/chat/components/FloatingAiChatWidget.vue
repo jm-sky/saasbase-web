@@ -58,7 +58,10 @@ const handleMessageSent = (chatMessage: IAiChatMessage) => {
 const joinRoom = () => {
   const channel = echo.private(`chat.ai.${authStore.userData?.id}`)
   channel.listen('.AiChatMessageStreamed', handleMessageSent)
-  channel.error(() => toast.error('Could not join room'))
+  channel.error((error: unknown) => {
+    console.error('[FloatingAiChatWidget] Error joining room', error)
+    toast.error('Could not join room')
+  })
 }
 
 const sendMessage = async () => {

@@ -69,7 +69,10 @@ const joinRoom = async (room: string) => {
 
   const channel = echo.private(`chat.room.${room}`)
   channel.listen('.ChatMessageSent', handleMessageSent)
-  channel.error(() => toast.error('Could not join room'))
+  channel.error((error: unknown) => {
+    console.error('[ChatFullPageComponent] Error joining room', error)
+    toast.error('Could not join room')
+  })
 
   await getMessages(roomId.value)
 }

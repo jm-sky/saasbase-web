@@ -46,7 +46,10 @@ const handleMessageSent = (event: IMessageSentEvent) => {
 const joinRoom = async () => {
   const channel = echo.private(`chat.room.${roomId.value}`)
   channel.listen('.ChatMessageSent', handleMessageSent)
-  channel.error(() => toast.error('Could not join room'))
+  channel.error((error: unknown) => {
+    console.error('[FloatingChatWidget] Error joining room', error)
+    toast.error('Could not join room')
+  })
   await getMessages()
 }
 
