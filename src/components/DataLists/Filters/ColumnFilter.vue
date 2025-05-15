@@ -50,10 +50,14 @@ const operators: FilterOperatorOption[] = [
 
 const value = computed<string>({
   get() {
-    return modelValue.value.value ?? ''
+    const rawValue = modelValue.value.value
+    return rawValue !== null && rawValue !== undefined ? String(rawValue) : ''
   },
-  set(value) {
-    modelValue.value = { value, operator: modelValue.value.operator ?? 'eq' }
+  set(newValue) {
+    modelValue.value = {
+      value: newValue,
+      operator: modelValue.value.operator ?? 'eq',
+    }
   },
 })
 </script>
