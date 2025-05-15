@@ -17,7 +17,6 @@ export const apiRoutesMap = {
   contractors: '/contractors',
   invoices: '/invoices',
   products: '/products',
-  comments: '/comments',
   tags: '/tags',
   skills: '/skills',
   contractorAddresses: '/contractors/:contractorId/addresses',
@@ -35,7 +34,6 @@ export const apiRoutes = {
   contractors: () => apiRoutesMap.contractors,
   invoices: () => apiRoutesMap.invoices,
   products: () => apiRoutesMap.products,
-  comments: () => apiRoutesMap.comments,
   tags: () => apiRoutesMap.tags,
   skills: () => apiRoutesMap.skills,
 }

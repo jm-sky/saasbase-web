@@ -5,16 +5,22 @@ import type { IContractor, IContractorAddress, IContractorBankAccount, IContract
 import type { TUUID } from '@/domains/shared/types/common'
 
 export class ContractorFactory {
-  private static createAddress(contractorId: TUUID): IContractorAddress {
+  private static createAddress(): IContractorAddress {
     return {
       id: v4(),
-      contractorId,
-      label: faker.helpers.arrayElement(['Main Office', 'Branch Office', 'Warehouse', 'Headquarters']),
-      countryId: v4(), // In a real app, this would be a valid country ID
-      street: faker.location.streetAddress(),
+      tenantId: v4(),
+      type: faker.helpers.arrayElement(['residence', 'billing', 'registeredOffice', 'correspondence', 'domicile', 'contact']),
+      country: faker.location.country(),
       city: faker.location.city(),
-      zip: faker.location.zipCode(),
+      postalCode: faker.location.zipCode(),
+      street: faker.location.streetAddress(),
+      building: faker.location.buildingNumber(),
+      flat: faker.location.secondaryAddress(),
+      description: faker.lorem.sentence(),
       isDefault: faker.datatype.boolean(),
+      meta: {},
+      createdAt: formatISO(new Date()),
+      updatedAt: formatISO(new Date()),
     }
   }
 
@@ -24,8 +30,10 @@ export class ContractorFactory {
       contractorId,
       bankName: faker.company.name(),
       iban: faker.finance.iban(),
-      currency: faker.helpers.arrayElements(['USD', 'EUR', 'PLN'], { min: 1, max: 3 }),
+      currency: faker.helpers.arrayElement(['USD', 'EUR', 'PLN']),
       isDefault: faker.datatype.boolean(),
+      createdAt: formatISO(new Date()),
+      updatedAt: formatISO(new Date()),
     }
   }
 
