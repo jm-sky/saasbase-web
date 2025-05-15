@@ -5,6 +5,7 @@ import { useRoute } from 'vue-router'
 import { contractorBankAccountsService } from '@/domains/contractor/services/ContractorBankAccountsService'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
 import DataListSection from '../DataListSection.vue'
+import NoItems from '../NoItems.vue'
 import ContractorAddBankAccountModal from './ContractorAddBankAccountModal.vue'
 import ContractorBankAccountsListItem from './ContractorBankAccountsListItem.vue'
 import ContractorEditBankAccountModal from './ContractorEditBankAccountModal.vue'
@@ -67,6 +68,7 @@ const handleSetDefault = async (bankAccount: IContractorBankAccount) => {
         @edit="handleEdit"
         @deleted="refresh"
       />
+      <NoItems v-if="bankAccounts.length === 0" />
     </div>
 
     <ContractorAddBankAccountModal

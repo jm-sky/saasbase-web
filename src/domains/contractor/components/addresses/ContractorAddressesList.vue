@@ -5,6 +5,7 @@ import { useRoute } from 'vue-router'
 import { contractorAddressesService } from '@/domains/contractor/services/ContractorAddressesService'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
 import DataListSection from '../DataListSection.vue'
+import NoItems from '../NoItems.vue'
 import ContractorAddAddressModal from './ContractorAddAddressModal.vue'
 import ContractorAddressesListItem from './ContractorAddressesListItem.vue'
 import ContractorEditAddressModal from './ContractorEditAddressModal.vue'
@@ -75,6 +76,7 @@ const handleDelete = async (address: IContractorAddress) => {
         @edit="handleEdit"
         @delete="handleDelete"
       />
+      <NoItems v-if="addresses.length === 0" />
     </div>
 
     <ContractorAddAddressModal

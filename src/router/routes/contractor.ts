@@ -38,6 +38,11 @@ export const contractorRoutes: RouteRecordRaw[] = [
         name: 'showContractorComments',
         component: () => import('@/pages/contractor/ShowContractorCommentsPage.vue'),
       },
+      {
+        path: 'logs',
+        name: 'showContractorLogs',
+        component: () => import('@/pages/contractor/ShowContractorLogsPage.vue'),
+      },
     ],
   },
   {

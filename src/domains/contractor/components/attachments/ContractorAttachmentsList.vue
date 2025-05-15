@@ -7,6 +7,7 @@ import Button from '@/components/ui/button/Button.vue'
 import { contractorAttachmentsService, type IContractorAttachment } from '@/domains/contractor/services/ContractorAttachmentsService'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
 import DataListSection from '../DataListSection.vue'
+import NoItems from '../NoItems.vue'
 import ContractorAttachmentsListItem from './ContractorAttachmentsListItem.vue'
 
 const route = useRoute()
@@ -85,10 +86,7 @@ onMounted(refresh)
         @download="handleDownload"
         @delete="handleDelete"
       />
-    </div>
-
-    <div v-if="!loading && attachments.length === 0" class="mt-4 text-center text-sm text-muted-foreground">
-      {{ t('attachments.list.noAttachments') }}
+      <NoItems v-if="attachments.length === 0" />
     </div>
 
     <FileUpload v-model="files" :disabled="uploading" />

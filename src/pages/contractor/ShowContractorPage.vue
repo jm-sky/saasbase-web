@@ -55,7 +55,7 @@ onMounted(async () => {
         </div>
         <div class="flex flex-row items-center justify-end gap-2">
           <ButtonLink variant="default" :to="`/contractors/${contractorId}/edit`">
-            Edit
+            {{ t('common.edit') }}
           </ButtonLink>
         </div>
       </div>
@@ -100,9 +100,13 @@ onMounted(async () => {
             >
               Comments
             </RouterLink>
-            <div class="px-2 py-1 text-muted-foreground opacity-50 cursor-not-allowed">
+            <RouterLink
+              :to="`/contractors/${contractorId}/show/logs`"
+              class="border-b-2 border-transparent hover:border-muted-foreground px-2 py-1"
+              exact-active-class="text-primary border-primary!"
+            >
               Logs
-            </div>
+            </RouterLink>
           </div>
 
           <RouterView v-if="contractor" :contractor />

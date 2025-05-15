@@ -8,6 +8,8 @@ export const common = {
   refresh: 'Odśwież',
   or: 'lub',
   error: 'Błąd',
+  noItems: 'Brak elementów',
+  createdAt: 'Utworzono',
   copyToClipboard: {
     copy: 'Kopiuj',
     copied: 'Skopiowano',
