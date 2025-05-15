@@ -1,11 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import Input from '@/components/ui/input/Input.vue'
-
-export interface IColumnFilter {
-  value?: string | null
-  operator?: string | null
-}
+import type { FilterDefinition } from '@/domains/shared/types/resource.type'
 
 export type TFilterOperator = 'eq'
   | 'ne'
@@ -30,7 +26,7 @@ interface FilterOperatorOption {
   label: string
 }
 
-const modelValue = defineModel<IColumnFilter>('modelValue', { default: { value: '', operator: '' } })
+const modelValue = defineModel<FilterDefinition>('modelValue', { default: { value: '', operator: '' } })
 
 const operators: FilterOperatorOption[] = [
   { value: 'eq', label: 'Equal ( = )' },
@@ -54,10 +50,14 @@ const operators: FilterOperatorOption[] = [
 
 const value = computed<string>({
   get() {
-    return modelValue.value.value ?? ''
+    const rawValue = modelValue.value.value
+    return rawValue !== null && rawValue !== undefined ? String(rawValue) : ''
   },
-  set(value) {
-    modelValue.value = { value, operator: modelValue.value.operator ?? 'eq' }
+  set(newValue) {
+    modelValue.value = {
+      value: newValue,
+      operator: modelValue.value.operator ?? 'eq',
+    }
   },
 })
 </script>

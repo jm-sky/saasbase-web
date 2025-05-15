@@ -7,6 +7,7 @@ import DataListsWrapper from '@/components/DataLists/DataListsWrapper.vue'
 import DataTable from '@/components/DataTable.vue'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
+import TagList from '@/components/TagList.vue'
 import DeleteContractorButton from '@/domains/contractor/components/actions/DeleteContractorButton.vue'
 import EditContractorButton from '@/domains/contractor/components/actions/EditContractorButton.vue'
 import { contractorService, type IContractorFilters } from '@/domains/contractor/services/contractorService'
@@ -32,13 +33,12 @@ const filters = ref<IContractorFilters>({
   search: '',
   page: 1,
   perPage: 10,
-})
-
-const columnFilters = ref<Record<string, { value: string, operator: string }>>({
-  name: { value: '', operator: 'eq' },
-  taxId: { value: '', operator: 'eq' },
-  type: { value: '', operator: 'eq' },
-  createdAt: { value: '', operator: 'eq' },
+  filter: {
+    name: { value: '', operator: 'eq' },
+    taxId: { value: '', operator: 'eq' },
+    type: { value: '', operator: 'eq' },
+    createdAt: { value: '', operator: 'eq' },
+  },
 })
 
 const columns: ColumnDef<IContractor>[] = [
@@ -51,13 +51,17 @@ const columns: ColumnDef<IContractor>[] = [
     header: 'Tax ID',
   },
   {
-    id: 'type',
+    accessorKey: 'type',
     header: 'Type',
   },
   {
     accessorKey: 'createdAt',
     header: 'Created At',
     cell: (info: { row: { original: IContractor } }) => toDateString(info.row.original.createdAt),
+  },
+  {
+    accessorKey: 'tags',
+    header: 'Tags',
   },
   {
     id: 'actions',
@@ -102,7 +106,7 @@ watch(filters, () => refresh(), { deep: true })
       <DataTable
         v-model:page="filters.page"
         v-model:page-size="filters.perPage"
-        v-model:column-filters="columnFilters"
+        v-model:column-filters="filters.filter"
         :columns="columns"
         :data="contractors"
         :total="meta.total"
@@ -123,6 +127,9 @@ watch(filters, () => refresh(), { deep: true })
               Buyer
             </Badge>
           </div>
+        </template>
+        <template #tags="{ data }">
+          <TagList :tags="data.tags" />
         </template>
         <template #actions="{ data }">
           <div class="flex gap-2 justify-end w-full whitespace-nowrap min-w-0">

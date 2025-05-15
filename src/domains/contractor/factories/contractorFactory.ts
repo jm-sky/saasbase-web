@@ -60,6 +60,7 @@ export class ContractorFactory {
       description: faker.helpers.arrayElement([faker.lorem.paragraph(), undefined]),
       isSupplier: faker.datatype.boolean(),
       isBuyer: faker.datatype.boolean(),
+      tags: [],
       createdAt: formatISO(new Date()),
       updatedAt: formatISO(new Date()),
       ...overrides,
