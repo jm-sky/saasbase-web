@@ -16,9 +16,12 @@ import {
   SidebarRail,
 } from '@/components/ui/sidebar'
 import { config } from '@/config'
+import { useAuthStore } from '@/domains/auth/store/auth.store'
 import type { MenuItem } from './menu.type'
 import type { SidebarProps } from '@/components/ui/sidebar'
 
+const authStore = useAuthStore()
+  
 const props = withDefaults(defineProps<SidebarProps>(), {
   collapsible: 'icon',
 })
@@ -69,6 +72,13 @@ const menu: MenuItem[] = [
     ],
   },
 ]
+
+if (authStore.tenantId) {
+  menu.push({
+    title: 'Tenant',
+    url: `/tenants/${authStore.tenantId}`,
+  })
+}
 </script>
 
 <template>

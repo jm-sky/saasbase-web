@@ -7,6 +7,7 @@ import { contractorRoutes } from '@/router/routes/contractor'
 import { productRoutes } from '@/router/routes/product'
 import { publicRoutes } from '@/router/routes/public'
 import { settingsRoutes } from '@/router/routes/settings'
+import { tenantRoutes } from '@/router/routes/tenant'
 import type { RouteRecordRaw } from 'vue-router'
 
 export const routes: RouteRecordRaw[] = [
@@ -24,6 +25,7 @@ export const routes: RouteRecordRaw[] = [
   ...settingsRoutes,
   ...contractorRoutes,
   ...productRoutes,
+  ...tenantRoutes,
 
   {
     path: '/chat/:roomId?',

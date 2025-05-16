@@ -51,6 +51,7 @@ const operators: FilterOperatorOption[] = [
 const value = computed<string>({
   get() {
     const rawValue = modelValue.value.value
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     return rawValue !== null && rawValue !== undefined ? String(rawValue) : ''
   },
   set(newValue) {
