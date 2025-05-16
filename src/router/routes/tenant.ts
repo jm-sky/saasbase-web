@@ -13,27 +13,23 @@ export const tenantRoutes: RouteRecordRaw[] = [
     },
   },
   {
-    path: '/tenants/:id',
-    name: 'tenant-show',
+    path: '/tenants/:id/show',
+    name: 'showTenant',
     component: () => import('@/pages/tenant/ShowTenantPage.vue'),
     meta: {
       middlewares: [isAuthenticated, isVerified, isInTenant],
     },
-  },
-  {
-    path: '/tenants/:id/overview',
-    name: 'tenant-overview',
-    component: () => import('@/pages/tenant/ShowTenantOverviewPage.vue'),
-    meta: {
-      middlewares: [isAuthenticated, isVerified, isInTenant],
-    },
-  },
-  {
-    path: '/tenants/:id/logs',
-    name: 'tenant-logs',
-    component: () => import('@/pages/tenant/ShowTenantLogsPage.vue'),
-    meta: {
-      middlewares: [isAuthenticated, isVerified, isInTenant],
-    },
+    children: [
+      {
+        path: 'overview',
+        name: 'showTenantOverview',
+        component: () => import('@/pages/tenant/ShowTenantOverviewPage.vue'),
+      },
+      {
+        path: 'logs',
+        name: 'showTenantLogs',
+        component: () => import('@/pages/tenant/ShowTenantLogsPage.vue'),
+      },
+    ],
   },
 ]

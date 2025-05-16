@@ -37,24 +37,15 @@ export interface ITenant {
   id: TUUID
   tenantId: TUUID
   name: string
+  slug: string
+  taxId?: string
   email?: string
   phone?: string
+  website?: string
   country?: string
-  taxId?: string
   description?: string
-  isSupplier: boolean
-  isBuyer: boolean
-  tags: string[]
   logoUrl?: string
   logo?: IMedia
-  status: 'active' | 'inactive' | 'suspended'
-  type: 'individual' | 'company'
-  website?: string
-  vatNumber?: string
-  registrationNumber?: string
-  industry?: string
-  size?: 'small' | 'medium' | 'large'
-  foundedYear?: number
   createdAt: TDateTime
   updatedAt: TDateTime
 }

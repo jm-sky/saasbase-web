@@ -2,7 +2,6 @@
 import { onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
-import TagList from '@/components/DataLists/TagList.vue'
 import AvatarUploader from '@/components/Inputs/AvatarUploader.vue'
 import EntityDetailsLayout from '@/components/layouts/EntityDetailsLayout.vue'
 import InfoSection from '@/components/Sections/InfoSection.vue'
@@ -75,12 +74,11 @@ onMounted(async () => {
 
         <div class="flex flex-col gap-3 text-left">
           <InfoSection :label="t('tenant.fields.description')" :value="tenant.description" />
-          <InfoSection :label="t('tenant.fields.unit')" :value="tenant.unit?.name" />
-          <InfoSection :label="t('tenant.fields.priceNet')" :value="tenant.priceNet?.toString()" />
-          <InfoSection :label="t('tenant.fields.vatRate')" :value="tenant.vatRate?.name" />
-          <InfoSection :label="t('tenant.fields.tags')">
-            <TagList :tags="tenant.tags" />
-          </InfoSection>
+          <InfoSection :label="t('tenant.fields.email')" :value="tenant.email" />
+          <InfoSection :label="t('tenant.fields.phone')" :value="tenant.phone" />
+          <InfoSection :label="t('tenant.fields.website')" :value="tenant.website" />
+          <InfoSection :label="t('tenant.fields.country')" :value="tenant.country" />
+          <InfoSection :label="t('tenant.fields.taxId')" :value="tenant.taxId" />
           <InfoSection :label="t('tenant.fields.createdAt')" :value="toDateTimeString(tenant.createdAt)" />
           <InfoSection :label="t('tenant.fields.updatedAt')" :value="toDateTimeString(tenant.updatedAt)" />
         </div>
@@ -93,13 +91,6 @@ onMounted(async () => {
           exact-active-class="text-primary border-primary!"
         >
           Overview
-        </RouterLink>
-        <RouterLink
-          :to="`/tenants/${tenantId}/show/comments`"
-          class="border-b-2 border-transparent hover:border-muted-foreground px-2 py-1"
-          exact-active-class="text-primary border-primary!"
-        >
-          Comments
         </RouterLink>
         <RouterLink
           :to="`/tenants/${tenantId}/show/logs`"
