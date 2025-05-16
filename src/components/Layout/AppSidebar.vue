@@ -15,6 +15,7 @@ import {
   SidebarHeader,
   SidebarRail,
 } from '@/components/ui/sidebar'
+import VersionInfo from '@/components/VersionInfo.vue'
 import { config } from '@/config'
 import { useAuthStore } from '@/domains/auth/store/auth.store'
 import type { MenuItem } from './menu.type'
@@ -95,6 +96,7 @@ if (authStore.tenantId) {
       <NavMain :items="menu" />
     </SidebarContent>
     <SidebarFooter>
+      <VersionInfo />
       <UserNav />
     </SidebarFooter>
     <SidebarRail />
