@@ -47,6 +47,14 @@ export interface ITenant {
   tags: string[]
   logoUrl?: string
   logo?: IMedia
+  status: 'active' | 'inactive' | 'suspended'
+  type: 'individual' | 'company'
+  website?: string
+  vatNumber?: string
+  registrationNumber?: string
+  industry?: string
+  size?: 'small' | 'medium' | 'large'
+  foundedYear?: number
   createdAt: TDateTime
   updatedAt: TDateTime
 }
