@@ -19,7 +19,7 @@ const emit = defineEmits<{
 </script>
 
 <template>
-  <div class="px-2 relative">
+  <div class="px-2 relative pb-1">
     <div class="flex justify-between items-center mb-2">
       <div class="font-bold">
         {{ title }}

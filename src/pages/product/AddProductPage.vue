@@ -7,7 +7,7 @@ import Button from '@/components/ui/button/Button.vue'
 import Input from '@/components/ui/input/Input.vue'
 import Textarea from '@/components/ui/textarea/Textarea.vue'
 import { useToast } from '@/components/ui/toast/use-toast'
-import { productService } from '@/domains/product/services/productService'
+import { productService } from '@/domains/product/services/ProductService'
 import AuthenticatedLayout from '@/layouts/AuthenticatedLayout.vue'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
 import { isValidationError } from '@/lib/validation'
@@ -49,7 +49,7 @@ const onSubmit = handleSubmit(async (values) => {
         <FormFieldLabeled
           v-slot="{ componentField }"
           name="name"
-          :label="t('product.name')"
+          :label="t('product.fields.name')"
           :disabled="isSubmitting"
         >
           <Input v-bind="componentField" class="bg-white/50 dark:bg-black/50" />
@@ -57,7 +57,7 @@ const onSubmit = handleSubmit(async (values) => {
         <FormFieldLabeled
           v-slot="{ componentField }"
           name="description"
-          :label="t('product.description')"
+          :label="t('product.fields.description')"
           :disabled="isSubmitting"
         >
           <Textarea v-bind="componentField" class="bg-white/50 dark:bg-black/50" />
@@ -65,7 +65,7 @@ const onSubmit = handleSubmit(async (values) => {
         <FormFieldLabeled
           v-slot="{ componentField }"
           name="priceNet"
-          :label="t('product.price')"
+          :label="t('product.fields.price')"
           :disabled="isSubmitting"
         >
           <Input

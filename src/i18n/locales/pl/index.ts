@@ -23,6 +23,9 @@ export const pl = {
     lightMode: 'Tryb jasny',
     layoutConfig: 'Konfiguracja układu'
   },
+  errors: {
+    uploadFailed: 'Wystąpił błąd podczas przesyłania pliku',
+  },
   settings,
   product,
 }

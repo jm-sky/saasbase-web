@@ -1,6 +1,8 @@
 export const common = {
   add: 'Add',
   edit: 'Edit',
+  upload: 'Upload',
+  remove: 'Remove',
   delete: 'Delete',
   download: 'Download',
   save: 'Save',

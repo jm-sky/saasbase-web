@@ -1,4 +1,5 @@
 import { type IContractor } from '@/domains/contractor/models/contractor.model'
+import { buildSpatieQuery } from '@/domains/shared/helpers/filtering'
 import api from '@/lib/api'
 import { apiRoutesMap } from '@/lib/api/apiRoutes'
 import type { FilterDefinition, IResource } from '@/domains/shared/types/resource.type'
@@ -8,44 +9,6 @@ export interface IContractorFilters {
   page?: number
   perPage?: number
   filter?: Record<string, FilterDefinition>
-}
-
-// Helper: serializuje różne typy do stringów akceptowanych w query
-export function serializeValue(val: unknown): string {
-  if (val === null || val === undefined) return ''
-  if (typeof val === 'boolean') return val ? 'true' : 'false'
-  if (val instanceof Date) return val.toISOString()
-  return String(val)
-}
-
-export function buildSpatieQuery(filters: IContractorFilters): Record<string, unknown> {
-  const query: {
-    page?: number
-    perPage?: number
-    filter: Record<string, string>
-  } = {
-    page: filters.page,
-    perPage: filters.perPage,
-    filter: {},
-  }
-
-  if (filters.search) {
-    query.filter.search = serializeValue(filters.search)
-  }
-
-  for (const [key, { value, operator }] of Object.entries(filters.filter ?? {})) {
-    if (value === null || value === undefined || value === '') continue
-
-    const serialized = serializeValue(value)
-
-    if (operator && operator !== 'eq') {
-      query.filter[`${key}:${operator}`] = serialized
-    } else {
-      query.filter[key] = serialized
-    }
-  }
-
-  return query
 }
 
 class ContractorService {

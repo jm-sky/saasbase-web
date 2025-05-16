@@ -1,10 +1,17 @@
 export const product = {
   title: 'Produkty',
-  name: 'Nazwa',
-  description: 'Opis',
-  price: 'Cena',
-  createdAt: 'Data utworzenia',
-  actions: 'Akcje',
+  fields: {
+    name: 'Nazwa',
+    description: 'Opis',
+    price: 'Cena',
+    unit: 'Jednostka',
+    priceNet: 'Cena netto',
+    vatRate: 'Stawka VAT',
+    tags: 'Tagi',
+    actions: 'Akcje',
+    createdAt: 'Data utworzenia',
+    updatedAt: 'Data aktualizacji',
+  },
   show: {
     title: 'Produkt',
     error: 'Nie udało się załadować produktu',

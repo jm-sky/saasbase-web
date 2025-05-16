@@ -8,7 +8,7 @@ import DataTable from '@/components/DataTable.vue'
 import { Button } from '@/components/ui/button'
 import DeleteProductButton from '@/domains/product/components/DeleteProductButton.vue'
 import EditProductButton from '@/domains/product/components/EditProductButton.vue'
-import { type IProductFilters, productService } from '@/domains/product/services/productService'
+import { type IProductFilters, productService } from '@/domains/product/services/ProductService'
 import AuthenticatedLayout from '@/layouts/AuthenticatedLayout.vue'
 import { toDateString } from '@/lib/toDateString'
 import type { ColumnDef } from '@tanstack/vue-table'
@@ -35,20 +35,20 @@ const filters = ref<IProductFilters>({
 const columns: ColumnDef<IProduct>[] = [
   {
     accessorKey: 'name',
-    header: t('product.name'),
+    header: t('product.fields.name'),
   },
   {
     accessorKey: 'description',
-    header: t('product.description'),
+    header: t('product.fields.description'),
   },
   {
     accessorKey: 'priceNet',
-    header: t('product.price'),
+    header: t('product.fields.price'),
     cell: (info: { row: { original: IProduct } }) => info.row.original.priceNet.toFixed(2),
   },
   {
     accessorKey: 'createdAt',
-    header: t('product.createdAt'),
+    header: t('product.fields.createdAt'),
     cell: (info: { row: { original: IProduct } }) => toDateString(info.row.original.createdAt),
   },
   {
@@ -99,7 +99,7 @@ watch(filters, () => refresh(), { deep: true })
         :page-size-options="[10, 20, 30, 40, 50]"
       >
         <template #name="{ data }">
-          <ButtonLink :to="`/products/${data.id}/show`">
+          <ButtonLink :to="`/products/${data.id}/show/overview`">
             {{ data.name }}
           </ButtonLink>
         </template>

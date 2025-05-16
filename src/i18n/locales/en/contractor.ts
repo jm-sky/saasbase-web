@@ -1,5 +1,14 @@
 export const contractor = {
   title: 'Contractors',
+  contractorDetails: 'Contractor details',
+  fields: {
+    name: 'Name',
+    taxId: 'Tax ID',
+    email: 'E-mail',
+    phone: 'Phone',
+    description: 'Description',
+    tags: 'Tags',
+  },
   add: {
     title: 'Add Contractor',
     description: 'Add a new contractor to the system.'

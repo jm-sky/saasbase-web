@@ -23,6 +23,9 @@ export const en = {
     lightMode: 'Light Mode',
     layoutConfig: 'Layout Configuration'
   },
+  errors: {
+    uploadFailed: 'Upload failed',
+  },
   settings,
   product,
 }

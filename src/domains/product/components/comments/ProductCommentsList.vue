@@ -7,17 +7,17 @@ import FormFieldLabeled from '@/components/Form/FormFieldLabeled.vue'
 import Button from '@/components/ui/button/Button.vue'
 import TablePagination from '@/components/ui/table/TablePagination.vue'
 import Textarea from '@/components/ui/textarea/Textarea.vue'
-import { contractorCommentsService } from '@/domains/contractor/services/ContractorCommentsService'
+import ProductCommentsListItem from '@/domains/product/components/comments/ProductCommentsListItem.vue'
+import { productCommentsService } from '@/domains/product/services/ProductCommentsService'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
 import { isValidationError } from '@/lib/validation'
-import ContractorCommentsListItem from './ContractorCommentsListItem.vue'
 import type { IComment } from '@/domains/comment/models/comment.model'
-import type { IContractor } from '@/domains/contractor/models/contractor.model'
+import type { IProduct } from '@/domains/product/models/product.model'
 
 const { t } = useI18n()
 
-const { contractor } =defineProps<{
-  contractor: IContractor
+const { product } =defineProps<{
+  product: IProduct
 }>()
 
 const comments = ref<IComment[]>([])
@@ -30,7 +30,7 @@ const pageSizeOptions = [10, 20, 50]
 const refresh = async () => {
   loading.value = true
   try {
-    const res = await contractorCommentsService.index(contractor.id, page.value, pageSize.value)
+    const res = await productCommentsService.index(product.id, page.value, pageSize.value)
     comments.value = res.data
     total.value = res.meta.total
   } catch (err) {
@@ -51,7 +51,7 @@ const { values, handleSubmit, setErrors, isSubmitting, resetForm } = useForm({
 const handleAdd = handleSubmit(async (values) => {
   try {
     loading.value = true
-    await contractorCommentsService.create(contractor.id, values.content)
+    await productCommentsService.create(product.id, values.content)
     resetForm()
     await refresh()
   } catch (error: unknown) {
@@ -81,10 +81,10 @@ const handleAdd = handleSubmit(async (values) => {
     </div>
 
     <div v-else class="flex flex-col gap-4">
-      <ContractorCommentsListItem
+      <ProductCommentsListItem
         v-for="comment in comments"
         :key="comment.id"
-        :contractor="contractor"
+        :product="product"
         :comment="comment"
         @refresh="refresh"
       />

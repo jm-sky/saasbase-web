@@ -5,7 +5,7 @@ import { useI18n } from 'vue-i18n'
 import { Button } from '@/components/ui/button'
 import { useToast } from '@/components/ui/toast/use-toast'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
-import { productService } from '../services/productService'
+import { productService } from '../services/ProductService'
 
 const { toast } = useToast()
 const { t } = useI18n()

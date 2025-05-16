@@ -1,10 +1,18 @@
 export const product = {
   title: 'Products',
-  name: 'Name',
-  description: 'Description',
-  price: 'Price',
-  createdAt: 'Created At',
-  actions: 'Actions',
+  contractorDetails: 'Products details',
+  fields: {
+    name: 'Name',
+    description: 'Description',
+    price: 'Price',
+    unit: 'Unit',
+    priceNet: 'Price Net',
+    vatRate: 'VAT Rate',
+    tags: 'Tags',
+    actions: 'Actions',
+    createdAt: 'Created At',
+    updatedAt: 'Updated At',
+  },
   show: {
     title: 'Product',
     error: 'Could not load product',
