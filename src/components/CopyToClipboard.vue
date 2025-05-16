@@ -8,12 +8,13 @@ const { t } = useI18n()
 const { toast } = useToast()
 
 const props = defineProps<{
-  text: string
+  text?: string
 }>()
 
 const copied = refAutoReset(false, 1000)
 
 const copyToClipboard = async () => {
+  if (!props.text) return
   await useClipboard().copy(props.text)
   copied.value = true
   toast.info(t('common.copyToClipboard.success'))
@@ -22,11 +23,14 @@ const copyToClipboard = async () => {
 
 <template>
   <button
+    v-if="text"
     v-tooltip="copied ? t('common.copyToClipboard.copied') : t('common.copyToClipboard.copy')"
     type="button"
     class="opacity-50 hover:opacity-100 text-muted-foreground hover:text-primary"
     @click="copyToClipboard"
   >
-    <Icon :icon="copied ? 'lucide:check' : 'lucide:copy'" />
+    <slot>
+      <Icon :icon="copied ? 'lucide:check' : 'lucide:copy'" />
+    </slot>
   </button>
 </template>

@@ -29,5 +29,8 @@ export type TFilterOperator = 'eq'
   | 'between'
 
 export type FilterValue = string | boolean | number | Date
+
+// eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents
 export type FilterOperator = 'eq' | 'like' | 'gte' | 'lte' | string
-export type FilterDefinition = { value?: FilterValue; operator?: FilterOperator }
+
+export interface FilterDefinition { value?: FilterValue; operator?: FilterOperator }

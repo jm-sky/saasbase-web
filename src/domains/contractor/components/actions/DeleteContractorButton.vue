@@ -4,8 +4,8 @@ import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { Button } from '@/components/ui/button'
 import { useToast } from '@/components/ui/toast/use-toast'
+import { contractorService } from '@/domains/contractor/services/ContractorService'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
-import { contractorService } from '../../services/contractorService'
 
 const { toast } = useToast()
 const { t } = useI18n()

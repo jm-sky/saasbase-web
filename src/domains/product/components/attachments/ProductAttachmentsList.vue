@@ -6,15 +6,15 @@ import DataListSection from '@/components/DataLists/DataListSection.vue'
 import NoItems from '@/components/DataLists/NoItems.vue'
 import FileUpload from '@/components/Inputs/FileUpload.vue'
 import Button from '@/components/ui/button/Button.vue'
-import { contractorAttachmentsService, type IContractorAttachment } from '@/domains/contractor/services/ContractorAttachmentsService'
+import ProductAttachmentsListItem from '@/domains/product/components/attachments/ProductAttachmentsListItem.vue'
+import { type IProductAttachment, productAttachmentsService } from '@/domains/product/services/ProductAttachmentsService'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
-import ContractorAttachmentsListItem from './ContractorAttachmentsListItem.vue'
 
 const route = useRoute()
 const { t } = useI18n()
 
-const contractorId = route.params.id as string
-const attachments = ref<IContractorAttachment[]>([])
+const productId = route.params.id as string
+const attachments = ref<IProductAttachment[]>([])
 const loading = ref(false)
 const uploading = ref(false)
 const files = ref<File[]>([])
@@ -22,7 +22,7 @@ const files = ref<File[]>([])
 const refresh = async () => {
   try {
     loading.value = true
-    const res = await contractorAttachmentsService.index(contractorId)
+    const res = await productAttachmentsService.index(productId)
     attachments.value = res.data
   } catch (error) {
     handleErrorWithToast(t('attachments.list.error'), error)
@@ -36,7 +36,7 @@ const handleUpload = async () => {
   try {
     uploading.value = true
     for (const file of files.value) {
-      await contractorAttachmentsService.upload(contractorId, file)
+      await productAttachmentsService.upload(productId, file)
     }
     files.value = []
     await refresh()
@@ -47,18 +47,18 @@ const handleUpload = async () => {
   }
 }
 
-const handleDelete = async (attachment: IContractorAttachment) => {
+const handleDelete = async (attachment: IProductAttachment) => {
   if (!confirm(t('attachments.delete.confirm'))) return
   try {
-    await contractorAttachmentsService.delete(contractorId, attachment.id)
+    await productAttachmentsService.delete(productId, attachment.id)
     await refresh()
   } catch (error) {
     handleErrorWithToast(t('attachments.delete.error'), error)
   }
 }
 
-const handleDownload = async (attachment: IContractorAttachment) => {
-  const blob = await contractorAttachmentsService.download(contractorId, attachment.id)
+const handleDownload = async (attachment: IProductAttachment) => {
+  const blob = await productAttachmentsService.download(productId, attachment.id)
   const url = window.URL.createObjectURL(blob)
   const a = document.createElement('a')
   a.href = url
@@ -78,11 +78,11 @@ onMounted(refresh)
     @refresh="refresh"
   >
     <div class="flex flex-col gap-1">
-      <ContractorAttachmentsListItem
+      <ProductAttachmentsListItem
         v-for="attachment in attachments"
         :key="attachment.id"
         :attachment="attachment"
-        :contractor-id="contractorId"
+        :product-id="productId"
         @download="handleDownload"
         @delete="handleDelete"
       />

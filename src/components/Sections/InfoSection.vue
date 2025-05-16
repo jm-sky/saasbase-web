@@ -11,7 +11,9 @@ defineProps<{
       {{ label }}
     </div>
     <div class="text-gray-500">
-      {{ value ?? '-' }}
+      <slot>
+        {{ value ?? '-' }}
+      </slot>
     </div>
   </div>
 </template>

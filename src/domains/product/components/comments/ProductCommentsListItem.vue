@@ -7,18 +7,18 @@ import AvatarFallback from '@/components/ui/avatar/AvatarFallback.vue'
 import AvatarImage from '@/components/ui/avatar/AvatarImage.vue'
 import Button from '@/components/ui/button/Button.vue'
 import { useAuthStore } from '@/domains/auth/store/auth.store'
-import { contractorCommentsService } from '@/domains/contractor/services/ContractorCommentsService'
+import { productCommentsService } from '@/domains/product/services/ProductCommentsService'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
 import type { IComment } from '@/domains/comment/models/comment.model'
-import type { IContractor } from '@/domains/contractor/models/contractor.model'
+import type { IProduct } from '@/domains/product/models/product.model'
 
 const { t } = useI18n()
 const authStore = useAuthStore()
 
 const loading = ref(false)
 
-const { contractor, comment } = defineProps<{
-  contractor: IContractor
+const { product, comment } = defineProps<{
+  product: IProduct
   comment: IComment
 }>()
 
@@ -34,7 +34,7 @@ const handleDelete = async (comment: IComment) => {
   try {
     if (!confirm(t('comments.delete.confirmation'))) return
     loading.value = true
-    await contractorCommentsService.delete(contractor.id, comment.id)
+    await productCommentsService.delete(product.id, comment.id)
     emit('refresh')
   } catch (err) {
     handleErrorWithToast(t('comments.delete.error'), err)

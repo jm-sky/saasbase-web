@@ -26,19 +26,24 @@ const emit = defineEmits<{
 </script>
 
 <template>
-  <div class="border rounded-md px-3 py-2 grid md:grid-cols-[1fr_1fr_1fr_auto] items-center gap-x-3 gap-y-1" :class="{ 'border-primary/50': address.isDefault }">
-    <div class="flex flex-row gap-2 items-center">
+  <div class="border rounded-md px-3 py-2 grid grid-cols-[1fr_auto] md:grid-cols-[1fr_1fr_1fr_auto] items-center gap-x-3 gap-y-1" :class="{ 'border-primary/50': address.isDefault }">
+    <div class="flex flex-row gap-2 items-center max-w-full overflow-hidden order-0">
       <Icon icon="lucide:map-pin" :class="address.isDefault ? 'text-primary' : 'text-muted-foreground'" />
-      {{ t(`address.type.${address.type}`) ?? 'Default' }}
+      <span class="truncate">
+        {{ t(`address.type.${address.type}`) ?? 'Default' }}
+      </span>
     </div>
-    <div>
+
+    <div class="col-span-full md:col-span-1 order-2 md:order-1">
       {{ fullAddress(address) }}
       <CopyToClipboard :text="fullAddress(address)" class="ml-1" />
     </div>
-    <div class="text-sm text-muted-foreground">
+
+    <div class="col-span-full text-sm text-muted-foreground order-3 md:order-2">
       {{ address.description }}
     </div>
-    <div class="flex flex-row gap-1 justify-end">
+
+    <div class="flex flex-row gap-1 justify-end order-1 md:order-1">
       <Button
         v-tooltip="t('address.setDefault')"
         variant="ghost"

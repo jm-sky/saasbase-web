@@ -1,5 +1,6 @@
 import type { IAddress } from '@/domains/shared/types/address.type'
 import type { TDateTime, TUUID } from '@/domains/shared/types/common'
+import type { IMedia } from '@/domains/shared/types/media.type'
 
 export interface IContractorAddress extends IAddress {
   id: TUUID
@@ -47,9 +48,10 @@ export interface IContractor {
   isSupplier: boolean
   isBuyer: boolean
   tags: string[]
-  logo?: string
+  logoUrl?: string
+  logo?: IMedia
   createdAt: TDateTime
   updatedAt: TDateTime
 }
 
-export type IContractorCreate = Omit<IContractor, 'id' | 'createdAt' | 'updatedAt'>
+export type IContractorCreate = Omit<IContractor, 'id' | 'tenantId' | 'logo' | 'logoUrl' | 'createdAt' | 'updatedAt'>

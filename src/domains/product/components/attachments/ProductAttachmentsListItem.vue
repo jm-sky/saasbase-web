@@ -2,18 +2,18 @@
 import { Icon } from '@iconify/vue'
 import { useI18n } from 'vue-i18n'
 import Button from '@/components/ui/button/Button.vue'
-import { type IContractorAttachment } from '@/domains/contractor/services/ContractorAttachmentsService'
+import { type IProductAttachment } from '@/domains/product/services/ProductAttachmentsService'
 
 const { t } = useI18n()
 
 defineProps<{
-  attachment: IContractorAttachment
-  contractorId: string
+  attachment: IProductAttachment
+  productId: string
 }>()
 
 const emit = defineEmits<{
-  download: [attachment: IContractorAttachment]
-  delete: [attachment: IContractorAttachment]
+  download: [attachment: IProductAttachment]
+  delete: [attachment: IProductAttachment]
 }>()
 </script>
 

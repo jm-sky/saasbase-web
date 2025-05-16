@@ -10,9 +10,9 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
+import { contractorBankAccountsService } from '@/domains/contractor/services/ContractorBankAccountsService'
 import { formatIBAN } from '@/lib/formatIBAN'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
-import { contractorBankAccountsService } from '../../services/ContractorBankAccountsService'
 import type { IContractorBankAccount } from '@/domains/contractor/models/contractor.model'
 
 const { t } = useI18n()
@@ -51,9 +51,11 @@ const handleDelete = async () => {
     class="border rounded-md px-3 py-2 grid md:grid-cols-[1fr_1fr_auto] items-center gap-x-3 gap-y-1"
     :class="{ 'border-primary/50': bankAccount.isDefault, 'pointer-events-none opacity-50': isDeleting }"
   >
-    <div class="flex flex-row gap-2 items-center order-1">
+    <div class="flex flex-row gap-2 items-center order-1 max-w-full overflow-hidden">
       <Icon icon="lucide:banknote" :class="bankAccount.isDefault ? 'text-primary' : 'text-muted-foreground'" />
-      {{ formatIBAN(bankAccount.iban) }}
+      <span class="truncate">
+        {{ formatIBAN(bankAccount.iban) }}
+      </span>
       <CopyToClipboard :text="formatIBAN(bankAccount.iban)" class="ml-1" />
     </div>
 

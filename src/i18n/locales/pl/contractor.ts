@@ -1,5 +1,14 @@
 export const contractor = {
   title: 'Kontrahenci',
+  contractorDetails: 'Szczegóły kontrahenta',
+  fields: {
+    name: 'Nazwa',
+    taxId: 'Identyfikator podatkowy',
+    email: 'E-mail',
+    phone: 'Telefon',
+    description: 'Opis',
+    tags: 'Tagi',
+  },
   add: {
     title: 'Dodaj kontrahenta',
     description: 'Dodaj nowego kontrahenta do systemu.'

@@ -30,7 +30,7 @@ const { user } = storeToRefs(authStore)
   <DropdownMenu>
     <DropdownMenuTrigger as-child>
       <Button variant="ghost" class="relative size-8 rounded-full">
-        <Avatar class="size-8">
+        <Avatar class="size-8 border">
           <AvatarImage :src="user?.avatarUrl ?? ''" :alt="user?.fullName" />
           <AvatarFallback>{{ user?.initials }}</AvatarFallback>
         </Avatar>

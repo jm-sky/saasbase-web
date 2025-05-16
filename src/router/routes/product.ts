@@ -27,6 +27,23 @@ export const productRoutes: RouteRecordRaw[] = [
     meta: {
       middlewares: [isAuthenticated, isVerified, isInTenant],
     },
+    children: [
+      {
+        path: 'overview',
+        name: 'showProductOverview',
+        component: () => import('@/pages/product/ShowProductOverviewPage.vue'),
+      },
+      {
+        path: 'comments',
+        name: 'showProductComments',
+        component: () => import('@/pages/product/ShowProductCommentsPage.vue'),
+      },
+      {
+        path: 'logs',
+        name: 'showProductLogs',
+        component: () => import('@/pages/product/ShowProductLogsPage.vue'),
+      },
+    ],
   },
   {
     path: '/products/:id/edit',
