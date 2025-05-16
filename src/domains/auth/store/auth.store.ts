@@ -1,10 +1,9 @@
 import { StorageSerializers, useLocalStorage } from '@vueuse/core'
 import { defineStore } from 'pinia'
-import { computed, ref, watch } from 'vue'
+import { computed, ref, } from 'vue'
 import { config } from '@/config'
 import { User } from '@/domains/user/models/user.model'
 import { type IUser } from '@/domains/user/types/user.type'
-import { setApiAuthorization } from '@/lib/api'
 import { authService } from '../services/authService'
 
 export interface BaseJwtPayload {
@@ -52,12 +51,9 @@ export const useAuthStore = defineStore('auth', () => {
 
   const user = computed<undefined | User>(() => userData.value ? User.load(userData.value) : undefined)
 
-  const setToken = (newToken: string) => {
-    token.value = newToken
-    setApiAuthorization(newToken)
-  }
-
+  const setToken = (newToken: string) => token.value = newToken
   const clearToken = () => token.value = null
+
   const clearData = () => {
     clearToken()
     userData.value = null
@@ -65,11 +61,6 @@ export const useAuthStore = defineStore('auth', () => {
 
   const setUser = (newUser: IUser) => userData.value = newUser
   const refresh = async () => setUser(await authService.getMe())
-
-  // eslint-disable-next-line @typescript-eslint/no-confusing-void-expression
-  watch(token, () => setApiAuthorization(token.value), {
-    immediate: true,
-  })
 
   return {
     token,
