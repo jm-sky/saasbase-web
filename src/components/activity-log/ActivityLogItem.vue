@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { Icon } from '@iconify/vue'
 import { formatDistanceToNow } from 'date-fns'
 import { computed } from 'vue'
 import { Card } from '@/components/ui/card'
@@ -25,7 +26,7 @@ const timeAgo = computed(() => {
           color
         )"
       >
-        <i :class="icon" class="text-lg text-white" />
+        <Icon :icon="icon" class="text-lg text-white" />
       </div>
       <div class="flex-1 space-y-1">
         <p class="text-sm font-medium leading-none">

@@ -8,6 +8,7 @@ import { contacts } from './contacts'
 import { contractor } from './contractor'
 import { product } from './product'
 import { settings } from './settings'
+import { tenant } from './tenant'
 
 export const pl = {
   address,
@@ -28,4 +29,5 @@ export const pl = {
   },
   settings,
   product,
+  tenant,
 }

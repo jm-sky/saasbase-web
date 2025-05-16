@@ -22,7 +22,7 @@ import type { MenuItem } from './menu.type'
 import type { SidebarProps } from '@/components/ui/sidebar'
 
 const authStore = useAuthStore()
-  
+
 const props = withDefaults(defineProps<SidebarProps>(), {
   collapsible: 'icon',
 })
@@ -77,7 +77,7 @@ const menu: MenuItem[] = [
 if (authStore.tenantId) {
   menu.push({
     title: 'Tenant',
-    url: `/tenants/${authStore.tenantId}`,
+    url: `/tenants/${authStore.tenantId}/show/overview`,
   })
 }
 </script>

@@ -1,5 +1,6 @@
 export const product = {
   title: 'Produkty',
+  productDetails: 'Szczegóły produktu',
   fields: {
     name: 'Nazwa',
     description: 'Opis',

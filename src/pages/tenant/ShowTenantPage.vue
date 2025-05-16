@@ -45,7 +45,6 @@ onMounted(async () => {
       v-if="tenant"
       :title="t('tenant.tenantDetails')"
       :back-link="'/tenants'"
-      :edit-link="`/tenants/${tenantId}/edit`"
       :name="tenant.name"
       :logo="tenant.logoUrl"
       :loading

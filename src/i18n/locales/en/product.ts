@@ -1,6 +1,6 @@
 export const product = {
   title: 'Products',
-  contractorDetails: 'Products details',
+  productDetails: 'Products details',
   fields: {
     name: 'Name',
     description: 'Description',
