@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button'
 import { useToast } from '@/components/ui/toast'
 import { useLogout } from '@/domains/auth/composables/useLogout'
 import { tenantService } from '@/domains/tenant/services/tenantService'
-import type { ITenant } from '@/domains/tenant/types/tenant.type'
+import type { ITenantSimple } from '@/domains/tenant/types/tenant.type'
 
 const { toast } = useToast()
 const { logout } = useLogout()
@@ -16,7 +16,7 @@ const emit = defineEmits<{
   selected: [tenantId: string]
 }>()
 
-const tenants = ref<ITenant[]>([])
+const tenants = ref<ITenantSimple[]>([])
 
 const handleSelectTenant = async (tenantId: string) => {
   try {

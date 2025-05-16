@@ -1,11 +1,11 @@
 import { useAuthStore } from '@/domains/auth/store/auth.store'
 import api from '@/lib/api'
 import { apiRoutes } from '@/lib/api/apiRoutes'
-import type { ITenant } from '@/domains/tenant/types/tenant.type'
+import type { ITenantSimple } from '@/domains/tenant/types/tenant.type'
 
 class TenantService {
-  async index(): Promise<ITenant[]> {
-    const response = await api.get<{ data: ITenant[] }>(apiRoutes.tenants())
+  async index(): Promise<ITenantSimple[]> {
+    const response = await api.get<{ data: ITenantSimple[] }>(apiRoutes.tenants())
     return response.data.data
   }
 
