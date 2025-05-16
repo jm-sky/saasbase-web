@@ -5,7 +5,7 @@ import ButtonLink from '@/components/ButtonLink.vue'
 import { Button } from '@/components/ui/button'
 import { useToast } from '@/components/ui/toast'
 import { useLogout } from '@/domains/auth/composables/useLogout'
-import { tenantService } from '@/domains/tenant/services/tenantService'
+import { TenantService } from '@/domains/tenant/services/tenantService'
 import type { ITenantSimple } from '@/domains/tenant/types/tenant.type'
 
 const { toast } = useToast()
@@ -20,7 +20,7 @@ const tenants = ref<ITenantSimple[]>([])
 
 const handleSelectTenant = async (tenantId: string) => {
   try {
-    await tenantService.switch(tenantId)
+    await TenantService.switch(tenantId)
     emit('selected', tenantId)
   } catch {
     toast.error('Could not switch tenant')
@@ -28,7 +28,7 @@ const handleSelectTenant = async (tenantId: string) => {
 }
 
 const fetchTenants = async () => {
-  const tenantsData = await tenantService.index()
+  const tenantsData = await TenantService.index()
   tenants.value = tenantsData
 }
 
