@@ -1,7 +1,7 @@
 import api from '@/lib/api'
 import { apiRoutesMap } from '@/lib/api/apiRoutes'
-import type { ITenantAddress, ITenantAddressCreate } from '@/domains/tenant/types/tenant.type'
 import type { IResource } from '@/domains/shared/types/resource.type'
+import type { ITenantAddress, ITenantAddressCreate } from '@/domains/tenant/types/tenant.type'
 
 class TenantAddressesService {
   async index(tenantId: string): Promise<IResource<ITenantAddress>> {

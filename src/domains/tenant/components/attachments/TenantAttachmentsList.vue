@@ -6,7 +6,7 @@ import DataListSection from '@/components/DataLists/DataListSection.vue'
 import NoItems from '@/components/DataLists/NoItems.vue'
 import FileUpload from '@/components/Inputs/FileUpload.vue'
 import Button from '@/components/ui/button/Button.vue'
-import { tenantAttachmentsService, type ITenantAttachment } from '@/domains/tenant/services/TenantAttachmentsService'
+import { type ITenantAttachment, tenantAttachmentsService } from '@/domains/tenant/services/TenantAttachmentsService'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
 import TenantAttachmentsListItem from './TenantAttachmentsListItem.vue'
 
