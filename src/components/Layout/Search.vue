@@ -11,8 +11,9 @@ defineProps<{
     <Input
       type="search"
       placeholder="Search..."
-      class="md:w-[100px] lg:w-[300px]"
+      class="hidden md:flex md:w-[100px] lg:w-[300px]"
       :disabled
     />
+    <i class="fa fa-solid fa-search md:hidden" />
   </div>
 </template>
