@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { invitationService } from '@/domains/tenant/services/InvitationService'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
@@ -20,6 +20,20 @@ const error = ref<string | null>(null)
 const email = ref('')
 const role = ref('')
 
+const loadInvitations = async () => {
+  try {
+    loading.value = true
+    error.value = null
+    const response = await invitationService.list(props.tenant.id)
+    invitations.value = response.data
+  } catch (err) {
+    handleErrorWithToast(t('tenant.invitations.list.error'), err)
+    error.value = 'Failed to load invitations'
+  } finally {
+    loading.value = false
+  }
+}
+
 const sendInvitation = async () => {
   try {
     loading.value = true
@@ -38,6 +52,10 @@ const sendInvitation = async () => {
     loading.value = false
   }
 }
+
+onMounted(() => {
+  void loadInvitations()
+})
 </script>
 
 <template>
@@ -94,7 +112,13 @@ const sendInvitation = async () => {
         </h3>
       </div>
       <div class="border-t">
-        <div v-if="invitations.length === 0" class="p-4 text-center text-muted-foreground">
+        <div v-if="loading" class="p-4 text-center text-muted-foreground">
+          {{ t('tenant.invitations.list.loading') }}
+        </div>
+        <div v-else-if="error" class="p-4 text-center text-destructive">
+          {{ error }}
+        </div>
+        <div v-else-if="invitations.length === 0" class="p-4 text-center text-muted-foreground">
           {{ t('tenant.invitations.list.empty') }}
         </div>
         <div v-else class="divide-y">
@@ -109,13 +133,13 @@ const sendInvitation = async () => {
                   {{ invitation.email }}
                 </div>
                 <div class="text-sm text-muted-foreground">
-                  {{ t('tenant.invitations.list.role', { role: invitation.role }) }}
+                  {{ t('tenant.invitations.list.role') }}: {{ invitation.role }}
                 </div>
                 <div class="text-sm text-muted-foreground">
-                  {{ t('tenant.invitations.list.status', { status: invitation.status }) }}
+                  {{ t('tenant.invitations.list.status') }}: {{ invitation.status }}
                 </div>
                 <div class="text-sm text-muted-foreground">
-                  {{ t('tenant.invitations.list.expires', { date: toDateTimeString(invitation.expiresAt) }) }}
+                  {{ t('tenant.invitations.list.expires') }}: {{ toDateTimeString(invitation.expiresAt) }}
                 </div>
               </div>
             </div>

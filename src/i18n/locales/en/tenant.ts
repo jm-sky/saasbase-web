@@ -1,4 +1,6 @@
 export const tenant = {
+  title: 'Tenant',
+  tenantDetails: 'Tenant Details',
   fields: {
     name: 'Name',
     slug: 'Slug',
@@ -49,12 +51,16 @@ export const tenant = {
       description: 'List of invitations to the tenant.',
       email: 'Email',
       role: 'Role',
+      status: 'Status',
+      expires: 'Expires',
       acceptedAt: 'Accepted At',
       expiresAt: 'Expires At',
       createdAt: 'Created At',
       updatedAt: 'Updated At',
       deletedAt: 'Deleted At',
       empty: 'No invitations',
+      loading: 'Loading invitations...',
+      error: 'Failed to load invitations',
     },
     delete: {
       success: 'Invitation deleted successfully',
