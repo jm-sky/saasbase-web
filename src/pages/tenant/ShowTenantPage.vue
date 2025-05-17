@@ -98,6 +98,13 @@ onMounted(async () => {
         >
           Logs
         </RouterLink>
+        <RouterLink
+          :to="`/tenants/${tenantId}/show/invitations`"
+          class="border-b-2 border-transparent hover:border-muted-foreground px-2 py-1"
+          exact-active-class="text-primary border-primary!"
+        >
+          Invitations
+        </RouterLink>
       </template>
 
       <template #content>

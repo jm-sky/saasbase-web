@@ -1,4 +1,6 @@
 export const tenant = {
+  title: 'Tenant',
+  tenantDetails: 'Tenant Details',
   fields: {
     name: 'Name',
     slug: 'Slug',
@@ -29,6 +31,41 @@ export const tenant = {
     edit: {
       title: 'Edit Address',
       description: 'Edit an existing address of the tenant.',
+    },
+  },
+  invitations: {
+    send: {
+      title: 'Send Invitation',
+      description: 'Send an invitation to a user to join the tenant.',
+      email: 'Email',
+      role: 'Role',
+      send: 'Send',
+      cancel: 'Cancel',
+      success: 'Invitation sent successfully',
+      error: 'Failed to send invitation',
+      confirm: 'Are you sure you want to send this invitation?',
+      submit: 'Send Invitation',
+    },
+    list: {
+      title: 'Invitations',
+      description: 'List of invitations to the tenant.',
+      email: 'Email',
+      role: 'Role',
+      status: 'Status',
+      expires: 'Expires',
+      acceptedAt: 'Accepted At',
+      expiresAt: 'Expires At',
+      createdAt: 'Created At',
+      updatedAt: 'Updated At',
+      deletedAt: 'Deleted At',
+      empty: 'No invitations',
+      loading: 'Loading invitations...',
+      error: 'Failed to load invitations',
+    },
+    delete: {
+      success: 'Invitation deleted successfully',
+      error: 'Failed to delete invitation',
+      confirm: 'Are you sure you want to delete this invitation?',
     },
   },
 }

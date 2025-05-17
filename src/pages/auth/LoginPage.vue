@@ -1,7 +1,9 @@
 <script setup lang="ts">
+import { onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { RouterLink, useRouter } from 'vue-router'
 import ButtonLink from '@/components/ButtonLink.vue'
+import { useInvitation } from '@/composables/useInvitation'
 import PrettyUserAuthForm from '@/domains/auth/components/UserAuthForm.vue'
 import GuestLayout from '@/layouts/GuestLayout.vue'
 import { useNextRedirect } from '@/lib/useNextRedirect'
@@ -13,6 +15,14 @@ const { redirectTo } = useNextRedirect()
 const handleLoggedIn = async () => {
   await router.push(redirectTo.value)
 }
+
+const { token, invitation, loading: invitationLoading, loadInvitation } = useInvitation()
+
+onMounted(() => {
+  if (token) {
+    void loadInvitation()
+  }
+})
 </script>
 
 <template>
@@ -20,10 +30,10 @@ const handleLoggedIn = async () => {
     <div class="mx-auto flex w-full flex-col justify-center space-y-6">
       <div class="flex flex-col text-center space-y-2">
         <h1 class="text-2xl font-semibold tracking-tight">
-          {{ t('auth.signIn') }}
+          {{ t('auth.login.title') }}
         </h1>
         <p class="text-sm text-muted-foreground">
-          {{ t('auth.enterCredentials') }}
+          {{ t('auth.login.description') }}
         </p>
         <p class="text-sm text-muted-foreground">
           {{ t('common.or') }}
@@ -31,6 +41,25 @@ const handleLoggedIn = async () => {
             {{ t('auth.createAccount') }}
           </ButtonLink>
         </p>
+      </div>
+
+      <div v-if="token && invitationLoading" class="text-center text-muted-foreground">
+        {{ t('auth.login.loadingInvitation') }}
+      </div>
+
+      <div v-else-if="token && invitation" class="rounded-lg border p-4 bg-muted">
+        <div class="text-sm font-medium">
+          {{ t('auth.login.invitationTitle') }}
+        </div>
+        <div class="text-sm text-muted-foreground">
+          {{ t('auth.login.invitationDescription', { email: invitation.email, role: invitation.role }) }}
+        </div>
+      </div>
+
+      <div v-else-if="token && !invitation" class="rounded-lg border p-4 bg-destructive/10">
+        <div class="text-sm font-medium text-destructive">
+          {{ t('auth.login.invitationError') }}
+        </div>
       </div>
 
       <PrettyUserAuthForm @logged-in="handleLoggedIn" />

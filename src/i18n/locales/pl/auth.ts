@@ -1,6 +1,4 @@
 export const auth = {
-  login: 'Logowanie',
-  register: 'Rejestracja',
   email: 'Email',
   password: 'Hasło',
   rememberMe: 'Zapamiętaj mnie',
@@ -27,5 +25,25 @@ export const auth = {
     createTenant: 'Utwórz zespół',
     selectTenant: 'Wybierz',
     noTenants: 'Nie znaleziono zespołów.',
-  }
+  },
+  login: {
+    title: 'Witaj ponownie',
+    description: 'Wprowadź swój email, aby się zalogować',
+    loadingInvitation: 'Ładowanie zaproszenia...',
+    invitationTitle: 'Zostałeś zaproszony',
+    invitationDescription: 'Zostałeś zaproszony do dołączenia jako {role} z emailem {email}',
+    invitationError: 'Nieprawidłowe lub wygasłe zaproszenie',
+  },
+  register: {
+    title: 'Utwórz konto',
+    description: 'Wprowadź swoje dane, aby utworzyć konto',
+    loadingInvitation: 'Ładowanie zaproszenia...',
+    invitationTitle: 'Zostałeś zaproszony',
+    invitationDescription: 'Zostałeś zaproszony do dołączenia jako {role} z emailem {email}',
+    invitationError: 'Nieprawidłowe lub wygasłe zaproszenie',
+    success: 'Konto utworzone',
+    successDescription: 'Twoje konto zostało pomyślnie utworzone',
+    error: 'Rejestracja nie powiodła się',
+    errorDescription: 'Nie udało się utworzyć konta. Spróbuj ponownie.',
+  },
 }

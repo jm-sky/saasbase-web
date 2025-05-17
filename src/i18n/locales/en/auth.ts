@@ -1,6 +1,4 @@
 export const auth = {
-  login: 'Login',
-  register: 'Register',
   email: 'Email',
   password: 'Password',
   rememberMe: 'Remember me',
@@ -27,5 +25,25 @@ export const auth = {
     createTenant: 'Create Tenant',
     selectTenant: 'Select',
     noTenants: 'No tenants found.',
-  }
+  },
+  login: {
+    title: 'Welcome back',
+    description: 'Enter your email to sign in to your account',
+    loadingInvitation: 'Loading invitation...',
+    invitationTitle: 'You have been invited',
+    invitationDescription: 'You have been invited to join as {role} with email {email}',
+    invitationError: 'Invalid or expired invitation',
+  },
+  register: {
+    title: 'Create an account',
+    description: 'Enter your details below to create your account',
+    loadingInvitation: 'Loading invitation...',
+    invitationTitle: 'You have been invited',
+    invitationDescription: 'You have been invited to join as {role} with email {email}',
+    invitationError: 'Invalid or expired invitation',
+    success: 'Account created',
+    successDescription: 'Your account has been created successfully',
+    error: 'Registration failed',
+    errorDescription: 'Failed to create your account. Please try again.',
+  },
 }
