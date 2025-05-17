@@ -53,6 +53,39 @@ const sendInvitation = async () => {
   }
 }
 
+const cancelInvitation = async (invitation: IInvitation) => {
+  if (!confirm(t('tenant.invitations.delete.confirm'))) {
+    return
+  }
+
+  try {
+    loading.value = true
+    error.value = null
+    await invitationService.cancel(props.tenant.id, invitation.id)
+    invitations.value = invitations.value.filter(i => i.id !== invitation.id)
+  } catch (err) {
+    handleErrorWithToast(t('tenant.invitations.delete.error'), err)
+  } finally {
+    loading.value = false
+  }
+}
+
+const resendInvitation = async (invitation: IInvitation) => {
+  try {
+    loading.value = true
+    error.value = null
+    const updatedInvitation = await invitationService.resend(props.tenant.id, invitation.id)
+    const index = invitations.value.findIndex(i => i.id === invitation.id)
+    if (index !== -1) {
+      invitations.value[index] = updatedInvitation
+    }
+  } catch (err) {
+    handleErrorWithToast(t('tenant.invitations.send.error'), err)
+  } finally {
+    loading.value = false
+  }
+}
+
 onMounted(() => {
   void loadInvitations()
 })
@@ -141,6 +174,24 @@ onMounted(() => {
                 <div class="text-sm text-muted-foreground">
                   {{ t('tenant.invitations.list.expires') }}: {{ toDateTimeString(invitation.expiresAt) }}
                 </div>
+              </div>
+              <div class="flex space-x-2">
+                <button
+                  v-if="invitation.status === 'pending'"
+                  :disabled="loading"
+                  class="inline-flex items-center justify-center rounded-md bg-primary px-3 py-1.5 text-sm font-medium text-primary-foreground ring-offset-background transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50"
+                  @click="resendInvitation(invitation)"
+                >
+                  {{ t('tenant.invitations.send.submit') }}
+                </button>
+                <button
+                  v-if="invitation.status === 'pending'"
+                  :disabled="loading"
+                  class="inline-flex items-center justify-center rounded-md bg-destructive px-3 py-1.5 text-sm font-medium text-destructive-foreground ring-offset-background transition-colors hover:bg-destructive/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50"
+                  @click="cancelInvitation(invitation)"
+                >
+                  {{ t('common.delete') }}
+                </button>
               </div>
             </div>
           </div>

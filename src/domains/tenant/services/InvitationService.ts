@@ -22,6 +22,16 @@ class InvitationService {
     const response = await api.get<IResource<IInvitation>>(`/tenants/${tenantId}/invitations`)
     return response.data
   }
+
+  async cancel(tenantId: string, invitationId: string): Promise<IInvitation> {
+    const response = await api.delete<IInvitation>(`/tenants/${tenantId}/invitations/${invitationId}`)
+    return response.data
+  }
+
+  async resend(tenantId: string, invitationId: string): Promise<IInvitation> {
+    const response = await api.post<IInvitation>(`/tenants/${tenantId}/invitations/${invitationId}/resend`)
+    return response.data
+  }
 }
 
 export const invitationService = new InvitationService()
