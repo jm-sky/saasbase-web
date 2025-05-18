@@ -7,9 +7,14 @@ class InvitationService {
     const response = await api.post<{ data: IInvitation }>(`/tenants/${tenantId}/invite`, data)
     return response.data.data
   }
-
-  async accept(token: string): Promise<IInvitation> {
+  
+  async show(token: string): Promise<IInvitation> {
     const response = await api.get<{ data: IInvitation }>(`/invitations/${token}`)
+    return response.data.data
+  }
+  
+  async accept(token: string): Promise<IInvitation> {
+    const response = await api.post<{ data: IInvitation }>(`/invitations/${token}`)
     return response.data.data
   }
 
