@@ -18,11 +18,6 @@ class InvitationService {
     return response.data.data
   }
 
-  async acceptInvitation(data: IAcceptInvitationRequest): Promise<IInvitation> {
-    const response = await api.post<{ data: IInvitation }>(`/invitations/${data.token}/accept`, data)
-    return response.data.data
-  }
-
   async list(tenantId: string): Promise<IResource<IInvitation>> {
     const response = await api.get<IResource<IInvitation>>(`/tenants/${tenantId}/invitations`)
     return response.data
