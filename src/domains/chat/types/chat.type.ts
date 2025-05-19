@@ -1,9 +1,9 @@
-import type { IPublicUser } from '@/domains/user/types/user.type'
+import type { IUserPreview } from '@/domains/user/types/user.type'
 
 export interface IChatMessage {
   id: string
   userId: string
-  user?: IPublicUser
+  user?: IUserPreview
   content: string
   parentId?: string
   createdAt: string

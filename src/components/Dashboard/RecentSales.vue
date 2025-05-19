@@ -17,13 +17,13 @@ import {
 import { useToast } from '@/components/ui/toast'
 import { userService } from '@/domains/user/services/userService'
 import { useTranslate } from '@/i18n/useTranslate'
-import type { PublicUser } from '@/domains/user/models/publicUser.model'
+import type { UserPreview } from '@/domains/user/models/publicUser.model'
 
 const tr = useTranslate()
 const { toast } = useToast()
 
 const isLoading = ref(false)
-const users = ref<PublicUser[]>([])
+const users = ref<UserPreview[]>([])
 
 const refresh = async () => {
   try {

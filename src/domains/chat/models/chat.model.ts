@@ -1,10 +1,10 @@
-import { PublicUser } from '@/domains/user/models/publicUser.model'
+import { UserPreview } from '@/domains/user/models/publicUser.model'
 import type { IChatMessage } from '../types/chat.type'
 
 export class ChatMessage implements IChatMessage {
   id: string
   userId: string
-  user?: PublicUser
+  user?: UserPreview
   content: string
   parentId?: string
   createdAt: string
@@ -13,7 +13,7 @@ export class ChatMessage implements IChatMessage {
   constructor(data: IChatMessage) {
     this.id = data.id
     this.userId = data.userId
-    this.user = data.user ? PublicUser.load(data.user) : undefined
+    this.user = data.user ? UserPreview.load(data.user) : undefined
     this.content = data.content
     this.parentId = data.parentId
     this.createdAt = data.createdAt

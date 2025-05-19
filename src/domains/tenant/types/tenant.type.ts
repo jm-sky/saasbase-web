@@ -3,7 +3,7 @@ import type { IBankAccount } from '@/domains/shared/types/bankAccount.type'
 import type { TDateTime, TUUID } from '@/domains/shared/types/common'
 import type { IMedia } from '@/domains/shared/types/media.type'
 
-export interface ITenantSimple {
+export interface ITenantPreview {
   id: TUUID
   name: string
   slug: string

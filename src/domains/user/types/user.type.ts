@@ -34,9 +34,15 @@ export interface IUser {
   updatedAt: TDateTime
 }
 
-export type IUserCreate = Omit<IUser, 'id' | 'createdAt' | 'updatedAt' | 'lastLoginAt' | 'isEmailVerified'>
+export interface IUserPreview {
+  id: TUUID
+  name: string
+  email: string
+  avatarUrl?: string
+  createdAt: TDateTime
+}
 
-export type IPublicUser = Pick<IUser, 'id' | 'firstName' | 'lastName' | 'email' | 'phone' | 'description' | 'address' | 'avatarUrl' | 'createdAt'>
+export type IUserCreate = Omit<IUser, 'id' | 'createdAt' | 'updatedAt' | 'lastLoginAt' | 'isEmailVerified'>
 
 export interface IUserAddress {
   street?: string

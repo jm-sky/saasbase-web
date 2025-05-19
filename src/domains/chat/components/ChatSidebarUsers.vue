@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import type { IPublicUser } from '@/domains/user/types/user.type'
+import type { IUserPreview } from '@/domains/user/types/user.type'
 
 defineProps<{
-  users: IPublicUser[]
+  users: IUserPreview[]
   roomId: string
   createRoom: (userId: string) => void
 }>()

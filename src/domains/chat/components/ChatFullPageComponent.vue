@@ -18,7 +18,7 @@ import type { IChatMessage, IChatRoom, IMessageSentEvent } from '../types/chat.t
 import { ChatMessage } from '../models/chat.model'
 import { chatRoomService } from '../services/chatRoomService'
 import ChatSidebar from './ChatSidebar.vue'
-import type { PublicUser } from '@/domains/user/models/publicUser.model'
+import type { UserPreview } from '@/domains/user/models/publicUser.model'
 
 const router = useRouter()
 const route = useRoute()
@@ -27,7 +27,7 @@ const { toast } = useToast()
 
 const showSidebar = ref(true)
 const isSending = ref(false)
-const users = ref<PublicUser[]>([])
+const users = ref<UserPreview[]>([])
 const rooms = ref<IChatRoom[]>([])
 const messages = ref<Record<string, IChatMessage[]>>({})
 const roomId = ref('')

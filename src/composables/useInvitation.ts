@@ -17,7 +17,7 @@ export function useInvitation() {
     try {
       loading.value = true
       error.value = null
-      invitation.value = await invitationService.show(token)
+      invitation.value = await invitationService.accept(token)
     } catch {
       error.value = 'Failed to load invitation'
       invitation.value = null
@@ -32,7 +32,7 @@ export function useInvitation() {
     try {
       loading.value = true
       error.value = null
-      invitation.value = await invitationService.accept(token)
+      invitation.value = await invitationService.acceptInvitation({ token })
       return invitation.value
     } catch {
       error.value = 'Failed to accept invitation'

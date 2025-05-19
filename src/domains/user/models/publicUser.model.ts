@@ -1,55 +1,40 @@
-import { UserAddress } from '@/domains/user/models/userAddress.model'
-import { fullName } from '@/lib/fullName'
-import type { IPublicUser } from '../types/user.type'
+import type { IUserPreview } from '../types/user.type'
 import type { TDateTime, TUUID } from '@/domains/shared/types/common'
 
-export class PublicUser implements IPublicUser {
+export class UserPreview implements IUserPreview {
   id: TUUID
-  firstName: string
-  lastName: string
+  name: string
   email: string
-  phone?: string
-  description?: string
-  address?: UserAddress
   avatarUrl?: string
   createdAt: TDateTime
 
-  constructor(data: IPublicUser) {
+  constructor(data: IUserPreview) {
     this.id = data.id
-    this.firstName = data.firstName
-    this.lastName = data.lastName
+    this.name = data.name
     this.email = data.email
-    this.phone = data.phone
-    this.description = data.description
-    this.address = data.address ? UserAddress.load(data.address) : undefined
     this.avatarUrl = data.avatarUrl
     this.createdAt = data.createdAt
   }
 
-  static load(data: IPublicUser): PublicUser {
-    return new PublicUser(data)
+  static load(data: IUserPreview): UserPreview {
+    return new UserPreview(data)
   }
 
-  toJSON(): IPublicUser {
+  toJSON(): IUserPreview {
     return {
       id: this.id,
-      firstName: this.firstName,
-      lastName: this.lastName,
+      name: this.name,
       email: this.email,
-      phone: this.phone,
-      description: this.description,
-      address: this.address?.toJSON(),
       avatarUrl: this.avatarUrl,
       createdAt: this.createdAt,
     }
   }
 
   get fullName(): string {
-    return fullName(this)
+    return this.name
   }
 
   get initials(): string {
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    return `${this.firstName[0] ?? ''}${this.lastName[0] ?? ''}`.toUpperCase()
+    return this.name.split(' ').map((name) => name[0]).join('').toUpperCase()
   }
 }
