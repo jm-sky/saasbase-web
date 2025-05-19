@@ -6,21 +6,23 @@ import { useI18n } from 'vue-i18n'
 import { RouterLink, useRouter } from 'vue-router'
 import ButtonLink from '@/components/ButtonLink.vue'
 import FormFieldLabeled from '@/components/Form/FormFieldLabeled.vue'
+import InvitationInfo from '@/components/invitation/InvitationInfo.vue'
 import Button from '@/components/ui/button/Button.vue'
 import Input from '@/components/ui/input/Input.vue'
 import { useToast } from '@/components/ui/toast/use-toast'
-import UIIcon from '@/components/UIIcon.vue'
 import { useInvitation } from '@/composables/useInvitation'
 import { authService } from '@/domains/auth/services/authService'
 import { registrationSchema } from '@/domains/auth/validation/auth.schema'
 import GuestLayout from '@/layouts/GuestLayout.vue'
+import { useNextRedirect } from '@/lib/useNextRedirect'
 import { isValidationError } from '@/lib/validation'
 import type { RegistrationData } from '@/domains/auth/types/auth.type'
 
 const router = useRouter()
 const { t } = useI18n()
 const { toast } = useToast()
-const { token, invitation, loading: invitationLoading, loadInvitation, acceptInvitation } = useInvitation()
+const { redirectTo } = useNextRedirect()
+const { token, loading: invitationLoading, loadInvitation } = useInvitation()
 
 const { isSubmitting, handleSubmit, resetForm, setErrors } = useForm<RegistrationData>({
   validationSchema: registrationSchema,
@@ -36,16 +38,16 @@ const onSubmit = handleSubmit(async (values) => {
   try {
     await authService.register(values)
 
-    if (token) {
-      await acceptInvitation()
-    }
-
     toast({
       title: t('auth.register.success'),
       description: t('auth.register.successDescription'),
     })
 
-    await router.push('/')
+    if (token) {
+      await router.push(`/invitation/accept?next=${encodeURIComponent(redirectTo.value)}`)
+    } else {
+      await router.push(redirectTo.value)
+    }
 
   } catch (error: unknown) {
     console.error('[RegisterView][onSubmit] error:', error)
@@ -76,9 +78,9 @@ onMounted(() => {
           {{ t('auth.register.description') }}
         </p>
         <p class="text-sm text-muted-foreground">
-          ...or
+          {{ t('common.or') }}
           <ButtonLink to="/login">
-            login
+            {{ t('auth.login.title') }}
           </ButtonLink>
         </p>
       </div>
@@ -87,26 +89,13 @@ onMounted(() => {
         {{ t('auth.register.loadingInvitation') }}
       </div>
 
-      <div v-else-if="token && invitation" class="rounded-lg border p-4 bg-muted">
-        <div class="text-sm font-medium">
-          {{ t('auth.register.invitationTitle') }}
-        </div>
-        <div class="text-sm text-muted-foreground">
-          {{ t('auth.register.invitationDescription', { email: invitation.email, role: invitation.role }) }}
-        </div>
-      </div>
-
-      <div v-else-if="token && !invitation" class="rounded-lg border p-4 bg-destructive/10">
-        <div class="text-sm font-medium text-destructive">
-          {{ t('auth.register.invitationError') }}
-        </div>
-      </div>
+      <InvitationInfo v-else-if="token" />
 
       <form class="flex flex-col gap-2" @submit="onSubmit">
         <FormFieldLabeled
           v-slot="{ componentField }"
           name="firstName"
-          label="Name"
+          :label="t('auth.register.firstName')"
           :disabled="isSubmitting"
         >
           <Input
@@ -118,7 +107,7 @@ onMounted(() => {
         <FormFieldLabeled
           v-slot="{ componentField }"
           name="lastName"
-          label="Last name"
+          :label="t('auth.register.lastName')"
           :disabled="isSubmitting"
         >
           <Input
@@ -130,7 +119,7 @@ onMounted(() => {
         <FormFieldLabeled
           v-slot="{ componentField }"
           name="email"
-          label="E-mail"
+          :label="t('auth.register.email')"
           :disabled="isSubmitting"
         >
           <Input
@@ -142,12 +131,12 @@ onMounted(() => {
         <FormFieldLabeled
           v-slot="{ componentField }"
           name="password"
-          label="Password"
+          :label="t('auth.register.password')"
           :disabled="isSubmitting"
         >
           <Input
-            type="password"
             v-bind="componentField"
+            type="password"
             class="bg-white/50 dark:bg-black/50"
           />
         </FormFieldLabeled>
@@ -158,12 +147,7 @@ onMounted(() => {
           :disabled="isSubmitting"
           :loading="isSubmitting"
         >
-          <UIIcon
-            v-if="isSubmitting"
-            icon="lucide:loader-circle"
-            class="mr-2 size-4 animate-spin"
-          />
-          Register
+          {{ t('auth.register.submit') }}
         </Button>
 
         <Button
@@ -178,20 +162,20 @@ onMounted(() => {
         </Button>
       </form>
 
-      <p class="px-8 text-center text-sm text-muted-foreground">
-        By clicking continue, you agree to our
+      <p class="text-center text-sm text-muted-foreground">
+        {{ t('auth.termsAgree') }}
         <RouterLink
           to="/terms"
-          class="underline underline-offset-4 hover:text-primary"
+          class="font-medium underline underline-offset-4 hover:text-primary transition-colors"
         >
-          Terms of Service
+          {{ t('auth.termsOfService') }}
         </RouterLink>
-        and
+        {{ t('auth.and') }}
         <RouterLink
           to="/privacy"
-          class="underline underline-offset-4 hover:text-primary"
+          class="font-medium underline underline-offset-4 hover:text-primary transition-colors"
         >
-          Privacy Policy
+          {{ t('auth.privacyPolicy') }}
         </RouterLink>
         .
       </p>

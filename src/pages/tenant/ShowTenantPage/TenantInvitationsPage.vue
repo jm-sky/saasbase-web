@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
+import Button from '@/components/ui/button/Button.vue'
+import RoleLookup from '@/domains/rights/components/RoleLookup.vue'
 import { invitationService } from '@/domains/tenant/services/InvitationService'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
 import { toDateTimeString } from '@/lib/toDateTimeString'
@@ -114,27 +116,18 @@ onMounted(() => {
           <label for="role" class="block text-sm font-medium">
             {{ t('tenant.invitations.send.role') }}
           </label>
-          <select
-            id="role"
+          <RoleLookup
             v-model="role"
-            required
-            class="mt-1 block w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-          >
-            <option value="admin">
-              Admin
-            </option>
-            <option value="member">
-              Member
-            </option>
-          </select>
+            :disabled="loading"
+          />
         </div>
-        <button
+        <Button
           type="submit"
           :disabled="loading"
-          class="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground ring-offset-background transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50"
+          :loading="loading"
         >
           {{ t('tenant.invitations.send.submit') }}
-        </button>
+        </Button>
       </form>
     </div>
 

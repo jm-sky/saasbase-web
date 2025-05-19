@@ -20,6 +20,12 @@ export const routes: RouteRecordRaw[] = [
     },
   },
 
+  {
+    path: '/invitation/accept',
+    name: 'invitationAccept',
+    component: () => import('@/pages/invitation/AcceptInvitationPage.vue'),
+  },
+
   ...authRoutes,
   ...publicRoutes,
   ...settingsRoutes,

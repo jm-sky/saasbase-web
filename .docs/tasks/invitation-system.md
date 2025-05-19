@@ -31,3 +31,54 @@
 ------
 ## Implementation plan
 
+1. Create invitation store and composables:
+   - Create `src/stores/invitation.ts` for `useInvitationStore`
+   - Create `src/composables/useInvitation.ts` for invitation logic
+   - Implement session storage integration using vue-use
+
+2. Update login page:
+   - Modify `src/pages/auth/login.vue` to handle invitation token
+   - Update route handling to use new invitation token param
+   - Integrate with invitation store
+
+3. Create InvitationInfo component:
+   - Create `src/components/invitation/InvitationInfo.vue`
+   - Implement message display with user, tenant, and role info
+   - Add styling using shadcn-vue components
+   - Integrate with invitation store
+
+4. Create invitation acceptance page:
+   - Create `src/pages/invitation/accept.vue`
+   - Implement accept/decline functionality
+   - Add useNextPage integration
+   - Handle redirects after actions
+
+5. Create RoleLookup component:
+   - Create `src/domains/rights/components/RoleLookup.vue`
+   - Implement search functionality
+   - Create `src/domains/rights/services/roleService.ts`
+   - Integrate with shadcn-vue components
+
+6. Update TenantInvitationsPage:
+   - Modify `src/pages/tenant/ShowTenantPage/TenantInvitationsPage.vue`
+   - Integrate RoleLookup component
+   - Update invitation creation flow
+
+7. Backend changes:
+   - ALREADY DONE
+   - Add decline invitation endpoint
+   - Update invitation service
+   - Add necessary database migrations if needed
+
+8. Testing:
+   - SKIP FOR NOW
+   - Add unit tests for new components
+   - Add integration tests for invitation flow
+   - Test edge cases and error handling
+
+9. Documentation:
+   - SKIP FOR NOW
+   - Update API documentation
+   - Add component documentation
+   - Update user guides if needed
+

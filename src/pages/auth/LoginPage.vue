@@ -3,6 +3,7 @@ import { onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { RouterLink, useRouter } from 'vue-router'
 import ButtonLink from '@/components/ButtonLink.vue'
+import InvitationInfo from '@/components/invitation/InvitationInfo.vue'
 import { useInvitation } from '@/composables/useInvitation'
 import PrettyUserAuthForm from '@/domains/auth/components/UserAuthForm.vue'
 import GuestLayout from '@/layouts/GuestLayout.vue'
@@ -11,12 +12,16 @@ import { useNextRedirect } from '@/lib/useNextRedirect'
 const { t } = useI18n()
 const router = useRouter()
 const { redirectTo } = useNextRedirect()
+const { token, loading: invitationLoading, loadInvitation } = useInvitation()
 
 const handleLoggedIn = async () => {
-  await router.push(redirectTo.value)
+  if (token) {
+    await router.push(`/invitation/accept?next=${encodeURIComponent(redirectTo.value)}`)
+  } else {
+    await router.push(redirectTo.value)
+  }
 }
 
-const { token, invitation, loading: invitationLoading, loadInvitation } = useInvitation()
 
 onMounted(() => {
   if (token) {
@@ -47,20 +52,7 @@ onMounted(() => {
         {{ t('auth.login.loadingInvitation') }}
       </div>
 
-      <div v-else-if="token && invitation" class="rounded-lg border p-4 bg-muted">
-        <div class="text-sm font-medium">
-          {{ t('auth.login.invitationTitle') }}
-        </div>
-        <div class="text-sm text-muted-foreground">
-          {{ t('auth.login.invitationDescription', { email: invitation.email, role: invitation.role }) }}
-        </div>
-      </div>
-
-      <div v-else-if="token && !invitation" class="rounded-lg border p-4 bg-destructive/10">
-        <div class="text-sm font-medium text-destructive">
-          {{ t('auth.login.invitationError') }}
-        </div>
-      </div>
+      <InvitationInfo v-else-if="token" />
 
       <PrettyUserAuthForm @logged-in="handleLoggedIn" />
 

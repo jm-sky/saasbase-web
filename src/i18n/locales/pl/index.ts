@@ -30,4 +30,9 @@ export const pl = {
   settings,
   product,
   tenant,
+  role: {
+    select: 'Wybierz rolę',
+    search: 'Szukaj roli',
+    notFound: 'Nie znaleziono roli',
+  },
 }

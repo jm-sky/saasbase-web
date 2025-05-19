@@ -9,7 +9,7 @@ import {
 } from '@/components/ui/form'
 import type { HTMLAttributes } from 'vue'
 
-const props =defineProps<{
+const props = defineProps<{
   disabled?: boolean
   label?: string
   name: string
