@@ -8,12 +8,12 @@ import Button from '@/components/ui/button/Button.vue'
 import UIIcon from '@/components/UIIcon.vue'
 import { userService } from '@/domains/user/services/userService'
 import AuthenticatedLayout from '@/layouts/AuthenticatedLayout.vue'
-import type { UserPreview } from '@/domains/user/models/publicUser.model'
+import type { UserProfile } from '@/domains/user/models/userProfile.model'
 
 const route = useRoute()
 
 const isLoading = ref(false)
-const user = ref<undefined | UserPreview>()
+const user = ref<undefined | UserProfile>()
 
 const refresh = async () => {
   try {

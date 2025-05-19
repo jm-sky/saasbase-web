@@ -17,6 +17,7 @@ import { useAuthStore } from '@/domains/auth/store/auth.store'
 import { ChatMessage } from '@/domains/chat/models/chat.model'
 import { chatRoomService } from '@/domains/chat/services/chatRoomService'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
+import { initials } from '@/lib/initials'
 import echo from '@/plugins/echo.js'
 import type { IChatMessage, IMessageSentEvent } from '@/domains/chat/types/chat.type'
 
@@ -86,7 +87,7 @@ const onOpened = async () => {
           :key="msg.id"
           :variant="msg.getVariant(authStore.user?.id ?? '')"
         >
-          <ChatBubbleAvatar :src="msg.user?.avatarUrl" :fallback="msg.user?.initials" :title="msg.user?.fullName" />
+          <ChatBubbleAvatar :src="msg.user?.avatarUrl" :fallback="initials(msg.user?.name)" :title="msg.user?.name" />
           <ChatBubbleMessage :variant="msg.getVariant(authStore.user?.id ?? '')" :created-at="msg.createdAt">
             {{ msg.content }}
           </ChatBubbleMessage>

@@ -1,6 +1,6 @@
-interface HasName {
+interface HasFirstAndLastName {
   firstName: string
   lastName: string
 }
 
-export const fullName = (user: HasName) => `${user.firstName} ${user.lastName}`.trim()
+export const fullName = (user: HasFirstAndLastName) => `${user.firstName} ${user.lastName}`.trim()

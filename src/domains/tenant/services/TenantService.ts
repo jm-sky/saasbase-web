@@ -10,7 +10,7 @@ class TenantService {
   }
 
   async get(id: string): Promise<ITenant> {
-    const response = await api.get<{ data: ITenantPreview[] }>(`${apiRoutes.tenants()}/${id}`)
+    const response = await api.get<{ data: ITenant }>(`${apiRoutes.tenants()}/${id}`)
     return response.data.data
   }
 

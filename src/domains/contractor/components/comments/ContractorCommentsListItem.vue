@@ -55,11 +55,11 @@ const formatDate = (date: string) => {
   >
     <div class="w-28 flex flex-col items-center text-center justify-center gap-1">
       <Avatar size="base" class="">
-        <AvatarImage :src="comment.user?.avatarUrl ?? ''" :alt="comment.user?.firstName" />
-        <AvatarFallback>{{ comment.user?.firstName.slice(0, 2) ?? 'X' }}</AvatarFallback>
+        <AvatarImage :src="comment.user?.avatarUrl ?? ''" :alt="comment.user?.name" />
+        <AvatarFallback>{{ comment.user?.name.slice(0, 2) ?? 'X' }}</AvatarFallback>
       </Avatar>
       <div class="font-medium text-sm">
-        {{ comment.user?.firstName }} {{ comment.user?.lastName }}
+        {{ comment.user?.name }}
       </div>
     </div>
 

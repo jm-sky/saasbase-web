@@ -26,3 +26,8 @@
 - Backend:
   - Implement a decline invitation endpoint (e.g., `POST /invitations/{id}/decline`)
   - In the frontend, call this endpoint from the invitation page when the user declines 
+
+
+------
+## Implementation plan
+

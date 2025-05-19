@@ -43,6 +43,7 @@ export interface IUserPreview {
 }
 
 export type IUserCreate = Omit<IUser, 'id' | 'createdAt' | 'updatedAt' | 'lastLoginAt' | 'isEmailVerified'>
+export type IUserProfile = Pick<IUser, 'id' | 'firstName' | 'lastName' | 'email' | 'phone' | 'description' | 'address' | 'avatarUrl' | 'createdAt'>
 
 export interface IUserAddress {
   street?: string
