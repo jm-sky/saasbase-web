@@ -30,3 +30,5 @@ dev-dist/
 
 *.tsbuildinfo
 .env
+
+.docs/temp/*

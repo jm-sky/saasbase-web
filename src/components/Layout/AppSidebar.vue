@@ -1,11 +1,13 @@
 <script setup lang="ts">
 import {
+  Building2,
   Mail,
   Package,
   Rocket,
   Settings2,
   Users,
 } from 'lucide-vue-next'
+import { computed } from 'vue'
 import NavMain from '@/components/Layout/NavMain.vue'
 import UserNav from '@/components/Layout/UserNav.vue'
 import {
@@ -27,33 +29,44 @@ const props = withDefaults(defineProps<SidebarProps>(), {
   collapsible: 'icon',
 })
 
-const menu: MenuItem[] = [
-  {
-    title: 'Dashboard',
-    url: '/',
-    icon: Rocket,
-  },
-  {
-    title: 'Contractors',
-    url: '/contractors',
-    icon: Users,
-  },
-  {
-    title: 'Products',
-    url: '/products',
-    icon: Package,
-  },
-  {
-    title: 'Mailbox',
-    url: '/mailbox/inbox',
-    icon: Mail,
-  },
-  {
-    title: 'Chat',
-    url: '/chat',
-    icon: Mail,
-  },
-  {
+const menu = computed<MenuItem[]>(() => {
+  const items: MenuItem[] = [
+    {
+      title: 'Dashboard',
+      url: '/',
+      icon: Rocket,
+    },
+    {
+      title: 'Contractors',
+      url: '/contractors',
+      icon: Users,
+    },
+    {
+      title: 'Products',
+      url: '/products',
+      icon: Package,
+    },
+    {
+      title: 'Mailbox',
+      url: '/mailbox/inbox',
+      icon: Mail,
+    },
+    {
+      title: 'Chat',
+      url: '/chat',
+      icon: Mail,
+    },
+  ]
+
+  if (authStore.tenantId) {
+    items.push({
+      title: 'Tenant',
+      icon: Building2,
+      url: `/tenants/${authStore.tenantId}/show/overview`,
+    })
+  }
+
+  items.push({
     title: 'Settings',
     url: '#',
     icon: Settings2,
@@ -71,15 +84,10 @@ const menu: MenuItem[] = [
         url: '/settings/appearance',
       },
     ],
-  },
-]
-
-if (authStore.tenantId) {
-  menu.push({
-    title: 'Tenant',
-    url: `/tenants/${authStore.tenantId}/show/overview`,
   })
-}
+
+  return items
+})
 </script>
 
 <template>
