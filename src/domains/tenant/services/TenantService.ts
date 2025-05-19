@@ -1,7 +1,7 @@
 import { useAuthStore } from '@/domains/auth/store/auth.store'
 import api from '@/lib/api'
 import { apiRoutes } from '@/lib/api/apiRoutes'
-import type { ITenant, ITenantPreview } from '@/domains/tenant/types/tenant.type'
+import type { ITenant, ITenantCreate, ITenantPreview } from '@/domains/tenant/types/tenant.type'
 
 class TenantService {
   async index(): Promise<ITenantPreview[]> {
@@ -12,6 +12,10 @@ class TenantService {
   async get(id: string): Promise<ITenant> {
     const response = await api.get<{ data: ITenant }>(`${apiRoutes.tenants()}/${id}`)
     return response.data.data
+  }
+
+  async create(data: ITenantCreate): Promise<void> {
+    await api.post(apiRoutes.tenants(), data)
   }
 
   async switch(id: string): Promise<void> {

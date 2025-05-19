@@ -52,6 +52,9 @@ const { user } = storeToRefs(authStore)
         <DropdownMenuItemLink :to="routeTo.settingsProfile()">
           Profile
         </DropdownMenuItemLink>
+        <DropdownMenuItemLink :to="routeTo.account()">
+          Account
+        </DropdownMenuItemLink>
         <DropdownMenuItemLink :to="routeTo.settingsAccount()">
           Settings
         </DropdownMenuItemLink>

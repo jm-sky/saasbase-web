@@ -1,10 +1,11 @@
 import { isAuthenticated } from '@/router/middleware/isAuthenticated'
+import { routeMap } from '../routeMap'
 import type { RouteRecordRaw } from 'vue-router'
 
 export const accountRoutes: RouteRecordRaw[] = [
   {
     path: '/account',
-    name: 'account',
+    name: routeMap.account.index,
     component: () => import('@/pages/account/AccountPage.vue'),
     meta: {
       middlewares: [isAuthenticated],
@@ -12,7 +13,7 @@ export const accountRoutes: RouteRecordRaw[] = [
     children: [
       {
         path: '',
-        name: 'account-get-started',
+        name: routeMap.account.getStarted,
         component: () => import('@/pages/account/GetStartedPage.vue'),
       },
       {

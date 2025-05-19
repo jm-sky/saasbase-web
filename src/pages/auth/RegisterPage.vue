@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { isAxiosError } from 'axios'
 import { useForm } from 'vee-validate'
 import { onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
@@ -14,6 +13,7 @@ import { useInvitation } from '@/composables/useInvitation'
 import { authService } from '@/domains/auth/services/authService'
 import { registrationSchema } from '@/domains/auth/validation/auth.schema'
 import GuestLayout from '@/layouts/GuestLayout.vue'
+import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
 import { useNextRedirect } from '@/lib/useNextRedirect'
 import { isValidationError } from '@/lib/validation'
 import type { RegistrationData } from '@/domains/auth/types/auth.type'
@@ -51,12 +51,8 @@ const onSubmit = handleSubmit(async (values) => {
 
   } catch (error: unknown) {
     console.error('[RegisterView][onSubmit] error:', error)
+    handleErrorWithToast(t('auth.register.error'), error)
     if (isValidationError(error)) setErrors(error.response.data.errors)
-    toast({
-      title: 'Error',
-      description: `${isAxiosError(error) && error.response?.data?.message ? error.response.data.message : 'Registration error'}`,
-      variant: 'destructive',
-    })
   }
 })
 
@@ -95,7 +91,7 @@ onMounted(() => {
         <FormFieldLabeled
           v-slot="{ componentField }"
           name="firstName"
-          :label="t('auth.register.firstName')"
+          :label="t('auth.fields.firstName')"
           :disabled="isSubmitting"
         >
           <Input
@@ -107,7 +103,7 @@ onMounted(() => {
         <FormFieldLabeled
           v-slot="{ componentField }"
           name="lastName"
-          :label="t('auth.register.lastName')"
+          :label="t('auth.fields.lastName')"
           :disabled="isSubmitting"
         >
           <Input
@@ -119,7 +115,7 @@ onMounted(() => {
         <FormFieldLabeled
           v-slot="{ componentField }"
           name="email"
-          :label="t('auth.register.email')"
+          :label="t('auth.fields.email')"
           :disabled="isSubmitting"
         >
           <Input
@@ -131,7 +127,7 @@ onMounted(() => {
         <FormFieldLabeled
           v-slot="{ componentField }"
           name="password"
-          :label="t('auth.register.password')"
+          :label="t('auth.fields.password')"
           :disabled="isSubmitting"
         >
           <Input

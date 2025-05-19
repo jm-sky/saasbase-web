@@ -34,43 +34,26 @@ onMounted(async () => {
 
 <template>
   <AuthenticatedLayout>
-    <div class="flex flex-col lg:flex-row gap-5">
+    <div class="flex flex-col lg:flex-row gap-5 p-4">
       <!-- Sidebar -->
       <div class="w-full lg:w-64 flex-shrink-0">
-        <div class="card">
-          <div class="p-5">
-            <div class="flex items-center gap-4">
-              <div class="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center">
-                <span class="text-2xl text-primary">{{ initials }}</span>
-              </div>
-              <div>
-                <h3 class="text-lg font-semibold">
-                  {{ fullName }}
-                </h3>
-                <p class="text-muted-foreground">
-                  {{ profile?.email }}
-                </p>
-              </div>
-            </div>
-          </div>
-          <div class="border-t">
-            <nav class="p-2">
-              <RouterLink
-                v-for="item in navigationItems"
-                :key="item.path"
-                :to="item.path"
-                class="flex items-center gap-3 px-3 py-2 rounded-md text-sm transition-colors"
-                :class="[
-                  $route.path === item.path
-                    ? 'bg-primary/10 text-primary'
-                    : 'hover:bg-muted text-muted-foreground hover:text-foreground'
-                ]"
-              >
-                <Icon :icon="item.icon" class="w-5 h-5" />
-                {{ item.name }}
-              </RouterLink>
-            </nav>
-          </div>
+        <div class="card border-r">
+          <nav class="p-2">
+            <RouterLink
+              v-for="item in navigationItems"
+              :key="item.path"
+              :to="item.path"
+              class="flex items-center gap-3 px-3 py-2 rounded-md text-sm transition-colors"
+              :class="[
+                $route.path === item.path
+                  ? 'bg-primary/10 text-primary'
+                  : 'hover:bg-muted text-muted-foreground hover:text-foreground'
+              ]"
+            >
+              <Icon :icon="item.icon" class="w-5 h-5" />
+              {{ item.name }}
+            </RouterLink>
+          </nav>
         </div>
       </div>
 
