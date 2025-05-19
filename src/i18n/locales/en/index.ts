@@ -30,4 +30,9 @@ export const en = {
   settings,
   product,
   tenant,
+  role: {
+    select: 'Select role',
+    search: 'Search role',
+    notFound: 'Role not found',
+  },
 }

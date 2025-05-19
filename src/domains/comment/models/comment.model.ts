@@ -1,5 +1,5 @@
 import { type TDateTime } from '@/domains/shared/types/common'
-import type { IPublicUser } from '@/domains/user/types/user.type'
+import type { IUserPreview } from '@/domains/user/types/user.type'
 
 export interface IComment {
   id: string
@@ -9,7 +9,7 @@ export interface IComment {
   commentableType: string
   createdAt: TDateTime
   updatedAt: TDateTime
-  user?: IPublicUser
+  user?: IUserPreview
   meta?: {
     canEdit: boolean
     canDelete: boolean

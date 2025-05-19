@@ -17,6 +17,7 @@ import { useAuthStore } from '@/domains/auth/store/auth.store'
 import { ChatMessage } from '@/domains/chat/models/chat.model'
 import { aiChatService } from '@/domains/chat/services/aiChatService'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
+import { initials } from '@/lib/initials'
 import echo from '@/plugins/echo.js'
 import type { IChatMessage } from '../types/chat.type'
 import type { IAiChatMessage } from '@/domains/chat/types/aiChat.type'
@@ -29,8 +30,7 @@ const createNewAiMessage = (): IChatMessage => ({
   userId: 'ai',
   user: {
     id: 'ai',
-    firstName: 'AI',
-    lastName: '',
+    name: 'AI',
     email: '',
     createdAt: new Date().toISOString(),
   },
@@ -70,8 +70,12 @@ const sendMessage = async () => {
     messages.value.push({
       id: v4(),
       userId: authStore.userData?.id ?? '',
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      user: authStore.userData!,
+      user: {
+        id: authStore.userData?.id ?? '',
+        name: `${authStore.userData?.firstName} ${authStore.userData?.lastName}`,
+        email: authStore.userData?.email ?? '',
+        createdAt: authStore.userData?.createdAt ?? new Date().toISOString(),
+      },
       content: message.value,
       createdAt: new Date().toISOString(),
     })
@@ -106,7 +110,7 @@ const onOpened = () => {
           :key="msg.id"
           :variant="msg.getVariant(authStore.user?.id ?? '')"
         >
-          <ChatBubbleAvatar :src="msg.user?.avatarUrl" :fallback="msg.user?.initials ?? 'AI'" :title="msg.user?.fullName" />
+          <ChatBubbleAvatar :src="msg.user?.avatarUrl" :fallback="initials(msg.user?.name)" :title="msg.user?.name" />
           <ChatBubbleMessage :variant="msg.getVariant(authStore.user?.id ?? '')" :created-at="msg.createdAt">
             {{ msg.content }}
           </ChatBubbleMessage>

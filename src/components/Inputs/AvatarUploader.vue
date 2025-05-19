@@ -86,6 +86,7 @@ const upload = async () => {
     isRemoved.value = false
     emit('uploaded')
   } catch (error) {
+    file.value = null
     handleErrorWithToast(t('errors.uploadFailed'), error)
   } finally {
     isUploading.value = false
@@ -118,6 +119,7 @@ const removeFile = async () => {
 <template>
   <div
     class="relative group inline-block w-fit mx-auto [&>button]:opacity-0 [&>button]:transition-opacity [&>button]:duration-300"
+    tabindex="-1"
     :class="{ 'opacity-50': isLoading }"
   >
     <Avatar :size :shape :class="cn('border shadow', avatarClass)">
@@ -138,7 +140,7 @@ const removeFile = async () => {
     <button
       v-if="!readonly && canAdd"
       v-tooltip.bottom.focus="t('common.add')"
-      class="absolute bottom-0 -right-5 p-1.5 bg-white rounded-full shadow group-hover:opacity-90 hover:bg-gray-100"
+      class="absolute bottom-0 -right-5 p-1.5 bg-white rounded-full shadow group-focus:opacity-90 group-hover:opacity-90 hover:bg-gray-100"
       :disabled
       type="button"
       @click="fileInput?.click()"
@@ -149,7 +151,7 @@ const removeFile = async () => {
     <button
       v-else-if="!readonly && canChange"
       v-tooltip.bottom.focus="t('common.edit')"
-      class="absolute bottom-0 -right-5 p-1.5 bg-white rounded-full shadow group-hover:opacity-90 hover:bg-gray-100"
+      class="absolute bottom-0 -right-5 p-1.5 bg-white rounded-full shadow group-focus:opacity-90 group-hover:opacity-90 hover:bg-gray-100"
       :disabled
       type="button"
       @click="fileInput?.click()"
@@ -160,7 +162,7 @@ const removeFile = async () => {
     <button
       v-if="!readonly && canUpload"
       v-tooltip.bottom.focus="t('common.upload')"
-      class="absolute bottom-0 -right-5 p-1.5 bg-white rounded-full shadow group-hover:opacity-90 hover:bg-gray-100"
+      class="absolute bottom-0 -right-5 p-1.5 bg-white rounded-full shadow group-focus:opacity-90 group-hover:opacity-90 hover:bg-gray-100"
       :disabled
       type="button"
       @click="upload()"

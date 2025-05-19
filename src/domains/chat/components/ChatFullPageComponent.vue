@@ -13,12 +13,13 @@ import { useAuthStore } from '@/domains/auth/store/auth.store'
 import { userService } from '@/domains/user/services/userService'
 import { fullName } from '@/lib/fullName'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
+import { initials } from '@/lib/initials'
 import echo from '@/plugins/echo.js'
 import type { IChatMessage, IChatRoom, IMessageSentEvent } from '../types/chat.type'
 import { ChatMessage } from '../models/chat.model'
 import { chatRoomService } from '../services/chatRoomService'
 import ChatSidebar from './ChatSidebar.vue'
-import type { PublicUser } from '@/domains/user/models/publicUser.model'
+import type { IUserPreview } from '@/domains/user/types/user.type'
 
 const router = useRouter()
 const route = useRoute()
@@ -27,7 +28,7 @@ const { toast } = useToast()
 
 const showSidebar = ref(true)
 const isSending = ref(false)
-const users = ref<PublicUser[]>([])
+const users = ref<IUserPreview[]>([])
 const rooms = ref<IChatRoom[]>([])
 const messages = ref<Record<string, IChatMessage[]>>({})
 const roomId = ref('')
@@ -113,7 +114,7 @@ onUnmounted(() => {
         :key="msg.id"
         :variant="msg.getVariant(authStore.user?.id ?? '')"
       >
-        <ChatBubbleAvatar :src="msg.user?.avatarUrl" :fallback="msg.user?.initials" :title="msg.user?.fullName" />
+        <ChatBubbleAvatar :src="msg.user?.avatarUrl" :fallback="initials(msg.user?.name)" :title="msg.user?.name" />
         <ChatBubbleMessage :variant="msg.getVariant(authStore.user?.id ?? '')" :created-at="msg.createdAt">
           {{ msg.content }}
         </ChatBubbleMessage>

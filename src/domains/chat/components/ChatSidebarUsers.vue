@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import type { IPublicUser } from '@/domains/user/types/user.type'
+import type { IUserPreview } from '@/domains/user/types/user.type'
 
 defineProps<{
-  users: IPublicUser[]
+  users: IUserPreview[]
   roomId: string
   createRoom: (userId: string) => void
 }>()
@@ -28,7 +28,7 @@ const emit = defineEmits<{
       class="px-3 py-2 rounded bg-gray-100 text-sm hover:bg-sky-200 cursor-pointer"
       @click="[createRoom(user.id), emit('create')]"
     >
-      {{ user.firstName }} {{ user.lastName }}
+      {{ user.name }}
     </li>
   </ul>
 </template>

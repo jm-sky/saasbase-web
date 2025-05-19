@@ -3,7 +3,7 @@ import type { IBankAccount } from '@/domains/shared/types/bankAccount.type'
 import type { TDateTime, TUUID } from '@/domains/shared/types/common'
 import type { IMedia } from '@/domains/shared/types/media.type'
 
-export interface ITenantSimple {
+export interface ITenantPreview {
   id: TUUID
   name: string
   slug: string
@@ -21,7 +21,7 @@ export type ITenantAddressCreate = Omit<ITenantAddress, 'id' | 'tenantId' | 'met
 
 export interface ITenantBankAccount extends IBankAccount {
   id: TUUID
-  contractorId: TUUID
+  tenantId: TUUID
   bankName?: string
   iban: string
   currency?: string
@@ -31,7 +31,7 @@ export interface ITenantBankAccount extends IBankAccount {
   updatedAt: TDateTime
 }
 
-export type ITenantBankAccountCreate = Omit<ITenantBankAccount, 'id' | 'contractorId' | 'createdAt' | 'updatedAt'>
+export type ITenantBankAccountCreate = Omit<ITenantBankAccount, 'id' | 'tenantId' | 'createdAt' | 'updatedAt'>
 
 export interface ITenant {
   id: TUUID

@@ -1,9 +1,9 @@
 import { UserAddress } from '@/domains/user/models/userAddress.model'
 import { fullName } from '@/lib/fullName'
-import type { IPublicUser } from '../types/user.type'
+import type { IUserProfile } from '../types/user.type'
 import type { TDateTime, TUUID } from '@/domains/shared/types/common'
 
-export class PublicUser implements IPublicUser {
+export class UserProfile implements IUserProfile {
   id: TUUID
   firstName: string
   lastName: string
@@ -14,7 +14,7 @@ export class PublicUser implements IPublicUser {
   avatarUrl?: string
   createdAt: TDateTime
 
-  constructor(data: IPublicUser) {
+  constructor(data: IUserProfile) {
     this.id = data.id
     this.firstName = data.firstName
     this.lastName = data.lastName
@@ -26,11 +26,11 @@ export class PublicUser implements IPublicUser {
     this.createdAt = data.createdAt
   }
 
-  static load(data: IPublicUser): PublicUser {
-    return new PublicUser(data)
+  static load(data: IUserProfile): UserProfile {
+    return new UserProfile(data)
   }
 
-  toJSON(): IPublicUser {
+  toJSON(): IUserProfile {
     return {
       id: this.id,
       firstName: this.firstName,

@@ -23,17 +23,17 @@ export const tenantRoutes: RouteRecordRaw[] = [
       {
         path: 'overview',
         name: 'showTenantOverview',
-        component: () => import('@/pages/tenant/ShowTenantOverviewPage.vue'),
+        component: () => import('@/pages/tenant/ShowTenantPage/TenantOverviewPage.vue'),
       },
       {
         path: 'invitations',
         name: 'showTenantInvitations',
-        component: () => import('@/pages/tenant/ShowTenantPage/InvitationsTab.vue'),
+        component: () => import('@/pages/tenant/ShowTenantPage/TenantInvitationsPage.vue'),
       },
       {
         path: 'logs',
         name: 'showTenantLogs',
-        component: () => import('@/pages/tenant/ShowTenantLogsPage.vue'),
+        component: () => import('@/pages/tenant/ShowTenantPage/TenantLogsPage.vue'),
       },
     ],
   },

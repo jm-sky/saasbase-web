@@ -1,23 +1,23 @@
-import { PublicUser } from '@/domains/user/models/publicUser.model'
+import { UserProfile } from '@/domains/user/models/userProfile.model'
 import api from '@/lib/api'
 import { apiRoutesMap } from '@/lib/api/apiRoutes'
-import type { IPublicUser } from '@/domains/user/types/user.type'
+import type { IUserPreview, IUserProfile } from '@/domains/user/types/user.type'
 
 export interface IUserGetParams {
   limit?: number
 }
 
 class UserService {
-  async index(params?: IUserGetParams): Promise<PublicUser[]> {
-    const users = (await api.get<{ data: IPublicUser[] }>(apiRoutesMap.users, { params })).data.data
+  async index(params?: IUserGetParams): Promise<IUserPreview[]> {
+    const users = (await api.get<{ data: IUserPreview[] }>(apiRoutesMap.users, { params })).data.data
 
-    return users.map(user => PublicUser.load(user))
+    return users
   }
 
-  async get(id: string): Promise<PublicUser> {
-    const user = (await api.get<IPublicUser>(`/api/users/${id}`)).data
+  async get(id: string): Promise<UserProfile> {
+    const user = (await api.get<IUserProfile>(`/api/users/${id}`)).data
 
-    return PublicUser.load(user)
+    return UserProfile.load(user)
   }
 }
 

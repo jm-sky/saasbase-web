@@ -6,11 +6,11 @@ import { useAuthStore } from '@/domains/auth/store/auth.store'
 import type { IChatRoom } from '../types/chat.type'
 import ChatSidebarRooms from './ChatSidebarRooms.vue'
 import ChatSidebarUsers from './ChatSidebarUsers.vue'
-import type { IPublicUser } from '@/domains/user/types/user.type'
+import type { IUserPreview } from '@/domains/user/types/user.type'
 
 defineProps<{
   rooms: IChatRoom[]
-  users: IPublicUser[]
+  users: IUserPreview[]
   roomId: string
   joinRoom: (roomId: string) => void
   createRoom: (userId: string) => void
