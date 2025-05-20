@@ -1,15 +1,15 @@
 import { ref } from 'vue'
 import { useRoute } from 'vue-router'
-import { invitationService } from '@/domains/tenant/services/InvitationService'
-import { useInvitationStore } from '@/stores/invitation'
+import { applicationInvitationService } from '../services/applicationInvitation.service'
+import { useApplicationInvitationStore } from '../store/applicationInvitation.store'
 
 export const useInvitation = () => {
   const route = useRoute()
-  const store = useInvitationStore()
+  const store = useApplicationInvitationStore()
   const loading = ref(false)
   const error = ref<string | null>(null)
 
-  const token = route.query.invitationToken as string | undefined
+  const token = route.query.applicationInvitationToken as string | undefined
 
   const loadInvitation = async () => {
     if (!token) return
@@ -18,7 +18,7 @@ export const useInvitation = () => {
       loading.value = true
       error.value = null
       store.setInvitationToken(token)
-      const invitation = await invitationService.show(token)
+      const invitation = await applicationInvitationService.show(token)
       store.setInvitation(invitation)
     } catch {
       error.value = 'Failed to load invitation'
@@ -34,7 +34,7 @@ export const useInvitation = () => {
     try {
       loading.value = true
       error.value = null
-      const invitation = await invitationService.accept(token)
+      const invitation = await applicationInvitationService.accept(token)
       store.setInvitation(invitation)
       return invitation
     } catch {
@@ -52,7 +52,7 @@ export const useInvitation = () => {
     try {
       loading.value = true
       error.value = null
-      await invitationService.reject(token)
+      await applicationInvitationService.reject(token)
       store.clearInvitation()
     } catch {
       error.value = 'Failed to decline invitation'

@@ -3,10 +3,10 @@ import { onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import Button from '@/components/ui/button/Button.vue'
 import RoleLookup from '@/domains/rights/components/RoleLookup.vue'
-import { invitationService } from '@/domains/tenant/services/InvitationService'
+import { tenantInvitationService } from '@/domains/tenant/services/TenantInvitationService'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
 import { toDateTimeString } from '@/lib/toDateTimeString'
-import type { IInvitation } from '@/domains/tenant/types/invitation.type'
+import type { ITenantInvitation } from '@/domains/tenant/types/invitation.type'
 import type { ITenant } from '@/domains/tenant/types/tenant.type'
 
 const props = defineProps<{
@@ -15,7 +15,7 @@ const props = defineProps<{
 
 const { t } = useI18n()
 
-const invitations = ref<IInvitation[]>([])
+const invitations = ref<ITenantInvitation[]>([])
 const loading = ref(false)
 const error = ref<string | null>(null)
 
@@ -26,7 +26,7 @@ const loadInvitations = async () => {
   try {
     loading.value = true
     error.value = null
-    const response = await invitationService.list(props.tenant.id)
+    const response = await tenantInvitationService.list(props.tenant.id)
     invitations.value = response.data
   } catch (err) {
     handleErrorWithToast(t('tenant.invitations.list.error'), err)
@@ -40,7 +40,7 @@ const sendInvitation = async () => {
   try {
     loading.value = true
     error.value = null
-    const invitation = await invitationService.send(props.tenant.id, {
+    const invitation = await tenantInvitationService.send(props.tenant.id, {
       email: email.value,
       role: role.value,
     })
@@ -55,7 +55,7 @@ const sendInvitation = async () => {
   }
 }
 
-const cancelInvitation = async (invitation: IInvitation) => {
+const cancelInvitation = async (invitation: ITenantInvitation) => {
   if (!confirm(t('tenant.invitations.delete.confirm'))) {
     return
   }
@@ -63,7 +63,7 @@ const cancelInvitation = async (invitation: IInvitation) => {
   try {
     loading.value = true
     error.value = null
-    await invitationService.cancel(props.tenant.id, invitation.id)
+    await tenantInvitationService.cancel(props.tenant.id, invitation.id)
     invitations.value = invitations.value.filter(i => i.id !== invitation.id)
   } catch (err) {
     handleErrorWithToast(t('tenant.invitations.delete.error'), err)
@@ -72,11 +72,11 @@ const cancelInvitation = async (invitation: IInvitation) => {
   }
 }
 
-const resendInvitation = async (invitation: IInvitation) => {
+const resendInvitation = async (invitation: ITenantInvitation) => {
   try {
     loading.value = true
     error.value = null
-    const updatedInvitation = await invitationService.resend(props.tenant.id, invitation.id)
+    const updatedInvitation = await tenantInvitationService.resend(props.tenant.id, invitation.id)
     const index = invitations.value.findIndex(i => i.id === invitation.id)
     if (index !== -1) {
       invitations.value[index] = updatedInvitation

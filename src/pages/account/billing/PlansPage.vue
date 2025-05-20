@@ -32,6 +32,7 @@ const formatPrice = (plan: BillingPlan) => {
   }).format(price)
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const getIntervalLabel = (plan: BillingPlan) => {
   return selectedInterval.value === 'year' ? 'per year' : 'per month'
 }

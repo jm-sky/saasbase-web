@@ -1,16 +1,13 @@
-import type { ITenantPreview } from './tenant.type'
 import type { TDateTime, TUUID } from '@/domains/shared/types/common'
 import type { IUserPreview } from '@/domains/user/types/user.type'
 
-export interface ITenantInvitation {
+export interface IApplicationInvitation {
   id: TUUID
-  tenantId: TUUID
   inviterId: TUUID
   email: string
   role: string
   token: string
   status: string
-  tenant: ITenantPreview
   inviter: IUserPreview
   acceptedAt?: TDateTime
   expiresAt: TDateTime
