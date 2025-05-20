@@ -32,6 +32,7 @@ export interface UserTableSetting {
   userId: string
   entity: string
   name?: string
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   config: Record<string, any>
   isDefault: boolean
   createdAt: string
@@ -97,12 +98,14 @@ export interface UpdatePreferenceRequest {
 export interface CreateTableSettingRequest {
   entity: string
   name?: string
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   config: Record<string, any>
   isDefault?: boolean
 }
 
 export interface UpdateTableSettingRequest {
   name?: string
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   config?: Record<string, any>
   isDefault?: boolean
 }
@@ -112,9 +115,9 @@ export interface UpdateNotificationSettingRequest {
 }
 
 export interface UpdateNotificationSettingsBulkRequest {
-  settings: Array<{
+  settings: {
     channel: string
     settingKey: string
     enabled: boolean
-  }>
+  }[]
 }
