@@ -19,6 +19,7 @@ export const en = {
   common,
   comments,
   contacts,
+  notifications: 'Notifications',
   layout: {
     darkMode: 'Dark Mode',
     lightMode: 'Light Mode',

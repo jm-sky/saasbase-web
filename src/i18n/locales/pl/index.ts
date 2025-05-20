@@ -19,6 +19,7 @@ export const pl = {
   common,
   comments,
   contacts,
+  notifications: 'Powiadomienia',
   layout: {
     darkMode: 'Tryb ciemny',
     lightMode: 'Tryb jasny',

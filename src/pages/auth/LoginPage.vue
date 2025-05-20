@@ -4,8 +4,8 @@ import { useI18n } from 'vue-i18n'
 import { RouterLink, useRouter } from 'vue-router'
 import ButtonLink from '@/components/ButtonLink.vue'
 import InvitationInfo from '@/components/invitation/InvitationInfo.vue'
+import UserAuthForm from '@/domains/auth/components/UserAuthForm.vue'
 import { useInvitation } from '@/domains/tenant/composables/useTenantInvitation'
-import PrettyUserAuthForm from '@/domains/auth/components/UserAuthForm.vue'
 import GuestLayout from '@/layouts/GuestLayout.vue'
 import { useNextRedirect } from '@/lib/useNextRedirect'
 
@@ -21,7 +21,6 @@ const handleLoggedIn = async () => {
     await router.push(redirectTo.value)
   }
 }
-
 
 onMounted(() => {
   if (token) {
@@ -54,7 +53,7 @@ onMounted(() => {
 
       <InvitationInfo v-else-if="token" />
 
-      <PrettyUserAuthForm @logged-in="handleLoggedIn" />
+      <UserAuthForm @logged-in="handleLoggedIn" />
 
       <p class="text-center text-sm text-muted-foreground">
         {{ t('auth.termsAgree') }}

@@ -88,7 +88,7 @@ const { user } = storeToRefs(authStore)
           size="sm"
           @click="logout()"
         >
-          Log out
+          {{ $t('auth.signOut') }}
         </Button>
       </DropdownMenuItem>
     </DropdownMenuContent>

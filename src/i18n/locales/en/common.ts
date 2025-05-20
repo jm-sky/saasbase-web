@@ -12,6 +12,7 @@ export const common = {
   error: 'Error',
   noItems: 'No items',
   createdAt: 'Created at',
+  themeColor: 'Theme color',
   copyToClipboard: {
     copy: 'Copy',
     copied: 'Copied',

@@ -12,6 +12,7 @@ export const common = {
   error: 'Błąd',
   noItems: 'Brak elementów',
   createdAt: 'Utworzono',
+  themeColor: 'Kolor motywu',
   copyToClipboard: {
     copy: 'Kopiuj',
     copied: 'Skopiowano',
