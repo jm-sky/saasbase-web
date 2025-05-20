@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
-import { useInvitationStore } from '@/stores/invitation'
+import { useTenantInvitationStore } from '@/domains/tenant/store/tenantInvitation.store'
 
 const { t } = useI18n()
-const store = useInvitationStore()
+const store = useTenantInvitationStore()
 
 const invitation = store.invitation
 </script>

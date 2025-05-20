@@ -38,7 +38,6 @@ export interface ITenant {
   tenantId: TUUID
   name: string
   slug: string
-  taxId?: string
   email?: string
   phone?: string
   website?: string
@@ -50,4 +49,4 @@ export interface ITenant {
   updatedAt: TDateTime
 }
 
-export type ITenantCreate = Omit<ITenant, 'id' | 'tenantId' | 'logo' | 'logoUrl' | 'createdAt' | 'updatedAt'>
+export type ITenantCreate = Omit<ITenant, 'id' | 'slug' | 'tenantId' | 'logo' | 'logoUrl' | 'createdAt' | 'updatedAt'>

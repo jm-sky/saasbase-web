@@ -2,7 +2,7 @@ import type { ITenantPreview } from './tenant.type'
 import type { TDateTime, TUUID } from '@/domains/shared/types/common'
 import type { IUserPreview } from '@/domains/user/types/user.type'
 
-export interface IInvitation {
+export interface ITenantInvitation {
   id: TUUID
   tenantId: TUUID
   inviterId: TUUID

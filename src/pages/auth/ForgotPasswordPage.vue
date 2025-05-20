@@ -53,40 +53,31 @@ const onSubmit = handleSubmit(async (values) => {
         </p>
         <p class="text-sm text-muted-foreground">
           ...or
-          <RouterLink
-            to="/login"
-            as="template"
-          >
-            <Button
-              variant="link"
-              class="p-0"
-            >
+          <RouterLink to="/login" as="template">
+            <Button variant="link" class="p-0">
               login
             </Button>
           </RouterLink>
         </p>
       </div>
 
-      <form @submit="onSubmit">
-        <div class="grid gap-2">
-          <FormFieldLabeled
-            v-slot="{ componentField }"
-            name="email"
-          >
-            <Input
-              v-bind="componentField"
-              placeholder="name@example.com"
-            />
-          </FormFieldLabeled>
-          <Button :disabled="isSubmitting">
-            <UIIcon
-              v-if="isSubmitting"
-              icon="lucide:loader-circle"
-              class="mr-2 size-4 animate-spin"
-            />
-            Send reset link
-          </Button>
-        </div>
+      <form class="mb-2 grid gap-2" @submit="onSubmit">
+        <FormFieldLabeled v-slot="{ componentField }" name="email">
+          <Input
+            v-bind="componentField"
+            placeholder="name@example.com"
+            class="bg-white/50 dark:bg-black/50"
+          />
+        </FormFieldLabeled>
+
+        <Button :disabled="isSubmitting">
+          <UIIcon
+            v-if="isSubmitting"
+            icon="lucide:loader-circle"
+            class="mr-2 size-4 animate-spin"
+          />
+          Send reset link
+        </Button>
       </form>
     </div>
   </GuestLayout>

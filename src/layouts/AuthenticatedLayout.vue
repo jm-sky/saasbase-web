@@ -2,6 +2,7 @@
 import DarkModeButton from '@/components/DarkModeButton.vue'
 import LanguageSwitchDropdown from '@/components/LanguageSwitchDropdown.vue'
 import AppSidebar from '@/components/Layout/AppSidebar.vue'
+import NotificationsDrawer from '@/components/Layout/NotificationsDrawer.vue'
 import Search from '@/components/Layout/Search.vue'
 import UserNav from '@/components/Layout/UserNav.vue'
 import ThemeColorButton from '@/components/LayoutConfigurator/ThemeColorButton.vue'
@@ -42,9 +43,10 @@ const authStore = useAuthStore()
         <TopbarNav class="hidden md:block mx-6" />
         <div class="ml-auto flex items-center gap-2">
           <Search disabled />
-          <DarkModeButton />
+          <DarkModeButton class="hidden md:inline-flex" />
           <ThemeColorButton class="hidden md:inline-flex" />
-          <LanguageSwitchDropdown />
+          <LanguageSwitchDropdown class="hidden md:inline-flex" />
+          <NotificationsDrawer />
           <UserNav />
         </div>
       </header>

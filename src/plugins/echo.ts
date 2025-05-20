@@ -12,7 +12,7 @@ window.Pusher = Pusher
 
 const echoOptions = {
   broadcaster: 'pusher' as const,
-  key: import.meta.env.VITE_PUSHER_APP_KEY,
+  key: import.meta.env.VITE_PUSHER_APP_KEY ?? '',
   cluster: import.meta.env.VITE_PUSHER_APP_CLUSTER ?? 'mt1',
   wsHost: import.meta.env.VITE_PUSHER_HOST ?? window.location.hostname,
   wsPort: import.meta.env.VITE_PUSHER_PORT ?? 6001,

@@ -1,6 +1,10 @@
 export const auth = {
-  email: 'Email',
-  password: 'Password',
+  fields: {
+    firstName: 'First name',
+    lastName: 'Last name',
+    email: 'E-mail',
+    password: 'Password',
+  },
   rememberMe: 'Remember me',
   forgotPassword: 'Forgot your password?',
   alreadyRegistered: 'Already registered?',
@@ -27,7 +31,7 @@ export const auth = {
     noTenants: 'No tenants found.',
   },
   login: {
-    title: 'Welcome back',
+    title: 'Sign in',
     description: 'Enter your email to sign in to your account',
     loadingInvitation: 'Loading invitation...',
     invitationTitle: 'You have been invited',
@@ -45,5 +49,6 @@ export const auth = {
     successDescription: 'Your account has been created successfully',
     error: 'Registration failed',
     errorDescription: 'Failed to create your account. Please try again.',
+    submit: 'Create account',
   },
 }

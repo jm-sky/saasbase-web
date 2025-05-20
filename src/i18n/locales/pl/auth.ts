@@ -1,4 +1,10 @@
 export const auth = {
+  fields: {
+    firstName: 'Imię',
+    lastName: 'Nazwisko',
+    email: 'E-mail',
+    password: 'Hasło',
+  },
   email: 'Email',
   password: 'Hasło',
   rememberMe: 'Zapamiętaj mnie',
@@ -45,5 +51,6 @@ export const auth = {
     successDescription: 'Twoje konto zostało pomyślnie utworzone',
     error: 'Rejestracja nie powiodła się',
     errorDescription: 'Nie udało się utworzyć konta. Spróbuj ponownie.',
+    submit: 'Utwórz konto',
   },
 }

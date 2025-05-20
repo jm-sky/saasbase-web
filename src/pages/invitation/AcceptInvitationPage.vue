@@ -5,7 +5,7 @@ import { useRouter } from 'vue-router'
 import InvitationInfo from '@/components/invitation/InvitationInfo.vue'
 import Button from '@/components/ui/button/Button.vue'
 import { useToast } from '@/components/ui/toast/use-toast'
-import { useInvitation } from '@/composables/useInvitation'
+import { useInvitation } from '@/domains/tenant/composables/useTenantInvitation'
 import { useNextRedirect } from '@/lib/useNextRedirect'
 
 const { t } = useI18n()

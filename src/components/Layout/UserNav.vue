@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useDark, useToggle } from '@vueuse/core'
 import { storeToRefs } from 'pinia'
 import {
   Avatar,
@@ -19,10 +20,14 @@ import DropdownMenuItemLink from '@/components/ui/dropdown-menu/DropdownMenuItem
 import { useLogout } from '@/domains/auth/composables/useLogout'
 import { useAuthStore } from '@/domains/auth/store/auth.store'
 import { routeTo } from '@/router/routeMap'
+import Switch from '../ui/switch/Switch.vue'
 
 const authStore = useAuthStore()
 
 const { logout } = useLogout()
+const isDark = useDark()
+const toggleDark = useToggle(isDark)
+
 const { user } = storeToRefs(authStore)
 </script>
 
@@ -52,6 +57,9 @@ const { user } = storeToRefs(authStore)
         <DropdownMenuItemLink :to="routeTo.settingsProfile()">
           Profile
         </DropdownMenuItemLink>
+        <DropdownMenuItemLink :to="routeTo.account()">
+          Account
+        </DropdownMenuItemLink>
         <DropdownMenuItemLink :to="routeTo.settingsAccount()">
           Settings
         </DropdownMenuItemLink>
@@ -59,9 +67,29 @@ const { user } = storeToRefs(authStore)
           Change Tenant
         </DropdownMenuItemLink>
       </DropdownMenuGroup>
+
       <DropdownMenuSeparator />
-      <DropdownMenuItem class="cursor-pointer" @click="logout()">
-        Log out
+
+      <DropdownMenuItem class="flex items-center justify-between">
+        Dark Mode
+        <Switch v-model="isDark" class="w-10 h-4" @click.stop.capture="toggleDark()" />
+      </DropdownMenuItem>
+
+      <DropdownMenuItem class="flex items-center justify-between">
+        Language
+      </DropdownMenuItem>
+
+      <DropdownMenuSeparator />
+
+      <DropdownMenuItem>
+        <Button
+          variant="outline"
+          class="w-full"
+          size="sm"
+          @click="logout()"
+        >
+          Log out
+        </Button>
       </DropdownMenuItem>
     </DropdownMenuContent>
   </DropdownMenu>
