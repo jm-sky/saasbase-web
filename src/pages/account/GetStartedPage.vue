@@ -67,3 +67,11 @@ onMounted(async () => {
     </div>
   </div>
 </template>
+
+<style scoped>
+@reference '../../style/index.css';
+
+.card {
+  @apply border border-muted rounded-lg p-6 shadow-sm text-sm;
+}
+</style>

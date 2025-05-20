@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Icon } from '@iconify/vue'
 import { useI18n } from 'vue-i18n'
-import { Button } from '@/components/ui/button'
+import { Button, type ButtonVariants } from '@/components/ui/button'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -9,10 +9,17 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { useLanguageStore } from '@/stores/language.store'
+import type { HTMLAttributes } from 'vue'
 import type { TLocale } from '@/i18n'
 
 const { t } = useI18n()
 const languageStore = useLanguageStore()
+
+const props = defineProps<{
+  variant?: ButtonVariants['variant']
+  class?: HTMLAttributes['class']
+  withLabel?: boolean
+}>()
 
 const switchLanguage = (langCode: TLocale) => {
   languageStore.setLocale(langCode)
@@ -22,9 +29,15 @@ const switchLanguage = (langCode: TLocale) => {
 <template>
   <DropdownMenu>
     <DropdownMenuTrigger as-child>
-      <Button variant="ghost" class="h-9 px-3 gap-1">
-        <Icon icon="lucide:languages" class="hidden md:block mr-2" />
-        {{ languageStore.currentLocale.toUpperCase() }}
+      <Button
+        :variant="variant ?? 'ghost'"
+        :class="props.class"
+        class="h-9 gap-1"
+      >
+        <Icon icon="lucide:languages" class="hidden md:block" :class="{ 'mr-2': withLabel }" />
+        <span v-if="withLabel">
+          {{ languageStore.currentLocale.toUpperCase() }}
+        </span>
       </Button>
     </DropdownMenuTrigger>
     <DropdownMenuContent align="end">

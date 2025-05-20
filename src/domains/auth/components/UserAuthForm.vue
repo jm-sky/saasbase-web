@@ -16,6 +16,7 @@ import { config } from '@/config'
 import { useLogin } from '@/domains/auth/composables/useLogin'
 import { credentialsSchema } from '@/domains/auth/validation/auth.schema'
 import { cn } from '@/lib/utils'
+import OAuthButtons from './OAuthButtons.vue'
 import type { Credentials } from '@/domains/auth/types/auth.type'
 
 interface AuthErrorResponse {
@@ -152,24 +153,7 @@ const useAuthProviders = computed<boolean>(() => Object.values(config.auth.provi
         </div>
       </div>
 
-      <Button
-        variant="outline"
-        type="button"
-        :disabled="isSubmitting"
-        class="w-full transition-all duration-200 hover:shadow-md"
-      >
-        <UIIcon
-          v-if="isSubmitting"
-          icon="lucide:loader-circle"
-          class="mr-2 size-4 animate-spin"
-        />
-        <UIIcon
-          v-else
-          icon="lucide:github"
-          class="mr-2 size-4"
-        />
-        GitHub
-      </Button>
+      <OAuthButtons />
     </template>
   </div>
 </template>
