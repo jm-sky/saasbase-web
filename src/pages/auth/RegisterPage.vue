@@ -5,6 +5,7 @@ import { useI18n } from 'vue-i18n'
 import { RouterLink, useRouter } from 'vue-router'
 import ButtonLink from '@/components/ButtonLink.vue'
 import FormFieldLabeled from '@/components/Form/FormFieldLabeled.vue'
+import PasswordInput from '@/components/Inputs/PasswordInput.vue'
 import InvitationInfo from '@/components/invitation/InvitationInfo.vue'
 import Button from '@/components/ui/button/Button.vue'
 import Input from '@/components/ui/input/Input.vue'
@@ -130,9 +131,8 @@ onMounted(() => {
           :label="t('auth.fields.password')"
           :disabled="isSubmitting"
         >
-          <Input
+          <PasswordInput
             v-bind="componentField"
-            type="password"
             class="bg-white/50 dark:bg-black/50"
           />
         </FormFieldLabeled>

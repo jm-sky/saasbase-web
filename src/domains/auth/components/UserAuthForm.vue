@@ -6,6 +6,7 @@ import { useI18n } from 'vue-i18n'
 import { RouterLink } from 'vue-router'
 import FormFieldLabeled from '@/components/Form/FormFieldLabeled.vue'
 import FormFieldLabeledAfter from '@/components/Form/FormFieldLabeledAfter.vue'
+import PasswordInput from '@/components/Inputs/PasswordInput.vue'
 import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Input } from '@/components/ui/input'
@@ -78,7 +79,7 @@ const useAuthProviders = computed<boolean>(() => Object.values(config.auth.provi
               v-bind="componentField"
               autocomplete="username"
               :placeholder="t('auth.emailPlaceholder')"
-              class="bg-white/50 dark:bg-black/50 pl-10 transition-shadow"
+              class="bg-white/50 dark:bg-black/50 pl-10"
             />
           </div>
         </FormFieldLabeled>
@@ -88,16 +89,15 @@ const useAuthProviders = computed<boolean>(() => Object.values(config.auth.provi
           name="password"
         >
           <div class="relative">
+            <PasswordInput
+              v-bind="componentField"
+              autocomplete="current-password"
+              :placeholder="t('auth.passwordPlaceholder')"
+              class="bg-white/50 dark:bg-black/50 pl-10"
+            />
             <UIIcon
               icon="lucide:lock"
               class="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground"
-            />
-            <Input
-              v-bind="componentField"
-              type="password"
-              autocomplete="current-password"
-              :placeholder="t('auth.passwordPlaceholder')"
-              class="bg-white/50 dark:bg-black/50 pl-10 transition-shadow"
             />
           </div>
         </FormFieldLabeled>
