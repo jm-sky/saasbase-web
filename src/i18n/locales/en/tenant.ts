@@ -34,6 +34,11 @@ export const tenant = {
     },
   },
   invitations: {
+    status: {
+      pending: 'Pending',
+      accepted: 'Accepted',
+      rejected: 'Rejected',
+    },
     send: {
       title: 'Send Invitation',
       description: 'Send an invitation to a user to join the tenant.',
@@ -51,6 +56,7 @@ export const tenant = {
       description: 'List of invitations to the tenant.',
       email: 'Email',
       role: 'Role',
+      invitedBy: 'Invited by',
       status: 'Status',
       expires: 'Expires',
       acceptedAt: 'Accepted At',

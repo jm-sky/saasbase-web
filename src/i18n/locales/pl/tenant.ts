@@ -39,6 +39,11 @@ export const tenant = {
     },
   },
   invitations: {
+    status: {
+      pending: 'Oczekuje',
+      accepted: 'Zaakceptowane',
+      rejected: 'Odrzucone',
+    },
     send: {
       title: 'Wyślij zaproszenie',
       description: 'Wyślij zaproszenie do zespołu.',
@@ -56,6 +61,7 @@ export const tenant = {
       description: 'Lista zaproszeń do zespołu.',
       email: 'Email',
       role: 'Rola',
+      invitedBy: 'Zaproszony przez',
       status: 'Status',
       expires: 'Wygasa',
       acceptedAt: 'Data akceptacji',

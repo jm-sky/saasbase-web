@@ -12,6 +12,7 @@ export interface ITenantInvitation {
   status: string
   tenant: ITenantPreview
   inviter: IUserPreview
+  invitedUser?: IUserPreview
   acceptedAt?: TDateTime
   expiresAt: TDateTime
   createdAt?: TDateTime
