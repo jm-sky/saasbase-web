@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import NoItems from '@/components/DataLists/NoItems.vue'
 import Button from '@/components/ui/button/Button.vue'
@@ -14,12 +14,19 @@ import {
 import SheetFooter from '@/components/ui/sheet/SheetFooter.vue'
 import UIIcon from '@/components/UIIcon.vue'
 import { type INotification, notificationsService } from '@/domains/account/services/Notifications.service'
+import { useAuthStore } from '@/domains/auth/store/auth.store'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
+import echo from '@/plugins/echo'
 import NotificationsDrawerItem from './NotificationsDrawerItem.vue'
 
 const { t } = useI18n()
+const authStore = useAuthStore()
+
 const loading = ref(false)
 const notifications = ref<INotification[]>([])
+
+const unreadNotifications = computed(() => notifications.value.filter(notification => !notification.readAt))
+const unreadTotal = computed(() => unreadNotifications.value.length)
 
 const refresh = async () => {
   try {
@@ -32,8 +39,21 @@ const refresh = async () => {
   }
 }
 
+const handleNotificationCreated = (notification: INotification) => {
+  notifications.value.unshift(notification)
+}
+
+const startListen = () => {
+  const channel = echo.private(`users.${authStore.user?.id}.notifications`)
+  channel.listen('.notifications', handleNotificationCreated)
+  channel.error((error: unknown) => {
+    console.error('[NotificationsDrawer] Error joining room', error)
+  })
+}
+
 onMounted(async () => {
   await refresh()
+  startListen()
 })
 </script>
 
@@ -44,9 +64,10 @@ onMounted(async () => {
         v-tooltip="t('notifications')"
         variant="ghost-primary"
         size="icon"
-        class="rounded-full"
+        class="relative rounded-full"
       >
         <UIIcon icon="lucide:bell" class="size-4" />
+        <span v-if="unreadTotal > 0" class="absolute top-0 right-0 text-xs size-4 rounded-full bg-red-500 text-primary-foreground">{{ unreadTotal }}</span>
       </Button>
     </SheetTrigger>
     <SheetContent>

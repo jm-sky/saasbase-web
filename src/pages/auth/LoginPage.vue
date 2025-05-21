@@ -12,7 +12,7 @@ import { useNextRedirect } from '@/lib/useNextRedirect'
 const { t } = useI18n()
 const router = useRouter()
 const { redirectTo } = useNextRedirect()
-const { token, loading: invitationLoading, loadInvitation } = useInvitation()
+const { token, loading: invitationLoading, invitation, loadInvitation } = useInvitation()
 
 const handleLoggedIn = async () => {
   if (token) {
@@ -51,7 +51,7 @@ onMounted(() => {
         {{ t('auth.login.loadingInvitation') }}
       </div>
 
-      <InvitationInfo v-else-if="token" />
+      <InvitationInfo v-else-if="token || invitation" />
 
       <UserAuthForm @logged-in="handleLoggedIn" />
 

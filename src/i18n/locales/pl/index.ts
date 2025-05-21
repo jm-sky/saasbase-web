@@ -20,6 +20,10 @@ export const pl = {
   comments,
   contacts,
   notifications: 'Powiadomienia',
+  invitation: {
+    title: 'Zaproszenie',
+    description: 'Zostałeś zaproszony do dołączenia do {tenant} jako {role}.',
+  },
   layout: {
     darkMode: 'Tryb ciemny',
     lightMode: 'Tryb jasny',

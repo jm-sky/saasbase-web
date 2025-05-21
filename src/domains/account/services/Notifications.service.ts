@@ -2,7 +2,7 @@ import api from '@/lib/api'
 import type { TDateTime, TUUID } from '@/domains/shared/types/common'
 import type { IResource } from '@/domains/shared/types/resource.type'
 
-export type TNotificationType = 'welcome' | 'security.passwordChanged'
+export type TNotificationType = 'welcome' | 'security.passwordChanged' | 'tenantInvitation.accepted' | 'tenantInvitation.rejected'
 
 export interface INotificationData {
   type: TNotificationType

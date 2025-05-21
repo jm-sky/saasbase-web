@@ -11,6 +11,10 @@ const getIcon = (type: TNotificationType) => {
   switch (type) {
     case 'security.passwordChanged':
       return 'lucide:lock'
+    case 'tenantInvitation.accepted':
+      return 'lucide:check'
+    case 'tenantInvitation.rejected':
+      return 'lucide:x'
     case 'welcome':
       return 'lucide:bell'
     default:

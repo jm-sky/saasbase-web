@@ -20,6 +20,10 @@ export const en = {
   comments,
   contacts,
   notifications: 'Notifications',
+  invitation: {
+    title: 'Invitation',
+    description: 'You have been invited to join {tenant} as {role}.',
+  },
   layout: {
     darkMode: 'Dark Mode',
     lightMode: 'Light Mode',

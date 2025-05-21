@@ -23,7 +23,7 @@ const router = useRouter()
 const { t } = useI18n()
 const { toast } = useToast()
 const { redirectTo } = useNextRedirect()
-const { token, loading: invitationLoading, loadInvitation } = useInvitation()
+const { token, loading: invitationLoading, invitation, loadInvitation } = useInvitation()
 
 const { isSubmitting, handleSubmit, resetForm, setErrors } = useForm<RegistrationData>({
   validationSchema: registrationSchema,
@@ -86,7 +86,7 @@ onMounted(() => {
         {{ t('auth.register.loadingInvitation') }}
       </div>
 
-      <InvitationInfo v-else-if="token" />
+      <InvitationInfo v-else-if="token || invitation" />
 
       <form class="flex flex-col gap-2" @submit="onSubmit">
         <FormFieldLabeled

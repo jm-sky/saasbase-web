@@ -8,11 +8,6 @@ class TenantInvitationService {
     return response.data.data
   }
 
-  async send(tenantId: string, data: ISendInvitationRequest): Promise<ITenantInvitation> {
-    const response = await api.post<{ data: ITenantInvitation }>(`/tenants/${tenantId}/invite`, data)
-    return response.data.data
-  }
-
   async accept(token: string): Promise<ITenantInvitation> {
     const response = await api.post<{ data: ITenantInvitation }>(`/tenants/invitations/${token}/accept`)
     return response.data.data
@@ -20,6 +15,11 @@ class TenantInvitationService {
 
   async reject(token: string): Promise<ITenantInvitation> {
     const response = await api.post<{ data: ITenantInvitation }>(`/tenants/invitations/${token}/reject`)
+    return response.data.data
+  }
+
+  async send(tenantId: string, data: ISendInvitationRequest): Promise<ITenantInvitation> {
+    const response = await api.post<{ data: ITenantInvitation }>(`/tenants/${tenantId}/invitations`, data)
     return response.data.data
   }
 
