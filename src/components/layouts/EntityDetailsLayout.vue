@@ -19,7 +19,7 @@ const emit = defineEmits<{
 </script>
 
 <template>
-  <div class="p-6 flex flex-col gap-y-6">
+  <div class="px-4 md:px-6 py-4 md:py-6 flex flex-col gap-y-6" data-testid="entity-details-layout">
     <!-- Header -->
     <div class="flex flex-row gap-4 items-center justify-between">
       <div>

@@ -45,7 +45,7 @@ const endDate = ref(new Date())
       default-value="overview"
       class="space-y-4"
     >
-      <TabsList>
+      <TabsList class="max-w-full">
         <TabsTrigger value="overview">
           Overview
         </TabsTrigger>
@@ -79,7 +79,7 @@ const endDate = ref(new Date())
           <ActiveNowCard />
         </div>
         <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
-          <Card class="col-span-4">
+          <Card class="col-span-4 max-w-[calc(100vw-4rem)] overflow-x-auto">
             <CardHeader>
               <CardTitle>{{ tr('Overview') }}</CardTitle>
             </CardHeader>
@@ -87,7 +87,7 @@ const endDate = ref(new Date())
               <Overview />
             </CardContent>
           </Card>
-          <RecentSales class="col-span-3" />
+          <RecentSales class="col-span-3 overflow-x-auto" />
         </div>
       </TabsContent>
     </Tabs>

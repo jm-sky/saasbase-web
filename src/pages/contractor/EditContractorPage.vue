@@ -95,7 +95,7 @@ onMounted(async () => {
           <Textarea v-bind="componentField" class="bg-white/50 dark:bg-black/50" />
         </FormFieldLabeled>
 
-        <div class="grid grid-cols-2 gap-x-8 gap-y-2">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-2">
           <div class="flex flex-col gap-4">
             <FormFieldLabeled
               v-slot="{ componentField }"

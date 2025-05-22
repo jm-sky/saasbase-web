@@ -63,10 +63,11 @@ const authStore = useAuthStore()
         </Breadcrumb>
       </nav>
 
-      <ScrollArea class="flex flex-col h-full md:h-[var(--content-height)] pr-1 md:mr-4 md:mb-2 bg-background border rounded-xl grow">
+      <ScrollArea class="flex flex-col h-full max-w-[100vw] md:h-[var(--content-height)] pr-1 md:mr-4 md:mb-2 bg-background border rounded-xl grow">
         <slot />
       </ScrollArea>
     </SidebarInset>
+
     <UserAuthModal v-if="authStore.showAuthModal" />
     <SelectTenantModal v-if="authStore.showSelectTenantModal" />
     <FloatingAiChatWidget v-if="config.aiChat.enabled" />
