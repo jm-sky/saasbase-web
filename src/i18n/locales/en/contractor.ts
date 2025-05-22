@@ -6,8 +6,12 @@ export const contractor = {
     taxId: 'Tax ID',
     email: 'E-mail',
     phone: 'Phone',
+    website: 'Website',
     description: 'Description',
     tags: 'Tags',
+    roles: 'Roles',
+    isSupplier: 'Is Supplier?',
+    isBuyer: 'Is Buyer?',
   },
   add: {
     title: 'Add Contractor',

@@ -15,6 +15,8 @@ const tooltipText = computed(() => tags.join(', '))
     v-tooltip="tooltipText"
     class="flex flex-wrap gap-1 cursor-help max-w-full"
   >
+    <span v-if="tags.length === 0">-</span>
+
     <span
       v-for="(tag, index) in limitedTags"
       :key="index"

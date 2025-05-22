@@ -6,8 +6,12 @@ export const contractor = {
     taxId: 'Identyfikator podatkowy',
     email: 'E-mail',
     phone: 'Telefon',
+    website: 'Strona internetowa',
     description: 'Opis',
     tags: 'Tagi',
+    roles: 'Role',
+    isSupplier: 'Jest dostawcą?',
+    isBuyer: 'Jest kupującym?',
   },
   add: {
     title: 'Dodaj kontrahenta',

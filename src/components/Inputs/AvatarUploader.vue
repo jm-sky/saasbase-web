@@ -13,7 +13,7 @@ interface UploaderService {
 
 const { t } = useI18n()
 
-const { modelId, autoUpload, avatarUrl, uploaderService, readonly } = defineProps<{
+const { modelId, autoUpload, avatarUrl, uploaderService, readonly, disabled } = defineProps<{
   modelId: string
   avatarUrl?: string
   fallbackText?: string
@@ -55,6 +55,7 @@ const canUpload = computed<boolean>(() => !!file.value && !isUploaded.value)
 const canRemove = computed<boolean>(() => (!!file.value || !!avatarUrl || isUploaded.value) && !isRemoved.value)
 
 const onFileChange = async (e: Event) => {
+  if (disabled) return
   if (readonly) return
 
   const target = e.target as HTMLInputElement
@@ -72,6 +73,7 @@ const onFileChange = async (e: Event) => {
 }
 
 const upload = async () => {
+  if (disabled) return
   if (readonly) return
   if (!file.value) return
 
@@ -94,6 +96,7 @@ const upload = async () => {
 }
 
 const removeFile = async () => {
+  if (disabled) return
   if (readonly) return
 
   file.value = null

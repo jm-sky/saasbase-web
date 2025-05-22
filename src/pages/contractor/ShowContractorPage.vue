@@ -2,16 +2,11 @@
 import { onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
-import TagList from '@/components/DataLists/TagList.vue'
-import AvatarUploader from '@/components/Inputs/AvatarUploader.vue'
 import EntityDetailsLayout from '@/components/layouts/EntityDetailsLayout.vue'
-import InfoSection from '@/components/Sections/InfoSection.vue'
-import Separator from '@/components/ui/separator/Separator.vue'
-import { contractorLogoService } from '@/domains/contractor/services/ContractorLogoService'
+import ContractorSidebar from '@/domains/contractor/components/ContractorSidebar.vue'
 import { contractorService } from '@/domains/contractor/services/ContractorService'
 import AuthenticatedLayout from '@/layouts/AuthenticatedLayout.vue'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
-import { toDateTimeString } from '@/lib/toDateTimeString'
 import type { IContractor } from '@/domains/contractor/models/contractor.model'
 
 const { t } = useI18n()
@@ -43,13 +38,12 @@ onMounted(async () => {
 <template>
   <AuthenticatedLayout>
     <EntityDetailsLayout
-      v-if="contractor"
       :title="t('contractor.contractorDetails')"
       :back-link="'/contractors'"
       :edit-link="`/contractors/${contractorId}/edit`"
-      :name="contractor.name"
-      :email="contractor.email"
-      :logo="contractor.logoUrl"
+      :name="contractor?.name"
+      :email="contractor?.email"
+      :logo="contractor?.logoUrl"
       :loading
       @refresh="refresh"
     >
@@ -58,37 +52,7 @@ onMounted(async () => {
       </template>
 
       <template #sidebar>
-        <AvatarUploader
-          :model-id="contractorId"
-          :avatar-url="contractor.logoUrl"
-          :uploader-service="contractorLogoService"
-          auto-upload
-          size="lg"
-          @uploaded="refresh"
-          @removed="refresh"
-        />
-
-        <div class="font-bold">
-          {{ contractor.name ?? '...' }}
-        </div>
-
-        <div v-if="contractor.email" class="text-sm text-muted-foreground">
-          {{ contractor.email ?? '...' }}
-        </div>
-
-        <Separator class="my-2" />
-
-        <div class="flex flex-col gap-3 text-left">
-          <InfoSection :label="t('contractor.fields.description')" :value="contractor.description" />
-          <InfoSection :label="t('contractor.fields.taxId')" :value="contractor.taxId" />
-          <InfoSection :label="t('contractor.fields.email')" :value="contractor.email" />
-          <InfoSection :label="t('contractor.fields.phone')" :value="contractor.phone" />
-          <InfoSection :label="t('contractor.fields.tags')">
-            <TagList :tags="contractor.tags" />
-          </InfoSection>
-          <InfoSection :label="t('common.fields.createdAt')" :value="toDateTimeString(contractor.createdAt)" />
-          <InfoSection :label="t('common.fields.updatedAt')" :value="toDateTimeString(contractor.updatedAt)" />
-        </div>
+        <ContractorSidebar :contractor-id="contractorId" :contractor />
       </template>
 
       <template #tabs>

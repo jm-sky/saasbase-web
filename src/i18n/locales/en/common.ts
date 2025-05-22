@@ -1,10 +1,12 @@
 export const common = {
   add: 'Add',
+  back: 'Back',
   edit: 'Edit',
   upload: 'Upload',
   remove: 'Remove',
   delete: 'Delete',
   download: 'Download',
+  reset: 'Reset',
   save: 'Save',
   loading: 'Loading...',
   refresh: 'Refresh',
