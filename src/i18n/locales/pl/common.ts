@@ -18,6 +18,11 @@ export const common = {
     copied: 'Skopiowano',
     success: 'Skopiowano do schowka'
   },
+  fields: {
+    id: 'ID',
+    createdAt: 'Utworzono',
+    updatedAt: 'Zaktualizowano',
+  },
   language: {
     en: 'Angielski',
     pl: 'Polski'

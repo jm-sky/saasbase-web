@@ -2,7 +2,7 @@
 import { useForm } from 'vee-validate'
 import { onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import FormFieldLabeled from '@/components/Form/FormFieldLabeled.vue'
 import Button from '@/components/ui/button/Button.vue'
 import Input from '@/components/ui/input/Input.vue'
@@ -18,6 +18,7 @@ import type { IContractor } from '@/domains/contractor/models/contractor.model'
 const { t } = useI18n()
 const { toast } = useToast()
 const route = useRoute()
+const router = useRouter()
 const contractorId = route.params.id as string
 
 const loading = ref(false)
@@ -27,6 +28,10 @@ const { isSubmitting, handleSubmit, setValues, setErrors, resetForm } = useForm<
   initialValues: {
     name: '',
     description: '',
+    taxId: '',
+    email: '',
+    phone: '',
+    website: '',
     isSupplier: true,
     isBuyer: true,
   },
@@ -51,6 +56,7 @@ const onSubmit = handleSubmit(async (values) => {
     await contractorService.create(values)
     toast.success('Contractor added successfully')
     resetForm()
+    await router.push({ name: 'showContractor', params: { id: contractorId } })
   } catch (error: unknown) {
     console.error('[AddContractorView][onSubmit] error:', error)
     if (isValidationError(error)) setErrors(error.response.data.errors)
@@ -115,6 +121,15 @@ onMounted(async () => {
               v-slot="{ componentField }"
               name="phone"
               label="Phone"
+              :disabled="isSubmitting"
+            >
+              <Input v-bind="componentField" class="bg-white/50 dark:bg-black/50" />
+            </FormFieldLabeled>
+
+            <FormFieldLabeled
+              v-slot="{ componentField }"
+              name="website"
+              label="Website"
               :disabled="isSubmitting"
             >
               <Input v-bind="componentField" class="bg-white/50 dark:bg-black/50" />

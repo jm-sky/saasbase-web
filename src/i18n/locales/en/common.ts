@@ -18,6 +18,11 @@ export const common = {
     copied: 'Copied',
     success: 'Copied to clipboard'
   },
+  fields: {
+    id: 'ID',
+    createdAt: 'Created at',
+    updatedAt: 'Updated at',
+  },
   language: {
     en: 'English',
     pl: 'Polish'

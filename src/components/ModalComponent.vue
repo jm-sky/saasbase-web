@@ -9,10 +9,11 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog'
 
-const { size = 'md' } = defineProps<{
+const { size = 'md', disableClose = false } = defineProps<{
   title: string
   description?: string
   size?: 'sm' | 'md' | 'lg' | 'xl'
+  disableClose?: boolean
 }>()
 
 const isOpen = defineModel<boolean>('open', { default: true })
@@ -33,7 +34,12 @@ const variants = {
       <slot name="trigger" />
     </DialogTrigger>
 
-    <DialogContent :class="variants.size[size]">
+    <DialogContent
+      :class="variants.size[size]"
+      :close-button="!disableClose"
+      :trap-focus="disableClose"
+      :disable-outside-pointer-events="disableClose"
+    >
       <DialogHeader>
         <DialogTitle>{{ title }}</DialogTitle>
         <DialogDescription v-if="description">

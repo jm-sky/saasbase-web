@@ -86,8 +86,8 @@ onMounted(async () => {
           <InfoSection :label="t('contractor.fields.tags')">
             <TagList :tags="contractor.tags" />
           </InfoSection>
-          <InfoSection :label="t('contractor.fields.createdAt')" :value="toDateTimeString(contractor.createdAt)" />
-          <InfoSection :label="t('contractor.fields.updatedAt')" :value="toDateTimeString(contractor.updatedAt)" />
+          <InfoSection :label="t('common.fields.createdAt')" :value="toDateTimeString(contractor.createdAt)" />
+          <InfoSection :label="t('common.fields.updatedAt')" :value="toDateTimeString(contractor.updatedAt)" />
         </div>
       </template>
 

@@ -16,7 +16,7 @@ const closeModal = () => {
 </script>
 
 <template>
-  <ModalComponent :title="t('auth.signIn')">
+  <ModalComponent :title="t('auth.signIn')" disable-close>
     <UserAuthForm @logged-in="closeModal" />
 
     <Button variant="outline" @click="logout">
