@@ -9,6 +9,9 @@ export const routeMap = {
     mfaVerify: 'mfaVerify',
     selectTenant: 'selectTenant',
   },
+  invitation: {
+    accept: 'invitationAccept',
+  },
   account: {
     index: 'account',
     getStarted: 'account-get-started',
@@ -30,6 +33,7 @@ export const routeTo = {
   register: (): RouteLocationRaw => ({ name: routeMap.auth.register }),
   selectTenant: (): RouteLocationRaw => ({ name: routeMap.auth.selectTenant }),
   userProfile: (): RouteLocationRaw => ({ name: routeMap.userProfile }),
+  invitationAccept: (): RouteLocationRaw => ({ name: routeMap.invitation.accept }),
   account: (): RouteLocationRaw => ({ name: routeMap.account.index }),
   accountGetStarted: (): RouteLocationRaw => ({ name: routeMap.account.getStarted }),
   settingsIndex: (): RouteLocationRaw => ({ name: routeMap.settings.index }),

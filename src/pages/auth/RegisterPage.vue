@@ -25,7 +25,7 @@ const { toast } = useToast()
 const { redirectTo } = useNextRedirect()
 const { token, loading: invitationLoading, invitation, loadInvitation } = useInvitation()
 
-const { isSubmitting, handleSubmit, resetForm, setErrors } = useForm<RegistrationData>({
+const { isSubmitting, handleSubmit, setFieldValue, resetForm, setErrors } = useForm<RegistrationData>({
   validationSchema: registrationSchema,
   initialValues: {
     firstName: import.meta.env.VITE_DEFAULT_NAME ?? 'John',
@@ -60,6 +60,9 @@ const onSubmit = handleSubmit(async (values) => {
 onMounted(() => {
   if (token) {
     void loadInvitation()
+  }
+  if (invitation?.email) {
+    setFieldValue('email', invitation.email)
   }
 })
 </script>

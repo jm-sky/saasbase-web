@@ -29,6 +29,10 @@ const { t } = useI18n()
 const { toast } = useToast()
 const { login } = useLogin()
 
+const props = defineProps<{
+  providedEmail?: string
+}>()
+
 const emit = defineEmits<{
   loggedIn: []
 }>()
@@ -36,7 +40,7 @@ const emit = defineEmits<{
 const { setErrors, setFieldValue, isSubmitting, handleSubmit, values } = useForm<Credentials>({
   validationSchema: credentialsSchema,
   initialValues: {
-    email: import.meta.env.VITE_DEFAULT_LOGIN ?? '',
+    email: props.providedEmail ?? import.meta.env.VITE_DEFAULT_LOGIN ?? '',
     password: import.meta.env.VITE_DEFAULT_PASSWORD ?? '',
     remember: false,
   }

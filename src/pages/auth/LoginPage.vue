@@ -53,7 +53,10 @@ onMounted(() => {
 
       <InvitationInfo v-else-if="token || invitation" />
 
-      <UserAuthForm @logged-in="handleLoggedIn" />
+      <UserAuthForm
+        :provided-email="invitation?.email"
+        @logged-in="handleLoggedIn"
+      />
 
       <p class="text-center text-sm text-muted-foreground">
         {{ t('auth.termsAgree') }}

@@ -14,7 +14,7 @@ const invitation = store.invitation
       {{ t('invitation.title') }}
     </div>
     <div class="text-sm text-muted-foreground">
-      {{ t('invitation.description', {
+      {{ t('invitation.info', {
         user: invitation.inviter.name,
         tenant: invitation.tenant.name,
         role: invitation.role

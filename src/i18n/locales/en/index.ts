@@ -6,6 +6,7 @@ import { comments } from './comments'
 import { common } from './common'
 import { contacts } from './contacts'
 import { contractor } from './contractor'
+import { invitation } from './invitation'
 import { product } from './product'
 import { settings } from './settings'
 import { tenant } from './tenant'
@@ -20,10 +21,7 @@ export const en = {
   comments,
   contacts,
   notifications: 'Notifications',
-  invitation: {
-    title: 'Invitation',
-    description: 'You have been invited to join {tenant} as {role}.',
-  },
+  invitation,
   layout: {
     darkMode: 'Dark Mode',
     lightMode: 'Light Mode',

@@ -9,12 +9,19 @@ import { productRoutes } from '@/router/routes/product'
 import { publicRoutes } from '@/router/routes/public'
 import { settingsRoutes } from '@/router/routes/settings'
 import { tenantRoutes } from '@/router/routes/tenant'
+import { routeMap } from './routeMap'
 import type { RouteRecordRaw } from 'vue-router'
 
 export const routes: RouteRecordRaw[] = [
   {
     path: '/',
     name: 'home',
+    redirect: '/dashboard',
+  },
+
+  {
+    path: '/dashboard',
+    name: 'dashboard',
     component: HomeView,
     meta: {
       middlewares: [isAuthenticated, isVerified],
@@ -23,7 +30,7 @@ export const routes: RouteRecordRaw[] = [
 
   {
     path: '/invitation/accept',
-    name: 'invitationAccept',
+    name: routeMap.invitation.accept,
     component: () => import('@/pages/invitation/AcceptInvitationPage.vue'),
   },
 
