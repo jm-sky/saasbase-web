@@ -22,12 +22,16 @@ export const contractorRoutes: RouteRecordRaw[] = [
   },
   {
     path: '/contractors/:id/show',
-    name: 'showContractor',
     component: () => import('@/pages/contractor/ShowContractorPage.vue'),
     meta: {
       middlewares: [isAuthenticated, isVerified, isInTenant],
     },
     children: [
+      {
+        path: '',
+        name: 'showContractor',
+        redirect: { name: 'showContractorOverview' },
+      },
       {
         path: 'overview',
         name: 'showContractorOverview',
