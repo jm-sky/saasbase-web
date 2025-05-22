@@ -1,4 +1,5 @@
 import { userData } from '@/data/userData'
+import { fullName } from '@/lib/fullName'
 
 export const mails = [
   {
@@ -177,12 +178,12 @@ export type Mail = (typeof mails)[number]
 
 export const accounts = [
   {
-    label: `${userData.firstName} ${userData.lastName}`,
+    label: fullName(userData),
     email: userData.email,
     icon: 'bx:bxl-gmail',
   },
   {
-    label: `${userData.firstName} ${userData.lastName}`,
+    label: fullName(userData),
     email: 'office@company.com',
     icon: 'mdi:google',
   },

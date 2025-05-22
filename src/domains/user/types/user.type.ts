@@ -1,4 +1,4 @@
-import type { TDate, TDateTime, TUUID } from '@/types/common'
+import type { TDate, TDateTime, TUUID } from '@/domains/shared/types/common'
 
 export interface IUserStored {
   id: TUUID
@@ -6,13 +6,13 @@ export interface IUserStored {
   lastName: string
   email: string
   password: string
-  role: string
   phone?: string
   birthDate?: string
   description?: string
   address?: IUserAddress
   image?: string
   isEmailVerified: boolean
+  isTwoFactorEnabled: boolean
   lastLoginAt?: TDateTime
   createdAt: TDateTime
   updatedAt: TDateTime
@@ -27,17 +27,23 @@ export interface IUser {
   birthDate?: string
   description?: string
   address?: IUserAddress
-  image?: string
-  role: string
+  avatarUrl?: string
   isEmailVerified: boolean
-  lastLoginAt?: TDateTime
+  isTwoFactorEnabled: boolean
   createdAt: TDateTime
   updatedAt: TDateTime
 }
 
-export type IUserCreate = Omit<IUser, 'id' | 'createdAt' | 'updatedAt' | 'lastLoginAt' | 'isEmailVerified'>
+export interface IUserPreview {
+  id: TUUID
+  name: string
+  email: string
+  avatarUrl?: string
+  createdAt: TDateTime
+}
 
-export type IPublicUser = Pick<IUser, 'id' | 'firstName' | 'lastName' | 'email' | 'phone' | 'description' | 'address' | 'image' | 'role' | 'createdAt'>
+export type IUserCreate = Omit<IUser, 'id' | 'createdAt' | 'updatedAt' | 'lastLoginAt' | 'isEmailVerified'>
+export type IUserProfile = Pick<IUser, 'id' | 'firstName' | 'lastName' | 'email' | 'phone' | 'description' | 'address' | 'avatarUrl' | 'createdAt'>
 
 export interface IUserAddress {
   street?: string

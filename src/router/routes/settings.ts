@@ -1,39 +1,45 @@
 import { isAuthenticated } from '@/router/middleware/isAuthenticated'
 import { isVerified } from '@/router/middleware/isVerified'
+import { routeMap } from '../routeMap'
 import type { RouteRecordRaw } from 'vue-router'
 
 export const settingsRoutes: RouteRecordRaw[] =  [
   {
     path: '/settings',
-    component: () => import('@/views/settings/SettingsView.vue'),
+    component: () => import('@/pages/settings/SettingsPage.vue'),
     meta: {
       middlewares: [isAuthenticated, isVerified],
     },
     children: [
       {
         path: '',
-        name: 'settings-index',
+        name: routeMap.settings.index,
         redirect: '/settings/profile',
       },
       {
         path: 'profile',
-        name: 'settings-profile',
-        component: () => import('@/views/settings/SettingsProfileView.vue'),
+        name: routeMap.settings.profile,
+        component: () => import('@/pages/settings/SettingsProfilePage.vue'),
       },
       {
         path: 'account',
-        name: 'settings-account',
-        component: () => import('@/views/settings/SettingsAccountView.vue'),
+        name: routeMap.settings.account,
+        component: () => import('@/pages/settings/SettingsAccountPage.vue'),
       },
       {
         path: 'appearance',
-        name: 'settings-appearance',
-        component: () => import('@/views/settings/SettingsAppearanceView.vue'),
+        name: routeMap.settings.appearance,
+        component: () => import('@/pages/settings/SettingsAppearancePage.vue'),
       },
       {
         path: 'notifications',
-        name: 'settings-notifications',
-        component: () => import('@/views/settings/SettingsNotificationsView.vue'),
+        name: routeMap.settings.notifications,
+        component: () => import('@/pages/settings/SettingsNotificationsPage.vue'),
+      },
+      {
+        path: '2fa-setup',
+        name: routeMap.settings.mfaSetup,
+        component: () => import('@/pages/settings/MfaSetupPage.vue'),
       },
     ],
   }

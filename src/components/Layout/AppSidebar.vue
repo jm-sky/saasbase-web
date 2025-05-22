@@ -1,11 +1,13 @@
 <script setup lang="ts">
 import {
+  Building2,
   Mail,
   Package,
   Rocket,
   Settings2,
   Users,
 } from 'lucide-vue-next'
+import { computed } from 'vue'
 import NavMain from '@/components/Layout/NavMain.vue'
 import UserNav from '@/components/Layout/UserNav.vue'
 import {
@@ -15,15 +17,20 @@ import {
   SidebarHeader,
   SidebarRail,
 } from '@/components/ui/sidebar'
+import VersionInfo from '@/components/VersionInfo.vue'
 import { config } from '@/config'
+import { useAuthStore } from '@/domains/auth/store/auth.store'
+import type { MenuItem } from './menu.type'
 import type { SidebarProps } from '@/components/ui/sidebar'
+
+const authStore = useAuthStore()
 
 const props = withDefaults(defineProps<SidebarProps>(), {
   collapsible: 'icon',
 })
 
-const menu = {
-  navMain: [
+const menu = computed<MenuItem[]>(() => {
+  const items: MenuItem[] = [
     {
       title: 'Dashboard',
       url: '/',
@@ -45,32 +52,48 @@ const menu = {
       icon: Mail,
     },
     {
-      title: 'Settings',
-      url: '#',
-      icon: Settings2,
-      items: [
-        {
-          title: 'Profile',
-          url: '/settings/profile',
-        },
-        {
-          title: 'Account',
-          url: '/settings/account',
-        },
-        {
-          title: 'Appearance',
-          url: '/settings/appearance',
-        },
-      ],
+      title: 'Chat',
+      url: '/chat',
+      icon: Mail,
     },
-  ],
-}
+  ]
+
+  if (authStore.tenantId) {
+    items.push({
+      title: 'Tenant',
+      icon: Building2,
+      url: `/tenants/${authStore.tenantId}/show/overview`,
+    })
+  }
+
+  items.push({
+    title: 'Settings',
+    url: '#',
+    icon: Settings2,
+    items: [
+      {
+        title: 'Profile',
+        url: '/settings/profile',
+      },
+      {
+        title: 'Account',
+        url: '/settings/account',
+      },
+      {
+        title: 'Appearance',
+        url: '/settings/appearance',
+      },
+    ],
+  })
+
+  return items
+})
 </script>
 
 <template>
   <Sidebar v-bind="props">
     <SidebarHeader>
-      <RouterLink to="/" class="h-14 flex flex-row gap-4 justify-center items-center px-2 hover:text-primary transition-colors border-b group-has-data-[collapsible=icon]/sidebar-wrapper:h-10 group-has-data-[collapsible=icon]/sidebar-wrapper:px-0">
+      <RouterLink to="/" class="h-14 flex flex-row gap-4 justify-center items-center px-2 hover:text-primary transition-colors group-has-data-[collapsible=icon]/sidebar-wrapper:h-10 group-has-data-[collapsible=icon]/sidebar-wrapper:px-0">
         <i class="fa-solid fa-rocket group-has-data-[state=expanded]/sidebar-wrapper:scale-200" />
         <div class="font-bold text-lg group-has-data-[collapsible=icon]/sidebar-wrapper:hidden">
           {{ config.appName }}
@@ -78,9 +101,10 @@ const menu = {
       </RouterLink>
     </SidebarHeader>
     <SidebarContent>
-      <NavMain :items="menu.navMain" />
+      <NavMain :items="menu" />
     </SidebarContent>
     <SidebarFooter>
+      <VersionInfo />
       <UserNav />
     </SidebarFooter>
     <SidebarRail />

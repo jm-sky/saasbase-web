@@ -6,15 +6,23 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover'
+import type { ButtonVariants } from '../ui/button'
 import LayoutColorSection from './LayoutColorSection.vue'
+import type { HTMLAttributes } from 'vue'
+
+const props = defineProps<{
+  variant?: ButtonVariants['variant']
+  class?: HTMLAttributes['class']
+}>()
 </script>
 
 <template>
   <Popover>
     <PopoverTrigger as-child>
       <Button
-        variant="ghost"
         size="icon"
+        :variant="props.variant ?? 'ghost'"
+        :class="props.class"
       >
         <Icon icon="lucide:paintbrush" />
       </Button>

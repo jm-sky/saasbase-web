@@ -1,5 +1,6 @@
 import tailwindcss from '@tailwindcss/vite'
 import vue from '@vitejs/plugin-vue'
+import { execSync } from 'child_process'
 import { fileURLToPath, URL } from 'node:url'
 import { defineConfig } from 'vite'
 
@@ -14,6 +15,10 @@ export default defineConfig(() => ({
       '@': fileURLToPath(new URL('./src', import.meta.url)),
     },
   },
+  define: {
+    __COMMIT_HASH__: JSON.stringify(execSync('git rev-parse --short HEAD').toString().trim()),
+    __BUILD_DATE__: JSON.stringify(new Date().toISOString())
+  },
   server: {
     port: parseInt(`${process.env.VITE_APP_PORT ?? 5176}`),
     proxy: {
@@ -25,5 +30,8 @@ export default defineConfig(() => ({
         // rewrite: path => path.replace(/^\/api/, ''),
       },
     },
+  },
+  watch: {
+    ignored: ['.docs/**'],
   },
 }))

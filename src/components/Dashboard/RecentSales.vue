@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { isAxiosError } from 'axios'
 import { onMounted, ref } from 'vue'
 import { RouterLink } from 'vue-router'
 import {
@@ -13,19 +14,27 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
-import { useTranslate } from '@/composables/useTranslate'
+import { useToast } from '@/components/ui/toast'
 import { userService } from '@/domains/user/services/userService'
-import type { PublicUser } from '@/domains/user/models/publicUser.model'
+import { useTranslate } from '@/i18n/useTranslate'
+import { initials } from '@/lib/initials'
+import type { IUserPreview } from '@/domains/user/types/user.type'
 
 const tr = useTranslate()
+const { toast } = useToast()
 
 const isLoading = ref(false)
-const users = ref<PublicUser[]>([])
+const users = ref<IUserPreview[]>([])
 
 const refresh = async () => {
   try {
     isLoading.value = true
     users.value = await userService.index({ limit: 5 })
+  } catch (error: unknown) {
+    console.error('[RecentSalesError]', error)
+    toast.error(tr('ErrorLoadingRecentSales'), {
+      description: isAxiosError(error) ? error.response?.data.message ?? error.message : 'Unknown error',
+    })
   } finally {
     isLoading.value = false
   }
@@ -62,10 +71,10 @@ onMounted(async () => refresh())
           <RouterLink :to="`/users/${user.id}`">
             <Avatar class="size-9">
               <AvatarImage
-                :src="user.image ?? ''"
-                :alt="user?.initials"
+                :src="user.avatarUrl ?? ''"
+                :alt="initials(user.name)"
               />
-              <AvatarFallback>{{ user.initials }}</AvatarFallback>
+              <AvatarFallback>{{ initials(user.name) }}</AvatarFallback>
             </Avatar>
           </RouterLink>
           <div class="ml-4 space-y-1">
@@ -73,7 +82,7 @@ onMounted(async () => refresh())
               :to="`/users/${user.id}`"
               class="text-sm font-medium hover:text-primary leading-none"
             >
-              {{ user.fullName }}
+              {{ user.name }}
             </RouterLink>
             <p class="text-sm text-muted-foreground">
               {{ user.email }}

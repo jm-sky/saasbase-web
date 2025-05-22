@@ -7,6 +7,6 @@ export const userData: IUser = {
   email: 'john.doe@mail.com',
   createdAt: new Date().toISOString(),
   updatedAt: new Date().toISOString(),
-  role: 'user',
   isEmailVerified: true,
+  isTwoFactorEnabled: false,
 }

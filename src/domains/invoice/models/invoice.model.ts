@@ -1,5 +1,5 @@
-import { type TDate, type TDateTime } from '@/domains/shared/types/common'
-import { type TInvoiceStatus } from '@/domains/shared/types/index'
+import type { TInvoiceStatus } from '@/domains/invoice/types/invoice.type'
+import type { TDate, TDateTime } from '@/domains/shared/types/common'
 
 export interface IInvoice {
   id: string

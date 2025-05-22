@@ -1,21 +1,37 @@
+import HomeView from '@/pages/HomePage.vue'
 import { isAuthenticated } from '@/router/middleware/isAuthenticated'
+import { isInTenant } from '@/router/middleware/isInTenant'
 import { isVerified } from '@/router/middleware/isVerified'
+import { accountRoutes } from '@/router/routes/account'
 import { authRoutes } from '@/router/routes/auth'
 import { contractorRoutes } from '@/router/routes/contractor'
 import { productRoutes } from '@/router/routes/product'
 import { publicRoutes } from '@/router/routes/public'
 import { settingsRoutes } from '@/router/routes/settings'
-import HomeView from '@/views/HomeView.vue'
+import { tenantRoutes } from '@/router/routes/tenant'
+import { routeMap } from './routeMap'
 import type { RouteRecordRaw } from 'vue-router'
 
 export const routes: RouteRecordRaw[] = [
   {
     path: '/',
     name: 'home',
+    redirect: '/dashboard',
+  },
+
+  {
+    path: '/dashboard',
+    name: 'dashboard',
     component: HomeView,
     meta: {
       middlewares: [isAuthenticated, isVerified],
     },
+  },
+
+  {
+    path: '/invitation/accept',
+    name: routeMap.invitation.accept,
+    component: () => import('@/pages/invitation/AcceptInvitationPage.vue'),
   },
 
   ...authRoutes,
@@ -23,11 +39,22 @@ export const routes: RouteRecordRaw[] = [
   ...settingsRoutes,
   ...contractorRoutes,
   ...productRoutes,
+  ...tenantRoutes,
+  ...accountRoutes,
+
+  {
+    path: '/chat/:roomId?',
+    name: 'chat',
+    component: () => import('@/pages/chat/ChatPage.vue'),
+    meta: {
+      middlewares: [isAuthenticated, isVerified, isInTenant],
+    },
+  },
 
   {
     path: '/mailbox/:box?',
     name: 'mailbox',
-    component: () => import('@/views/MailBoxView.vue'),
+    component: () => import('@/pages/MailBoxPage.vue'),
     meta: {
       middlewares: [isAuthenticated, isVerified],
     },
@@ -35,7 +62,7 @@ export const routes: RouteRecordRaw[] = [
   {
     path: '/users/:id',
     name: 'userProfile',
-    component: () => import('@/views/users/UserProfileView.vue'),
+    component: () => import('@/pages/users/UserProfilePage.vue'),
     meta: {
       middlewares: [isAuthenticated, isVerified],
     },

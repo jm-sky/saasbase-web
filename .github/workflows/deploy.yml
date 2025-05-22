@@ -25,11 +25,23 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
+      - name: Generate version.json
+        run: |
+          COMMIT_HASH=$(git rev-parse --short HEAD)
+          BUILD_DATE=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+          echo "{ \"commit\": \"$COMMIT_HASH\", \"buildDate\": \"$BUILD_DATE\" }" > public/version.json
+
       - name: Build app
         run: pnpm build
         env:
-          VITE_API_URL: https://api.saasbase.madeyski.org/api/v1
-          VITE_API_MOCK: ${{ vars.VITE_API_MOCK }} 
+          VITE_API_URL: ${{ vars.VITE_API_URL }}
+          VITE_API_MOCK: ${{ vars.VITE_API_MOCK }}
+          VITE_CHAT_ENABLED: ${{ vars.VITE_CHAT_ENABLED }}
+          VITE_AI_CHAT_ENABLED: ${{ vars.VITE_AI_CHAT_ENABLED }}
+          VITE_PUSHER_APP_KEY: ${{ secrets.VITE_PUSHER_APP_KEY }}
+          VITE_PUSHER_HOST: ${{ secrets.VITE_PUSHER_HOST }}
+          VITE_PUSHER_PORT: 443
+          VITE_PUSHER_SCHEME: https
 
       - name: Deploy via SCP
         uses: appleboy/scp-action@v0.1.4

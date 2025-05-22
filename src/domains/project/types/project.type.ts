@@ -1,6 +1,6 @@
-import type { TDateTime, TUUID } from '@/types/common'
+import type { TDateTime, TUUID } from '@/domains/shared/types/common'
 
-export type TProjectStatus = 'active' | 'archived' | 'completed'
+export type TProjectStatus = 'active' | 'completed' | 'archived'
 
 export interface IProject {
   id: TUUID

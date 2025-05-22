@@ -1,5 +1,0 @@
-export type TTaskPriority = 'low' | 'medium' | 'high'
-export type TTaskStatus = 'todo' | 'in_progress' | 'done'
-export type TProjectStatus = 'active' | 'completed' | 'archived'
-export type TInvoiceStatus = 'draft' | 'sent' | 'paid' | 'overdue'
-export type TSkillLevel = 'beginner' | 'intermediate' | 'advanced'

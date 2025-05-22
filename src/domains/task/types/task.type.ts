@@ -1,5 +1,5 @@
-import type { TTaskPriority, TTaskStatus } from '@/types/index'
-
+export type TTaskPriority = 'low' | 'medium' | 'high'
+export type TTaskStatus = 'todo' | 'in_progress' | 'done'
 export interface ITask {
   id: string
   projectId: string

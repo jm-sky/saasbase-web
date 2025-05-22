@@ -17,7 +17,7 @@ const colors = computed(() => themeStore.allowedColors.map(name => ({
 
 <template>
   <div class="space-y-2">
-    <Label class="font-bold">{{ $t('common.ThemeColor') }}</Label>
+    <Label class="font-bold">{{ $t('common.themeColor') }}</Label>
     <div class="grid grid-cols-3 gap-2">
       <Button
         v-for="color in colors"

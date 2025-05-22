@@ -1,8 +1,8 @@
 import { Task } from '@/domains/task/models/task.model'
-import api from '@/helpers/api'
-import { apiRoutesMap } from '@/helpers/api/apiRoutes'
-import { type TTaskPriority, type TTaskStatus } from '@/types/index'
+import api from '@/lib/api'
+import { apiRoutesMap } from '@/lib/api/apiRoutes'
 import type { ITask } from '@/domains/task/types/task.type'
+import type { TTaskPriority, TTaskStatus } from '@/domains/task/types/task.type'
 
 export interface ITaskGetParams {
   projectId?: string
@@ -15,23 +15,23 @@ export interface ITaskGetParams {
 
 class TaskService {
   async index(params?: ITaskGetParams): Promise<Task[]> {
-    const response = await api.get<{ tasks: ITask[] }>(apiRoutesMap.tasks, { params })
-    return response.data.tasks.map(data => Task.load(data))
+    const response = await api.get<{ data: ITask[] }>(apiRoutesMap.tasks, { params })
+    return response.data.data.map(data => Task.load(data))
   }
 
   async get(id: string): Promise<Task> {
-    const response = await api.get<ITask>(`${apiRoutesMap.tasks}/${id}`)
-    return Task.load(response.data)
+    const response = await api.get<{ data: ITask }>(`${apiRoutesMap.tasks}/${id}`)
+    return Task.load(response.data.data)
   }
 
   async create(task: Omit<ITask, 'id' | 'createdAt' | 'updatedAt'>): Promise<Task> {
-    const response = await api.post<ITask>(apiRoutesMap.tasks, task)
-    return Task.load(response.data)
+    const response = await api.post<{ data: ITask }>(apiRoutesMap.tasks, task)
+    return Task.load(response.data.data)
   }
 
   async update(id: string, task: Partial<ITask>): Promise<Task> {
-    const response = await api.patch<ITask>(`${apiRoutesMap.tasks}/${id}`, task)
-    return Task.load(response.data)
+    const response = await api.patch<{ data: ITask }>(`${apiRoutesMap.tasks}/${id}`, task)
+    return Task.load(response.data.data)
   }
 
   async delete(id: string): Promise<void> {

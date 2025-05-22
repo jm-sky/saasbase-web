@@ -6,15 +6,17 @@ import { useI18n } from 'vue-i18n'
 import { RouterLink } from 'vue-router'
 import FormFieldLabeled from '@/components/Form/FormFieldLabeled.vue'
 import FormFieldLabeledAfter from '@/components/Form/FormFieldLabeledAfter.vue'
+import PasswordInput from '@/components/Inputs/PasswordInput.vue'
 import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Input } from '@/components/ui/input'
 import { useToast } from '@/components/ui/toast'
 import UIIcon from '@/components/UIIcon.vue'
-import { useLogin } from '@/composables/useLogin'
 import { config } from '@/config'
+import { useLogin } from '@/domains/auth/composables/useLogin'
 import { credentialsSchema } from '@/domains/auth/validation/auth.schema'
 import { cn } from '@/lib/utils'
+import OAuthButtons from './OAuthButtons.vue'
 import type { Credentials } from '@/domains/auth/types/auth.type'
 
 interface AuthErrorResponse {
@@ -27,10 +29,18 @@ const { t } = useI18n()
 const { toast } = useToast()
 const { login } = useLogin()
 
-const { setErrors, isSubmitting, handleSubmit } = useForm<Credentials>({
+const props = defineProps<{
+  providedEmail?: string
+}>()
+
+const emit = defineEmits<{
+  loggedIn: []
+}>()
+
+const { setErrors, setFieldValue, isSubmitting, handleSubmit, values } = useForm<Credentials>({
   validationSchema: credentialsSchema,
   initialValues: {
-    email: import.meta.env.VITE_DEFAULT_LOGIN ?? '',
+    email: props.providedEmail ?? import.meta.env.VITE_DEFAULT_LOGIN ?? '',
     password: import.meta.env.VITE_DEFAULT_PASSWORD ?? '',
     remember: false,
   }
@@ -39,6 +49,8 @@ const { setErrors, isSubmitting, handleSubmit } = useForm<Credentials>({
 const onSubmit = handleSubmit(async (values) => {
   try {
     await login(values)
+
+    emit('loggedIn')
 
   } catch (error: unknown) {
     console.warn('[LoginError]', error)
@@ -63,47 +75,66 @@ const useAuthProviders = computed<boolean>(() => Object.values(config.auth.provi
           v-slot="{ componentField }"
           name="email"
         >
-          <Input
-            v-bind="componentField"
-            autocomplete="username"
-            :placeholder="t('auth.emailPlaceholder')"
-            class="bg-white/50 dark:bg-black/50"
-          />
+          <div class="relative">
+            <UIIcon
+              icon="lucide:mail"
+              class="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground"
+            />
+            <Input
+              v-bind="componentField"
+              autocomplete="username"
+              :placeholder="t('auth.emailPlaceholder')"
+              class="bg-white/50 dark:bg-black/50 pl-10"
+            />
+          </div>
         </FormFieldLabeled>
 
         <FormFieldLabeled
           v-slot="{ componentField }"
           name="password"
         >
-          <Input
-            v-bind="componentField"
-            type="password"
-            autocomplete="current-password"
-            :placeholder="t('auth.passwordPlaceholder')"
-            class="bg-white/50 dark:bg-black/50"
-          />
+          <div class="relative">
+            <PasswordInput
+              v-bind="componentField"
+              autocomplete="current-password"
+              :placeholder="t('auth.passwordPlaceholder')"
+              class="bg-white/50 dark:bg-black/50 pl-10"
+            />
+            <UIIcon
+              icon="lucide:lock"
+              class="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground"
+            />
+          </div>
         </FormFieldLabeled>
 
-        <div class="flex flex-row gap-3 items-center justify-between text-sm mb-4 text-gray-600">
+        <div class="flex flex-row gap-3 items-center justify-between text-sm mb-4">
           <FormFieldLabeledAfter
             v-slot="{ componentField }"
             name="remember"
             :label="t('auth.rememberMe')"
           >
-            <Checkbox v-bind="componentField" />
+            <Checkbox
+              v-bind="componentField"
+              class="transition-shadow"
+              :checked="values.remember"
+              @update:checked="(checked) => setFieldValue('remember', checked)"
+            />
           </FormFieldLabeledAfter>
 
-          <div class="">
+          <div>
             <RouterLink
               to="/password-forgot"
-              class="text-sm font-bold text-gray-500 hover:text-primary"
+              class="text-sm font-medium text-muted-foreground hover:text-primary transition-colors"
             >
               {{ t('auth.forgotPassword') }}
             </RouterLink>
           </div>
         </div>
 
-        <Button :disabled="isSubmitting">
+        <Button
+          :disabled="isSubmitting"
+          class="w-full transition-all duration-200 hover:shadow-md"
+        >
           <UIIcon
             v-if="isSubmitting"
             icon="lucide:loader-circle"
@@ -115,30 +146,18 @@ const useAuthProviders = computed<boolean>(() => Object.values(config.auth.provi
     </form>
 
     <template v-if="useAuthProviders">
-      <div class="flex flex-row justify-center items-center">
-        <div class="border-b grow" />
-        <div class="backdrop-blur-md rounded-lg py-0.5 px-2 text-xs uppercase text-muted-foreground">
-          {{ t('auth.continueWith') }}
+      <div class="relative">
+        <div class="absolute inset-0 flex items-center">
+          <span class="w-full border-t" />
         </div>
-        <div class="border-b grow" />
+        <div class="relative flex justify-center text-xs uppercase">
+          <span class="bg-background px-2 text-muted-foreground">
+            {{ t('auth.continueWith') }}
+          </span>
+        </div>
       </div>
-      <Button
-        variant="outline"
-        type="button"
-        disabled
-      >
-        <UIIcon
-          v-if="isSubmitting"
-          icon="lucide:loader-circle"
-          class="mr-2 size-4 animate-spin"
-        />
-        <UIIcon
-          v-else
-          icon="lucide:github"
-          class="mr-2 size-4"
-        />
-        GitHub
-      </Button>
+
+      <OAuthButtons />
     </template>
   </div>
 </template>

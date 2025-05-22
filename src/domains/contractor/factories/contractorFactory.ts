@@ -1,20 +1,26 @@
 import { faker } from '@faker-js/faker'
 import { formatISO } from 'date-fns'
 import { v4 } from 'uuid'
-import type { IContractor, IContractorAddress, IContractorBankAccount, IContractorContactPerson } from '@/domains/contractor/models/contractor.model'
-import type { TUUID } from '@/types/common'
+import type { IContractor, IContractorAddress, IContractorBankAccount, IContractorContact } from '@/domains/contractor/models/contractor.model'
+import type { TUUID } from '@/domains/shared/types/common'
 
 export class ContractorFactory {
-  private static createAddress(contractorId: TUUID): IContractorAddress {
+  private static createAddress(): IContractorAddress {
     return {
       id: v4(),
-      contractorId,
-      label: faker.helpers.arrayElement(['Main Office', 'Branch Office', 'Warehouse', 'Headquarters']),
-      countryId: v4(), // In a real app, this would be a valid country ID
-      street: faker.location.streetAddress(),
+      tenantId: v4(),
+      type: faker.helpers.arrayElement(['residence', 'billing', 'registeredOffice', 'correspondence', 'domicile', 'contact']),
+      country: faker.location.country(),
       city: faker.location.city(),
-      zip: faker.location.zipCode(),
+      postalCode: faker.location.zipCode(),
+      street: faker.location.streetAddress(),
+      building: faker.location.buildingNumber(),
+      flat: faker.location.secondaryAddress(),
+      description: faker.lorem.sentence(),
       isDefault: faker.datatype.boolean(),
+      meta: {},
+      createdAt: formatISO(new Date()),
+      updatedAt: formatISO(new Date()),
     }
   }
 
@@ -24,12 +30,14 @@ export class ContractorFactory {
       contractorId,
       bankName: faker.company.name(),
       iban: faker.finance.iban(),
-      currencies: faker.helpers.arrayElements(['USD', 'EUR', 'PLN'], { min: 1, max: 3 }),
+      currency: faker.helpers.arrayElement(['USD', 'EUR', 'PLN']),
       isDefault: faker.datatype.boolean(),
+      createdAt: formatISO(new Date()),
+      updatedAt: formatISO(new Date()),
     }
   }
 
-  private static createContactPerson(contractorId: TUUID): IContractorContactPerson {
+  private static createContactPerson(contractorId: TUUID): IContractorContact {
     return {
       id: v4(),
       contractorId,
@@ -52,18 +60,7 @@ export class ContractorFactory {
       description: faker.helpers.arrayElement([faker.lorem.paragraph(), undefined]),
       isSupplier: faker.datatype.boolean(),
       isBuyer: faker.datatype.boolean(),
-      addresses: faker.helpers.arrayElement([
-        Array.from({ length: faker.number.int({ min: 1, max: 3 }) }, () => this.createAddress(contractorId)),
-        undefined,
-      ]),
-      bankAccounts: faker.helpers.arrayElement([
-        Array.from({ length: faker.number.int({ min: 1, max: 2 }) }, () => this.createBankAccount(contractorId)),
-        undefined,
-      ]),
-      contactPersons: faker.helpers.arrayElement([
-        Array.from({ length: faker.number.int({ min: 1, max: 3 }) }, () => this.createContactPerson(contractorId)),
-        undefined,
-      ]),
+      tags: [],
       createdAt: formatISO(new Date()),
       updatedAt: formatISO(new Date()),
       ...overrides,

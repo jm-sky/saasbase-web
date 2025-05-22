@@ -7,7 +7,7 @@ export const contractorRoutes: RouteRecordRaw[] = [
   {
     path: '/contractors',
     name: 'contractors',
-    component: () => import('@/views/contractor/ContractorListView.vue'),
+    component: () => import('@/pages/contractor/ContractorListPage.vue'),
     meta: {
       middlewares: [isAuthenticated, isVerified, isInTenant],
     },
@@ -15,7 +15,44 @@ export const contractorRoutes: RouteRecordRaw[] = [
   {
     path: '/contractors/add',
     name: 'addContractor',
-    component: () => import('@/views/contractor/AddContractorView.vue'),
+    component: () => import('@/pages/contractor/AddContractorPage.vue'),
+    meta: {
+      middlewares: [isAuthenticated, isVerified, isInTenant],
+    },
+  },
+  {
+    path: '/contractors/:id/show',
+    component: () => import('@/pages/contractor/ShowContractorPage.vue'),
+    meta: {
+      middlewares: [isAuthenticated, isVerified, isInTenant],
+    },
+    children: [
+      {
+        path: '',
+        name: 'showContractor',
+        redirect: { name: 'showContractorOverview' },
+      },
+      {
+        path: 'overview',
+        name: 'showContractorOverview',
+        component: () => import('@/pages/contractor/ShowContractorOverviewPage.vue'),
+      },
+      {
+        path: 'comments',
+        name: 'showContractorComments',
+        component: () => import('@/pages/contractor/ShowContractorCommentsPage.vue'),
+      },
+      {
+        path: 'logs',
+        name: 'showContractorLogs',
+        component: () => import('@/pages/contractor/ShowContractorLogsPage.vue'),
+      },
+    ],
+  },
+  {
+    path: '/contractors/:id/edit',
+    name: 'editContractor',
+    component: () => import('@/pages/contractor/EditContractorPage.vue'),
     meta: {
       middlewares: [isAuthenticated, isVerified, isInTenant],
     },

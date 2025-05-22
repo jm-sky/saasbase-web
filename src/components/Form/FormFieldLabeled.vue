@@ -7,20 +7,19 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form'
+import type { HTMLAttributes } from 'vue'
 
-defineProps<{
+const props = defineProps<{
   disabled?: boolean
   label?: string
   name: string
+  class?: HTMLAttributes['class']
 }>()
 </script>
 
 <template>
-  <FormField
-    v-slot="{ componentField, meta }"
-    :name
-  >
-    <FormItem>
+  <FormField v-slot="{ componentField, meta }" :name>
+    <FormItem :class="props.class">
       <FormLabel v-if="label">
         {{ label }}
         <span
