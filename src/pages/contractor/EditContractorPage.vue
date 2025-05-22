@@ -53,12 +53,12 @@ const refresh = async () => {
 
 const onSubmit = handleSubmit(async (values) => {
   try {
-    await contractorService.create(values)
-    toast.success('Contractor added successfully')
+    await contractorService.update(contractorId, values)
+    toast.success('Contractor updated successfully')
     resetForm()
     await router.push({ name: 'showContractor', params: { id: contractorId } })
   } catch (error: unknown) {
-    console.error('[AddContractorView][onSubmit] error:', error)
+    console.error('[EditContractorPage][onSubmit] error:', error)
     if (isValidationError(error)) setErrors(error.response.data.errors)
     handleErrorWithToast('Could not edit contractor', error)
   }
