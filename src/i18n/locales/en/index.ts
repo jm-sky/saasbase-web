@@ -10,6 +10,7 @@ import { invitation } from './invitation'
 import { product } from './product'
 import { settings } from './settings'
 import { tenant } from './tenant'
+import { user } from './user'
 
 export const en = {
   address,
@@ -36,6 +37,7 @@ export const en = {
   settings,
   product,
   tenant,
+  user,
   role: {
     select: 'Select role',
     search: 'Search role',
