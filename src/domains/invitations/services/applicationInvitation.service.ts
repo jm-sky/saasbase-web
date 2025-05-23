@@ -1,6 +1,6 @@
 import api from '@/lib/api'
 import type { IApplicationInvitation, ISendInvitationRequest } from '../types/invitation.type'
-import type { IResource } from '@/domains/shared/types/resource.type'
+import type { IResourceCollection } from '@/domains/shared/types/resource.type'
 
 class ApplicationInvitationService {
   async show(token: string): Promise<IApplicationInvitation> {
@@ -23,8 +23,8 @@ class ApplicationInvitationService {
     return response.data.data
   }
 
-  async list(): Promise<IResource<IApplicationInvitation>> {
-    const response = await api.get<IResource<IApplicationInvitation>>('/application/invitations')
+  async list(): Promise<IResourceCollection<IApplicationInvitation>> {
+    const response = await api.get<IResourceCollection<IApplicationInvitation>>('/application/invitations')
     return response.data
   }
 

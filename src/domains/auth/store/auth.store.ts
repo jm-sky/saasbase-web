@@ -57,6 +57,8 @@ export const useAuthStore = defineStore('auth', () => {
   const clearData = () => {
     clearToken()
     userData.value = null
+    showAuthModal.value = false
+    showSelectTenantModal.value = false
   }
 
   const setUser = (newUser: IUser) => userData.value = newUser

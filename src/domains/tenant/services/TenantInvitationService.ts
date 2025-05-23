@@ -1,6 +1,6 @@
 import api from '@/lib/api'
 import type { ISendInvitationRequest, ITenantInvitation } from '../types/invitation.type'
-import type { IResource } from '@/domains/shared/types/resource.type'
+import type { IResourceCollection } from '@/domains/shared/types/resource.type'
 
 class TenantInvitationService {
   async show(token: string): Promise<ITenantInvitation> {
@@ -23,8 +23,8 @@ class TenantInvitationService {
     return response.data.data
   }
 
-  async list(tenantId: string): Promise<IResource<ITenantInvitation>> {
-    const response = await api.get<IResource<ITenantInvitation>>(`/tenants/${tenantId}/invitations`)
+  async list(tenantId: string): Promise<IResourceCollection<ITenantInvitation>> {
+    const response = await api.get<IResourceCollection<ITenantInvitation>>(`/tenants/${tenantId}/invitations`)
     return response.data
   }
 

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import ContractorCommentsList from '@/domains/contractor/components/comments/ContractorCommentsList.vue'
-import type { IContractor } from '@/domains/contractor/models/contractor.model'
+import type { IContractor } from '@/domains/contractor/types/contractor.type'
 
 const { contractor } = defineProps<{
   contractor: IContractor

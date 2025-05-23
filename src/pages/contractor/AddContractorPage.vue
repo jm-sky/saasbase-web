@@ -11,7 +11,7 @@ import { contractorService } from '@/domains/contractor/services/ContractorServi
 import AuthenticatedLayout from '@/layouts/AuthenticatedLayout.vue'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
 import { isValidationError } from '@/lib/validation'
-import type { IContractor } from '@/domains/contractor/models/contractor.model'
+import type { IContractor } from '@/domains/contractor/types/contractor.type'
 
 const router = useRouter()
 const { toast } = useToast()

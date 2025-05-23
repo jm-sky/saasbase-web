@@ -13,7 +13,7 @@ import {
 import { contractorBankAccountsService } from '@/domains/contractor/services/ContractorBankAccountsService'
 import { formatIBAN } from '@/lib/formatIBAN'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
-import type { IContractorBankAccount } from '@/domains/contractor/models/contractor.model'
+import type { IContractorBankAccount } from '@/domains/contractor/types/contractor.type'
 
 const { t } = useI18n()
 

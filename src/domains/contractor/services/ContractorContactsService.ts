@@ -1,11 +1,11 @@
 import api from '@/lib/api'
 import { apiRoutesMap } from '@/lib/api/apiRoutes'
-import type { IContractorContact, IContractorContactCreate } from '@/domains/contractor/models/contractor.model'
-import type { IResource } from '@/domains/shared/types/resource.type'
+import type { IContractorContact, IContractorContactCreate } from '@/domains/contractor/types/contractor.type'
+import type { IResourceCollection } from '@/domains/shared/types/resource.type'
 
 class ContractorContactsService {
-  async index(contractorId: string): Promise<IResource<IContractorContact>> {
-    const response = (await api.get<IResource<IContractorContact>>(`${apiRoutesMap.contractors}/${contractorId}/contacts`)).data
+  async index(contractorId: string): Promise<IResourceCollection<IContractorContact>> {
+    const response = (await api.get<IResourceCollection<IContractorContact>>(`${apiRoutesMap.contractors}/${contractorId}/contacts`)).data
     return response
   }
 

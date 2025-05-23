@@ -3,7 +3,7 @@ import ContractorAddressesList from '@/domains/contractor/components/addresses/C
 import ContractorAttachmentsList from '@/domains/contractor/components/attachments/ContractorAttachmentsList.vue'
 import ContractorBankAccountsList from '@/domains/contractor/components/bankAccounts/ContractorBankAccountsList.vue'
 import ContractorContactsList from '@/domains/contractor/components/contacts/ContractorContactsList.vue'
-import type { IContractor } from '@/domains/contractor/models/contractor.model'
+import type { IContractor } from '@/domains/contractor/types/contractor.type'
 
 defineProps<{
   contractor?: IContractor

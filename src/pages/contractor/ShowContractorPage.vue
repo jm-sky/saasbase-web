@@ -7,7 +7,7 @@ import ContractorSidebar from '@/domains/contractor/components/ContractorSidebar
 import { contractorService } from '@/domains/contractor/services/ContractorService'
 import AuthenticatedLayout from '@/layouts/AuthenticatedLayout.vue'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
-import type { IContractor } from '@/domains/contractor/models/contractor.model'
+import type { IContractor } from '@/domains/contractor/types/contractor.type'
 
 const { t } = useI18n()
 const route = useRoute()

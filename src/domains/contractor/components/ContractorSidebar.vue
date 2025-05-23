@@ -5,7 +5,7 @@ import InfoSection from '@/components/Sections/InfoSection.vue'
 import TagList from '@/components/TagList.vue'
 import Separator from '@/components/ui/separator/Separator.vue'
 import { toDateTimeString } from '@/lib/toDateTimeString'
-import type { IContractor } from '../models/contractor.model'
+import type { IContractor } from '../types/contractor.type'
 import { contractorLogoService } from '../services/ContractorLogoService'
 
 const { t } = useI18n()

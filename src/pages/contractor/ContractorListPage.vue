@@ -14,7 +14,7 @@ import { contractorService, type IContractorFilters } from '@/domains/contractor
 import AuthenticatedLayout from '@/layouts/AuthenticatedLayout.vue'
 import { toDateString } from '@/lib/toDateString'
 import type { ColumnDef } from '@tanstack/vue-table'
-import type { IContractor } from '@/domains/contractor/models/contractor.model'
+import type { IContractor } from '@/domains/contractor/types/contractor.type'
 import type { IResourceMeta } from '@/domains/shared/types/resource.type'
 
 const { t } = useI18n()

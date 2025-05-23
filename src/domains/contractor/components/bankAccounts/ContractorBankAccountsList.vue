@@ -9,7 +9,7 @@ import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
 import ContractorAddBankAccountModal from './ContractorAddBankAccountModal.vue'
 import ContractorBankAccountsListItem from './ContractorBankAccountsListItem.vue'
 import ContractorEditBankAccountModal from './ContractorEditBankAccountModal.vue'
-import type { IContractorBankAccount } from '@/domains/contractor/models/contractor.model'
+import type { IContractorBankAccount } from '@/domains/contractor/types/contractor.type'
 
 const route = useRoute()
 const { t } = useI18n()

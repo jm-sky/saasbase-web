@@ -9,7 +9,7 @@ import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
 import ContractorAddContactModal from './ContractorAddContactModal.vue'
 import ContractorContactsListItem from './ContractorContactsListItem.vue'
 import ContractorEditContactModal from './ContractorEditContactModal.vue'
-import type { IContractorContact } from '@/domains/contractor/models/contractor.model'
+import type { IContractorContact } from '@/domains/contractor/types/contractor.type'
 
 const route = useRoute()
 const { t } = useI18n()

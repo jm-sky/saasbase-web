@@ -7,6 +7,10 @@ export interface ITenantPreview {
   id: TUUID
   name: string
   slug: string
+  vatId?: string
+  taxId?: string
+  logoUrl?: string
+  logo?: IMedia
   createdAt: TDateTime
   updatedAt: TDateTime
 }
@@ -38,10 +42,13 @@ export interface ITenant {
   tenantId: TUUID
   name: string
   slug: string
+  country?: string
+  vatId?: string
+  taxId?: string
+  regon?: string
   email?: string
   phone?: string
   website?: string
-  country?: string
   description?: string
   logoUrl?: string
   logo?: IMedia

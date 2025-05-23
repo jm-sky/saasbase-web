@@ -5,7 +5,7 @@ import ActivityLogList from '@/components/activity-log/ActivityLogList.vue'
 import { ContractorActivityLogService } from '@/domains/contractor/services/ContractorActivityLogService'
 import { type ContractorActivityLog, ContractorActivityType } from '@/domains/contractor/types/activity-log'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
-import type { IContractor } from '@/domains/contractor/models/contractor.model'
+import type { IContractor } from '@/domains/contractor/types/contractor.type'
 
 defineProps<{
   contractor?: IContractor

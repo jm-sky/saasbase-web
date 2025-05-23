@@ -10,7 +10,7 @@ import { useAuthStore } from '@/domains/auth/store/auth.store'
 import { contractorCommentsService } from '@/domains/contractor/services/ContractorCommentsService'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
 import type { IComment } from '@/domains/comment/models/comment.model'
-import type { IContractor } from '@/domains/contractor/models/contractor.model'
+import type { IContractor } from '@/domains/contractor/types/contractor.type'
 
 const { t } = useI18n()
 const authStore = useAuthStore()

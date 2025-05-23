@@ -5,9 +5,13 @@ export interface IResourceMeta {
   total: number
 }
 
-export interface IResource<T> {
+export interface IResourceCollection<T> {
   data: T[]
   meta: IResourceMeta
+}
+
+export interface IResource<T> {
+  data: T
 }
 
 export type TFilterOperator = 'eq'

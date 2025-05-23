@@ -1,8 +1,8 @@
-import { type IContractor } from '@/domains/contractor/models/contractor.model'
+import { type IContractor } from '@/domains/contractor/types/contractor.type'
 import { buildSpatieQuery } from '@/domains/shared/helpers/filtering'
 import api from '@/lib/api'
 import { apiRoutesMap } from '@/lib/api/apiRoutes'
-import type { FilterDefinition, IResource } from '@/domains/shared/types/resource.type'
+import type { FilterDefinition, IResourceCollection } from '@/domains/shared/types/resource.type'
 
 export interface IContractorFilters {
   search?: string
@@ -12,9 +12,9 @@ export interface IContractorFilters {
 }
 
 class ContractorService {
-  async index(filters?: IContractorFilters): Promise<IResource<IContractor>> {
+  async index(filters?: IContractorFilters): Promise<IResourceCollection<IContractor>> {
     const params = buildSpatieQuery(filters ?? { filter: {} })
-    const response = (await api.get<IResource<IContractor>>(apiRoutesMap.contractors, { params })).data
+    const response = (await api.get<IResourceCollection<IContractor>>(apiRoutesMap.contractors, { params })).data
     return response
   }
 

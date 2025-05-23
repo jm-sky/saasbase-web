@@ -2,7 +2,7 @@ import { type IProduct } from '@/domains/product/models/product.model'
 import { buildSpatieQuery } from '@/domains/shared/helpers/filtering'
 import api from '@/lib/api'
 import { apiRoutesMap } from '@/lib/api/apiRoutes'
-import type { FilterDefinition, IResource } from '@/domains/shared/types/resource.type'
+import type { FilterDefinition, IResourceCollection } from '@/domains/shared/types/resource.type'
 
 export interface IProductFilters {
   search?: string
@@ -12,9 +12,9 @@ export interface IProductFilters {
 }
 
 class ProductService {
-  async index(filters?: IProductFilters): Promise<IResource<IProduct>> {
+  async index(filters?: IProductFilters): Promise<IResourceCollection<IProduct>> {
     const params = buildSpatieQuery(filters ?? { filter: {} })
-    const response = (await api.get<IResource<IProduct>>(apiRoutesMap.products, { params })).data
+    const response = (await api.get<IResourceCollection<IProduct>>(apiRoutesMap.products, { params })).data
     return response
   }
 

@@ -40,11 +40,13 @@ export interface IContractor {
   id: TUUID
   tenantId: TUUID
   name: string
+  country?: string
+  vatId?: string
+  taxId?: string
+  regon?: string
   email?: string
   phone?: string
   website?: string
-  country?: string
-  taxId?: string
   description?: string
   isSupplier: boolean
   isBuyer: boolean

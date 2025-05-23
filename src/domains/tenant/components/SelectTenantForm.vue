@@ -2,8 +2,12 @@
 import { onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import ButtonLink from '@/components/ButtonLink.vue'
+import Avatar from '@/components/ui/avatar/Avatar.vue'
+import AvatarFallback from '@/components/ui/avatar/AvatarFallback.vue'
+import AvatarImage from '@/components/ui/avatar/AvatarImage.vue'
 import { Button } from '@/components/ui/button'
 import { useToast } from '@/components/ui/toast'
+import UIIcon from '@/components/UIIcon.vue'
 import { useLogout } from '@/domains/auth/composables/useLogout'
 import { tenantService } from '@/domains/tenant/services/TenantService'
 import type { ITenantPreview } from '@/domains/tenant/types/tenant.type'
@@ -28,7 +32,7 @@ const handleSelectTenant = async (tenantId: string) => {
 }
 
 const fetchTenants = async () => {
-  const tenantsData = await tenantService.index()
+  const tenantsData = await tenantService.preview()
   tenants.value = tenantsData
 }
 
@@ -54,9 +58,10 @@ onMounted(async () => {
       @click="handleSelectTenant(tenant.id)"
     >
       <div class="flex items-center gap-3">
-        <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-primary text-primary-foreground">
-          {{ tenant.name.charAt(0) }}
-        </div>
+        <Avatar class="mr-2 size-10">
+          <AvatarImage :src="tenant.logoUrl ?? ''" :alt="tenant.name" />
+          <AvatarFallback>{{ tenant.name.charAt(0) }}</AvatarFallback>
+        </Avatar>
         <div>
           <div class="font-medium">
             {{ tenant.name }}
@@ -64,7 +69,7 @@ onMounted(async () => {
         </div>
       </div>
       <Button variant="ghost" size="sm">
-        {{ t('auth.selectTenant.selectTenant') }}
+        <UIIcon icon="lucide:chevron-right" />
       </Button>
     </div>
 
