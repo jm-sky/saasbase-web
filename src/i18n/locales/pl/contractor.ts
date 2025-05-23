@@ -3,6 +3,7 @@ export const contractor = {
   contractorDetails: 'Szczegóły kontrahenta',
   fields: {
     name: 'Nazwa',
+    country: 'Kraj',
     vatId: 'NIP',
     regon: 'REGON',
     taxId: 'Identyfikator podatkowy',
@@ -30,6 +31,18 @@ export const contractor = {
   },
   show: {
     error: 'Nie udało się załadować kontrahenta',
+  },
+  overview: {
+    title: 'Przegląd',
+    description: 'Przegląd kontrahenta.',
+  },
+  comments: {
+    title: 'Komentarze',
+    description: 'Komentarze kontrahenta.',
+  },
+  logs: {
+    title: 'Logi',
+    description: 'Logi kontrahenta.',
   },
   addresses: {
     add: {

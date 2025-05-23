@@ -1,19 +1,21 @@
 <script setup lang="ts">
+import { storeToRefs } from 'pinia'
 import { onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
 import EntityDetailsLayout from '@/components/layouts/EntityDetailsLayout.vue'
 import ContractorSidebar from '@/domains/contractor/components/ContractorSidebar.vue'
 import { contractorService } from '@/domains/contractor/services/ContractorService'
+import { useContractorStore } from '@/domains/contractor/store/contractor.store'
 import AuthenticatedLayout from '@/layouts/AuthenticatedLayout.vue'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
-import type { IContractor } from '@/domains/contractor/types/contractor.type'
 
 const { t } = useI18n()
 const route = useRoute()
-const contractorId = route.params.id as string
 
-const contractor = ref<IContractor>()
+const contractorId = route.params.id as string
+const { contractor } = storeToRefs(useContractorStore())
+
 const loading = ref(false)
 const error = ref<string | null>(null)
 
@@ -61,21 +63,21 @@ onMounted(async () => {
           class="border-b-2 border-transparent hover:border-muted-foreground px-2 py-1"
           exact-active-class="text-primary border-primary!"
         >
-          Overview
+          {{ t('contractor.overview.title') }}
         </RouterLink>
         <RouterLink
           :to="`/contractors/${contractorId}/show/comments`"
           class="border-b-2 border-transparent hover:border-muted-foreground px-2 py-1"
           exact-active-class="text-primary border-primary!"
         >
-          Comments
+          {{ t('contractor.comments.title') }}
         </RouterLink>
         <RouterLink
           :to="`/contractors/${contractorId}/show/logs`"
           class="border-b-2 border-transparent hover:border-muted-foreground px-2 py-1"
           exact-active-class="text-primary border-primary!"
         >
-          Logs
+          {{ t('contractor.logs.title') }}
         </RouterLink>
       </template>
 

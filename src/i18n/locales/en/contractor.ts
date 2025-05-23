@@ -3,6 +3,7 @@ export const contractor = {
   contractorDetails: 'Contractor details',
   fields: {
     name: 'Name',
+    country: 'Country',
     vatId: 'VAT ID',
     regon: 'REGON',
     taxId: 'Tax ID',
@@ -30,6 +31,18 @@ export const contractor = {
   },
   show: {
     error: 'Could not load contractor',
+  },
+  overview: {
+    title: 'Overview',
+    description: 'Overview of the contractor.',
+  },
+  comments: {
+    title: 'Comments',
+    description: 'Comments of the contractor.',
+  },
+  logs: {
+    title: 'Logs',
+    description: 'Logs of the contractor.',
   },
   addresses: {
     add: {

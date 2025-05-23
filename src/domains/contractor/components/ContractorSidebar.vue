@@ -12,7 +12,7 @@ const { t } = useI18n()
 
 defineProps<{
   contractorId: string
-  contractor?: IContractor
+  contractor?: IContractor | null
 }>()
 
 const emit = defineEmits<{

@@ -22,6 +22,9 @@ export const en = {
   contacts,
   notifications: 'Notifications',
   invitation,
+  companyLookup: {
+    tooltip: 'Lookup company by country and VAT ID',
+  },
   layout: {
     darkMode: 'Dark Mode',
     lightMode: 'Light Mode',

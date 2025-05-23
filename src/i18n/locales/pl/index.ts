@@ -22,6 +22,9 @@ export const pl = {
   contacts,
   notifications: 'Powiadomienia',
   invitation,
+  companyLookup: {
+    tooltip: 'Wyszukaj firmę po kraju i numerze VAT',
+  },
   layout: {
     darkMode: 'Tryb ciemny',
     lightMode: 'Tryb jasny',

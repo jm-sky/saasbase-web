@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { storeToRefs } from 'pinia'
 import { useForm } from 'vee-validate'
 import { onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
@@ -14,6 +15,7 @@ import Textarea from '@/components/ui/textarea/Textarea.vue'
 import { useToast } from '@/components/ui/toast'
 import ContractorSidebar from '@/domains/contractor/components/ContractorSidebar.vue'
 import { contractorService } from '@/domains/contractor/services/ContractorService'
+import { useContractorStore } from '@/domains/contractor/store/contractor.store'
 import AuthenticatedLayout from '@/layouts/AuthenticatedLayout.vue'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
 import { isValidationError } from '@/lib/validation'
@@ -23,22 +25,23 @@ const { t } = useI18n()
 const { toast } = useToast()
 const route = useRoute()
 const router = useRouter()
+
 const contractorId = route.params.id as string
+const { contractor } = storeToRefs(useContractorStore())
 
 const loading = ref(false)
-const contractor = ref<IContractor>()
 const error = ref<string | null>(null)
 
 const { isSubmitting, handleSubmit, setValues, setErrors, resetForm } = useForm<Omit<IContractor, 'createdAt' | 'updatedAt'>>({
   initialValues: {
-    name: '',
-    description: '',
-    taxId: '',
-    email: '',
-    phone: '',
-    website: '',
-    isSupplier: true,
-    isBuyer: true,
+    name: contractor.value?.name ?? '',
+    description: contractor.value?.description ?? '',
+    taxId: contractor.value?.taxId ?? '',
+    email: contractor.value?.email ?? '',
+    phone: contractor.value?.phone ?? '',
+    website: contractor.value?.website ?? '',
+    isSupplier: contractor.value?.isSupplier ?? true,
+    isBuyer: contractor.value?.isBuyer ?? true,
   },
 })
 
@@ -71,6 +74,7 @@ const onSubmit = handleSubmit(async (values) => {
 })
 
 onMounted(async () => {
+  console.log('[EditContractorPage] onMounted', contractor.value)
   await refresh()
 })
 </script>
