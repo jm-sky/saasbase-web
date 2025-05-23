@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { Calendar, Mail, Phone, RefreshCcw } from 'lucide-vue-next'
 import { onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import Avatar from '@/components/ui/avatar/Avatar.vue'
@@ -8,12 +9,14 @@ import Button from '@/components/ui/button/Button.vue'
 import UIIcon from '@/components/UIIcon.vue'
 import { userService } from '@/domains/user/services/userService'
 import AuthenticatedLayout from '@/layouts/AuthenticatedLayout.vue'
-import type { UserProfile } from '@/domains/user/models/userProfile.model'
+import { initials } from '@/lib/initials'
+import { toDateTimeString } from '@/lib/toDateTimeString'
+import type { IUserProfileLegacy } from '@/domains/user/types/user.type'
 
 const route = useRoute()
 
 const isLoading = ref(false)
-const user = ref<undefined | UserProfile>()
+const user = ref<undefined | IUserProfileLegacy>()
 
 const refresh = async () => {
   try {
@@ -29,62 +32,51 @@ onMounted(() => refresh())
 
 <template>
   <AuthenticatedLayout>
-    <div class="m-4 grid grid-cols-2 gap-4">
-      <div class="col-span-full border rounded-lg p-4 flex flex-row items-center justify-between gap-4">
+    <div class="m-4 md:m-8 grid grid-cols-1 md:grid-cols-[20rem_2fr] gap-6">
+      <div class="col-span-full border rounded-lg shadow-lg p-4 flex flex-row items-center justify-between gap-4">
         <div class="flex flex-row items-center gap-2">
-          <Avatar class="size-9">
+          <Avatar class="size-12">
             <AvatarImage
               :src="user?.avatarUrl ?? ''"
-              :alt="user?.initials"
+              :alt="user?.name.slice(0, 2)"
             />
-            <AvatarFallback>{{ user?.initials }}</AvatarFallback>
+            <AvatarFallback>{{ initials(user?.name) }}</AvatarFallback>
           </Avatar>
-          <div class="font-bold text-lg">
-            {{ user?.fullName ?? '-' }}
+          <div class="flex flex-col gap-1 ml-3">
+            <div class="font-bold text-lg">
+              {{ user?.name ?? '-' }}
+            </div>
+            <div class="text-sm text-muted-foreground">
+              {{ user?.position ?? '-' }}
+            </div>
           </div>
         </div>
         <div class="flex flex-row gap-2 items-center justify-end">
           <Button
             variant="outline"
-            size="xs"
+            size="sm"
           >
             <UIIcon icon="fa-regular:star" />
           </Button>
           <Button
             variant="outline"
-            size="xs"
+            size="sm"
           >
             <UIIcon icon="fa-regular:envelope" />
           </Button>
           <Button
             variant="outline"
-            size="xs"
+            size="sm"
             @click="refresh()"
           >
-            <UIIcon
-              icon="fa-solid:sync"
-              :class="{ 'fa-spin': isLoading }"
-            />
+            <RefreshCcw :class="{ 'animate-spin': isLoading }" />
           </Button>
         </div>
       </div>
 
-      <div class="border rounded-lg p-5 flex flex-col gap-4 items-start">
+      <div class="col-span-full md:col-span-1 border rounded-lg shadow-lg p-5 flex flex-col gap-4 items-start">
         <div class="flex flex-row items-center gap-4">
-          <UIIcon
-            icon="fa-regular:check-circle"
-            class="w-4"
-          />
-          #{{ route.params.id ?? '-' }}
-        </div>
-        <div
-          v-if="user?.email"
-          class="flex flex-row items-center gap-4"
-        >
-          <UIIcon
-            icon="fa-regular:envelope"
-            class="w-4"
-          />
+          <Mail class="w-4 mr-2" />
           <a
             :href="`mailto:${user?.email}`"
             class="hover:text-primary"
@@ -92,21 +84,15 @@ onMounted(() => refresh())
             {{ user?.email ?? '-' }}
           </a>
         </div>
-        <div
-          v-if="user?.phone"
-          class="flex flex-row items-center gap-4"
-        >
-          <UIIcon
-            icon="fa-solid:phone"
-            class="w-4"
-          />
+        <div class="flex flex-row items-center gap-4">
+          <Phone class="w-4 mr-2" />
           <a
             :href="`tel:${user?.phone}`"
             class="hover:text-primary"
           >{{ user?.phone ?? '-' }}</a>
         </div>
         <div
-          v-if="user?.address?.fullAddress"
+          v-if="user?.location"
           class="flex flex-row items-center gap-4"
         >
           <UIIcon
@@ -114,26 +100,22 @@ onMounted(() => refresh())
             class="w-4"
           />
           <a
-            :href="`http://maps.google.com?q=${user?.address?.fullAddress}`"
+            :href="`http://maps.google.com?q=${user?.location}`"
             target="_blank"
             class="hover:text-primary"
             rel="noopener noreferrer"
           >
-            {{ user?.address?.fullAddress }}
+            {{ user?.location }}
           </a>
         </div>
         <div class="flex flex-row items-center gap-4">
-          <UIIcon
-            icon="fa-solid:calendar"
-            class="w-4"
-          />
-          {{ user?.createdAt ?? '-' }}
-          {{ user?.createdAt }}
+          <Calendar class="w-4 mr-2" />
+          {{ user?.createdAt ? toDateTimeString(user?.createdAt) : '-' }}
         </div>
       </div>
 
-      <div class="border rounded-lg p-5">
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. In veritatis obcaecati nihil dicta reiciendis itaque omnis velit, eaque atque harum cumque soluta vero vitae aliquid! Repudiandae, harum? Officia, quisquam explicabo!
+      <div class="col-span-full md:col-span-1 border rounded-lg shadow-lg p-5">
+        {{ user?.description ?? '-' }}
       </div>
     </div>
   </AuthenticatedLayout>

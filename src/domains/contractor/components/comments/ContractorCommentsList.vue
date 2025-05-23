@@ -3,6 +3,7 @@ import { Icon } from '@iconify/vue'
 import { useForm } from 'vee-validate'
 import { onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
+import NoItems from '@/components/DataLists/NoItems.vue'
 import FormFieldLabeled from '@/components/Form/FormFieldLabeled.vue'
 import Button from '@/components/ui/button/Button.vue'
 import TablePagination from '@/components/ui/table/TablePagination.vue'
@@ -77,7 +78,7 @@ const handleAdd = handleSubmit(async (values) => {
     </div>
 
     <div v-if="comments.length === 0" class="flex justify-center py-4 text-muted-foreground">
-      No comments yet
+      <NoItems message="No comments yet" />
     </div>
 
     <div v-else class="flex flex-col gap-4">
