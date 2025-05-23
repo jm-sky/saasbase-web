@@ -3,6 +3,8 @@ export const contractor = {
   contractorDetails: 'Szczegóły kontrahenta',
   fields: {
     name: 'Nazwa',
+    vatId: 'NIP',
+    regon: 'REGON',
     taxId: 'Identyfikator podatkowy',
     email: 'E-mail',
     phone: 'Telefon',
@@ -16,6 +18,10 @@ export const contractor = {
   add: {
     title: 'Dodaj kontrahenta',
     description: 'Dodaj nowego kontrahenta do systemu.'
+  },
+  edit: {
+    title: 'Edytuj kontrahenta',
+    description: 'Edytuj kontrahenta.',
   },
   delete: {
     success: 'Kontrahent usunięty pomyślnie',

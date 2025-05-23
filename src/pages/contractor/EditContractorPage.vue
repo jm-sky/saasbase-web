@@ -102,7 +102,7 @@ onMounted(async () => {
 
       <template #content>
         <h1 class="text-2xl font-semibold tracking-tight text-center">
-          Edit Contractor
+          {{ t('contractor.edit.title') }}
         </h1>
 
         <div class="p-6 md:p-8 border rounded-md shadow-lg">
@@ -126,11 +126,27 @@ onMounted(async () => {
             </FormFieldLabeled>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-2">
-              <div class="flex flex-col gap-4">
+              <div class="flex flex-col gap-2">
+                <FormFieldLabeled
+                  v-slot="{ componentField }"
+                  name="vatId"
+                  :label="t('contractor.fields.vatId')"
+                  :disabled="isSubmitting"
+                >
+                  <Input v-bind="componentField" class="bg-white/50 dark:bg-black/50" />
+                </FormFieldLabeled>
                 <FormFieldLabeled
                   v-slot="{ componentField }"
                   name="taxId"
                   :label="t('contractor.fields.taxId')"
+                  :disabled="isSubmitting"
+                >
+                  <Input v-bind="componentField" class="bg-white/50 dark:bg-black/50" />
+                </FormFieldLabeled>
+                <FormFieldLabeled
+                  v-slot="{ componentField }"
+                  name="regon"
+                  :label="t('contractor.fields.regon')"
                   :disabled="isSubmitting"
                 >
                   <Input v-bind="componentField" class="bg-white/50 dark:bg-black/50" />

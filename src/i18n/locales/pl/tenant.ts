@@ -4,7 +4,9 @@ export const tenant = {
   fields: {
     name: 'Nazwa',
     slug: 'Slug',
-    taxId: 'NIP',
+    vatId: 'NIP',
+    regon: 'REGON',
+    taxId: 'Identyfikator podatkowy',
     email: 'Email',
     phone: 'Telefon',
     website: 'Strona internetowa',

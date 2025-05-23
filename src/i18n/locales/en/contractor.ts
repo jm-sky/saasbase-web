@@ -3,6 +3,8 @@ export const contractor = {
   contractorDetails: 'Contractor details',
   fields: {
     name: 'Name',
+    vatId: 'VAT ID',
+    regon: 'REGON',
     taxId: 'Tax ID',
     email: 'E-mail',
     phone: 'Phone',
@@ -16,6 +18,10 @@ export const contractor = {
   add: {
     title: 'Add Contractor',
     description: 'Add a new contractor to the system.'
+  },
+  edit: {
+    title: 'Edit Contractor',
+    description: 'Edit the contractor.',
   },
   delete: {
     success: 'Contractor deleted successfully',

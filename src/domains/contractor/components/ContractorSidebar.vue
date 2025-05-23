@@ -45,6 +45,8 @@ const emit = defineEmits<{
 
   <div class="flex flex-col gap-3 text-left">
     <InfoSection :label="t('contractor.fields.description')" :value="contractor?.description" />
+    <InfoSection :label="t('contractor.fields.vatId')" :value="contractor?.vatId" />
+    <InfoSection :label="t('contractor.fields.regon')" :value="contractor?.regon" />
     <InfoSection :label="t('contractor.fields.taxId')" :value="contractor?.taxId" />
     <InfoSection :label="t('contractor.fields.email')" :value="contractor?.email" />
     <InfoSection :label="t('contractor.fields.phone')" :value="contractor?.phone" />

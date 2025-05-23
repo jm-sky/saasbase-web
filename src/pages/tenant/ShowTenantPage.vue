@@ -77,7 +77,9 @@ onMounted(async () => {
           <InfoSection :label="t('tenant.fields.phone')" :value="tenant.phone" />
           <InfoSection :label="t('tenant.fields.website')" :value="tenant.website" />
           <InfoSection :label="t('tenant.fields.country')" :value="tenant.country" />
+          <InfoSection :label="t('tenant.fields.vatId')" :value="tenant.vatId" />
           <InfoSection :label="t('tenant.fields.taxId')" :value="tenant.taxId" />
+          <InfoSection :label="t('tenant.fields.regon')" :value="tenant.regon" />
           <InfoSection :label="t('tenant.fields.createdAt')" :value="toDateTimeString(tenant.createdAt)" />
           <InfoSection :label="t('tenant.fields.updatedAt')" :value="toDateTimeString(tenant.updatedAt)" />
         </div>
