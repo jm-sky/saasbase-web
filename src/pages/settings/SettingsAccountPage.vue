@@ -23,6 +23,11 @@ const accountFormSchema = toTypedSchema(z.object({
       required_error: 'Please select an email to display.',
     })
     .email(),
+  phone: z
+    .string()
+    .optional()
+    .transform(val => val ? val.replace(/\D/g, '') : null)
+    .pipe(z.string().min(10, { message: 'Phone number must be at least 10 digits.' })),
 }))
 
 const refreshUserData = async () => {
@@ -73,10 +78,7 @@ onMounted(async () => {
     class="space-y-8"
     @submit="onSubmit"
   >
-    <FormField
-      v-slot="{ componentField }"
-      name="email"
-    >
+    <FormField v-slot="{ componentField }" name="email">
       <FormItem>
         <FormLabel>E-mail</FormLabel>
         <FormControl>
@@ -93,8 +95,25 @@ onMounted(async () => {
       </FormItem>
     </FormField>
 
+    <FormField v-slot="{ componentField }" name="phone">
+      <FormItem>
+        <FormLabel>Phone</FormLabel>
+        <FormControl>
+          <Input
+            type="text"
+            placeholder="Your phone number"
+            v-bind="componentField"
+          />
+        </FormControl>
+        <FormDescription>
+          This is the phone number used to login to application
+        </FormDescription>
+        <FormMessage />
+      </FormItem>
+    </FormField>
+
     <div class="flex justify-start">
-      <Button type="submit">
+      <Button type="submit" disabled>
         Update account
       </Button>
     </div>

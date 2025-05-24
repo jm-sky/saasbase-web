@@ -12,6 +12,17 @@ export const settings = {
       birthDate: 'Data urodzenia',
       phone: 'Telefon',
       description: 'Opis',
+      bio: 'Bio',
+      location: 'Lokalizacja',
+      position: 'Stanowisko',
+      website: 'Strona internetowa',
+      socialLinks: {
+        facebook: 'Facebook',
+        instagram: 'Instagram',
+        twitter: 'Twitter',
+        linkedin: 'LinkedIn',
+        youtube: 'YouTube',
+      },
       descriptionPlaceholder: 'Powiedz nam coś o sobie',
     },
     profileImage: {

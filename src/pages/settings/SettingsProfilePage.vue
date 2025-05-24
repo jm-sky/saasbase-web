@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useForm } from 'vee-validate'
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { FileUpload } from '@/components/Inputs'
 import Avatar from '@/components/ui/avatar/Avatar.vue'
@@ -14,20 +14,37 @@ import { Textarea } from '@/components/ui/textarea'
 import { toast } from '@/components/ui/toast'
 import { useAuthStore } from '@/domains/auth/store/auth.store'
 import { userProfileImageService } from '@/domains/user/services/userProfileImageService'
-import { userProfileService } from '@/domains/user/services/userProfileService'
+import { type IUserProfile, userProfileService } from '@/domains/user/services/userProfileService'
 import { userProfilechema } from '@/domains/user/validation/profileSchema'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
 import SettingsHeader from './partials/SettingsHeader.vue'
 
 const authStore = useAuthStore()
-const isUploading = ref(false)
-const avatarFile = ref<File[]>()
-const isRemoving = ref(false)
 const { t } = useI18n()
 
-const { handleSubmit, resetForm } = useForm({
+const isLoading = ref(false)
+const isUploading = ref(false)
+const isRemoving = ref(false)
+const avatarFile = ref<File[]>()
+
+const profile = ref<IUserProfile>()
+
+const { handleSubmit, setValues, resetForm } = useForm<IUserProfile>({
   validationSchema: userProfilechema,
-  initialValues: { ...authStore.userData },
+  initialValues: {
+    bio: '',
+    location: '',
+    birthDate: '',
+    position: '',
+    website: '',
+    socialLinks: {
+      facebook: '',
+      instagram: '',
+      twitter: '',
+      linkedin: '',
+      youtube: '',
+    }
+  },
 })
 
 const handleAvatarUpload = async () => {
@@ -69,6 +86,36 @@ const removeAvatar = async () => {
     isRemoving.value = false
   }
 }
+
+const refresh = async () => {
+  try {
+    isLoading.value = true
+    profile.value = await userProfileService.get()
+    setValues({
+      bio: profile.value.bio ?? '',
+      location: profile.value.location ?? '',
+      birthDate: profile.value.birthDate ?? '',
+      position: profile.value.position ?? '',
+      website: profile.value.website ?? '',
+      socialLinks: {
+        facebook: profile.value.socialLinks?.facebook ?? '',
+        instagram: profile.value.socialLinks?.instagram ?? '',
+        twitter: profile.value.socialLinks?.twitter ?? '',
+        linkedin: profile.value.socialLinks?.linkedin ?? '',
+        youtube: profile.value.socialLinks?.youtube ?? '',
+      },
+    })
+  } catch (error: unknown) {
+    console.error(error)
+    handleErrorWithToast('Failed to refresh profile', error)
+  } finally {
+    isLoading.value = false
+  }
+}
+
+onMounted(async () => {
+  await refresh()
+})
 </script>
 
 <template>
@@ -86,8 +133,8 @@ const removeAvatar = async () => {
 
   <Separator />
 
-  <form class="grid grid-cols-2 gap-x-4 gap-y-8" @submit="onSubmit">
-    <FormField v-slot="{ componentField }" name="firstName">
+  <form class="grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-8" :class="{ 'opacity-50': isLoading }" @submit="onSubmit">
+    <!-- <FormField v-slot="{ componentField }" name="firstName">
       <FormItem>
         <FormLabel>{{ t('settings.profile.user.firstName') }}</FormLabel>
         <FormControl>
@@ -111,7 +158,7 @@ const removeAvatar = async () => {
         </FormDescription>
         <FormMessage />
       </FormItem>
-    </FormField>
+    </FormField> -->
 
     <FormField v-slot="{ componentField }" name="birthDate">
       <FormItem class="col-span-full">
@@ -123,19 +170,39 @@ const removeAvatar = async () => {
       </FormItem>
     </FormField>
 
-    <FormField v-slot="{ componentField }" name="phone">
-      <FormItem class="col-span-full">
-        <FormLabel>{{ t('settings.profile.user.phone') }}</FormLabel>
+    <FormField v-slot="{ componentField }" name="location">
+      <FormItem>
+        <FormLabel>{{ t('settings.profile.user.location') }}</FormLabel>
         <FormControl>
-          <Input type="tel" v-bind="componentField" />
+          <Input v-bind="componentField" />
         </FormControl>
         <FormMessage />
       </FormItem>
     </FormField>
 
-    <FormField v-slot="{ componentField }" name="description">
+    <FormField v-slot="{ componentField }" name="position">
+      <FormItem>
+        <FormLabel>{{ t('settings.profile.user.position') }}</FormLabel>
+        <FormControl>
+          <Input v-bind="componentField" />
+        </FormControl>
+        <FormMessage />
+      </FormItem>
+    </FormField>
+
+    <FormField v-slot="{ componentField }" name="website">
+      <FormItem>
+        <FormLabel>{{ t('settings.profile.user.website') }}</FormLabel>
+        <FormControl>
+          <Input v-bind="componentField" />
+        </FormControl>
+        <FormMessage />
+      </FormItem>
+    </FormField>
+
+    <FormField v-slot="{ componentField }" name="bio">
       <FormItem class="col-span-full">
-        <FormLabel>{{ t('settings.profile.user.description') }}</FormLabel>
+        <FormLabel>{{ t('settings.profile.user.bio') }}</FormLabel>
         <FormControl>
           <Textarea
             :placeholder="t('settings.profile.user.descriptionPlaceholder')"
