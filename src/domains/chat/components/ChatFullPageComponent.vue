@@ -11,7 +11,6 @@ import { Textarea } from '@/components/ui/textarea'
 import { useToast } from '@/components/ui/toast'
 import { useAuthStore } from '@/domains/auth/store/auth.store'
 import { userService } from '@/domains/user/services/userService'
-import { fullName } from '@/lib/fullName'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
 import { initials } from '@/lib/initials'
 import echo from '@/plugins/echo.js'
@@ -37,11 +36,10 @@ const messagesContainer = useTemplateRef<typeof ChatMessageList>('messagesContai
 
 const currentRoomMessages = computed<ChatMessage[]>(() => (messages.value[roomId.value] ?? []).map(message => ChatMessage.load(message)))
 const selectedRoom = computed<IChatRoom | null>(() => rooms.value.find(room => room.id === roomId.value) ?? null)
-const roomParticipants = computed<string>(() => selectedRoom.value?.participants.map(p => fullName(p)).join(', ') ?? '')
+const roomParticipants = computed<string>(() => selectedRoom.value?.participants.map(p => p.name).join(', ') ?? '')
 
 const getUsers = async () => users.value = await userService.index()
 const getRooms = async () => rooms.value = await chatRoomService.index()
-
 
 const handleMessageSent = (event: IMessageSentEvent) => {
   messages.value[roomId.value] = messages.value[roomId.value] ?? []
