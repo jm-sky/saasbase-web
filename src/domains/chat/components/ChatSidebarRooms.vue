@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { fullName } from '@/lib/fullName'
 import type { IChatRoom } from '../types/chat.type'
 
 defineProps<{
@@ -12,7 +11,7 @@ const emit = defineEmits<{
   join: []
 }>()
 
-const showParticipants = (selectedRoom: IChatRoom) => selectedRoom.participants.map(p => fullName(p)).join(', ')
+const showParticipants = (selectedRoom: IChatRoom) => selectedRoom.participants.map(p => p.name).join(', ')
 </script>
 
 <template>
