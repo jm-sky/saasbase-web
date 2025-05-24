@@ -8,13 +8,8 @@ import { oauthService } from '../services/oauth.service'
 
 const { t } = useI18n()
 
-const handleOAuthLogin = async (provider: 'gitHub' | 'google') => {
-  try {
-    const url = await oauthService.getOAuthRedirectUrl(provider)
-    window.location.href = url
-  } catch (error) {
-    handleErrorWithToast(t('auth.oauthError'), error)
-  }
+const handleOAuthLogin = (provider: 'gitHub' | 'google') => {
+  window.location.href = `${config.api.baseUrl}/oauth/${provider}/redirect`
 }
 </script>
 
