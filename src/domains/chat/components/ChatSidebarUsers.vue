@@ -28,10 +28,10 @@ const emit = defineEmits<{
     <li
       v-for="user in users"
       :key="user.id"
-      class="flex flex-row gap-4 items-center justify-between px-2 py-1 rounded bg-gray-100 text-sm hover:bg-sky-200 cursor-pointer"
+      class="flex flex-row gap-4 items-center px-2 py-1 rounded bg-gray-100 text-sm hover:bg-sky-200 cursor-pointer"
       @click="[createRoom(user.id), emit('create')]"
     >
-      <Avatar class="size-5">
+      <Avatar class="size-6">
         <AvatarImage :src="user.avatarUrl ?? ''" :alt="user.name" />
         <AvatarFallback>{{ user.name.slice(0, 2) ?? 'X' }}</AvatarFallback>
       </Avatar>
