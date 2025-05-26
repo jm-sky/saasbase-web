@@ -72,7 +72,7 @@ const { user } = storeToRefs(authStore)
 
       <DropdownMenuItem class="flex items-center justify-between">
         Dark Mode
-        <Switch v-model="isDark" class="w-10 h-4" @click.stop.capture="toggleDark()" />
+        <Switch v-model:checked="isDark" class="w-10 h-4" @click.stop.capture="toggleDark()" />
       </DropdownMenuItem>
 
       <DropdownMenuItem class="flex items-center justify-between">

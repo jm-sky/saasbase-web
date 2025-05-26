@@ -40,11 +40,12 @@ const switchLanguage = (langCode: TLocale) => {
         </span>
       </Button>
     </DropdownMenuTrigger>
-    <DropdownMenuContent align="end">
+    <DropdownMenuContent align="end" class="space-y-1">
       <DropdownMenuItem
         v-for="locale in languageStore.availableLocales"
         :key="locale"
         class="cursor-pointer"
+        :class="{ 'bg-primary-200/50 hover:bg-primary-200': locale === languageStore.currentLocale }"
         @click="switchLanguage(locale)"
       >
         <span>{{ t(`common.language.${locale}`) }}</span>
