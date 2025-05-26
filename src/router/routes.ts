@@ -67,4 +67,9 @@ export const routes: RouteRecordRaw[] = [
       middlewares: [isAuthenticated, isVerified],
     },
   },
+  {
+    path: '/:pathMatch(.*)*',
+    name: 'not-found',
+    component: () => import('@/pages/Error404Page.vue'),
+  },
 ]
