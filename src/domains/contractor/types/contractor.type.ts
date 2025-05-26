@@ -13,8 +13,9 @@ export type IContractorAddressCreate = Omit<IContractorAddress, 'id' | 'tenantId
 export interface IContractorBankAccount {
   id: TUUID
   contractorId: TUUID
-  bankName?: string
   iban: string
+  bankName?: string
+  swift?: string
   currency?: string
   isDefault: boolean
   description?: string
@@ -58,3 +59,9 @@ export interface IContractor {
 }
 
 export type IContractorCreate = Omit<IContractor, 'id' | 'tenantId' | 'logo' | 'logoUrl' | 'createdAt' | 'updatedAt'>
+
+export interface IContractorCombinedCreate {
+  contractor: IContractorCreate
+  address: IContractorAddressCreate
+  bankAccount: IContractorBankAccountCreate
+}

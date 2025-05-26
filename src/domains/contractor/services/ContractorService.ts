@@ -1,4 +1,4 @@
-import { type IContractor } from '@/domains/contractor/types/contractor.type'
+import { type IContractor, type IContractorCombinedCreate } from '@/domains/contractor/types/contractor.type'
 import { buildSpatieQuery } from '@/domains/shared/helpers/filtering'
 import api from '@/lib/api'
 import { apiRoutesMap } from '@/lib/api/apiRoutes'
@@ -23,7 +23,7 @@ class ContractorService {
     return response.data
   }
 
-  async create(contractor: Omit<IContractor, 'id' | 'createdAt' | 'updatedAt'>): Promise<IContractor> {
+  async create(contractor: IContractorCombinedCreate): Promise<IContractor> {
     const response = (await api.post<{ data: IContractor }>(apiRoutesMap.contractors, contractor)).data
     return response.data
   }

@@ -14,43 +14,73 @@ import CompanyLookupButton from '@/domains/utils/components/CompanyLookupButton.
 import AuthenticatedLayout from '@/layouts/AuthenticatedLayout.vue'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
 import { isValidationError } from '@/lib/validation'
-import type { IContractor } from '@/domains/contractor/types/contractor.type'
+import AddressForm from './AddContractorPage/AddressForm.vue'
+import BankAccountForm from './AddContractorPage/BankAccountForm.vue'
+import type { IContractorCombinedCreate } from '@/domains/contractor/types/contractor.type'
 import type { ICompanyLookupResponse } from '@/domains/utils/types/companyLookup.type'
 
 const { t } = useI18n()
 const { toast } = useToast()
 const router = useRouter()
 
-const { isSubmitting, handleSubmit, values, setValues, setErrors, resetForm } = useForm<Omit<IContractor, 'id' | 'createdAt' | 'updatedAt'>>({
+const { isSubmitting, handleSubmit, values, setValues, setErrors, resetForm } = useForm<IContractorCombinedCreate>({
   initialValues: {
-    name: '',
-    country: 'PL',
-    description: '',
-    isSupplier: true,
-    isBuyer: true,
+    contractor: {
+      name: '',
+      country: 'PL',
+      vatId: '',
+      taxId: '',
+      regon: '',
+      email: '',
+      phone: '',
+      website: '',
+      description: '',
+      isSupplier: true,
+      isBuyer: true,
+    },
+    address: {
+      city: '',
+      street: '',
+      building: '',
+      flat: '',
+    },
+    bankAccount: {
+      iban: '',
+      swift: '',
+      bankName: '',
+    },
   },
 })
 
 const onSubmit = handleSubmit(async (values) => {
   try {
     await contractorService.create(values)
-    toast.success('Contractor added successfully')
+    toast.success(t('contractor.add.success'))
     resetForm()
     await router.push('/contractors') // Navigate to the contractors list
   } catch (error: unknown) {
     console.error('[AddContractorView][onSubmit] error:', error)
     if (isValidationError(error)) setErrors(error.response.data.errors)
-    handleErrorWithToast('Could not add contractor', error)
+    handleErrorWithToast(t('contractor.add.error'), error)
 
   }
 })
 
 const onCompanyLookup = (company: ICompanyLookupResponse) => {
+  console.log('[AddContractorView][onCompanyLookup] company:', company)
   setValues({
-    name: company.name,
-    vatId: company.vatId,
-    country: company.country,
-    regon: company.regon,
+    contractor: {
+      name: company.name,
+      vatId: company.vatId,
+      country: company.country,
+      regon: company.regon,
+    },
+    address: {
+      street: company.address,
+    },
+    bankAccount: {
+      iban: company.accountNumbers?.at(0) ?? '',
+    },
   })
 }
 </script>
@@ -67,7 +97,7 @@ const onCompanyLookup = (company: ICompanyLookupResponse) => {
           <div class="grid grid-cols-1 md:grid-cols-[10rem_1fr] gap-x-8 gap-y-2">
             <FormFieldLabeled
               v-slot="{ componentField }"
-              name="country"
+              name="contractor.country"
               :label="t('contractor.fields.country')"
               :disabled="isSubmitting"
             >
@@ -76,7 +106,7 @@ const onCompanyLookup = (company: ICompanyLookupResponse) => {
 
             <FormFieldLabeled
               v-slot="{ componentField }"
-              name="name"
+              name="contractor.name"
               :label="t('contractor.fields.name')"
               :disabled="isSubmitting"
             >
@@ -87,7 +117,7 @@ const onCompanyLookup = (company: ICompanyLookupResponse) => {
 
           <FormFieldLabeled
             v-slot="{ componentField }"
-            name="description"
+            name="contractor.description"
             :label="t('contractor.fields.description')"
             :disabled="isSubmitting"
           >
@@ -98,15 +128,15 @@ const onCompanyLookup = (company: ICompanyLookupResponse) => {
             <div class="flex flex-col gap-2">
               <FormFieldLabeled
                 v-slot="{ componentField }"
-                name="vatId"
+                name="contractor.vatId"
                 :label="t('contractor.fields.vatId')"
                 :disabled="isSubmitting"
               >
                 <div class="flex flex-row gap-2 items-center grow">
                   <Input v-bind="componentField" class="bg-white/50 dark:bg-black/50" />
                   <CompanyLookupButton
-                    :country="values.country"
-                    :vat-id="values.vatId"
+                    :country="values.contractor.country"
+                    :vat-id="values.contractor.vatId"
                     @lookup="onCompanyLookup"
                   />
                 </div>
@@ -114,7 +144,7 @@ const onCompanyLookup = (company: ICompanyLookupResponse) => {
 
               <FormFieldLabeled
                 v-slot="{ componentField }"
-                name="taxId"
+                name="contractor.taxId"
                 :label="t('contractor.fields.taxId')"
                 :disabled="isSubmitting"
               >
@@ -122,7 +152,7 @@ const onCompanyLookup = (company: ICompanyLookupResponse) => {
               </FormFieldLabeled>
               <FormFieldLabeled
                 v-slot="{ componentField }"
-                name="regon"
+                name="contractor.regon"
                 :label="t('contractor.fields.regon')"
                 :disabled="isSubmitting"
               >
@@ -133,7 +163,7 @@ const onCompanyLookup = (company: ICompanyLookupResponse) => {
             <div class="flex flex-col gap-2">
               <FormFieldLabeled
                 v-slot="{ componentField }"
-                name="email"
+                name="contractor.email"
                 :label="t('contractor.fields.email')"
                 :disabled="isSubmitting"
               >
@@ -142,7 +172,7 @@ const onCompanyLookup = (company: ICompanyLookupResponse) => {
 
               <FormFieldLabeled
                 v-slot="{ componentField }"
-                name="phone"
+                name="contractor.phone"
                 :label="t('contractor.fields.phone')"
                 :disabled="isSubmitting"
               >
@@ -151,7 +181,7 @@ const onCompanyLookup = (company: ICompanyLookupResponse) => {
 
               <FormFieldLabeled
                 v-slot="{ componentField }"
-                name="website"
+                name="contractor.website"
                 :label="t('contractor.fields.website')"
                 :disabled="isSubmitting"
               >
@@ -167,7 +197,7 @@ const onCompanyLookup = (company: ICompanyLookupResponse) => {
           </div>
           <FormFieldLabeled
             v-slot="{ componentField }"
-            name="isSupplier"
+            name="contractor.isSupplier"
             :label="t('contractor.fields.isSupplier')"
             :disabled="isSubmitting"
             class="grid grid-cols-2 gap-2"
@@ -177,13 +207,21 @@ const onCompanyLookup = (company: ICompanyLookupResponse) => {
 
           <FormFieldLabeled
             v-slot="{ componentField }"
-            name="isBuyer"
+            name="contractor.isBuyer"
             :label="t('contractor.fields.isBuyer')"
             :disabled="isSubmitting"
             class="grid grid-cols-2 gap-2"
           >
             <Switch type="checkbox" v-bind="componentField" />
           </FormFieldLabeled>
+
+          <Separator class="my-2" />
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <AddressForm :is-submitting />
+
+            <BankAccountForm :is-submitting />
+          </div>
 
           <Separator class="my-2" />
 

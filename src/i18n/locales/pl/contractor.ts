@@ -18,7 +18,9 @@ export const contractor = {
   },
   add: {
     title: 'Dodaj kontrahenta',
-    description: 'Dodaj nowego kontrahenta do systemu.'
+    description: 'Dodaj nowego kontrahenta do systemu.',
+    success: 'Kontrahent dodany pomyślnie',
+    error: 'Nie udało się dodać kontrahenta',
   },
   edit: {
     title: 'Edytuj kontrahenta',

@@ -18,7 +18,9 @@ export const contractor = {
   },
   add: {
     title: 'Add Contractor',
-    description: 'Add a new contractor to the system.'
+    description: 'Add a new contractor to the system.',
+    success: 'Contractor added successfully',
+    error: 'Could not add contractor',
   },
   edit: {
     title: 'Edit Contractor',
