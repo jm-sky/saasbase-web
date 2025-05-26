@@ -27,6 +27,8 @@ const { toast } = useToast()
 
 const showSidebar = ref(true)
 const isSending = ref(false)
+const loadingUsers = ref(false)
+const loadingRooms = ref(false)
 const users = ref<IUserPreview[]>([])
 const rooms = ref<IChatRoom[]>([])
 const messages = ref<Record<string, IChatMessage[]>>({})
@@ -34,12 +36,31 @@ const roomId = ref('')
 const message = ref('Hello there!')
 const messagesContainer = useTemplateRef<typeof ChatMessageList>('messagesContainer')
 
+const loading = computed<boolean>(() => loadingUsers.value || loadingRooms.value)
 const currentRoomMessages = computed<ChatMessage[]>(() => (messages.value[roomId.value] ?? []).map(message => ChatMessage.load(message)))
 const selectedRoom = computed<IChatRoom | null>(() => rooms.value.find(room => room.id === roomId.value) ?? null)
 const roomParticipants = computed<string>(() => selectedRoom.value?.participants.map(p => p.name).join(', ') ?? '')
 
-const getUsers = async () => users.value = await userService.index()
-const getRooms = async () => rooms.value = await chatRoomService.index()
+const getUsers = async () => {
+  try {
+    loadingUsers.value = true
+    users.value = await userService.index()
+  } catch (error) {
+    handleErrorWithToast('Could not get users', error)
+  } finally {
+    loadingUsers.value = false
+  }
+}
+const getRooms = async () => {
+  try {
+    loadingRooms.value = true
+    rooms.value = await chatRoomService.index()
+  } catch (error) {
+    handleErrorWithToast('Could not get rooms', error)
+  } finally {
+    loadingRooms.value = false
+  }
+}
 
 const handleMessageSent = (event: IMessageSentEvent) => {
   messages.value[roomId.value] = messages.value[roomId.value] ?? []
@@ -154,6 +175,7 @@ onUnmounted(() => {
       :rooms="rooms"
       :users="users"
       :room-id="roomId"
+      :loading
       :join-room="joinRoom"
       :create-room="createRoom"
     />

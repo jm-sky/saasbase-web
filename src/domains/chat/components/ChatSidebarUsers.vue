@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { Icon } from '@iconify/vue'
 import Avatar from '@/components/ui/avatar/Avatar.vue'
 import AvatarFallback from '@/components/ui/avatar/AvatarFallback.vue'
 import AvatarImage from '@/components/ui/avatar/AvatarImage.vue'
@@ -7,6 +8,7 @@ import type { IUserPreview } from '@/domains/user/types/user.type'
 defineProps<{
   users: IUserPreview[]
   roomId: string
+  loading?: boolean
   createRoom: (userId: string) => void
 }>()
 
@@ -16,7 +18,8 @@ const emit = defineEmits<{
 </script>
 
 <template>
-  <div class="font-bold mb-1">
+  <div class="flex flex-row items-center gap-2 font-bold mb-1">
+    <Icon v-if="loading" icon="lucide:loader" class="animate-spin" />
     Users
   </div>
 
