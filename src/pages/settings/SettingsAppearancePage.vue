@@ -2,14 +2,14 @@
 import { toTypedSchema } from '@vee-validate/zod'
 import { useForm } from 'vee-validate'
 import * as z from 'zod'
+import FormFieldLabeled from '@/components/Form/FormFieldLabeled.vue'
 import { Button } from '@/components/ui/button'
 import { FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
+import Input from '@/components/ui/input/Input.vue'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { Separator } from '@/components/ui/separator'
 import { useThemeStore } from '@/stores/theme.store'
 import SettingsHeader from './partials/SettingsHeader.vue'
-import FormFieldLabeled from '@/components/Form/FormFieldLabeled.vue'
-import Input from '@/components/ui/input/Input.vue'
 
 const theme = useThemeStore()
 
