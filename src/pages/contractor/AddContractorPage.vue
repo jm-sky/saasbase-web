@@ -4,6 +4,7 @@ import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
 import FormFieldLabeled from '@/components/Form/FormFieldLabeled.vue'
 import Button from '@/components/ui/button/Button.vue'
+import FormDescription from '@/components/ui/form/FormDescription.vue'
 import Input from '@/components/ui/input/Input.vue'
 import Separator from '@/components/ui/separator/Separator.vue'
 import Switch from '@/components/ui/switch/Switch.vue'
@@ -49,6 +50,9 @@ const { isSubmitting, handleSubmit, values, setValues, setErrors, resetForm } = 
       swift: '',
       bankName: '',
     },
+    options: {
+      fetchLogo: true,
+    },
   },
 })
 
@@ -71,15 +75,22 @@ const onCompanyLookup = (company: ICompanyLookupResponse) => {
   setValues({
     contractor: {
       name: company.name,
-      vatId: company.vatId,
+      vatId: company.vatId ?? '',
       country: company.country,
-      regon: company.regon,
+      regon: company.regon ?? '',
     },
     address: {
-      street: company.address,
+      country: company.country,
+      street: company.address?.street ?? '',
+      city: company.address?.city ?? '',
+      postalCode: company.address?.postalCode ?? '',
+      building: company.address?.building ?? '',
+      flat: company.address?.flat ?? '',
     },
     bankAccount: {
-      iban: company.accountNumbers?.at(0) ?? '',
+      iban: company.bankAccount?.iban ?? '',
+      swift: company.bankAccount?.swift ?? '',
+      bankName: company.bankAccount?.bankName ?? '',
     },
   })
 }
@@ -238,6 +249,24 @@ const onCompanyLookup = (company: ICompanyLookupResponse) => {
             >
               {{ t('common.reset') }}
             </Button>
+          </div>
+
+          <div class="col-span-full grid grid-cols-1 md:grid-cols-3 gap-x-8 gap-y-2 border rounded-md p-4 bg-gray-50 dark:bg-gray-800">
+            <div class="col-span-full font-semibold mt-2 mb-2">
+              Opcje
+            </div>
+            <FormFieldLabeled
+              v-slot="{ componentField }"
+              name="options.fetchLogo"
+              :label="t('contractor.add.fetchLogo')"
+              :disabled="isSubmitting"
+              class="flex flex-col gap-2"
+            >
+              <Switch type="checkbox" v-bind="componentField" />
+              <FormDescription>
+                {{ t('contractor.add.fetchLogoDescription') }}
+              </FormDescription>
+            </FormFieldLabeled>
           </div>
         </form>
       </div>

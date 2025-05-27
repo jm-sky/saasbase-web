@@ -21,6 +21,8 @@ export const contractor = {
     description: 'Add a new contractor to the system.',
     success: 'Contractor added successfully',
     error: 'Could not add contractor',
+    fetchLogo: 'Get logo',
+    fetchLogoDescription: 'Try to fetch logo from Internet based on website or email',
   },
   edit: {
     title: 'Edit Contractor',

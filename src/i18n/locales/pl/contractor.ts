@@ -21,6 +21,8 @@ export const contractor = {
     description: 'Dodaj nowego kontrahenta do systemu.',
     success: 'Kontrahent dodany pomyślnie',
     error: 'Nie udało się dodać kontrahenta',
+    fetchLogo: 'Wyszukaj logo',
+    fetchLogoDescription: 'Spróbuj pobrać logo z Internetu na podstawie strony internetowej lub e-maila',
   },
   edit: {
     title: 'Edytuj kontrahenta',

@@ -6,6 +6,9 @@ import ButtonLink from '@/components/ButtonLink.vue'
 import DataListsWrapper from '@/components/DataLists/DataListsWrapper.vue'
 import DataTable from '@/components/DataTable.vue'
 import TagList from '@/components/TagList.vue'
+import Avatar from '@/components/ui/avatar/Avatar.vue'
+import AvatarFallback from '@/components/ui/avatar/AvatarFallback.vue'
+import AvatarImage from '@/components/ui/avatar/AvatarImage.vue'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import DeleteContractorButton from '@/domains/contractor/components/actions/DeleteContractorButton.vue'
@@ -35,6 +38,7 @@ const filters = ref<IContractorFilters>({
   perPage: 10,
   filter: {
     name: { value: '', operator: 'eq' },
+    vatId: { value: '', operator: 'eq' },
     taxId: { value: '', operator: 'eq' },
     type: { value: '', operator: 'eq' },
     createdAt: { value: '', operator: 'eq' },
@@ -44,28 +48,28 @@ const filters = ref<IContractorFilters>({
 const columns: ColumnDef<IContractor>[] = [
   {
     accessorKey: 'name',
-    header: 'Name',
+    header: t('contractor.fields.name'),
   },
   {
-    accessorKey: 'taxId',
-    header: 'Tax ID',
+    accessorKey: 'vatId',
+    header: t('contractor.fields.vatId'),
   },
   {
-    accessorKey: 'type',
-    header: 'Type',
+    accessorKey: 'roles',
+    header: t('contractor.fields.roles'),
   },
   {
     accessorKey: 'createdAt',
-    header: 'Created At',
+    header: t('common.createdAt'),
     cell: (info: { row: { original: IContractor } }) => toDateString(info.row.original.createdAt),
   },
   {
     accessorKey: 'tags',
-    header: 'Tags',
+    header: t('common.tags'),
   },
   {
     id: 'actions',
-    header: 'Actions',
+    header: t('common.actions'),
   },
 ]
 
@@ -82,6 +86,11 @@ const refresh = async () => {
   } finally {
     loading.value = false
   }
+}
+
+const removeRow = (id: string) => {
+  contractors.value = contractors.value.filter((contractor) => contractor.id !== id)
+  meta.value.total -= 1
 }
 
 onMounted(() => {
@@ -115,10 +124,14 @@ watch(filters, () => refresh(), { deep: true })
       >
         <template #name="{ data }">
           <ButtonLink :to="`/contractors/${data.id}/show/overview`">
+            <Avatar class="size-7">
+              <AvatarImage :src="data.logoUrl ?? ''" :alt="data.name" />
+              <AvatarFallback>{{ data.name.slice(0, 2) ?? 'X' }}</AvatarFallback>
+            </Avatar>
             {{ data.name }}
           </ButtonLink>
         </template>
-        <template #type="{ data }">
+        <template #roles="{ data }">
           <div class="flex gap-2">
             <Badge v-if="data.isSupplier" variant="secondary">
               Supplier
@@ -134,7 +147,7 @@ watch(filters, () => refresh(), { deep: true })
         <template #actions="{ data }">
           <div class="flex gap-2 justify-end w-full whitespace-nowrap min-w-0">
             <EditContractorButton :id="data.id" />
-            <DeleteContractorButton :id="data.id" />
+            <DeleteContractorButton :id="data.id" @delete="removeRow(data.id)" />
           </div>
         </template>
         <template #actions-header>

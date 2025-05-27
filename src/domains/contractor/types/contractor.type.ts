@@ -64,4 +64,7 @@ export interface IContractorCombinedCreate {
   contractor: IContractorCreate
   address: IContractorAddressCreate
   bankAccount: IContractorBankAccountCreate
+  options: {
+    fetchLogo?: boolean
+  }
 }
