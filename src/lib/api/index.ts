@@ -1,7 +1,7 @@
 import axios, { AxiosError } from 'axios'
+import { config } from '@/config'
 import { DEFAULT_LOCALE } from '@/i18n'
 import { interceptUnauthorized } from '@/lib/api/interceptUnauthorized'
-import { config } from '@/config'
 import { authorizeOutgoingRequests } from './authorizeOutgoingRequests'
 import { interceptTenantRequired } from './interceptTenantRequired'
 import type { AxiosInstance, AxiosResponse, InternalAxiosRequestConfig } from 'axios'
