@@ -41,6 +41,16 @@ export const settingsRoutes: RouteRecordRaw[] =  [
         name: routeMap.settings.mfaSetup,
         component: () => import('@/pages/settings/MfaSetupPage.vue'),
       },
+      {
+        path: 'api-keys',
+        name: 'api-keys',
+        component: () => import('@/pages/settings/SettingsApiKeysPage.vue'),
+      },
+      {
+        path: 'delete-account',
+        name: 'delete-account',
+        component: () => import('@/pages/settings/SettingsDeleteAccountPage.vue'),
+      },
     ],
   }
 ]

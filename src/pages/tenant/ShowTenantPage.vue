@@ -107,6 +107,27 @@ onMounted(async () => {
         >
           Invitations
         </RouterLink>
+        <RouterLink
+          :to="`/tenants/${tenantId}/show/branding`"
+          class="border-b-2 border-transparent hover:border-muted-foreground px-2 py-1"
+          exact-active-class="text-primary border-primary!"
+        >
+          Branding
+        </RouterLink>
+        <RouterLink
+          :to="`/tenants/${tenantId}/show/billing`"
+          class="border-b-2 border-transparent hover:border-muted-foreground px-2 py-1"
+          exact-active-class="text-primary border-primary!"
+        >
+          Billing
+        </RouterLink>
+        <RouterLink
+          :to="`/tenants/${tenantId}/show/settings`"
+          class="border-b-2 border-transparent hover:border-muted-foreground px-2 py-1"
+          exact-active-class="text-primary border-primary!"
+        >
+          Settings
+        </RouterLink>
       </template>
 
       <template #content>

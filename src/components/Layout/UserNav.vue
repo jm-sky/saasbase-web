@@ -57,11 +57,14 @@ const { user } = storeToRefs(authStore)
         <DropdownMenuItemLink :to="routeTo.settingsProfile()">
           Profile
         </DropdownMenuItemLink>
-        <DropdownMenuItemLink :to="routeTo.account()">
-          Account
-        </DropdownMenuItemLink>
         <DropdownMenuItemLink :to="routeTo.settingsAccount()">
           Settings
+        </DropdownMenuItemLink>
+        <DropdownMenuItemLink :to="routeTo.account()">
+          Account
+          <span class="text-xs text-muted-foreground bg-muted px-2 ml-1 rounded-sm">
+            deprecated
+          </span>
         </DropdownMenuItemLink>
         <DropdownMenuItemLink :to="routeTo.selectTenant()">
           Change Tenant

@@ -23,7 +23,14 @@ const sidebarNavItems: Item[] = [
   {
     title: 'Notifications',
     to: '/settings/notifications',
-    disabled: true,
+  },
+  {
+    title: 'API Keys',
+    to: '/settings/api-keys',
+  },
+  {
+    title: 'Delete Account',
+    to: '/settings/delete-account',
   },
 ]
 </script>

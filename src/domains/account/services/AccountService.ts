@@ -1,5 +1,7 @@
+import api from '@/lib/api'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
 import type { AccountActivity, AccountProfile, AccountSettings } from '../types'
+import type { IResourceCollection } from '@/domains/shared/types/resource.type'
 
 const delay = (ms = 500) => new Promise((resolve) => setTimeout(resolve, ms))
 
@@ -164,31 +166,8 @@ export class AccountService {
     }
   }
 
-  async getApiKeys(): Promise<ApiKey[]> {
-    try {
-      await this.delay()
-      // TODO: Replace with actual API call
-      return [
-        {
-          id: '1',
-          name: 'Production API Key',
-          createdAt: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(), // 7 days ago
-          expiresAt: new Date(Date.now() + 23 * 24 * 60 * 60 * 1000).toISOString(), // 23 days from now
-          lastUsedAt: new Date().toISOString(),
-          isActive: true,
-        },
-        {
-          id: '2',
-          name: 'Development API Key',
-          createdAt: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString(), // 30 days ago
-          expiresAt: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(), // 30 days from now
-          isActive: true,
-        },
-      ]
-    } catch (error) {
-      handleErrorWithToast('Failed to fetch API keys', error)
-      throw error
-    }
+  async getApiKeys(): Promise<IResourceCollection<ApiKey>> {
+    return (await api.get<IResourceCollection<ApiKey>>('/api-keys')).data
   }
 
   async createApiKey(data: CreateApiKeyData): Promise<ApiKey> {

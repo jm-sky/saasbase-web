@@ -4,9 +4,16 @@ import { onMounted, ref } from 'vue'
 import { Button } from '@/components/ui/button'
 import { accountService, type ApiKey } from '@/domains/account/services/AccountService'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
+import type { IResourceMeta } from '@/domains/shared/types/resource.type'
 
 const loading = ref(false)
 const apiKeys = ref<ApiKey[]>([])
+const meta = ref<IResourceMeta>({
+  currentPage: 1,
+  lastPage: 1,
+  perPage: 10,
+  total: 0,
+})
 
 onMounted(async () => {
   await fetchApiKeys()
@@ -15,7 +22,9 @@ onMounted(async () => {
 const fetchApiKeys = async () => {
   loading.value = true
   try {
-    apiKeys.value = await accountService.getApiKeys()
+    const response = await accountService.getApiKeys()
+    apiKeys.value = response.data
+    meta.value = response.meta
   } catch (error: unknown) {
     handleErrorWithToast('Failed to fetch API keys', error)
   } finally {

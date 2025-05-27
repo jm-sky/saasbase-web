@@ -8,6 +8,8 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { Separator } from '@/components/ui/separator'
 import { useThemeStore } from '@/stores/theme.store'
 import SettingsHeader from './partials/SettingsHeader.vue'
+import FormFieldLabeled from '@/components/Form/FormFieldLabeled.vue'
+import Input from '@/components/ui/input/Input.vue'
 
 const theme = useThemeStore()
 
@@ -15,12 +17,16 @@ const appearanceFormSchema = toTypedSchema(z.object({
   theme: z.enum(['light', 'dark'], {
     required_error: 'Please select a theme.',
   }),
+  dateFormat: z.string().optional(),
+  decimalSeparator: z.string().optional(),
 }))
 
 const { handleSubmit } = useForm({
   validationSchema: appearanceFormSchema,
   initialValues: {
     theme: 'light',
+    dateFormat: 'auto',
+    decimalSeparator: '.',
   },
 })
 
@@ -34,10 +40,15 @@ const onSubmit = handleSubmit((values) => {
 
   <Separator />
 
-  <form
-    class="space-y-8"
-    @submit="onSubmit"
-  >
+  <form class="space-y-8" @submit="onSubmit">
+    <FormFieldLabeled v-slot="{ componentField }" name="dateFormat" label="Date Format">
+      <Input v-bind="componentField" />
+    </FormFieldLabeled>
+
+    <FormFieldLabeled v-slot="{ componentField }" name="decimalSeparator" label="Decimal Separator">
+      <Input v-bind="componentField" />
+    </FormFieldLabeled>
+
     <FormField
       v-slot="{ componentField }"
       type="radio"
