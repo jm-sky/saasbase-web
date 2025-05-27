@@ -2,6 +2,7 @@ import { type IContractor, type IContractorCombinedCreate } from '@/domains/cont
 import { buildSpatieQuery } from '@/domains/shared/helpers/filtering'
 import api from '@/lib/api'
 import { apiRoutesMap } from '@/lib/api/apiRoutes'
+import type { SortingState } from '@tanstack/vue-table'
 import type { FilterDefinition, IResourceCollection } from '@/domains/shared/types/resource.type'
 
 export interface IContractorFilters {
@@ -9,6 +10,7 @@ export interface IContractorFilters {
   page?: number
   perPage?: number
   filter?: Record<string, FilterDefinition>
+  sort?: SortingState
 }
 
 class ContractorService {

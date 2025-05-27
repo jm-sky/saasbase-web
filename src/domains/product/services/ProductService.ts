@@ -2,6 +2,7 @@ import { type IProduct } from '@/domains/product/models/product.model'
 import { buildSpatieQuery } from '@/domains/shared/helpers/filtering'
 import api from '@/lib/api'
 import { apiRoutesMap } from '@/lib/api/apiRoutes'
+import type { SortingState } from '@tanstack/vue-table'
 import type { FilterDefinition, IResourceCollection } from '@/domains/shared/types/resource.type'
 
 export interface IProductFilters {
@@ -9,6 +10,7 @@ export interface IProductFilters {
   page?: number
   perPage?: number
   filter?: Record<string, FilterDefinition>
+  sort?: SortingState
 }
 
 class ProductService {

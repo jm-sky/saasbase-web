@@ -4,6 +4,7 @@ import { onMounted, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import ButtonLink from '@/components/ButtonLink.vue'
 import DataListsWrapper from '@/components/DataLists/DataListsWrapper.vue'
+import SearchField from '@/components/DataLists/Filters/SearchField.vue'
 import DataTable from '@/components/DataTable.vue'
 import { Button } from '@/components/ui/button'
 import DeleteProductButton from '@/domains/product/components/DeleteProductButton.vue'
@@ -44,7 +45,7 @@ const columns: ColumnDef<IProduct>[] = [
   {
     accessorKey: 'priceNet',
     header: t('product.fields.price'),
-    cell: (info: { row: { original: IProduct } }) => info.row.original.priceNet.toFixed(2),
+    cell: (info: { row: { original: IProduct } }) => info.row.original.priceNet?.toFixed(2) ?? '-',
   },
   {
     accessorKey: 'createdAt',
@@ -53,7 +54,7 @@ const columns: ColumnDef<IProduct>[] = [
   },
   {
     id: 'actions',
-    header: t('actions'),
+    header: t('common.actions'),
   },
 ]
 
@@ -83,6 +84,7 @@ watch(filters, () => refresh(), { deep: true })
   <AuthenticatedLayout>
     <DataListsWrapper :title="t('product.title')" :loading :error>
       <template #actions>
+        <SearchField v-model="filters.search" />
         <Button variant="outline" @click="refresh">
           <RefreshCw class="h-4 w-4" />
         </Button>

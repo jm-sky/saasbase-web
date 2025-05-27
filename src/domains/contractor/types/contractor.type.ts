@@ -37,6 +37,23 @@ export interface IContractorContact {
 
 export type IContractorContactCreate = Omit<IContractorContact, 'id' | 'contractorId'>
 
+export interface IContractorListItem {
+  id: TUUID
+  tenantId: TUUID
+  name: string
+  country?: string
+  vatId?: string
+  taxId?: string
+  regon?: string
+  isSupplier: boolean
+  isBuyer: boolean
+  tags: string[]
+  logoUrl?: string
+  logo?: IMedia
+  createdAt: TDateTime
+  updatedAt: TDateTime
+}
+
 export interface IContractor {
   id: TUUID
   tenantId: TUUID
