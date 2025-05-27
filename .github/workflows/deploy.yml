@@ -1,11 +1,20 @@
 name: Build & Deploy Vue App
 
 on:
-  workflow_dispatch:  # ręczne uruchamianie z interfejsu GitHub
+  workflow_dispatch:  # ręczne uruchamianie
+  push:
+    branches:
+      - main           # automatycznie przy push na main
+
+permissions:
+  contents: read       # potrzebne do checkout repo
 
 jobs:
-  build-and-deploy:
+  build:
+    name: Build App
     runs-on: ubuntu-latest
+    outputs:
+      build-artifact: ${{ steps.upload.outputs.artifact-path }}
 
     steps:
       - name: Checkout repo
@@ -33,15 +42,25 @@ jobs:
 
       - name: Build app
         run: pnpm build
-        env:
-          VITE_API_URL: ${{ vars.VITE_API_URL }}
-          VITE_API_MOCK: ${{ vars.VITE_API_MOCK }}
-          VITE_CHAT_ENABLED: ${{ vars.VITE_CHAT_ENABLED }}
-          VITE_AI_CHAT_ENABLED: ${{ vars.VITE_AI_CHAT_ENABLED }}
-          VITE_PUSHER_APP_KEY: ${{ secrets.VITE_PUSHER_APP_KEY }}
-          VITE_PUSHER_HOST: ${{ secrets.VITE_PUSHER_HOST }}
-          VITE_PUSHER_PORT: 443
-          VITE_PUSHER_SCHEME: https
+
+      - name: Upload dist as artifact
+        id: upload
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist
+
+  deploy:
+    name: Deploy App
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download build artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist
 
       - name: Deploy via SCP
         uses: appleboy/scp-action@v0.1.4
