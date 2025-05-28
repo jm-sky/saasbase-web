@@ -36,6 +36,29 @@ export const tenant = {
     },
   },
   invitations: {
+    title: 'Invitations',
+    process: {
+      title: 'Invitation',
+      info: 'You have been invited to join {tenant} as {role}.',
+      description: 'You can accept or decline the invitation.',
+      loading: 'Loading invitation...',
+      invalidEmail: 'Invalid email address',
+      load: {
+        error: 'Failed to load invitation',
+      },
+    },
+    accept: {
+      button: 'Accept',
+      success: 'Invitation accepted',
+      successDescription: 'You have been added to the tenant.',
+      error: 'Failed to accept invitation',
+    },
+    decline: {
+      button: 'Decline',
+      success: 'Invitation declined',
+      successDescription: 'You have been removed from the tenant.',
+      error: 'Failed to decline invitation',
+    },
     status: {
       pending: 'Pending',
       accepted: 'Accepted',
@@ -75,5 +98,20 @@ export const tenant = {
       error: 'Failed to delete invitation',
       confirm: 'Are you sure you want to delete this invitation?',
     },
+  },
+  overview: {
+    title: 'Overview',
+  },
+  logs: {
+    title: 'Logs',
+  },
+  branding: {
+    title: 'Branding',
+  },
+  billing: {
+    title: 'Billing',
+  },
+  settings: {
+    title: 'Settings',
   },
 }

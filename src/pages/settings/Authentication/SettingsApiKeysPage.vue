@@ -3,9 +3,10 @@ import { Icon } from '@iconify/vue'
 import { onMounted, ref } from 'vue'
 import NoItems from '@/components/DataLists/NoItems.vue'
 import { Button } from '@/components/ui/button'
+import Separator from '@/components/ui/separator/Separator.vue'
 import { accountService, type ApiKey } from '@/domains/account/services/AccountService'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
-import SettingsHeader from './partials/SettingsHeader.vue'
+import SettingsHeader from '../partials/SettingsHeader.vue'
 import type { IResourceMeta } from '@/domains/shared/types/resource.type'
 
 const loading = ref(false)
@@ -62,15 +63,14 @@ const formatDate = (dateString: string) => {
 </script>
 
 <template>
-  <SettingsHeader title="API Keys" description="Manage your API keys.">
+  <SettingsHeader
+    title="API Keys"
+    description="Manage your API keys."
+    :loading
+    refresh
+    @refresh="fetchApiKeys"
+  >
     <template #right>
-      <Button
-        variant="outline"
-        :disabled="loading"
-        @click="fetchApiKeys"
-      >
-        Refresh
-      </Button>
       <Button
         variant="default"
         :disabled="loading"

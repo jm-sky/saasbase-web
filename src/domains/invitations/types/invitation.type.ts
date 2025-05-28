@@ -5,10 +5,10 @@ export interface IApplicationInvitation {
   id: TUUID
   inviterId: TUUID
   email: string
-  role: string
   token: string
   status: string
   inviter: IUserPreview
+  invitedUser?: IUserPreview
   acceptedAt?: TDateTime
   expiresAt: TDateTime
   createdAt?: TDateTime
@@ -17,5 +17,5 @@ export interface IApplicationInvitation {
 
 export interface ISendInvitationRequest {
   email: string
-  role: string
+  message?: string
 }

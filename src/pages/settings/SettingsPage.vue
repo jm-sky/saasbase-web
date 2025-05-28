@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Separator } from '@/components/ui/separator'
 import AuthenticatedLayout from '@/layouts/AuthenticatedLayout.vue'
-import SidebarNav from './partials/SidebarNav.vue'
+import SettingsSidebarMenu from './partials/SettingsSidebarMenu.vue'
 </script>
 
 <template>
@@ -18,7 +18,7 @@ import SidebarNav from './partials/SidebarNav.vue'
       <Separator class="my-6" />
       <div class="flex flex-col space-y-8 lg:flex-row lg:space-x-12 lg:space-y-0">
         <aside class="lg:w-48">
-          <SidebarNav />
+          <SettingsSidebarMenu />
         </aside>
         <div class="flex-1 lg:max-w-2xl">
           <div class="space-y-6">

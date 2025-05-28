@@ -17,12 +17,14 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover'
 import { type IRole, roleService } from '../services/roleService'
+import { cn } from '@/lib/utils'
 
 const { t } = useI18n()
 
 const modelValue = defineModel<string | undefined>('modelValue', { required: true })
 
 defineProps<{
+  popoverContentClass?: string
   disabled?: boolean
 }>()
 
@@ -72,7 +74,7 @@ watch(open, (newValue) => {
         <ChevronsUpDown class="ml-2 h-4 w-4 shrink-0 opacity-50" />
       </Button>
     </PopoverTrigger>
-    <PopoverContent class="w-full p-0">
+    <PopoverContent :class="cn('w-full p-0', popoverContentClass)">
       <Command>
         <CommandInput :placeholder="t('role.search')" />
         <CommandList>

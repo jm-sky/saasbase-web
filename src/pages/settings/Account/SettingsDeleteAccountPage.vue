@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { Button } from '@/components/ui/button'
-import SettingsHeader from './partials/SettingsHeader.vue'
+import SettingsHeader from '../partials/SettingsHeader.vue'
 
 const formValues = ref({
   deleteAccount: false,

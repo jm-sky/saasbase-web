@@ -1,15 +1,14 @@
 <script setup lang="ts">
 import { useForm } from 'vee-validate'
-import { onMounted, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { FileUpload } from '@/components/Inputs'
-import Avatar from '@/components/ui/avatar/Avatar.vue'
-import AvatarFallback from '@/components/ui/avatar/AvatarFallback.vue'
-import AvatarImage from '@/components/ui/avatar/AvatarImage.vue'
+import AvatarUploader from '@/components/Inputs/AvatarUploader.vue'
 import { Button } from '@/components/ui/button'
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Separator } from '@/components/ui/separator'
+import Switch from '@/components/ui/switch/Switch.vue'
 import { Textarea } from '@/components/ui/textarea'
 import { toast } from '@/components/ui/toast'
 import { useAuthStore } from '@/domains/auth/store/auth.store'
@@ -17,7 +16,7 @@ import { userProfileImageService } from '@/domains/user/services/userProfileImag
 import { type IUserProfile, userProfileService } from '@/domains/user/services/userProfileService'
 import { userProfilechema } from '@/domains/user/validation/profileSchema'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
-import SettingsHeader from './partials/SettingsHeader.vue'
+import SettingsHeader from '../partials/SettingsHeader.vue'
 
 const authStore = useAuthStore()
 const { t } = useI18n()
@@ -25,13 +24,25 @@ const { t } = useI18n()
 const isLoading = ref(false)
 const isUploading = ref(false)
 const isRemoving = ref(false)
-const avatarFile = ref<File[]>()
+const avatarFiles = ref<File[]>()
 
 const profile = ref<IUserProfile>()
+
+const avatarFile = computed({
+  get() {
+    return avatarFiles.value?.[0]
+  },
+  set(value) {
+    avatarFiles.value = value ? [value] : []
+  },
+})
 
 const { handleSubmit, setValues, resetForm } = useForm<IUserProfile>({
   validationSchema: userProfilechema,
   initialValues: {
+    isPublicProfile: false,
+    email: authStore.userData?.email ?? '',
+    phone: '',
     bio: '',
     location: '',
     birthDate: '',
@@ -48,18 +59,18 @@ const { handleSubmit, setValues, resetForm } = useForm<IUserProfile>({
 })
 
 const handleAvatarUpload = async () => {
-  if (!avatarFile.value?.[0]) return
+  if (!avatarFile.value) return
 
   try {
     isUploading.value = true
-    await userProfileImageService.upload(avatarFile.value[0])
-    toast.success('Profile image updated successfully')
+    await userProfileImageService.upload(avatarFile.value)
+    toast.success(t('settings.profile.profileImage.success'))
     await authStore.refresh()
   } catch (error: unknown) {
-    handleErrorWithToast('Failed to update profile image', error)
+    handleErrorWithToast(t('settings.profile.profileImage.failedToUpload'), error)
   } finally {
     isUploading.value = false
-    avatarFile.value = []
+    avatarFiles.value = []
   }
 }
 
@@ -68,7 +79,7 @@ const onSubmit = handleSubmit(async (values) => {
     await userProfileService.update(values)
     toast.success('Profile updated successfully')
   } catch (error: unknown) {
-    handleErrorWithToast('Failed to update profile', error)
+    handleErrorWithToast(t('settings.profile.failedToUpdate'), error)
   } finally {
     await authStore.refresh()
   }
@@ -81,7 +92,7 @@ const removeAvatar = async () => {
     toast.success('Profile image removed successfully')
     await authStore.refresh()
   } catch (error: unknown) {
-    handleErrorWithToast('Failed to remove profile image', error)
+    handleErrorWithToast(t('settings.profile.profileImage.failedToRemove'), error)
   } finally {
     isRemoving.value = false
   }
@@ -94,6 +105,9 @@ const refresh = async () => {
     setValues({
       bio: profile.value.bio ?? '',
       location: profile.value.location ?? '',
+      email: authStore.userData?.email ?? profile.value.email ?? '',
+      phone: profile.value.phone ?? '',
+      isPublicProfile: profile.value.isPublicProfile,
       birthDate: profile.value.birthDate ?? '',
       position: profile.value.position ?? '',
       website: profile.value.website ?? '',
@@ -121,54 +135,98 @@ onMounted(async () => {
 <template>
   <SettingsHeader :title="t('settings.profile.title')" :description="t('settings.profile.description')">
     <template #right>
-      <Avatar class="size-16">
-        <AvatarImage
-          :src="authStore.user?.avatarUrl ?? ''"
-          :alt="authStore.user?.initials"
-        />
-        <AvatarFallback>{{ authStore.user?.initials }}</AvatarFallback>
-      </Avatar>
+      <AvatarUploader
+        v-if="authStore.user?.id"
+        v-model="avatarFile"
+        :model-id="authStore.user.id"
+        :avatar-url="authStore.user.avatarUrl"
+        :fallback-text="authStore.user.initials"
+        :disabled="isUploading"
+        avatar-class="size-16"
+        auto-upload
+        @upload="handleAvatarUpload"
+        @remove="removeAvatar"
+      />
     </template>
   </SettingsHeader>
 
   <Separator />
 
+  <FormField v-slot="{ componentField }" name="isPublicProfile">
+    <FormItem class="col-span-full flex items-center justify-between space-y-0">
+      <FormLabel>{{ t('settings.profile.user.isPublicProfile') }}</FormLabel>
+      <FormControl>
+        <Switch v-bind="componentField" :checked="profile?.isPublicProfile" />
+      </FormControl>
+      <FormMessage />
+    </FormItem>
+  </FormField>
+
+  <Separator />
+
   <form class="grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-8" :class="{ 'opacity-50': isLoading }" @submit="onSubmit">
-    <!-- <FormField v-slot="{ componentField }" name="firstName">
-      <FormItem>
-        <FormLabel>{{ t('settings.profile.user.firstName') }}</FormLabel>
-        <FormControl>
-          <Input type="text" v-bind="componentField" />
-        </FormControl>
-        <FormDescription>
-          {{ t('settings.profile.user.firstNameDescription') }}
-        </FormDescription>
-        <FormMessage />
-      </FormItem>
-    </FormField>
+    <div class="col-span-full flex items-center gap-2">
+      <FormField v-slot="{ componentField }" name="email">
+        <FormItem class="w-full">
+          <FormLabel>{{ t('settings.profile.user.email') }}</FormLabel>
+          <FormControl>
+            <Input v-bind="componentField" disabled />
+          </FormControl>
+          <FormMessage />
+        </FormItem>
+      </FormField>
+      <FormField v-slot="{ componentField }" name="publicFields.email">
+        <FormItem class="flex flex-col justify-center items-end">
+          <FormLabel>{{ t('settings.profile.public') }}</FormLabel>
+          <FormControl>
+            <Switch v-bind="componentField" :checked="profile?.publicFields?.email" class="mb-0" />
+          </FormControl>
+          <FormMessage />
+        </FormItem>
+      </FormField>
+    </div>
 
-    <FormField v-slot="{ componentField }" name="lastName">
-      <FormItem>
-        <FormLabel>{{ t('settings.profile.user.lastName') }}</FormLabel>
-        <FormControl>
-          <Input type="text" v-bind="componentField" />
-        </FormControl>
-        <FormDescription>
-          {{ t('settings.profile.user.lastNameDescription') }}
-        </FormDescription>
-        <FormMessage />
-      </FormItem>
-    </FormField> -->
+    <div class="col-span-full flex items-center gap-2">
+      <FormField v-slot="{ componentField }" name="phone">
+        <FormItem class="w-full">
+          <FormLabel>{{ t('settings.profile.user.phone') }}</FormLabel>
+          <FormControl>
+            <Input v-bind="componentField" disabled />
+          </FormControl>
+          <FormMessage />
+        </FormItem>
+      </FormField>
+      <FormField v-slot="{ componentField }" name="publicFields.phone">
+        <FormItem class="flex flex-col justify-center items-end">
+          <FormLabel>{{ t('settings.profile.public') }}</FormLabel>
+          <FormControl>
+            <Switch v-bind="componentField" :checked="profile?.publicFields?.phone" class="mb-0" />
+          </FormControl>
+          <FormMessage />
+        </FormItem>
+      </FormField>
+    </div>
 
-    <FormField v-slot="{ componentField }" name="birthDate">
-      <FormItem class="col-span-full">
-        <FormLabel>{{ t('settings.profile.user.birthDate') }}</FormLabel>
-        <FormControl>
-          <Input type="date" v-bind="componentField" />
-        </FormControl>
-        <FormMessage />
-      </FormItem>
-    </FormField>
+    <div class="col-span-full flex items-center gap-2">
+      <FormField v-slot="{ componentField }" name="birthDate">
+        <FormItem class="w-full">
+          <FormLabel>{{ t('settings.profile.user.birthDate') }}</FormLabel>
+          <FormControl>
+            <Input type="date" v-bind="componentField" />
+          </FormControl>
+          <FormMessage />
+        </FormItem>
+      </FormField>
+      <FormField v-slot="{ componentField }" name="publicFields.birthDate">
+        <FormItem class="flex flex-col justify-center items-end">
+          <FormLabel>{{ t('settings.profile.public') }}</FormLabel>
+          <FormControl>
+            <Switch v-bind="componentField" :checked="profile?.publicFields?.birthDate" class="mb-0" />
+          </FormControl>
+          <FormMessage />
+        </FormItem>
+      </FormField>
+    </div>
 
     <FormField v-slot="{ componentField }" name="location">
       <FormItem>
@@ -213,7 +271,7 @@ onMounted(async () => {
       </FormItem>
     </FormField>
 
-    <div class="col-span-full flex gap-2 justify-start">
+    <div class="col-span-full flex gap-2 justify-end">
       <Button type="submit">
         {{ t('settings.profile.updateProfile') }}
       </Button>
@@ -239,13 +297,13 @@ onMounted(async () => {
           <div class="grid grid-cols-2 gap-4">
             <div class="flex flex-col gap-2">
               <FileUpload
-                v-model="avatarFile"
+                v-model="avatarFiles"
                 accept="image/jpeg,image/png,image/gif"
                 :multiple="false"
                 :disabled="isUploading"
               />
               <Button
-                :disabled="!avatarFile?.length || isUploading"
+                :disabled="!avatarFiles?.length || isUploading"
                 :loading="isUploading"
                 @click="handleAvatarUpload"
               >

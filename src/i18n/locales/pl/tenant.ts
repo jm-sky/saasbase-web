@@ -41,6 +41,29 @@ export const tenant = {
     },
   },
   invitations: {
+    title: 'Zaproszenia',
+    process: {
+      title: 'Zaproszenie',
+      info: 'Zostałeś zaproszony do dołączenia do {tenant} jako {role}.',
+      description: 'Możesz zaakceptować lub odrzucić zaproszenie.',
+      loading: 'Ładowanie zaproszenia...',
+      invalidEmail: 'Nieprawidłowy adres email',
+      load: {
+        error: 'Nie udało się załadować zaproszenia',
+      },
+    },
+    accept: {
+      button: 'Zaakceptuj',
+      success: 'Zaproszenie zaakceptowane',
+      successDescription: 'Zostałeś dodany do {tenant}.',
+      error: 'Nie udało się zaakceptować zaproszenia',
+    },
+    decline: {
+      button: 'Odrzuć',
+      success: 'Zaproszenie odrzucone',
+      successDescription: 'Zostałeś usunięty z {tenant}.',
+      error: 'Nie udało się odrzucić zaproszenia',
+    },
     status: {
       pending: 'Oczekuje',
       accepted: 'Zaakceptowane',
@@ -80,5 +103,20 @@ export const tenant = {
       error: 'Nie udało się usunąć zaproszenia',
       confirm: 'Czy na pewno chcesz usunąć to zaproszenie?',
     },
+  },
+  overview: {
+    title: 'Przegląd',
+  },
+  logs: {
+    title: 'Logi',
+  },
+  branding: {
+    title: 'Marka',
+  },
+  billing: {
+    title: 'Rozliczenia',
+  },
+  settings: {
+    title: 'Ustawienia',
   },
 }

@@ -55,12 +55,16 @@ const canUpload = computed<boolean>(() => !!file.value && !isUploaded.value)
 const canRemove = computed<boolean>(() => (!!file.value || !!avatarUrl || isUploaded.value) && !isRemoved.value)
 
 const onFileChange = async (e: Event) => {
+  console.log('[onFileChange] file:', file.value)
+
   if (disabled) return
   if (readonly) return
 
   const target = e.target as HTMLInputElement
   const selected = target.files?.[0] ?? null
   isUploaded.value = false
+
+  console.log('[onFileChange] selected:', selected)
 
   if (selected) {
     file.value = selected
@@ -76,6 +80,8 @@ const upload = async () => {
   if (disabled) return
   if (readonly) return
   if (!file.value) return
+
+  console.log('[upload] file:', file.value)
 
   emit('upload', file.value)
 
@@ -121,7 +127,7 @@ const removeFile = async () => {
 
 <template>
   <div
-    class="relative group inline-block w-fit mx-auto  md:[&>button]:opacity-0 [&>button]:transition-opacity [&>button]:duration-300"
+    class="relative group inline-block w-fit mx-auto md:[&>button]:opacity-0 [&>button]:transition-opacity [&>button]:duration-300"
     tabindex="-1"
     :class="{ 'opacity-50': isLoading }"
   >

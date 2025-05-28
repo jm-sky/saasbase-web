@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { Loader2, RefreshCw } from 'lucide-vue-next'
+import { RefreshCw } from 'lucide-vue-next'
 import { useI18n } from 'vue-i18n'
 import ButtonLink from '../ButtonLink.vue'
+import LoadingIcon from '../Icons/LoadingIcon.vue'
 import Alert from '../ui/alert/Alert.vue'
 import AlertDescription from '../ui/alert/AlertDescription.vue'
 import AlertTitle from '../ui/alert/AlertTitle.vue'
@@ -51,7 +52,7 @@ const emit = defineEmits<{
     <slot />
 
     <div v-if="loading" class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-60 h-30 rounded-2xl flex items-center gap-3 shadow-xl justify-center bg-white/50 backdrop-blur-sm border">
-      <Loader2 class="h-4 w-4 animate-spin" />
+      <LoadingIcon />
       <span class="text-sm">{{ t('common.loading') }}</span>
     </div>
   </div>

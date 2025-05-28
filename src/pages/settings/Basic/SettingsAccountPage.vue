@@ -12,7 +12,8 @@ import { authService } from '@/domains/auth/services/authService'
 import { mfaService } from '@/domains/auth/services/mfaService'
 import { useAuthStore } from '@/domains/auth/store/auth.store'
 import { routeMap } from '@/router/routeMap'
-import SettingsHeader from './partials/SettingsHeader.vue'
+import SettingsHeader from '../partials/SettingsHeader.vue'
+import SocialSignInItem from './partials/SocialSignInItem.vue'
 
 const router = useRouter()
 const authStore = useAuthStore()
@@ -121,30 +122,60 @@ onMounted(async () => {
 
   <Separator class="my-6" />
 
-  <div class="space-y-4">
-    <div>
-      <h4 class="text-sm font-medium">
-        Two-Factor Authentication
-      </h4>
-      <p class="text-sm text-muted-foreground">
-        Add an extra layer of security to your account by enabling two-factor authentication.
-      </p>
-    </div>
+  <SettingsHeader title="Two-Factor Authentication" description="Add an extra layer of security to your account by enabling two-factor authentication." />
 
-    <div class="flex items-center space-x-4">
-      <template v-if="authStore.userData?.isTwoFactorEnabled">
-        <Button variant="destructive" :loading="disable2faLoading" @click="disable2fa">
-          {{ 'Disable 2FA' }}
-        </Button>
-        <span class="text-sm text-muted-foreground">
-          ✓ Two-factor authentication is enabled
-        </span>
-      </template>
-      <template v-else>
-        <Button variant="default" @click="handleSetup2FA">
-          {{ 'Enable 2FA' }}
-        </Button>
-      </template>
-    </div>
+  <div class="flex items-center space-x-4">
+    <template v-if="authStore.userData?.isTwoFactorEnabled">
+      <Button variant="destructive" :loading="disable2faLoading" @click="disable2fa">
+        {{ 'Disable 2FA' }}
+      </Button>
+      <span class="text-sm text-muted-foreground">
+        ✓ Two-factor authentication is enabled
+      </span>
+    </template>
+    <template v-else>
+      <Button variant="default" @click="handleSetup2FA">
+        {{ 'Enable 2FA' }}
+      </Button>
+    </template>
+  </div>
+
+  <Separator class="my-6" />
+
+  <SettingsHeader title="Password" description="Change your password." work-in-progress />
+
+  <form class="flex flex-col items-center gap-4">
+    <Input type="password" placeholder="Current password" />
+    <Input type="password" placeholder="New password" />
+    <Input type="password" placeholder="Confirm new password" />
+    <Button>
+      {{ 'Change password' }}
+    </Button>
+  </form>
+
+
+  <Separator class="my-6" />
+
+  <SettingsHeader title="Social sign-in" description="Connect your account to social media accounts." work-in-progress />
+
+  <div class="grid gap-5 mb-7">
+    <SocialSignInItem
+      provider="Google"
+      :email="authStore.userData?.email ?? ''"
+      is-enabled
+      image="/assets/media/brand-logos/google.svg"
+    />
+    <SocialSignInItem
+      provider="GitHub"
+      :email="authStore.userData?.email ?? ''"
+      is-enabled
+      image="/assets/media/brand-logos/github.svg"
+    />
+    <SocialSignInItem
+      provider="Linkedin"
+      :email="authStore.userData?.email ?? ''"
+      disabled
+      image="/assets/media/brand-logos/linkedin.svg"
+    />
   </div>
 </template>

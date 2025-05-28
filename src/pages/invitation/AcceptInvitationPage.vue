@@ -30,13 +30,13 @@ const handleAccept = async () => {
     submitting.value = true
     const result = await acceptInvitation()
     if (result) {
-      toast.success(t('invitation.accept.success'), {
-        description: t('invitation.accept.successDescription'),
+      toast.success(t('invitation.process.accept.success'), {
+        description: t('invitation.process.accept.successDescription'),
       })
       await router.push(redirectTo.value)
     }
   } catch (error) {
-    handleErrorWithToast(t('invitation.accept.error'), error)
+    handleErrorWithToast(t('invitation.process.accept.error'), error)
   } finally {
     submitting.value = false
   }
@@ -46,12 +46,12 @@ const handleDecline = async () => {
   try {
     submitting.value = true
     await declineInvitation()
-    toast.success(t('invitation.decline.success'), {
-      description: t('invitation.decline.successDescription'),
+    toast.success(t('invitation.process.decline.success'), {
+      description: t('invitation.process.decline.successDescription'),
     })
     await router.push(redirectTo.value)
   } catch (error) {
-    handleErrorWithToast(t('invitation.decline.error'), error)
+    handleErrorWithToast(t('invitation.process.decline.error'), error)
   } finally {
     submitting.value = false
   }
@@ -67,7 +67,7 @@ onMounted(async () => {
   }
 
   if (authStore.userData?.email !== invitation?.email) {
-    toast.info(t('invitation.invalidEmail'))
+    toast.info(t('invitation.process.invalidEmail'))
     store.clearInvitation()
     await router.push('/')
   }
@@ -80,15 +80,15 @@ onMounted(async () => {
       <div class="space-y-6">
         <div class="text-center space-y-2">
           <h1 class="text-2xl font-semibold tracking-tight">
-            {{ t('invitation.title') }}
+            {{ t('invitation.process.title') }}
           </h1>
           <p class="text-sm text-muted-foreground">
-            {{ t('invitation.description') }}
+            {{ t('invitation.process.description') }}
           </p>
         </div>
 
         <div v-if="loading" class="text-center text-muted-foreground">
-          {{ t('invitation.loading') }}
+          {{ t('invitation.process.loading') }}
         </div>
 
         <Alert v-else-if="error" variant="destructive">
@@ -112,7 +112,7 @@ onMounted(async () => {
               @click="handleDecline"
             >
               <X class="w-4 h-4" />
-              {{ t('invitation.decline.button') }}
+              {{ t('invitation.process.decline.button') }}
             </Button>
             <Button
               :disabled="loading || submitting"
@@ -121,7 +121,7 @@ onMounted(async () => {
               @click="handleAccept"
             >
               <Check class="w-4 h-4" />
-              {{ t('invitation.accept.button') }}
+              {{ t('invitation.process.accept.button') }}
             </Button>
           </div>
         </template>

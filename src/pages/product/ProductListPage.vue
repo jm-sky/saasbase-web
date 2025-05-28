@@ -86,7 +86,7 @@ watch(filters, () => refresh(), { deep: true })
       <template #actions>
         <SearchField v-model="filters.search" />
         <Button variant="outline" @click="refresh">
-          <RefreshCw class="h-4 w-4" />
+          <RefreshCw class="size-4" />
         </Button>
         <ButtonLink v-tooltip="t('product.add.description')" variant="default" to="/products/add">
           {{ t('product.add.title') }}

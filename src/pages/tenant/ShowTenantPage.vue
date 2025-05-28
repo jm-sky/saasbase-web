@@ -91,42 +91,42 @@ onMounted(async () => {
           class="border-b-2 border-transparent hover:border-muted-foreground px-2 py-1"
           exact-active-class="text-primary border-primary!"
         >
-          Overview
+          {{ $t('tenant.overview.title') }}
         </RouterLink>
         <RouterLink
           :to="`/tenants/${tenantId}/show/logs`"
           class="border-b-2 border-transparent hover:border-muted-foreground px-2 py-1"
           exact-active-class="text-primary border-primary!"
         >
-          Logs
+          {{ $t('tenant.logs.title') }}
         </RouterLink>
         <RouterLink
           :to="`/tenants/${tenantId}/show/invitations`"
           class="border-b-2 border-transparent hover:border-muted-foreground px-2 py-1"
           exact-active-class="text-primary border-primary!"
         >
-          Invitations
+          {{ $t('tenant.invitations.title') }}
         </RouterLink>
         <RouterLink
           :to="`/tenants/${tenantId}/show/branding`"
           class="border-b-2 border-transparent hover:border-muted-foreground px-2 py-1"
           exact-active-class="text-primary border-primary!"
         >
-          Branding
+          {{ $t('tenant.branding.title') }}
         </RouterLink>
         <RouterLink
           :to="`/tenants/${tenantId}/show/billing`"
           class="border-b-2 border-transparent hover:border-muted-foreground px-2 py-1"
           exact-active-class="text-primary border-primary!"
         >
-          Billing
+          {{ $t('tenant.billing.title') }}
         </RouterLink>
         <RouterLink
           :to="`/tenants/${tenantId}/show/settings`"
           class="border-b-2 border-transparent hover:border-muted-foreground px-2 py-1"
           exact-active-class="text-primary border-primary!"
         >
-          Settings
+          {{ $t('tenant.settings.title') }}
         </RouterLink>
       </template>
 

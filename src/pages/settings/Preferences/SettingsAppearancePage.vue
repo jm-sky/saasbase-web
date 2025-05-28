@@ -9,7 +9,7 @@ import Input from '@/components/ui/input/Input.vue'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { Separator } from '@/components/ui/separator'
 import { useThemeStore } from '@/stores/theme.store'
-import SettingsHeader from './partials/SettingsHeader.vue'
+import SettingsHeader from '../partials/SettingsHeader.vue'
 
 const theme = useThemeStore()
 
@@ -41,6 +41,10 @@ const onSubmit = handleSubmit((values) => {
   <Separator />
 
   <form class="space-y-8" @submit="onSubmit">
+    <FormFieldLabeled v-slot="{ componentField }" name="timeZone" label="Time Zone">
+      <Input v-bind="componentField" />
+    </FormFieldLabeled>
+
     <FormFieldLabeled v-slot="{ componentField }" name="dateFormat" label="Date Format">
       <Input v-bind="componentField" />
     </FormFieldLabeled>

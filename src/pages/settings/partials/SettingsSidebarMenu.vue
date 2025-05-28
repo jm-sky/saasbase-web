@@ -1,0 +1,75 @@
+<script setup lang="ts">
+import { Icon } from '@iconify/vue'
+import ButtonLink from '@/components/ButtonLink.vue'
+
+interface INavigationSection {
+  title: string
+  items: INavigationItem[]
+}
+
+interface INavigationItem {
+  title: string
+  path: string
+  icon: string
+  disabled?: boolean
+}
+
+const navigationSections: INavigationSection[] = [
+  {
+    title: 'Basic Settings',
+    items: [
+      { title: 'Profile', path: '/settings/profile', icon: 'heroicons:user' },
+      { title: 'Account', path: '/settings/account', icon: 'heroicons:cog-6-tooth' },
+    ]
+  },
+  {
+    title: 'Preferences',
+    items: [
+      { title: 'Appearance', path: '/settings/appearance', icon: 'heroicons:eye' },
+      { title: 'Notifications', path: '/settings/notifications', icon: 'heroicons:bell' },
+    ]
+  },
+  {
+    title: 'Authentication',
+    items: [
+      { title: 'API Keys', path: '/settings/api-keys', icon: 'heroicons:key' },
+    ]
+  },
+  {
+    title: 'Account',
+    items: [
+      { title: 'Logs', path: '/settings/logs', icon: 'heroicons:clock' },
+      { title: 'Invitations', path: '/settings/invitations', icon: 'heroicons:user-plus' },
+      { title: 'Sessions', path: '/settings/sessions', icon: 'heroicons:computer-desktop' },
+      { title: 'Devices', path: '/settings/devices', icon: 'heroicons:device-phone-mobile' },
+      { title: 'Delete Account', path: '/settings/delete-account', icon: 'heroicons:trash' },
+    ]
+  },
+]
+</script>
+
+<template>
+  <nav class="flex flex-wrap space-x-2 lg:flex-col lg:space-x-0 lg:space-y-1">
+    <template v-for="(section, index) in navigationSections" :key="index">
+      <div class="flex flex-col">
+        <div class="px-2 py-2 text-sm font-semibold text-mono">
+          {{ section.title }}
+        </div>
+        <div class="flex flex-col gap-1">
+          <template v-for="(item, itemIndex) in section.items" :key="itemIndex">
+            <ButtonLink
+              :to="item.path"
+              variant="ghost"
+              class="font-normal md:w-full text-left justify-start"
+              active-class="bg-primary-100/50 text-primary"
+              :disabled="item.disabled"
+            >
+              <Icon :icon="item.icon" class="size-4" />
+              {{ item.title }}
+            </ButtonLink>
+          </template>
+        </div>
+      </div>
+    </template>
+  </nav>
+</template>

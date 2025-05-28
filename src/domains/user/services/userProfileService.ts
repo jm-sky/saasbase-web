@@ -1,6 +1,8 @@
 import api from '@/lib/api'
 
 export interface IUserProfile {
+  email?: string
+  phone?: string
   bio: string | null
   location: string | null
   birthDate: string | null
@@ -12,7 +14,13 @@ export interface IUserProfile {
     twitter: string | null
     linkedin: string | null
     youtube: string | null
-  }
+  },
+  isPublicProfile: boolean
+  publicFields?: {
+    email?: boolean
+    phone?: boolean
+    birthDate?: boolean
+  },
 }
 
 class UserProfileService {
