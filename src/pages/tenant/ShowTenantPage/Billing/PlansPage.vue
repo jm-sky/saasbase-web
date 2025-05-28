@@ -1,8 +1,15 @@
 <script setup lang="ts">
 import { Icon } from '@iconify/vue'
+import { Info } from 'lucide-vue-next'
 import { onMounted, ref } from 'vue'
+import Alert from '@/components/ui/alert/Alert.vue'
+import AlertTitle from '@/components/ui/alert/AlertTitle.vue'
 import { Button } from '@/components/ui/button'
+import Card from '@/components/ui/card/Card.vue'
+import CardContent from '@/components/ui/card/CardContent.vue'
+import Switch from '@/components/ui/switch/Switch.vue'
 import { accountService, type BillingPlan } from '@/domains/account/services/AccountService'
+import TenantSectionTitle from '@/domains/tenant/components/TenantSectionTitle.vue'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
 
 const loading = ref(false)
@@ -51,11 +58,10 @@ const handlePlanSelect = async (plan: BillingPlan) => {
 </script>
 
 <template>
-  <div class="space-y-6">
+  <div class="space-y-4">
     <div class="flex items-center justify-between">
-      <h2 class="text-2xl font-semibold">
-        Choose Your Plan
-      </h2>
+      <TenantSectionTitle :title="$t('tenant.billing.plans.title')" />
+
       <div class="flex items-center gap-2">
         <Button
           variant="outline"
@@ -67,55 +73,40 @@ const handlePlanSelect = async (plan: BillingPlan) => {
       </div>
     </div>
 
+    <Alert variant="info">
+      <AlertTitle class="flex items-center gap-2">
+        <Info class="size-4" />
+        To jest wersja DEMO
+      </AlertTitle>
+    </Alert>
+
     <!-- Billing Interval Toggle -->
-    <div class="flex items-center justify-center gap-4">
+    <div class="flex items-center justify-center gap-4 py-2 mb-8">
       <span
-        :class="[
-          'text-sm font-medium cursor-pointer',
-          selectedInterval === 'month' ? 'text-primary' : 'text-muted-foreground',
-        ]"
+        class="text-sm font-medium cursor-pointer"
+        :class="selectedInterval === 'month' ? 'text-primary' : 'text-muted-foreground'"
         @click="selectedInterval = 'month'"
       >
         Monthly
       </span>
-      <Button
-        variant="outline"
-        size="sm"
-        class="relative"
-        @click="selectedInterval = selectedInterval === 'month' ? 'year' : 'month'"
-      >
-        <span class="sr-only">Toggle billing interval</span>
-        <div
-          class="absolute left-1 top-1 h-4 w-4 rounded-full bg-primary transition-transform"
-          :class="selectedInterval === 'year' ? 'translate-x-4' : ''"
-        />
-      </Button>
-      <span
-        :class="[
-          'text-sm font-medium cursor-pointer',
-          selectedInterval === 'year' ? 'text-primary' : 'text-muted-foreground',
-        ]"
-        @click="selectedInterval = 'year'"
-      >
+      <Switch :checked="selectedInterval === 'year'" @update:checked="selectedInterval = selectedInterval === 'year' ? 'month' : 'year'" />
+      <span class="text-sm font-medium cursor-pointer" :class="selectedInterval === 'year' ? 'text-primary' : 'text-muted-foreground'" @click="selectedInterval = 'year'">
         Yearly
         <span class="ml-1 text-xs text-success">Save 20%</span>
       </span>
     </div>
 
     <!-- Plans Grid -->
-    <div class="grid gap-6 md:grid-cols-3">
-      <div
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <Card
         v-for="plan in plans"
         :key="plan.id"
-        class="card relative"
+        class="card relative shadow-md"
         :class="{ 'border-primary': plan.isCurrent }"
       >
-        <div class="p-6">
+        <CardContent class="p-5 flex flex-col h-full">
           <!-- Popular Badge -->
-          <div
-            v-if="plan.isPopular"
-            class="absolute -top-3 left-1/2 -translate-x-1/2"
-          >
+          <div v-if="plan.isPopular" class="absolute -top-3 left-1/2 -translate-x-1/2">
             <span class="px-3 py-1 text-xs font-medium rounded-full bg-primary text-primary-foreground">
               Most Popular
             </span>
@@ -146,7 +137,7 @@ const handlePlanSelect = async (plan: BillingPlan) => {
             >
               <Icon
                 icon="heroicons:check"
-                class="w-5 h-5 text-success flex-shrink-0"
+                class="size-5 text-success flex-shrink-0"
               />
               {{ feature }}
             </li>
@@ -154,15 +145,15 @@ const handlePlanSelect = async (plan: BillingPlan) => {
 
           <!-- Action Button -->
           <Button
-            class="w-full"
+            class="w-full mt-auto mb-0"
             :variant="plan.isCurrent ? 'outline' : 'default'"
             :disabled="plan.isCurrent || loading"
             @click="handlePlanSelect(plan)"
           >
             {{ plan.isCurrent ? 'Current Plan' : 'Select Plan' }}
           </Button>
-        </div>
-      </div>
+        </CardContent>
+      </Card>
     </div>
   </div>
 </template>

@@ -111,7 +111,7 @@ onMounted(async () => {
               size="lg"
               @click="handleDecline"
             >
-              <X class="w-4 h-4" />
+              <X class="size-4" />
               {{ t('invitation.process.decline.button') }}
             </Button>
             <Button
@@ -120,7 +120,7 @@ onMounted(async () => {
               size="lg"
               @click="handleAccept"
             >
-              <Check class="w-4 h-4" />
+              <Check class="size-4" />
               {{ t('invitation.process.accept.button') }}
             </Button>
           </div>

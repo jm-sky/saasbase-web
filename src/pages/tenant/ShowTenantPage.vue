@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { storeToRefs } from 'pinia'
 import { onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
@@ -8,16 +9,18 @@ import InfoSection from '@/components/Sections/InfoSection.vue'
 import Separator from '@/components/ui/separator/Separator.vue'
 import { tenantLogoService } from '@/domains/tenant/services/TenantLogoService'
 import { tenantService } from '@/domains/tenant/services/TenantService'
+import { useTenantStore } from '@/domains/tenant/store/tenant.store'
 import AuthenticatedLayout from '@/layouts/AuthenticatedLayout.vue'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
 import { toDateTimeString } from '@/lib/toDateTimeString'
-import type { ITenant } from '@/domains/tenant/types/tenant.type'
 
 const { t } = useI18n()
 const route = useRoute()
+const tenantStore = useTenantStore()
 const tenantId = route.params.id as string
 
-const tenant = ref<ITenant>()
+const { tenant } = storeToRefs(tenantStore)
+
 const loading = ref(false)
 const error = ref<string | null>(null)
 
@@ -115,9 +118,16 @@ onMounted(async () => {
           {{ $t('tenant.branding.title') }}
         </RouterLink>
         <RouterLink
-          :to="`/tenants/${tenantId}/show/billing`"
+          :to="`/tenants/${tenantId}/show/public-profile`"
           class="border-b-2 border-transparent hover:border-muted-foreground px-2 py-1"
           exact-active-class="text-primary border-primary!"
+        >
+          {{ $t('tenant.publicProfile.title') }}
+        </RouterLink>
+        <RouterLink
+          :to="`/tenants/${tenantId}/show/billing`"
+          class="border-b-2 border-transparent hover:border-muted-foreground px-2 py-1"
+          active-class="text-primary border-primary!"
         >
           {{ $t('tenant.billing.title') }}
         </RouterLink>

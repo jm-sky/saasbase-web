@@ -7,6 +7,7 @@ import { common } from './common'
 import { contacts } from './contacts'
 import { contractor } from './contractor'
 import { invitation } from './invitation'
+import { log } from './log'
 import { product } from './product'
 import { settings } from './settings'
 import { tenant } from './tenant'
@@ -31,6 +32,7 @@ export const pl = {
     lightMode: 'Tryb jasny',
     layoutConfig: 'Konfiguracja układu'
   },
+  log,
   errors: {
     uploadFailed: 'Wystąpił błąd podczas przesyłania pliku',
   },

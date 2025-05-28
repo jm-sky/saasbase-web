@@ -1,8 +1,14 @@
 <script setup lang="ts">
 import { Icon } from '@iconify/vue'
+import { Info } from 'lucide-vue-next'
 import { onMounted, ref } from 'vue'
+import Alert from '@/components/ui/alert/Alert.vue'
+import AlertTitle from '@/components/ui/alert/AlertTitle.vue'
 import { Button } from '@/components/ui/button'
+import Card from '@/components/ui/card/Card.vue'
+import CardContent from '@/components/ui/card/CardContent.vue'
 import { accountService, type BillingHistory } from '@/domains/account/services/AccountService'
+import TenantSectionTitle from '@/domains/tenant/components/TenantSectionTitle.vue'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
 
 const loading = ref(false)
@@ -65,9 +71,7 @@ const downloadInvoice = async (invoiceId: string) => {
 <template>
   <div class="space-y-6">
     <div class="flex items-center justify-between">
-      <h2 class="text-2xl font-semibold">
-        Billing History
-      </h2>
+      <TenantSectionTitle :title="$t('tenant.billing.history.title')" />
       <Button
         variant="outline"
         :disabled="loading"
@@ -77,8 +81,15 @@ const downloadInvoice = async (invoiceId: string) => {
       </Button>
     </div>
 
-    <div class="card">
-      <div class="p-6">
+    <Alert variant="info">
+      <AlertTitle class="flex items-center gap-2">
+        <Info class="size-4" />
+        To jest wersja DEMO
+      </AlertTitle>
+    </Alert>
+
+    <Card>
+      <CardContent>
         <div class="overflow-x-auto">
           <table class="w-full">
             <thead>
@@ -127,7 +138,7 @@ const downloadInvoice = async (invoiceId: string) => {
                   >
                     <Icon
                       :icon="item.status === 'paid' ? 'heroicons:check-circle' : 'heroicons:clock'"
-                      class="w-4 h-4"
+                      class="size-4"
                     />
                     {{ item.status.charAt(0).toUpperCase() + item.status.slice(1) }}
                   </span>
@@ -142,7 +153,7 @@ const downloadInvoice = async (invoiceId: string) => {
                   >
                     <Icon
                       icon="heroicons:document-arrow-down"
-                      class="w-4 h-4 mr-2"
+                      class="size-4 mr-2"
                     />
                     Download
                   </Button>
@@ -159,7 +170,7 @@ const downloadInvoice = async (invoiceId: string) => {
         >
           <Icon
             icon="heroicons:document-text"
-            class="w-12 h-12 text-muted-foreground mx-auto mb-4"
+            class="size-12 text-muted-foreground mx-auto mb-4"
           />
           <h3 class="text-lg font-medium mb-2">
             No billing history
@@ -168,7 +179,7 @@ const downloadInvoice = async (invoiceId: string) => {
             Your billing history will appear here once you make your first payment.
           </p>
         </div>
-      </div>
-    </div>
+      </CardContent>
+    </Card>
   </div>
 </template>

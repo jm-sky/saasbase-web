@@ -16,8 +16,8 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover'
-import { type IRole, roleService } from '../services/roleService'
 import { cn } from '@/lib/utils'
+import { type IRole, roleService } from '../services/roleService'
 
 const { t } = useI18n()
 

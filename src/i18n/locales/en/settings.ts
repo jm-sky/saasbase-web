@@ -12,17 +12,17 @@ export const settings = {
   profile: {
     title: 'Profile',
     description: 'This is how others will see you on the site.',
-    updateProfile: 'Update profile',
-    resetForm: 'Reset form',
+    updateProfile: 'Update Profile',
+    resetForm: 'Reset Form',
     public: 'Public',
     user: {
-      firstName: 'First name',
-      firstNameDescription: 'This is your public display name.',
-      lastName: 'Last name',
-      lastNameDescription: 'This is your public display family name.',
+      firstName: 'First Name',
+      firstNameDescription: 'This is your public first name.',
+      lastName: 'Last Name',
+      lastNameDescription: 'This is your public last name.',
       email: 'Email',
       phone: 'Phone',
-      birthDate: 'Birth date',
+      birthDate: 'Birth Date',
       description: 'Description',
       bio: 'Bio',
       location: 'Location',
@@ -35,12 +35,12 @@ export const settings = {
         linkedin: 'LinkedIn',
         youtube: 'YouTube',
       },
-      descriptionPlaceholder: 'Tell us a little bit about yourself',
-      isPublicProfile: 'Make my profile public',
+      descriptionPlaceholder: 'Tell us about yourself',
+      isPublicProfile: 'Set public profile',
       publicFields: {
-        email: 'Public email',
-        phone: 'Public phone',
-        birthDate: 'Public birth date',
+        email: 'Public Email',
+        phone: 'Public Phone',
+        birthDate: 'Public Birth Date',
       },
     },
     failedToUpdate: 'Failed to update profile',
@@ -61,7 +61,7 @@ export const settings = {
     title: 'Account',
     sessions: {
       title: 'Active Sessions',
-      description: 'Manage your active sessions across different devices',
+      description: 'Manage active sessions on different devices',
       currentSession: 'Current Session',
       device: 'Device',
       location: 'Location',
@@ -80,12 +80,12 @@ export const settings = {
       removeConfirm: 'Are you sure you want to remove this device?'
     },
     logs: {
-      title: 'Activity Logs',
-      description: 'View your account activity history',
+      title: 'Activity History',
+      description: 'Browse your account activity history',
       date: 'Date',
       action: 'Action',
       ip: 'IP Address',
-      noLogs: 'No activity logs found'
+      noLogs: 'No activity history'
     },
     delete: {
       title: 'Delete Account',
@@ -93,13 +93,13 @@ export const settings = {
       warning: 'This action cannot be undone. All your data will be permanently deleted.',
       confirmText: 'Type "DELETE" to confirm',
       confirmPlaceholder: 'DELETE',
-      success: 'Account deleted successfully'
+      success: 'Account has been successfully deleted'
     },
     invitations: {
       title: 'Application Invitations',
-      description: 'Manage your application invitations',
+      description: 'Manage application invitations',
       status: 'Status',
-      invitedBy: 'Invited By',
+      invitedBy: 'Invited by',
       date: 'Invitation Date',
       accept: 'Accept',
       decline: 'Decline',
@@ -112,7 +112,7 @@ export const settings = {
     title: 'Authentication',
     apiKeys: {
       title: 'API Keys',
-      description: 'Manage your API keys for external integrations',
+      description: 'Manage API keys for external integrations',
       create: 'Create New API Key',
       name: 'Key Name',
       created: 'Created',
@@ -124,7 +124,7 @@ export const settings = {
       copy: 'Copy Key',
       copied: 'Copied to clipboard',
       newKey: 'New API Key',
-      keyWarning: 'Make sure to copy your API key now. You won\'t be able to see it again!'
+      keyWarning: 'Remember to copy your API key now. You won\'t be able to see it again!'
     },
     mfa: {
       title: 'Two-Factor Authentication',
@@ -135,7 +135,7 @@ export const settings = {
       verify: 'Verify Code',
       recoveryCodes: 'Recovery Codes',
       downloadCodes: 'Download Recovery Codes',
-      codesWarning: 'Store these recovery codes in a secure place. You can use them to access your account if you lose your 2FA device.',
+      codesWarning: 'Store these recovery codes in a safe place. You can use them to access your account if you lose your 2FA device.',
       qrCode: 'Scan QR Code',
       manualCode: 'Manual Entry Code',
       enterCode: 'Enter the 6-digit code from your authenticator app'
@@ -147,7 +147,7 @@ export const settings = {
     title: 'Preferences',
     appearance: {
       title: 'Appearance',
-      description: 'Customize how the application looks',
+      description: 'Customize the application appearance',
       theme: 'Theme',
       language: 'Language',
       timezone: 'Timezone',
@@ -159,7 +159,7 @@ export const settings = {
     },
     notifications: {
       title: 'Notifications',
-      description: 'Manage your notification preferences',
+      description: 'Manage notification preferences',
       email: 'Email Notifications',
       push: 'Push Notifications',
       inApp: 'In-App Notifications',

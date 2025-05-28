@@ -36,6 +36,11 @@ export const tenantRoutes: RouteRecordRaw[] = [
         component: () => import('@/pages/tenant/ShowTenantPage/TenantBrandingPage.vue'),
       },
       {
+        path: 'public-profile',
+        name: 'tenant.show.public-profile',
+        component: () => import('@/pages/tenant/ShowTenantPage/TenantPublicProfilePage.vue'),
+      },
+      {
         path: 'settings',
         name: 'tenant.show.settings',
         component: () => import('@/pages/tenant/ShowTenantPage/TenantSettingsPage.vue'),
@@ -47,13 +52,17 @@ export const tenantRoutes: RouteRecordRaw[] = [
       },
       {
         path: 'billing',
-        name: 'tenant-billing',
         component: () => import('@/pages/tenant/ShowTenantPage/BillingPage.vue'),
         children: [
           {
             path: '',
-            name: 'tenant-billing-basic',
-            component: () => import('@/pages/tenant/ShowTenantPage/Billing/BasicPage.vue'),
+            redirect: { name: 'tenant-billing-overview' },
+            name: 'tenant-billing',
+          },
+          {
+            path: 'overview',
+            name: 'tenant-billing-overview',
+            component: () => import('@/pages/tenant/ShowTenantPage/Billing/OverviewPage.vue'),
           },
           {
             path: 'plans',

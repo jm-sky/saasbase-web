@@ -45,6 +45,6 @@ const lookupVatId = async () => {
     :disabled="disabled || loading"
     @click="lookupVatId"
   >
-    <SearchCheck v-if="!loading" class="w-4 h-4" />
+    <SearchCheck v-if="!loading" class="size-4" />
   </Button>
 </template>

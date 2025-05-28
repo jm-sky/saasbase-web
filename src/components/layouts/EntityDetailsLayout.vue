@@ -42,7 +42,7 @@ const emit = defineEmits<{
             :loading
             @click="emit('refresh')"
           >
-            <RefreshCcw class="w-4 h-4" />
+            <RefreshCcw class="size-4" />
           </Button>
 
           <ButtonLink

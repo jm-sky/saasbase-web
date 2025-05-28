@@ -1,8 +1,15 @@
 <script setup lang="ts">
 import { Icon } from '@iconify/vue'
+import { Info } from 'lucide-vue-next'
 import { onMounted, ref } from 'vue'
+import Alert from '@/components/ui/alert/Alert.vue'
+import AlertTitle from '@/components/ui/alert/AlertTitle.vue'
 import { Button } from '@/components/ui/button'
+import Card from '@/components/ui/card/Card.vue'
+import CardContent from '@/components/ui/card/CardContent.vue'
+import CardHeader from '@/components/ui/card/CardHeader.vue'
 import { accountService, type BillingPlan } from '@/domains/account/services/AccountService'
+import TenantSectionTitle from '@/domains/tenant/components/TenantSectionTitle.vue'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
 
 const loading = ref(false)
@@ -48,9 +55,7 @@ const formatUsage = (used: number, total: number, unit = '') => {
 <template>
   <div class="space-y-6">
     <div class="flex items-center justify-between">
-      <h2 class="text-2xl font-semibold">
-        Billing Overview
-      </h2>
+      <TenantSectionTitle :title="$t('tenant.billing.overview.title')" />
       <Button
         variant="outline"
         :disabled="loading"
@@ -60,46 +65,51 @@ const formatUsage = (used: number, total: number, unit = '') => {
       </Button>
     </div>
 
+    <Alert variant="info">
+      <AlertTitle class="flex items-center gap-2">
+        <Info class="size-4" />
+        To jest wersja DEMO
+      </AlertTitle>
+    </Alert>
+
     <!-- Current Plan -->
-    <div class="card">
-      <div class="p-6">
-        <h3 class="text-lg font-semibold mb-4">
-          Current Plan
-        </h3>
-        <div class="flex items-center gap-4">
-          <div class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
-            <Icon
-              icon="heroicons:credit-card"
-              class="w-6 h-6 text-primary"
-            />
-          </div>
-          <div>
-            <h4 class="font-medium">
-              {{ currentPlan?.name || 'No active plan' }}
-            </h4>
-            <p class="text-sm text-muted-foreground">
-              {{ currentPlan?.description || 'Please select a plan to get started' }}
-            </p>
-          </div>
-          <div class="ml-auto">
-            <Button
-              variant="default"
-              :disabled="loading"
-              @click="$router.push('/account/billing/plans')"
-            >
-              Change Plan
-            </Button>
-          </div>
+    <Card>
+      <CardHeader class="font-semibold">
+        Current Plan
+      </CardHeader>
+      <CardContent class="flex items-center gap-4">
+        <div class="size-12 rounded-full bg-primary/10 flex items-center justify-center">
+          <Icon
+            icon="heroicons:credit-card"
+            class="size-6 text-primary"
+          />
         </div>
-      </div>
-    </div>
+        <div>
+          <h4 class="font-medium">
+            {{ currentPlan?.name || 'No active plan' }}
+          </h4>
+          <p class="text-sm text-muted-foreground">
+            {{ currentPlan?.description || 'Please select a plan to get started' }}
+          </p>
+        </div>
+        <div class="ml-auto">
+          <Button
+            variant="default"
+            :disabled="loading"
+            @click="$router.push('/account/billing/plans')"
+          >
+            Change Plan
+          </Button>
+        </div>
+      </CardContent>
+    </Card>
 
     <!-- Usage -->
-    <div class="card">
-      <div class="p-6">
-        <h3 class="text-lg font-semibold mb-4">
-          Usage
-        </h3>
+    <Card>
+      <CardHeader class="font-semibold">
+        Usage
+      </CardHeader>
+      <CardContent>
         <div class="space-y-4">
           <!-- Storage -->
           <div>
@@ -107,7 +117,7 @@ const formatUsage = (used: number, total: number, unit = '') => {
               <div class="flex items-center gap-2">
                 <Icon
                   icon="heroicons:server"
-                  class="w-5 h-5 text-muted-foreground"
+                  class="size-5 text-muted-foreground"
                 />
                 <span class="font-medium">Storage</span>
               </div>
@@ -129,7 +139,7 @@ const formatUsage = (used: number, total: number, unit = '') => {
               <div class="flex items-center gap-2">
                 <Icon
                   icon="heroicons:users"
-                  class="w-5 h-5 text-muted-foreground"
+                  class="size-5 text-muted-foreground"
                 />
                 <span class="font-medium">Users</span>
               </div>
@@ -151,7 +161,7 @@ const formatUsage = (used: number, total: number, unit = '') => {
               <div class="flex items-center gap-2">
                 <Icon
                   icon="heroicons:code-bracket"
-                  class="w-5 h-5 text-muted-foreground"
+                  class="size-5 text-muted-foreground"
                 />
                 <span class="font-medium">API Calls</span>
               </div>
@@ -167,20 +177,20 @@ const formatUsage = (used: number, total: number, unit = '') => {
             </div>
           </div>
         </div>
-      </div>
-    </div>
+      </CardContent>
+    </Card>
 
     <!-- Payment Method -->
-    <div class="card">
-      <div class="p-6">
-        <h3 class="text-lg font-semibold mb-4">
-          Payment Method
-        </h3>
+    <Card>
+      <CardHeader class="font-semibold">
+        Payment Method
+      </CardHeader>
+      <CardContent>
         <div class="flex items-center gap-4">
-          <div class="w-12 h-12 rounded-full bg-muted flex items-center justify-center">
+          <div class="size-12 rounded-full bg-muted flex items-center justify-center">
             <Icon
               icon="heroicons:credit-card"
-              class="w-6 h-6 text-muted-foreground"
+              class="size-6 text-muted-foreground"
             />
           </div>
           <div>
@@ -200,7 +210,7 @@ const formatUsage = (used: number, total: number, unit = '') => {
             </Button>
           </div>
         </div>
-      </div>
-    </div>
+      </CardContent>
+    </Card>
   </div>
 </template>

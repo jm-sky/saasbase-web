@@ -37,28 +37,28 @@ const goToPage = (idx: number) => {
 
     <div class="flex items-center space-x-2 mx-auto md:mx-0">
       <button
-        class="w-8 h-8 p-0 border rounded disabled:opacity-50"
+        class="size-8 p-0 border rounded disabled:opacity-50"
         :disabled="page <= 1"
         @click="goToPage(1)"
       >
         &#171;
       </button>
       <button
-        class="w-8 h-8 p-0 border rounded disabled:opacity-50"
+        class="size-8 p-0 border rounded disabled:opacity-50"
         :disabled="page <= 1"
         @click="goToPage(page - 1)"
       >
         &#8249;
       </button>
       <button
-        class="w-8 h-8 p-0 border rounded disabled:opacity-50"
+        class="size-8 p-0 border rounded disabled:opacity-50"
         :disabled="page >= pageCount"
         @click="goToPage(page + 1)"
       >
         &#8250;
       </button>
       <button
-        class="w-8 h-8 p-0 border rounded disabled:opacity-50"
+        class="size-8 p-0 border rounded disabled:opacity-50"
         :disabled="page >= pageCount"
         @click="goToPage(pageCount)"
       >

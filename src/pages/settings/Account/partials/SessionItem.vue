@@ -30,7 +30,7 @@ const formatDate = (dateString: string) => {
     <div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
       <Icon
         :icon="getDeviceIcon(session.deviceType)"
-        class="w-5 h-5 text-primary"
+        class="size-5 text-primary"
       />
     </div>
     <div class="flex-1 min-w-0">

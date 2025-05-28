@@ -55,16 +55,12 @@ const canUpload = computed<boolean>(() => !!file.value && !isUploaded.value)
 const canRemove = computed<boolean>(() => (!!file.value || !!avatarUrl || isUploaded.value) && !isRemoved.value)
 
 const onFileChange = async (e: Event) => {
-  console.log('[onFileChange] file:', file.value)
-
   if (disabled) return
   if (readonly) return
 
   const target = e.target as HTMLInputElement
   const selected = target.files?.[0] ?? null
   isUploaded.value = false
-
-  console.log('[onFileChange] selected:', selected)
 
   if (selected) {
     file.value = selected
@@ -80,8 +76,6 @@ const upload = async () => {
   if (disabled) return
   if (readonly) return
   if (!file.value) return
-
-  console.log('[upload] file:', file.value)
 
   emit('upload', file.value)
 
@@ -154,7 +148,7 @@ const removeFile = async () => {
       type="button"
       @click="fileInput?.click()"
     >
-      <Plus class="w-4 h-4 text-gray-700" />
+      <Plus class="size-4 text-gray-700" />
     </button>
 
     <button
@@ -165,7 +159,7 @@ const removeFile = async () => {
       type="button"
       @click="fileInput?.click()"
     >
-      <Pencil class="w-4 h-4 text-gray-700" />
+      <Pencil class="size-4 text-gray-700" />
     </button>
 
     <button
@@ -176,7 +170,7 @@ const removeFile = async () => {
       type="button"
       @click="upload()"
     >
-      <Upload class="w-4 h-4 text-gray-700" />
+      <Upload class="size-4 text-gray-700" />
     </button>
 
     <button
@@ -187,7 +181,7 @@ const removeFile = async () => {
       type="button"
       @click="removeFile"
     >
-      <Trash class="w-4 h-4 text-red-500" />
+      <Trash class="size-4 text-red-500" />
     </button>
   </div>
 </template>

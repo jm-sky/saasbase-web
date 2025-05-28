@@ -37,6 +37,64 @@ export interface ITenantBankAccount extends IBankAccount {
 
 export type ITenantBankAccountCreate = Omit<ITenantBankAccount, 'id' | 'tenantId' | 'createdAt' | 'updatedAt'>
 
+export interface ITenantPublicProfile {
+  id: TUUID
+  publicName?: string
+  description?: string
+  websiteUrl?: string
+  socialLinks?: unknown
+  visible?: boolean
+  industry?: string
+  locationCity?: string
+  locationCountry?: string
+  address?: IAddress
+  publicLogo?: IMedia
+  bannerImage?: IMedia
+}
+
+export interface ITenantPublicProfileCreate {
+  publicName?: string
+  description?: string
+  websiteUrl?: string
+  industry?: string
+  locationCity?: string
+  locationCountry?: string
+  socialLinks?: unknown
+  visible?: boolean
+  address?: IAddress
+  publicLogo?: File
+  bannerImage?: File
+}
+
+export interface ITenantBranding {
+  id: TUUID
+  colorPrimary?: string
+  colorSecondary?: string
+  shortName?: string
+  theme?: string
+  pdfAccentColor?: string
+  emailSignatureHtml?: string
+  logo?: IMedia
+  favicon?: IMedia
+  customFont?: IMedia
+  pdfLogo?: IMedia
+  emailHeaderImage?: IMedia
+}
+
+export interface ITenantBrandingCreate {
+  colorPrimary?: string
+  colorSecondary?: string
+  shortName?: string
+  theme?: string
+  pdfAccentColor?: string
+  emailSignatureHtml?: string
+  logo?: File
+  favicon?: File
+  customFont?: File
+  pdfLogo?: File
+  emailHeaderImage?: File
+}
+
 export interface ITenant {
   id: TUUID
   tenantId: TUUID

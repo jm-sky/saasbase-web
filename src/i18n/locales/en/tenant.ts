@@ -107,11 +107,98 @@ export const tenant = {
   },
   branding: {
     title: 'Branding',
+    fields: {
+      colorPrimary: 'Primary Color',
+      colorSecondary: 'Secondary Color',
+      shortName: 'Short Name',
+      theme: 'Theme',
+      pdfAccentColor: 'PDF Accent Color',
+      emailSignatureHtml: 'Email Signature',
+      logo: 'Logo',
+      favicon: 'Favicon',
+      customFont: 'Custom Font',
+      pdfLogo: 'PDF Logo',
+      emailHeaderImage: 'Email Header Image'
+    }
   },
   billing: {
     title: 'Billing',
+    overview: {
+      title: 'Overview',
+      currentPlan: {
+        title: 'Current Plan',
+        noPlan: 'No active plan',
+        selectPlan: 'Please select a plan to get started',
+        changePlan: 'Change Plan'
+      },
+      usage: {
+        title: 'Usage',
+        storage: 'Storage',
+        users: 'Users',
+        apiCalls: 'API Calls'
+      },
+      paymentMethod: {
+        title: 'Payment Method',
+        update: 'Update'
+      }
+    },
+    plans: {
+      title: 'Plans',
+      monthly: 'Monthly',
+      yearly: 'Yearly',
+      save: 'Save 20%',
+      mostPopular: 'Most Popular',
+      currentPlan: 'Current Plan',
+      selectPlan: 'Select Plan',
+      perMonth: 'per month',
+      perYear: 'per year'
+    },
+    history: {
+      title: 'History',
+      date: 'Date',
+      description: 'Description',
+      amount: 'Amount',
+      status: 'Status',
+      invoice: 'Invoice',
+      download: 'Download',
+      noHistory: 'No billing history',
+      noHistoryDescription: 'Your billing history will appear here once you make your first payment.',
+      statuses: {
+        paid: 'Paid',
+        pending: 'Pending',
+        failed: 'Failed'
+      }
+    }
   },
   settings: {
     title: 'Settings',
+    fields: {
+      currency: 'Currency',
+      require2fa: 'Require users to use 2FA',
+      contractors: {
+        fetchLogo: 'Try fetch logo for new contracts'
+      }
+    },
+    save: 'Save'
+  },
+  publicProfile: {
+    title: 'Public Profile',
+    fields: {
+      visible: 'Visible',
+      publicName: 'Public Name',
+      websiteUrl: 'Website URL',
+      industry: 'Industry',
+      locationCity: 'City',
+      locationCountry: 'Country',
+      description: 'Description',
+      publicLogo: 'Public Logo',
+      bannerImage: 'Banner Image',
+      socialLinks: 'Social Links',
+      address: 'Address'
+    },
+    save: 'Save',
+    show: {
+      error: 'Failed to load public profile'
+    }
   },
 }
