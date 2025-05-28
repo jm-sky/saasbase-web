@@ -1,16 +1,18 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
 import ActivityLogList from '@/components/activity-log/ActivityLogList.vue'
 import { ContractorActivityLogService } from '@/domains/contractor/services/ContractorActivityLogService'
 import { type ContractorActivityLog, ContractorActivityType } from '@/domains/contractor/types/activity-log'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
-import type { IContractor } from '@/domains/contractor/models/contractor.model'
+import type { IContractor } from '@/domains/contractor/types/contractor.type'
 
 defineProps<{
-  contractor?: IContractor
+  contractor?: IContractor | null
 }>()
 
+const { t } = useI18n()
 const route = useRoute()
 const logs = ref<ContractorActivityLog[]>([])
 const loading = ref(true)
@@ -137,7 +139,7 @@ onMounted(async () => {
 <template>
   <div class="flex flex-col gap-2 border rounded-md p-4 shadow-lg/5">
     <h2 class="font-bold">
-      Logs
+      {{ t('contractor.logs.title') }}
     </h2>
 
     <ActivityLogList

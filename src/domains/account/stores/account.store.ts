@@ -80,18 +80,6 @@ export const useAccountStore = defineStore('account', () => {
     }
   }
 
-  const fetchApiKeys = async () => {
-    loading.value = true
-    try {
-      apiKeys.value = await accountService.getApiKeys()
-    } catch (err) {
-      error.value = err as Error
-      throw err
-    } finally {
-      loading.value = false
-    }
-  }
-
   const fetchBillingPlans = async () => {
     loading.value = true
     try {
@@ -148,7 +136,6 @@ export const useAccountStore = defineStore('account', () => {
     fetchSettings,
     updateSettings,
     fetchActivities,
-    fetchApiKeys,
     fetchBillingPlans,
     fetchBillingHistory,
     inviteFriend,

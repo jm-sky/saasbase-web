@@ -54,8 +54,15 @@ export const authRoutes: RouteRecordRaw[] = [
     name: 'verify-email',
     component: () => import('@/pages/auth/EmailVerificationPage.vue'),
     meta: {
-      requiresAuth: false,
       title: 'Verify Email'
     }
   },
+  {
+    path: '/oauth/callback',
+    name: 'oauth-callback',
+    component: () => import('@/pages/auth/OAuth2CallbackPage.vue'),
+    meta: {
+      title: 'OAuth2 Callback'
+    }
+  }
 ]

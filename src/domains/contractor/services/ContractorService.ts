@@ -1,20 +1,22 @@
-import { type IContractor } from '@/domains/contractor/models/contractor.model'
+import { type IContractor, type IContractorCombinedCreate } from '@/domains/contractor/types/contractor.type'
 import { buildSpatieQuery } from '@/domains/shared/helpers/filtering'
 import api from '@/lib/api'
 import { apiRoutesMap } from '@/lib/api/apiRoutes'
-import type { FilterDefinition, IResource } from '@/domains/shared/types/resource.type'
+import type { SortingState } from '@tanstack/vue-table'
+import type { FilterDefinition, IResourceCollection } from '@/domains/shared/types/resource.type'
 
 export interface IContractorFilters {
   search?: string
   page?: number
   perPage?: number
   filter?: Record<string, FilterDefinition>
+  sort?: SortingState
 }
 
 class ContractorService {
-  async index(filters?: IContractorFilters): Promise<IResource<IContractor>> {
+  async index(filters?: IContractorFilters): Promise<IResourceCollection<IContractor>> {
     const params = buildSpatieQuery(filters ?? { filter: {} })
-    const response = (await api.get<IResource<IContractor>>(apiRoutesMap.contractors, { params })).data
+    const response = (await api.get<IResourceCollection<IContractor>>(apiRoutesMap.contractors, { params })).data
     return response
   }
 
@@ -23,7 +25,7 @@ class ContractorService {
     return response.data
   }
 
-  async create(contractor: Omit<IContractor, 'id' | 'createdAt' | 'updatedAt'>): Promise<IContractor> {
+  async create(contractor: IContractorCombinedCreate): Promise<IContractor> {
     const response = (await api.post<{ data: IContractor }>(apiRoutesMap.contractors, contractor)).data
     return response.data
   }

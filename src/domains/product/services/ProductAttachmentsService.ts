@@ -1,7 +1,7 @@
 import api from '@/lib/api'
 import { apiRoutesMap } from '@/lib/api/apiRoutes'
 import type { TDateTime } from '@/domains/shared/types/common'
-import type { IResource } from '@/domains/shared/types/resource.type'
+import type { IResourceCollection } from '@/domains/shared/types/resource.type'
 
 export interface IProductAttachment {
   id: string
@@ -15,8 +15,8 @@ export interface IProductAttachment {
 }
 
 class ProductAttachmentsService {
-  async index(productId: string): Promise<IResource<IProductAttachment>> {
-    const response = (await api.get<IResource<IProductAttachment>>(`${apiRoutesMap.products}/${productId}/attachments`)).data
+  async index(productId: string): Promise<IResourceCollection<IProductAttachment>> {
+    const response = (await api.get<IResourceCollection<IProductAttachment>>(`${apiRoutesMap.products}/${productId}/attachments`)).data
     return response
   }
 

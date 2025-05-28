@@ -9,7 +9,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import type { IContractorContact } from '@/domains/contractor/models/contractor.model'
+import type { IContractorContact } from '@/domains/contractor/types/contractor.type'
 
 const { t } = useI18n()
 

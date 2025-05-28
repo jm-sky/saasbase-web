@@ -2,6 +2,10 @@
 import { RefreshCw } from 'lucide-vue-next'
 import { useI18n } from 'vue-i18n'
 import ButtonLink from '../ButtonLink.vue'
+import LoadingIcon from '../Icons/LoadingIcon.vue'
+import Alert from '../ui/alert/Alert.vue'
+import AlertDescription from '../ui/alert/AlertDescription.vue'
+import AlertTitle from '../ui/alert/AlertTitle.vue'
 import Button from '../ui/button/Button.vue'
 
 const { t } = useI18n()
@@ -19,7 +23,7 @@ const emit = defineEmits<{
 </script>
 
 <template>
-  <div class="px-4 md:px-8 py-4 md:py-6 mx-auto">
+  <div class="px-4 md:px-8 py-4 md:py-6 mx-auto relative">
     <div class="flex justify-between items-center mb-6">
       <h1 class="text-2xl font-bold">
         {{ title }}
@@ -36,14 +40,20 @@ const emit = defineEmits<{
       </div>
     </div>
 
-    <div v-if="loading" class="my-6 text-center py-8">
-      {{ t('common.loading') }}
-    </div>
-
-    <div v-else-if="error" class="my-6 text-center px-6 py-3 text-red-500 border-red-500 border-2 rounded-md">
-      {{ error }}
-    </div>
+    <Alert v-if="error" variant="destructive" class="mb-4">
+      <AlertTitle>
+        {{ t('common.error') }}
+      </AlertTitle>
+      <AlertDescription>
+        {{ error }}
+      </AlertDescription>
+    </Alert>
 
     <slot />
+
+    <div v-if="loading" class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-60 h-30 rounded-2xl flex items-center gap-3 shadow-xl justify-center bg-white/50 backdrop-blur-sm border">
+      <LoadingIcon />
+      <span class="text-sm">{{ t('common.loading') }}</span>
+    </div>
   </div>
 </template>

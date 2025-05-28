@@ -5,6 +5,7 @@ import { config } from '@/config'
 import { User } from '@/domains/user/models/user.model'
 import { type IUser } from '@/domains/user/types/user.type'
 import { authService } from '../services/authService'
+import type { TUUID } from '@/domains/shared/types/common'
 
 export interface BaseJwtPayload {
   iss: string;    // Issuer of the token
@@ -43,7 +44,7 @@ export const useAuthStore = defineStore('auth', () => {
   const showSelectTenantModal = ref(false)
   const isAuthenticated = computed<boolean>(() => !!token.value)
   const jwtPayload = computed<null | JwtPayload>(() => extractJwt(token.value))
-  const tenantId = computed<null | string>(() => jwtPayload.value?.tid ?? null)
+  const tenantId = computed<null | TUUID>(() => jwtPayload.value?.tid ?? null)
   const isInTenant = computed<boolean>(() => !!tenantId.value)
   const isEmailVerified = computed<boolean>(() => jwtPayload.value?.ev === 1)
   const isTwoFactorEnabled = computed<boolean>(() => jwtPayload.value?.mfa === 1)
@@ -57,6 +58,8 @@ export const useAuthStore = defineStore('auth', () => {
   const clearData = () => {
     clearToken()
     userData.value = null
+    showAuthModal.value = false
+    showSelectTenantModal.value = false
   }
 
   const setUser = (newUser: IUser) => userData.value = newUser

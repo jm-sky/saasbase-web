@@ -2,6 +2,8 @@
 import { onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import ActivityLogList from '@/components/activity-log/ActivityLogList.vue'
+import LoadingIcon from '@/components/Icons/LoadingIcon.vue'
+import TenantSectionTitle from '@/domains/tenant/components/TenantSectionTitle.vue'
 import { TenantActivityLogService } from '@/domains/tenant/services/TenantActivityLogService'
 import { type TenantActivityLog, TenantActivityType } from '@/domains/tenant/types/activity-log'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
@@ -32,7 +34,7 @@ const getIcon = (log: TenantActivityLog) => {
     case TenantActivityType.BankAccountUpdated:
       return 'heroicons:banknotes'
     case TenantActivityType.Created:
-      return 'heroicons:plus-circle'
+      return 'heroicons:plus'
     case TenantActivityType.Deleted:
       return 'heroicons:trash'
     case TenantActivityType.InvitationAccepted:
@@ -97,10 +99,8 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="flex flex-col gap-2 border rounded-md p-4 shadow-lg/5">
-    <h2 class="font-bold">
-      Logs
-    </h2>
+  <div class="flex flex-col gap-2 border rounded-md p-4 shadow-lg/5 relative">
+    <TenantSectionTitle :title="$t('tenant.logs.title')" />
 
     <ActivityLogList
       v-if="!loading"
@@ -108,8 +108,7 @@ onMounted(async () => {
       :get-icon="getIcon"
       :get-color="getColor"
     />
-    <div v-else class="flex items-center justify-center py-12">
-      <div class="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent" />
-    </div>
+
+    <LoadingIcon v-else class="absolute text-gray-700 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" />
   </div>
 </template>

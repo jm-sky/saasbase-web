@@ -21,8 +21,8 @@ export interface IProduct {
   tenantId: string
   name: string
   description?: string
-  unitId: string
-  priceNet: number
+  unitId?: string
+  priceNet?: number
   vatRateId?: string
   logoUrl?: string
   logo?: IMedia

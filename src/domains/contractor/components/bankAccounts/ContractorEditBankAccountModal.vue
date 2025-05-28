@@ -10,7 +10,7 @@ import Textarea from '@/components/ui/textarea/Textarea.vue'
 import { contractorBankAccountsService } from '@/domains/contractor/services/ContractorBankAccountsService'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
 import { isValidationError } from '@/lib/validation'
-import type { IContractorBankAccount } from '@/domains/contractor/models/contractor.model'
+import type { IContractorBankAccount } from '@/domains/contractor/types/contractor.type'
 
 const { t } = useI18n()
 

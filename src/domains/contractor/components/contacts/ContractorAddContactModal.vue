@@ -9,7 +9,7 @@ import Textarea from '@/components/ui/textarea/Textarea.vue'
 import { contractorContactsService } from '@/domains/contractor/services/ContractorContactsService'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
 import { isValidationError } from '@/lib/validation'
-import type { IContractorContactCreate } from '@/domains/contractor/models/contractor.model'
+import type { IContractorContactCreate } from '@/domains/contractor/types/contractor.type'
 
 const { t } = useI18n()
 

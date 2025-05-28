@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { storeToRefs } from 'pinia'
 import { useForm } from 'vee-validate'
 import { onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
@@ -14,31 +15,33 @@ import Textarea from '@/components/ui/textarea/Textarea.vue'
 import { useToast } from '@/components/ui/toast'
 import ContractorSidebar from '@/domains/contractor/components/ContractorSidebar.vue'
 import { contractorService } from '@/domains/contractor/services/ContractorService'
+import { useContractorStore } from '@/domains/contractor/store/contractor.store'
 import AuthenticatedLayout from '@/layouts/AuthenticatedLayout.vue'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
 import { isValidationError } from '@/lib/validation'
-import type { IContractor } from '@/domains/contractor/models/contractor.model'
+import type { IContractor } from '@/domains/contractor/types/contractor.type'
 
 const { t } = useI18n()
 const { toast } = useToast()
 const route = useRoute()
 const router = useRouter()
+
 const contractorId = route.params.id as string
+const { contractor } = storeToRefs(useContractorStore())
 
 const loading = ref(false)
-const contractor = ref<IContractor>()
 const error = ref<string | null>(null)
 
 const { isSubmitting, handleSubmit, setValues, setErrors, resetForm } = useForm<Omit<IContractor, 'createdAt' | 'updatedAt'>>({
   initialValues: {
-    name: '',
-    description: '',
-    taxId: '',
-    email: '',
-    phone: '',
-    website: '',
-    isSupplier: true,
-    isBuyer: true,
+    name: contractor.value?.name ?? '',
+    description: contractor.value?.description ?? '',
+    taxId: contractor.value?.taxId ?? '',
+    email: contractor.value?.email ?? '',
+    phone: contractor.value?.phone ?? '',
+    website: contractor.value?.website ?? '',
+    isSupplier: contractor.value?.isSupplier ?? true,
+    isBuyer: contractor.value?.isBuyer ?? true,
   },
 })
 
@@ -71,6 +74,7 @@ const onSubmit = handleSubmit(async (values) => {
 })
 
 onMounted(async () => {
+  console.log('[EditContractorPage] onMounted', contractor.value)
   await refresh()
 })
 </script>
@@ -102,7 +106,7 @@ onMounted(async () => {
 
       <template #content>
         <h1 class="text-2xl font-semibold tracking-tight text-center">
-          Edit Contractor
+          {{ t('contractor.edit.title') }}
         </h1>
 
         <div class="p-6 md:p-8 border rounded-md shadow-lg">
@@ -126,11 +130,27 @@ onMounted(async () => {
             </FormFieldLabeled>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-2">
-              <div class="flex flex-col gap-4">
+              <div class="flex flex-col gap-2">
+                <FormFieldLabeled
+                  v-slot="{ componentField }"
+                  name="vatId"
+                  :label="t('contractor.fields.vatId')"
+                  :disabled="isSubmitting"
+                >
+                  <Input v-bind="componentField" class="bg-white/50 dark:bg-black/50" />
+                </FormFieldLabeled>
                 <FormFieldLabeled
                   v-slot="{ componentField }"
                   name="taxId"
                   :label="t('contractor.fields.taxId')"
+                  :disabled="isSubmitting"
+                >
+                  <Input v-bind="componentField" class="bg-white/50 dark:bg-black/50" />
+                </FormFieldLabeled>
+                <FormFieldLabeled
+                  v-slot="{ componentField }"
+                  name="regon"
+                  :label="t('contractor.fields.regon')"
                   :disabled="isSubmitting"
                 >
                   <Input v-bind="componentField" class="bg-white/50 dark:bg-black/50" />

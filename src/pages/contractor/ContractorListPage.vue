@@ -1,25 +1,32 @@
 <script setup lang="ts">
 import { RefreshCw } from 'lucide-vue-next'
+import { storeToRefs } from 'pinia'
 import { onMounted, ref, type Ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import ButtonLink from '@/components/ButtonLink.vue'
 import DataListsWrapper from '@/components/DataLists/DataListsWrapper.vue'
+import SearchField from '@/components/DataLists/Filters/SearchField.vue'
 import DataTable from '@/components/DataTable.vue'
 import TagList from '@/components/TagList.vue'
+import Avatar from '@/components/ui/avatar/Avatar.vue'
+import AvatarFallback from '@/components/ui/avatar/AvatarFallback.vue'
+import AvatarImage from '@/components/ui/avatar/AvatarImage.vue'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import DeleteContractorButton from '@/domains/contractor/components/actions/DeleteContractorButton.vue'
 import EditContractorButton from '@/domains/contractor/components/actions/EditContractorButton.vue'
 import { contractorService, type IContractorFilters } from '@/domains/contractor/services/ContractorService'
+import { useContractorStore } from '@/domains/contractor/store/contractor.store'
 import AuthenticatedLayout from '@/layouts/AuthenticatedLayout.vue'
 import { toDateString } from '@/lib/toDateString'
 import type { ColumnDef } from '@tanstack/vue-table'
-import type { IContractor } from '@/domains/contractor/models/contractor.model'
+import type { IContractor } from '@/domains/contractor/types/contractor.type'
 import type { IResourceMeta } from '@/domains/shared/types/resource.type'
 
 const { t } = useI18n()
+const contractorStore = useContractorStore()
+const { contractors } = storeToRefs(contractorStore)
 
-const contractors: Ref<IContractor[]> = ref([])
 const meta: Ref<IResourceMeta> = ref({
   currentPage: 1,
   lastPage: 1,
@@ -35,37 +42,39 @@ const filters = ref<IContractorFilters>({
   perPage: 10,
   filter: {
     name: { value: '', operator: 'eq' },
+    vatId: { value: '', operator: 'eq' },
     taxId: { value: '', operator: 'eq' },
     type: { value: '', operator: 'eq' },
     createdAt: { value: '', operator: 'eq' },
   },
+  sort: [],
 })
 
 const columns: ColumnDef<IContractor>[] = [
   {
     accessorKey: 'name',
-    header: 'Name',
+    header: t('contractor.fields.name'),
   },
   {
-    accessorKey: 'taxId',
-    header: 'Tax ID',
+    accessorKey: 'vatId',
+    header: t('contractor.fields.vatId'),
   },
   {
-    accessorKey: 'type',
-    header: 'Type',
+    accessorKey: 'roles',
+    header: t('contractor.fields.roles'),
   },
   {
     accessorKey: 'createdAt',
-    header: 'Created At',
+    header: t('common.createdAt'),
     cell: (info: { row: { original: IContractor } }) => toDateString(info.row.original.createdAt),
   },
   {
     accessorKey: 'tags',
-    header: 'Tags',
+    header: t('common.tags'),
   },
   {
     id: 'actions',
-    header: 'Actions',
+    header: t('common.actions'),
   },
 ]
 
@@ -84,6 +93,11 @@ const refresh = async () => {
   }
 }
 
+const removeRow = (id: string) => {
+  contractors.value = contractors.value.filter((contractor) => contractor.id !== id)
+  meta.value.total -= 1
+}
+
 onMounted(() => {
   void refresh()
 })
@@ -95,6 +109,7 @@ watch(filters, () => refresh(), { deep: true })
   <AuthenticatedLayout>
     <DataListsWrapper :title="t('contractor.title')" :loading :error>
       <template #actions>
+        <SearchField v-model="filters.search" />
         <Button variant="outline" @click="refresh">
           <RefreshCw class="h-4 w-4" />
         </Button>
@@ -107,18 +122,24 @@ watch(filters, () => refresh(), { deep: true })
         v-model:page="filters.page"
         v-model:page-size="filters.perPage"
         v-model:column-filters="filters.filter"
+        v-model:sorting="filters.sort"
         :columns="columns"
         :data="contractors"
         :total="meta.total"
         :page-size-options="[10, 20, 30, 40, 50]"
         :show-column-filters="true"
+        :loading
       >
         <template #name="{ data }">
-          <ButtonLink :to="`/contractors/${data.id}/show/overview`">
+          <ButtonLink :to="`/contractors/${data.id}/show/overview`" @click="contractorStore.setContractor(data)">
+            <Avatar class="size-7">
+              <AvatarImage :src="data.logoUrl ?? ''" :alt="data.name" />
+              <AvatarFallback>{{ data.name.slice(0, 2) ?? 'X' }}</AvatarFallback>
+            </Avatar>
             {{ data.name }}
           </ButtonLink>
         </template>
-        <template #type="{ data }">
+        <template #roles="{ data }">
           <div class="flex gap-2">
             <Badge v-if="data.isSupplier" variant="secondary">
               Supplier
@@ -133,8 +154,8 @@ watch(filters, () => refresh(), { deep: true })
         </template>
         <template #actions="{ data }">
           <div class="flex gap-2 justify-end w-full whitespace-nowrap min-w-0">
-            <EditContractorButton :id="data.id" />
-            <DeleteContractorButton :id="data.id" />
+            <EditContractorButton :id="data.id" :contractor="data" />
+            <DeleteContractorButton :id="data.id" @delete="removeRow(data.id)" />
           </div>
         </template>
         <template #actions-header>

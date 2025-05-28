@@ -1,7 +1,7 @@
 import { faker } from '@faker-js/faker'
 import { formatISO } from 'date-fns'
 import { v4 } from 'uuid'
-import type { IContractor, IContractorAddress, IContractorBankAccount, IContractorContact } from '@/domains/contractor/models/contractor.model'
+import type { IContractor, IContractorAddress, IContractorBankAccount, IContractorContact } from '@/domains/contractor/types/contractor.type'
 import type { TUUID } from '@/domains/shared/types/common'
 
 export class ContractorFactory {

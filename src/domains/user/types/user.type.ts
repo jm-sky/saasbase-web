@@ -42,6 +42,20 @@ export interface IUserPreview {
   createdAt: TDateTime
 }
 
+export interface IUserProfileLegacy {
+  id: TUUID
+  name: string
+  email?: string
+  phone?: string
+  description?: string
+  location?: string
+  position?: string
+  website?: string
+  socialLinks?: Record<string, string>
+  avatarUrl?: string
+  createdAt: TDateTime
+}
+
 export type IUserCreate = Omit<IUser, 'id' | 'createdAt' | 'updatedAt' | 'lastLoginAt' | 'isEmailVerified'>
 export type IUserProfile = Pick<IUser, 'id' | 'firstName' | 'lastName' | 'email' | 'phone' | 'description' | 'address' | 'avatarUrl' | 'createdAt'>
 

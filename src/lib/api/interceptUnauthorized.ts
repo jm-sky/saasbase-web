@@ -44,6 +44,10 @@ const redirectToLoginPage = async (location: Location) => {
 let isRefreshing = false
 let failedQueue: FailedQueueItem[] = []
 
+export const clearFailedQueue = () => {
+  failedQueue = []
+}
+
 const processQueue = (error: unknown, token: string | null = null) => {
   failedQueue.forEach(({ resolve, reject }) => {
     if (error) {

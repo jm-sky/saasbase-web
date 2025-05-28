@@ -1,10 +1,12 @@
 import type { FilterDefinition, FilterValue } from '../types/resource.type'
+import type { SortingState } from '@tanstack/vue-table'
 
 export interface IGenericFilters {
   search?: string
   page?: number
   perPage?: number
   filter?: Record<string, FilterDefinition>
+  sort?: SortingState
 }
 
 // Helper: serializuje różne typy do stringów akceptowanych w query
@@ -20,6 +22,7 @@ export function buildSpatieQuery(filters: IGenericFilters): Record<string, unkno
     page?: number
     perPage?: number
     filter: Record<string, string>
+    sort?: string
   } = {
     page: filters.page,
     perPage: filters.perPage,
@@ -41,6 +44,10 @@ export function buildSpatieQuery(filters: IGenericFilters): Record<string, unkno
     } else {
       query.filter[key] = serialized
     }
+  }
+
+  if (filters.sort) {
+    query.sort = filters.sort.map((sort) => `${sort.desc ? '-' : ''}${sort.id}`).join(',')
   }
 
   return query

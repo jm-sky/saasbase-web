@@ -10,7 +10,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { fullAddress } from '@/lib/fullAddress'
-import type { IContractorAddress } from '@/domains/contractor/models/contractor.model'
+import type { IContractorAddress } from '@/domains/contractor/types/contractor.type'
 
 const { t } = useI18n()
 

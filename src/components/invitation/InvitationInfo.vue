@@ -11,10 +11,10 @@ const invitation = store.invitation
 <template>
   <div v-if="invitation" class="rounded-lg border p-4 bg-muted">
     <div class="text-sm font-medium">
-      {{ t('invitation.title') }}
+      {{ t('invitation.process.title') }}
     </div>
     <div class="text-sm text-muted-foreground">
-      {{ t('invitation.info', {
+      {{ t('invitation.process.info', {
         user: invitation.inviter.name,
         tenant: invitation.tenant.name,
         role: invitation.role

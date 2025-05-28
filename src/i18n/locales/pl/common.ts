@@ -1,4 +1,5 @@
 export const common = {
+  actions: 'Akcje',
   add: 'Dodaj',
   back: 'Wstecz',
   edit: 'Edytuj',
@@ -14,6 +15,7 @@ export const common = {
   error: 'Błąd',
   noItems: 'Brak elementów',
   createdAt: 'Utworzono',
+  tags: 'Tagi',
   themeColor: 'Kolor motywu',
   copyToClipboard: {
     copy: 'Kopiuj',

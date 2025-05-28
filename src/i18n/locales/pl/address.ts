@@ -4,6 +4,7 @@ export const address = {
     type: 'Typ',
     country: 'Kraj',
     city: 'Miasto',
+    postalCode: 'Kod pocztowy',
     street: 'Ulica',
     building: 'Budynek',
     flat: 'Mieszkanie',

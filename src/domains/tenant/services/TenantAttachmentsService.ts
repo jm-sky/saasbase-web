@@ -1,7 +1,7 @@
 import api from '@/lib/api'
 import { apiRoutesMap } from '@/lib/api/apiRoutes'
 import type { TDateTime } from '@/domains/shared/types/common'
-import type { IResource } from '@/domains/shared/types/resource.type'
+import type { IResourceCollection } from '@/domains/shared/types/resource.type'
 
 export interface ITenantAttachment {
   id: string
@@ -15,8 +15,8 @@ export interface ITenantAttachment {
 }
 
 class TenantAttachmentsService {
-  async index(tenantId: string): Promise<IResource<ITenantAttachment>> {
-    const response = (await api.get<IResource<ITenantAttachment>>(`${apiRoutesMap.tenants}/${tenantId}/attachments`)).data
+  async index(tenantId: string): Promise<IResourceCollection<ITenantAttachment>> {
+    const response = (await api.get<IResourceCollection<ITenantAttachment>>(`${apiRoutesMap.tenants}/${tenantId}/attachments`)).data
     return response
   }
 

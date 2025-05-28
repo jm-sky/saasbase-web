@@ -1,6 +1,6 @@
 import api from '@/lib/api'
 import type { TDateTime, TUUID } from '@/domains/shared/types/common'
-import type { IResource } from '@/domains/shared/types/resource.type'
+import type { IResourceCollection } from '@/domains/shared/types/resource.type'
 
 export type TNotificationType = 'welcome' | 'security.passwordChanged' | 'tenantInvitation.accepted' | 'tenantInvitation.rejected'
 
@@ -21,7 +21,7 @@ export interface INotification<T extends object = INotificationData> {
 
 export class NotificationsService {
   async getNotifications<T extends object = INotificationData>() {
-    const response = await api.get<IResource<INotification<T>>>('/notifications')
+    const response = await api.get<IResourceCollection<INotification<T>>>('/notifications')
     return response.data.data
   }
 

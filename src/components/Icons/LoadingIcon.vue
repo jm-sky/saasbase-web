@@ -1,3 +1,7 @@
+<script setup lang="ts">
+import { LoaderCircle } from 'lucide-vue-next'
+</script>
+
 <template>
-  <i class="fa-solid fa-sync fa-fw fa-spin" />
+  <LoaderCircle class="size-4 animate-spin" />
 </template>

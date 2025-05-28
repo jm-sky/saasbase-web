@@ -5,14 +5,14 @@ import InfoSection from '@/components/Sections/InfoSection.vue'
 import TagList from '@/components/TagList.vue'
 import Separator from '@/components/ui/separator/Separator.vue'
 import { toDateTimeString } from '@/lib/toDateTimeString'
-import type { IContractor } from '../models/contractor.model'
+import type { IContractor } from '../types/contractor.type'
 import { contractorLogoService } from '../services/ContractorLogoService'
 
 const { t } = useI18n()
 
 defineProps<{
   contractorId: string
-  contractor?: IContractor
+  contractor?: IContractor | null
 }>()
 
 const emit = defineEmits<{
@@ -45,6 +45,8 @@ const emit = defineEmits<{
 
   <div class="flex flex-col gap-3 text-left">
     <InfoSection :label="t('contractor.fields.description')" :value="contractor?.description" />
+    <InfoSection :label="t('contractor.fields.vatId')" :value="contractor?.vatId" />
+    <InfoSection :label="t('contractor.fields.regon')" :value="contractor?.regon" />
     <InfoSection :label="t('contractor.fields.taxId')" :value="contractor?.taxId" />
     <InfoSection :label="t('contractor.fields.email')" :value="contractor?.email" />
     <InfoSection :label="t('contractor.fields.phone')" :value="contractor?.phone" />

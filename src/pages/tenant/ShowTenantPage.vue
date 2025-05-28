@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { storeToRefs } from 'pinia'
 import { onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
@@ -8,16 +9,18 @@ import InfoSection from '@/components/Sections/InfoSection.vue'
 import Separator from '@/components/ui/separator/Separator.vue'
 import { tenantLogoService } from '@/domains/tenant/services/TenantLogoService'
 import { tenantService } from '@/domains/tenant/services/TenantService'
+import { useTenantStore } from '@/domains/tenant/store/tenant.store'
 import AuthenticatedLayout from '@/layouts/AuthenticatedLayout.vue'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
 import { toDateTimeString } from '@/lib/toDateTimeString'
-import type { ITenant } from '@/domains/tenant/types/tenant.type'
 
 const { t } = useI18n()
 const route = useRoute()
+const tenantStore = useTenantStore()
 const tenantId = route.params.id as string
 
-const tenant = ref<ITenant>()
+const { tenant } = storeToRefs(tenantStore)
+
 const loading = ref(false)
 const error = ref<string | null>(null)
 
@@ -77,7 +80,9 @@ onMounted(async () => {
           <InfoSection :label="t('tenant.fields.phone')" :value="tenant.phone" />
           <InfoSection :label="t('tenant.fields.website')" :value="tenant.website" />
           <InfoSection :label="t('tenant.fields.country')" :value="tenant.country" />
+          <InfoSection :label="t('tenant.fields.vatId')" :value="tenant.vatId" />
           <InfoSection :label="t('tenant.fields.taxId')" :value="tenant.taxId" />
+          <InfoSection :label="t('tenant.fields.regon')" :value="tenant.regon" />
           <InfoSection :label="t('tenant.fields.createdAt')" :value="toDateTimeString(tenant.createdAt)" />
           <InfoSection :label="t('tenant.fields.updatedAt')" :value="toDateTimeString(tenant.updatedAt)" />
         </div>
@@ -89,21 +94,49 @@ onMounted(async () => {
           class="border-b-2 border-transparent hover:border-muted-foreground px-2 py-1"
           exact-active-class="text-primary border-primary!"
         >
-          Overview
+          {{ $t('tenant.overview.title') }}
         </RouterLink>
         <RouterLink
           :to="`/tenants/${tenantId}/show/logs`"
           class="border-b-2 border-transparent hover:border-muted-foreground px-2 py-1"
           exact-active-class="text-primary border-primary!"
         >
-          Logs
+          {{ $t('tenant.logs.title') }}
         </RouterLink>
         <RouterLink
           :to="`/tenants/${tenantId}/show/invitations`"
           class="border-b-2 border-transparent hover:border-muted-foreground px-2 py-1"
           exact-active-class="text-primary border-primary!"
         >
-          Invitations
+          {{ $t('tenant.invitations.title') }}
+        </RouterLink>
+        <RouterLink
+          :to="`/tenants/${tenantId}/show/branding`"
+          class="border-b-2 border-transparent hover:border-muted-foreground px-2 py-1"
+          exact-active-class="text-primary border-primary!"
+        >
+          {{ $t('tenant.branding.title') }}
+        </RouterLink>
+        <RouterLink
+          :to="`/tenants/${tenantId}/show/public-profile`"
+          class="border-b-2 border-transparent hover:border-muted-foreground px-2 py-1"
+          exact-active-class="text-primary border-primary!"
+        >
+          {{ $t('tenant.publicProfile.title') }}
+        </RouterLink>
+        <RouterLink
+          :to="`/tenants/${tenantId}/show/billing`"
+          class="border-b-2 border-transparent hover:border-muted-foreground px-2 py-1"
+          active-class="text-primary border-primary!"
+        >
+          {{ $t('tenant.billing.title') }}
+        </RouterLink>
+        <RouterLink
+          :to="`/tenants/${tenantId}/show/settings`"
+          class="border-b-2 border-transparent hover:border-muted-foreground px-2 py-1"
+          exact-active-class="text-primary border-primary!"
+        >
+          {{ $t('tenant.settings.title') }}
         </RouterLink>
       </template>
 

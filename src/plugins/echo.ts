@@ -21,7 +21,7 @@ const echoOptions = {
   encrypted: false,
   disableStats: true,
   enabledTransports: ['ws', 'wss'] as ('ws' | 'wss')[],
-  authEndpoint: '/api/v1/broadcasting/auth',
+  authEndpoint: `${config.api.baseUrl}/broadcasting/auth`,
   auth: {
     headers: {
       Authorization: `Bearer ${localStorage.getItem(`${config.appId}:token`)}`, // or your auth method

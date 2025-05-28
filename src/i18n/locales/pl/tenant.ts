@@ -4,7 +4,9 @@ export const tenant = {
   fields: {
     name: 'Nazwa',
     slug: 'Slug',
-    taxId: 'NIP',
+    vatId: 'NIP',
+    regon: 'REGON',
+    taxId: 'Identyfikator podatkowy',
     email: 'Email',
     phone: 'Telefon',
     website: 'Strona internetowa',
@@ -39,6 +41,29 @@ export const tenant = {
     },
   },
   invitations: {
+    title: 'Zaproszenia',
+    process: {
+      title: 'Zaproszenie',
+      info: 'Zostałeś zaproszony do dołączenia do {tenant} jako {role}.',
+      description: 'Możesz zaakceptować lub odrzucić zaproszenie.',
+      loading: 'Ładowanie zaproszenia...',
+      invalidEmail: 'Nieprawidłowy adres email',
+      load: {
+        error: 'Nie udało się załadować zaproszenia',
+      },
+    },
+    accept: {
+      button: 'Zaakceptuj',
+      success: 'Zaproszenie zaakceptowane',
+      successDescription: 'Zostałeś dodany do {tenant}.',
+      error: 'Nie udało się zaakceptować zaproszenia',
+    },
+    decline: {
+      button: 'Odrzuć',
+      success: 'Zaproszenie odrzucone',
+      successDescription: 'Zostałeś usunięty z {tenant}.',
+      error: 'Nie udało się odrzucić zaproszenia',
+    },
     status: {
       pending: 'Oczekuje',
       accepted: 'Zaakceptowane',
@@ -78,5 +103,107 @@ export const tenant = {
       error: 'Nie udało się usunąć zaproszenia',
       confirm: 'Czy na pewno chcesz usunąć to zaproszenie?',
     },
+  },
+  overview: {
+    title: 'Przegląd',
+  },
+  logs: {
+    title: 'Logi',
+  },
+  branding: {
+    title: 'Branding',
+    fields: {
+      colorPrimary: 'Kolor podstawowy',
+      colorSecondary: 'Kolor dodatkowy',
+      shortName: 'Krótka nazwa',
+      theme: 'Motyw',
+      pdfAccentColor: 'Kolor akcentu PDF',
+      emailSignatureHtml: 'Podpis email',
+      logo: 'Logo',
+      favicon: 'Favicon',
+      customFont: 'Niestandardowa czcionka',
+      pdfLogo: 'Logo PDF',
+      emailHeaderImage: 'Obraz nagłówka email'
+    }
+  },
+  billing: {
+    title: 'Rozliczenia',
+    overview: {
+      title: 'Przegląd',
+      currentPlan: {
+        title: 'Aktualny plan',
+        noPlan: 'Brak aktywnego planu',
+        selectPlan: 'Wybierz plan, aby rozpocząć',
+        changePlan: 'Zmień plan'
+      },
+      usage: {
+        title: 'Wykorzystanie',
+        storage: 'Przestrzeń',
+        users: 'Użytkownicy',
+        apiCalls: 'Wywołania API'
+      },
+      paymentMethod: {
+        title: 'Metoda płatności',
+        update: 'Aktualizuj'
+      }
+    },
+    plans: {
+      title: 'Plany',
+      monthly: 'Miesięcznie',
+      yearly: 'Rocznie',
+      save: 'Oszczędź 20%',
+      mostPopular: 'Najpopularniejszy',
+      currentPlan: 'Aktualny plan',
+      selectPlan: 'Wybierz plan',
+      perMonth: 'na miesiąc',
+      perYear: 'na rok'
+    },
+    history: {
+      title: 'Historia',
+      date: 'Data',
+      description: 'Opis',
+      amount: 'Kwota',
+      status: 'Status',
+      invoice: 'Faktura',
+      download: 'Pobierz',
+      noHistory: 'Brak historii rozliczeń',
+      noHistoryDescription: 'Twoja historia rozliczeń pojawi się tutaj po dokonaniu pierwszej płatności.',
+      statuses: {
+        paid: 'Opłacone',
+        pending: 'Oczekujące',
+        failed: 'Nieudane'
+      }
+    }
+  },
+  settings: {
+    title: 'Ustawienia',
+    fields: {
+      currency: 'Waluta',
+      require2fa: 'Wymagaj 2FA od użytkowników',
+      contractors: {
+        fetchLogo: 'Próbuj pobrać logo dla nowych kontrahentów'
+      }
+    },
+    save: 'Zapisz'
+  },
+  publicProfile: {
+    title: 'Profil publiczny',
+    fields: {
+      visible: 'Widoczny',
+      publicName: 'Nazwa publiczna',
+      websiteUrl: 'Adres strony internetowej',
+      industry: 'Branża',
+      locationCity: 'Miasto',
+      locationCountry: 'Kraj',
+      description: 'Opis',
+      publicLogo: 'Logo publiczne',
+      bannerImage: 'Obraz banera',
+      socialLinks: 'Linki społecznościowe',
+      address: 'Adres'
+    },
+    save: 'Zapisz',
+    show: {
+      error: 'Nie udało się załadować profilu publicznego'
+    }
   },
 }

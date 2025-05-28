@@ -3,6 +3,9 @@ export const contractor = {
   contractorDetails: 'Contractor details',
   fields: {
     name: 'Name',
+    country: 'Country',
+    vatId: 'VAT ID',
+    regon: 'REGON',
     taxId: 'Tax ID',
     email: 'E-mail',
     phone: 'Phone',
@@ -15,7 +18,15 @@ export const contractor = {
   },
   add: {
     title: 'Add Contractor',
-    description: 'Add a new contractor to the system.'
+    description: 'Add a new contractor to the system.',
+    success: 'Contractor added successfully',
+    error: 'Could not add contractor',
+    fetchLogo: 'Get logo',
+    fetchLogoDescription: 'Try to fetch logo from Internet based on website or email',
+  },
+  edit: {
+    title: 'Edit Contractor',
+    description: 'Edit the contractor.',
   },
   delete: {
     success: 'Contractor deleted successfully',
@@ -24,6 +35,18 @@ export const contractor = {
   },
   show: {
     error: 'Could not load contractor',
+  },
+  overview: {
+    title: 'Overview',
+    description: 'Overview of the contractor.',
+  },
+  comments: {
+    title: 'Comments',
+    description: 'Comments of the contractor.',
+  },
+  logs: {
+    title: 'Logs',
+    description: 'Logs of the contractor.',
   },
   addresses: {
     add: {

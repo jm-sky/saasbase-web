@@ -1,20 +1,10 @@
 <script setup lang="ts">
-import { useI18n } from 'vue-i18n'
 import { Button } from '@/components/ui/button'
 import UIIcon from '@/components/UIIcon.vue'
 import { config } from '@/config'
-import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
-import { oauthService } from '../services/oauth.service'
 
-const { t } = useI18n()
-
-const handleOAuthLogin = async (provider: 'gitHub' | 'google') => {
-  try {
-    const url = await oauthService.getOAuthRedirectUrl(provider)
-    window.location.href = url
-  } catch (error) {
-    handleErrorWithToast(t('auth.oauthError'), error)
-  }
+const handleOAuthLogin = (provider: 'gitHub' | 'google') => {
+  window.location.href = `${config.api.baseUrl}/oauth/${provider}/redirect`
 }
 </script>
 

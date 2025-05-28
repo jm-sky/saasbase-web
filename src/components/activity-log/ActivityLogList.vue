@@ -1,5 +1,6 @@
 <script setup lang="ts" generic="T extends ActivityLog">
 import { ScrollArea } from '@/components/ui/scroll-area'
+import NoItems from '../DataLists/NoItems.vue'
 import ActivityLogItem from './ActivityLogItem.vue'
 import type { ActivityLog } from '@/types/activity-log'
 
@@ -23,6 +24,7 @@ defineProps<{
         :icon="getIcon(log)"
         :color="getColor(log)"
       />
+      <NoItems v-if="logs.length === 0" />
     </div>
   </ScrollArea>
 </template>

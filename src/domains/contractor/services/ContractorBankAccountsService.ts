@@ -1,11 +1,11 @@
 import api from '@/lib/api'
 import { apiRoutesMap } from '@/lib/api/apiRoutes'
-import type { IContractorBankAccount, IContractorBankAccountCreate } from '@/domains/contractor/models/contractor.model'
-import type { IResource } from '@/domains/shared/types/resource.type'
+import type { IContractorBankAccount, IContractorBankAccountCreate } from '@/domains/contractor/types/contractor.type'
+import type { IResourceCollection } from '@/domains/shared/types/resource.type'
 
 class ContractorBankAccountsService {
-  async index(contractorId: string): Promise<IResource<IContractorBankAccount>> {
-    const response = (await api.get<IResource<IContractorBankAccount>>(`${apiRoutesMap.contractors}/${contractorId}/bank-accounts`)).data
+  async index(contractorId: string): Promise<IResourceCollection<IContractorBankAccount>> {
+    const response = (await api.get<IResourceCollection<IContractorBankAccount>>(`${apiRoutesMap.contractors}/${contractorId}/bank-accounts`)).data
     return response
   }
 

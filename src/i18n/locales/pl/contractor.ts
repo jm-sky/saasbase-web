@@ -3,6 +3,9 @@ export const contractor = {
   contractorDetails: 'Szczegóły kontrahenta',
   fields: {
     name: 'Nazwa',
+    country: 'Kraj',
+    vatId: 'NIP',
+    regon: 'REGON',
     taxId: 'Identyfikator podatkowy',
     email: 'E-mail',
     phone: 'Telefon',
@@ -15,7 +18,15 @@ export const contractor = {
   },
   add: {
     title: 'Dodaj kontrahenta',
-    description: 'Dodaj nowego kontrahenta do systemu.'
+    description: 'Dodaj nowego kontrahenta do systemu.',
+    success: 'Kontrahent dodany pomyślnie',
+    error: 'Nie udało się dodać kontrahenta',
+    fetchLogo: 'Wyszukaj logo',
+    fetchLogoDescription: 'Spróbuj pobrać logo z Internetu na podstawie strony internetowej lub e-maila',
+  },
+  edit: {
+    title: 'Edytuj kontrahenta',
+    description: 'Edytuj kontrahenta.',
   },
   delete: {
     success: 'Kontrahent usunięty pomyślnie',
@@ -24,6 +35,18 @@ export const contractor = {
   },
   show: {
     error: 'Nie udało się załadować kontrahenta',
+  },
+  overview: {
+    title: 'Przegląd',
+    description: 'Przegląd kontrahenta.',
+  },
+  comments: {
+    title: 'Komentarze',
+    description: 'Komentarze kontrahenta.',
+  },
+  logs: {
+    title: 'Logi',
+    description: 'Logi kontrahenta.',
   },
   addresses: {
     add: {

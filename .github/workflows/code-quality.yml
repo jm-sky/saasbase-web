@@ -41,13 +41,6 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
-      - name: Get current branch
-        id: get_branch
-        run: echo "branch_name=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}" >> $GITHUB_OUTPUT
-
-      - name: Checkout branch
-        run: git checkout "${{ steps.get_branch.outputs.branch_name }}"
-
       - name: Run ESLint --fix
         run: pnpm lint-fix
 

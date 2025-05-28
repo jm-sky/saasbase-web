@@ -12,10 +12,10 @@ defineProps<{
 <template>
   <div class="flex flex-col gap-2 border rounded-md p-4 shadow-lg/5">
     <div class="font-bold">
-      Description
+      {{ $t('tenant.fields.description') }}
     </div>
     <div class="text-muted-foreground">
-      {{ tenant?.description }}
+      {{ tenant?.description ?? '-' }}
     </div>
   </div>
 

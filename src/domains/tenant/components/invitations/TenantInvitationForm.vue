@@ -10,6 +10,7 @@ import RoleLookup from '@/domains/rights/components/RoleLookup.vue'
 import { tenantInvitationService } from '@/domains/tenant/services/TenantInvitationService'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
 import { isValidationError } from '@/lib/validation'
+import TenantSectionTitle from '../TenantSectionTitle.vue'
 import type { ITenantInvitation } from '@/domains/tenant/types/invitation.type'
 import type { ITenant } from '@/domains/tenant/types/tenant.type'
 
@@ -52,11 +53,9 @@ const sendInvitation = handleSubmit(async (values) => {
 
 <template>
   <div class="rounded-lg border p-4">
-    <h3 class="text-lg font-medium">
-      {{ t('tenant.invitations.send.title') }}
-    </h3>
+    <TenantSectionTitle :title="t('tenant.invitations.send.title')" />
 
-    <form class="mt-4 space-y-4" @submit.prevent="sendInvitation">
+    <form class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4" @submit.prevent="sendInvitation">
       <FormFieldLabeled v-slot="{ componentField }" name="email" :label="t('tenant.invitations.send.email')">
         <Input
           v-bind="componentField"
@@ -69,17 +68,21 @@ const sendInvitation = handleSubmit(async (values) => {
         <RoleLookup
           :model-value="values.role"
           v-bind="componentField"
+          popover-content-class="w-full md:w-xl"
           :disabled="isSubmitting"
         />
       </FormFieldLabeled>
 
-      <Button
-        type="submit"
-        :disabled="isSubmitting"
-        :loading="isSubmitting"
-      >
-        {{ t('tenant.invitations.send.submit') }}
-      </Button>
+      <div class="col-span-full">
+        <Button
+          type="submit"
+          class="w-full"
+          :disabled="isSubmitting"
+          :loading="isSubmitting"
+        >
+          {{ t('tenant.invitations.send.submit') }}
+        </Button>
+      </div>
     </form>
   </div>
 </template>

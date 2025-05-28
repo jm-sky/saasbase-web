@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import { fullName } from '@/lib/fullName'
+import { Icon } from '@iconify/vue'
 import type { IChatRoom } from '../types/chat.type'
 
 defineProps<{
   rooms: IChatRoom[]
   roomId: string
+  loading?: boolean
   joinRoom: (roomId: string) => void
 }>()
 
@@ -12,11 +13,12 @@ const emit = defineEmits<{
   join: []
 }>()
 
-const showParticipants = (selectedRoom: IChatRoom) => selectedRoom.participants.map(p => fullName(p)).join(', ')
+const showParticipants = (selectedRoom: IChatRoom) => selectedRoom.participants.map(p => p.name).join(', ')
 </script>
 
 <template>
-  <div class="font-bold mb-1">
+  <div class="flex flex-row items-center gap-2 font-bold mb-1">
+    <Icon v-if="loading" icon="lucide:loader" class="animate-spin" />
     Rooms
   </div>
 

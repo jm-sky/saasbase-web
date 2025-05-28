@@ -2,8 +2,11 @@
 import {
   FlexRender,
   getCoreRowModel,
+  getPaginationRowModel,
+  getSortedRowModel,
   useVueTable,
 } from '@tanstack/vue-table'
+import { ArrowDown, ArrowUp } from 'lucide-vue-next'
 import { computed, ref } from 'vue'
 import {
   Table,
@@ -16,9 +19,10 @@ import {
 import { valueUpdater } from '@/lib/utils'
 import ColumnFilter from './DataLists/Filters/ColumnFilter.vue'
 import TablePagination from './ui/table/TablePagination.vue'
-import type { ColumnDef, VisibilityState } from '@tanstack/vue-table'
+import type { ColumnDef, Header, SortingState, VisibilityState } from '@tanstack/vue-table'
 import type { FilterDefinition } from '@/domains/shared/types/resource.type'
 
+const sorting = defineModel<SortingState>('sorting', { default: [] })
 const page = defineModel<number>('page', { default: 1 })
 const pageSize = defineModel<number>('pageSize', { default: 10 })
 
@@ -29,6 +33,7 @@ const props = defineProps<{
   total?: number
   pageSizeOptions?: number[]
   showColumnFilters?: boolean
+  loading?: boolean
 }>()
 
 const columnFilters = defineModel<Record<string, FilterDefinition>>('column-filters', { default: {} })
@@ -39,8 +44,12 @@ const table = useVueTable({
   get data() { return props.data },
   get columns() { return props.columns },
   getCoreRowModel: getCoreRowModel(),
+  getPaginationRowModel: getPaginationRowModel(),
+  getSortedRowModel: getSortedRowModel(),
   onColumnVisibilityChange: updaterOrValue => { valueUpdater(updaterOrValue, columnVisibility) },
+  onSortingChange: updaterOrValue => { valueUpdater(updaterOrValue, sorting) },
   state: {
+    get sorting() { return sorting.value },
     get columnVisibility() { return columnVisibility.value },
   }
 })
@@ -48,10 +57,18 @@ const table = useVueTable({
 const total = computed(() => props.total ?? 0)
 const pageSizeOptions = computed(() => props.pageSizeOptions ?? [10, 20, 30, 40, 50])
 const pageCount = computed(() => Math.max(1, Math.ceil(total.value / pageSize.value)))
+
+const switchSorting = (header: Header<TData, unknown>) => {
+  if (header.column.getIsSorted() === 'desc') {
+    header.column.clearSorting()
+  } else {
+    header.column.toggleSorting(header.column.getIsSorted() === 'asc')
+  }
+}
 </script>
 
 <template>
-  <div class="border rounded-md shadow-xs">
+  <div class="border rounded-md shadow-xs" :class="{ 'opacity-50': loading }">
     <Table>
       <TableHeader>
         <TableRow
@@ -61,12 +78,17 @@ const pageCount = computed(() => Math.max(1, Math.ceil(total.value / pageSize.va
           <TableHead
             v-for="header in headerGroup.headers"
             :key="header.id"
+            @click="switchSorting(header)"
           >
-            <FlexRender
-              v-if="!header.isPlaceholder"
-              :render="header.column.columnDef.header"
-              :props="header.getContext()"
-            />
+            <div class="flex items-center gap-2">
+              <FlexRender
+                v-if="!header.isPlaceholder"
+                :render="header.column.columnDef.header"
+                :props="header.getContext()"
+              />
+              <ArrowDown v-if="header.column.getIsSorted() === 'desc'" class="size-4" />
+              <ArrowUp v-if="header.column.getIsSorted() === 'asc'" class="size-4" />
+            </div>
           </TableHead>
         </TableRow>
         <template v-if="props.showColumnFilters">

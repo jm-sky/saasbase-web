@@ -1,11 +1,11 @@
 import api from '@/lib/api'
 import { apiRoutesMap } from '@/lib/api/apiRoutes'
-import type { IResource } from '@/domains/shared/types/resource.type'
+import type { IResourceCollection } from '@/domains/shared/types/resource.type'
 import type { ITenantBankAccount, ITenantBankAccountCreate } from '@/domains/tenant/types/tenant.type'
 
 class TenantBankAccountsService {
-  async index(tenantId: string): Promise<IResource<ITenantBankAccount>> {
-    const response = (await api.get<IResource<ITenantBankAccount>>(`${apiRoutesMap.tenants}/${tenantId}/bank-accounts`)).data
+  async index(tenantId: string): Promise<IResourceCollection<ITenantBankAccount>> {
+    const response = (await api.get<IResourceCollection<ITenantBankAccount>>(`${apiRoutesMap.tenants}/${tenantId}/bank-accounts`)).data
     return response
   }
 

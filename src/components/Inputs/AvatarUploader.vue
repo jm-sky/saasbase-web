@@ -121,7 +121,7 @@ const removeFile = async () => {
 
 <template>
   <div
-    class="relative group inline-block w-fit mx-auto [&>button]:opacity-0 [&>button]:transition-opacity [&>button]:duration-300"
+    class="relative group inline-block w-fit mx-auto md:[&>button]:opacity-0 [&>button]:transition-opacity [&>button]:duration-300"
     tabindex="-1"
     :class="{ 'opacity-50': isLoading }"
   >
@@ -148,7 +148,7 @@ const removeFile = async () => {
       type="button"
       @click="fileInput?.click()"
     >
-      <Plus class="w-4 h-4 text-gray-700" />
+      <Plus class="size-4 text-gray-700" />
     </button>
 
     <button
@@ -159,7 +159,7 @@ const removeFile = async () => {
       type="button"
       @click="fileInput?.click()"
     >
-      <Pencil class="w-4 h-4 text-gray-700" />
+      <Pencil class="size-4 text-gray-700" />
     </button>
 
     <button
@@ -170,7 +170,7 @@ const removeFile = async () => {
       type="button"
       @click="upload()"
     >
-      <Upload class="w-4 h-4 text-gray-700" />
+      <Upload class="size-4 text-gray-700" />
     </button>
 
     <button
@@ -181,7 +181,7 @@ const removeFile = async () => {
       type="button"
       @click="removeFile"
     >
-      <Trash class="w-4 h-4 text-red-500" />
+      <Trash class="size-4 text-red-500" />
     </button>
   </div>
 </template>

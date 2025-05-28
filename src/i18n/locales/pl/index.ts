@@ -7,9 +7,11 @@ import { common } from './common'
 import { contacts } from './contacts'
 import { contractor } from './contractor'
 import { invitation } from './invitation'
+import { log } from './log'
 import { product } from './product'
 import { settings } from './settings'
 import { tenant } from './tenant'
+import { user } from './user'
 
 export const pl = {
   address,
@@ -22,17 +24,22 @@ export const pl = {
   contacts,
   notifications: 'Powiadomienia',
   invitation,
+  companyLookup: {
+    tooltip: 'Wyszukaj firmę po kraju i numerze VAT',
+  },
   layout: {
     darkMode: 'Tryb ciemny',
     lightMode: 'Tryb jasny',
     layoutConfig: 'Konfiguracja układu'
   },
+  log,
   errors: {
     uploadFailed: 'Wystąpił błąd podczas przesyłania pliku',
   },
   settings,
   product,
   tenant,
+  user,
   role: {
     select: 'Wybierz rolę',
     search: 'Szukaj roli',

@@ -42,7 +42,7 @@ const emit = defineEmits<{
             :loading
             @click="emit('refresh')"
           >
-            <RefreshCcw class="w-4 h-4" />
+            <RefreshCcw class="size-4" />
           </Button>
 
           <ButtonLink
@@ -59,7 +59,7 @@ const emit = defineEmits<{
     </div>
 
     <!-- Content -->
-    <div class="grid grid-cols-1 md:grid-cols-[20rem_1fr] gap-6">
+    <div class="grid grid-cols-1 md:grid-cols-[20rem_1fr] gap-6" :class="{ 'opacity-50': loading }">
       <!-- Sidebar -->
       <div class="flex flex-col text-center gap-2 border rounded-md p-4 shadow-lg/5">
         <slot name="sidebar" />

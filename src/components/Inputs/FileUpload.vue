@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { useVModel } from '@vueuse/core'
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { cn } from '@/lib/utils'
@@ -14,12 +13,9 @@ const props = defineProps<{
   disabled?: boolean
 }>()
 
-const emits = defineEmits<(e: 'update:modelValue', payload: File[]) => void>()
 const { t } = useI18n()
 
-const files = useVModel(props, 'modelValue', emits, {
-  defaultValue: [] as File[],
-})
+const files = defineModel<File[] | undefined>({ required: true })
 
 const isDragging = ref(false)
 const fileInput = ref<HTMLInputElement>()
@@ -55,7 +51,7 @@ const handleFileInput = (e: Event) => {
 }
 
 const removeFile = (index: number) => {
-  if (!files.value) return
+  if (!files.value?.length) return
   files.value = files.value.filter((_, i) => i !== index)
 }
 

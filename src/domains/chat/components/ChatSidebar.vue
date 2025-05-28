@@ -12,6 +12,7 @@ defineProps<{
   rooms: IChatRoom[]
   users: IUserPreview[]
   roomId: string
+  loading?: boolean
   joinRoom: (roomId: string) => void
   createRoom: (userId: string) => void
 }>()
@@ -38,6 +39,7 @@ const authStore = useAuthStore()
     <ChatSidebarRooms
       :rooms="rooms"
       :room-id="roomId"
+      :loading
       :join-room="joinRoom"
       @join="isOpen = false"
     />
@@ -47,6 +49,7 @@ const authStore = useAuthStore()
     <ChatSidebarUsers
       :users="users"
       :room-id="roomId"
+      :loading
       :create-room="createRoom"
       @create="isOpen = false"
     />

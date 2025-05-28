@@ -1,4 +1,5 @@
 import axios, { AxiosError } from 'axios'
+import { config } from '@/config'
 import { DEFAULT_LOCALE } from '@/i18n'
 import { interceptUnauthorized } from '@/lib/api/interceptUnauthorized'
 import { authorizeOutgoingRequests } from './authorizeOutgoingRequests'
@@ -6,7 +7,7 @@ import { interceptTenantRequired } from './interceptTenantRequired'
 import type { AxiosInstance, AxiosResponse, InternalAxiosRequestConfig } from 'axios'
 
 const api: AxiosInstance = axios.create({
-  baseURL: import.meta.env.VITE_API_URL ?? '/api/v1',
+  baseURL: config.api.baseUrl,
   withCredentials: true,
   headers: {
     Accept: 'application/json',

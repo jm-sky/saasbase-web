@@ -2,7 +2,6 @@ import HomeView from '@/pages/HomePage.vue'
 import { isAuthenticated } from '@/router/middleware/isAuthenticated'
 import { isInTenant } from '@/router/middleware/isInTenant'
 import { isVerified } from '@/router/middleware/isVerified'
-import { accountRoutes } from '@/router/routes/account'
 import { authRoutes } from '@/router/routes/auth'
 import { contractorRoutes } from '@/router/routes/contractor'
 import { productRoutes } from '@/router/routes/product'
@@ -40,7 +39,6 @@ export const routes: RouteRecordRaw[] = [
   ...contractorRoutes,
   ...productRoutes,
   ...tenantRoutes,
-  ...accountRoutes,
 
   {
     path: '/chat/:roomId?',
@@ -66,5 +64,10 @@ export const routes: RouteRecordRaw[] = [
     meta: {
       middlewares: [isAuthenticated, isVerified],
     },
+  },
+  {
+    path: '/:pathMatch(.*)*',
+    name: 'not-found',
+    component: () => import('@/pages/Error404Page.vue'),
   },
 ]

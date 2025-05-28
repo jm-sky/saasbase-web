@@ -14,12 +14,13 @@ export interface IMessageSentEvent {
   data: IChatMessage
 }
 
+// UserPreview
 export interface IChatParticipant {
   id: string
-  firstName: string
-  lastName: string
+  name: string
   email?: string
   phone?: string
+  avatarUrl?: string
 }
 
 export interface IChatRoom {
