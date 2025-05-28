@@ -47,6 +47,7 @@ jobs:
           VITE_API_MOCK: ${{ vars.VITE_API_MOCK }}
           VITE_CHAT_ENABLED: ${{ vars.VITE_CHAT_ENABLED }}
           VITE_AI_CHAT_ENABLED: ${{ vars.VITE_AI_CHAT_ENABLED }}
+          VITE_OAUTH_GOOGLE: ${{ vars.VITE_OAUTH_GOOGLE }}
           VITE_PUSHER_APP_KEY: ${{ secrets.VITE_PUSHER_APP_KEY }}
           VITE_PUSHER_HOST: ${{ secrets.VITE_PUSHER_HOST }}
           VITE_PUSHER_PORT: 443
