@@ -24,6 +24,15 @@ export const en = {
   contacts,
   notifications: 'Notifications',
   invitation,
+  company: {
+    sources: {
+      tooltip: {
+        regon: 'REGON is a Polish register of companies and organizations.',
+        vies: 'VIES is a European Union register of companies.',
+        mf: 'MF is a Polish register of companies and organizations.',
+      },
+    },
+  },
   companyLookup: {
     tooltip: 'Lookup company by country and VAT ID',
   },

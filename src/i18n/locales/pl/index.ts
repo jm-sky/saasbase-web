@@ -24,6 +24,15 @@ export const pl = {
   contacts,
   notifications: 'Powiadomienia',
   invitation,
+  company: {
+    sources: {
+      tooltip: {
+        regon: 'REGON to rejestr podmiotów gospodarczych w Polsce.',
+        vies: 'VIES to rejestr podmiotów gospodarczych w Unii Europejskiej.',
+        mf: 'MF to rejestr podmiotów gospodarczych w Polsce.',
+      },
+    },
+  },
   companyLookup: {
     tooltip: 'Wyszukaj firmę po kraju i numerze VAT',
   },

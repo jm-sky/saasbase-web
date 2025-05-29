@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import { useForm } from 'vee-validate'
+import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
 import FormFieldLabeled from '@/components/Form/FormFieldLabeled.vue'
+import Badge from '@/components/ui/badge/Badge.vue'
 import Button from '@/components/ui/button/Button.vue'
 import FormDescription from '@/components/ui/form/FormDescription.vue'
 import Input from '@/components/ui/input/Input.vue'
@@ -18,11 +20,18 @@ import { isValidationError } from '@/lib/validation'
 import AddressForm from './AddContractorPage/AddressForm.vue'
 import BankAccountForm from './AddContractorPage/BankAccountForm.vue'
 import type { IContractorCombinedCreate } from '@/domains/contractor/types/contractor.type'
-import type { ICompanyLookupResponse } from '@/domains/utils/types/companyLookup.type'
+import type { ICompanyLookupResponse, ICompanyLookupSource } from '@/domains/utils/types/companyLookup.type'
+import { Check } from 'lucide-vue-next'
 
 const { t } = useI18n()
 const { toast } = useToast()
 const router = useRouter()
+
+const externalSources = ref<ICompanyLookupSource>({
+  regon: false,
+  vies: false,
+  mf: false,
+})
 
 const { isSubmitting, handleSubmit, values, setValues, setErrors, resetForm } = useForm<IContractorCombinedCreate>({
   initialValues: {
@@ -66,12 +75,16 @@ const onSubmit = handleSubmit(async (values) => {
     console.error('[AddContractorView][onSubmit] error:', error)
     if (isValidationError(error)) setErrors(error.response.data.errors)
     handleErrorWithToast(t('contractor.add.error'), error)
-
   }
 })
 
 const onCompanyLookup = (company: ICompanyLookupResponse) => {
-  console.log('[AddContractorView][onCompanyLookup] company:', company)
+  externalSources.value = company.sources ?? {
+    regon: false,
+    vies: false,
+    mf: false,
+  }
+
   setValues({
     contractor: {
       name: company.name,
@@ -105,6 +118,22 @@ const onCompanyLookup = (company: ICompanyLookupResponse) => {
 
       <div class="p-6 md:p-8 border rounded-md shadow-lg">
         <form class="flex flex-col gap-y-2 gap-x-8" @submit.prevent="onSubmit">
+          <div class="flex flex-row gap-2 items-center justify-end">
+            <Badge v-if="externalSources.regon" v-tooltip="t('company.sources.tooltip.regon')" variant="success">
+              <Check class="size-4 mr-2" />
+              REGON
+            </Badge>
+            <Badge v-if="externalSources.vies" v-tooltip="t('company.sources.tooltip.vies')" variant="success">
+              <Check class="size-4 mr-2" />
+              VIES
+            </Badge>
+            <Badge v-if="externalSources.mf" v-tooltip="t('company.sources.tooltip.mf')" variant="success">
+              <Check class="size-4 mr-2" />
+              MF
+            </Badge>
+          </div>
+
+
           <div class="grid grid-cols-1 md:grid-cols-[10rem_1fr] gap-x-8 gap-y-2">
             <FormFieldLabeled
               v-slot="{ componentField }"
