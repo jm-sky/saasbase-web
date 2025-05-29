@@ -7,7 +7,7 @@ export interface ICompanyPerson {
   pesel?: string
 }
 
-export interface ICompanyLookupSource {
+export interface ICompanyRegistryConfirmation {
   regon: boolean
   vies: boolean
   mf: boolean
@@ -24,5 +24,5 @@ export interface ICompanyLookupResponse {
   website?: string | null
   address?: IAddress | null
   bankAccount?: IBankAccount | null
-  sources?: ICompanyLookupSource | null
+  sources?: ICompanyRegistryConfirmation | null
 }

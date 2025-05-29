@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { Check } from 'lucide-vue-next'
 import { useForm } from 'vee-validate'
-import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
 import FormFieldLabeled from '@/components/Form/FormFieldLabeled.vue'
@@ -21,19 +20,19 @@ import { isValidationError } from '@/lib/validation'
 import AddressForm from './AddContractorPage/AddressForm.vue'
 import BankAccountForm from './AddContractorPage/BankAccountForm.vue'
 import type { IContractorCombinedCreate } from '@/domains/contractor/types/contractor.type'
-import type { ICompanyLookupResponse, ICompanyLookupSource } from '@/domains/utils/types/companyLookup.type'
+import type { ICompanyLookupResponse, ICompanyRegistryConfirmation } from '@/domains/utils/types/companyLookup.type'
 
 const { t } = useI18n()
 const { toast } = useToast()
 const router = useRouter()
 
-const externalSources = ref<ICompanyLookupSource>({
+const emptyRegistryConfirmation: ICompanyRegistryConfirmation = {
   regon: false,
   vies: false,
   mf: false,
-})
+}
 
-const { isSubmitting, handleSubmit, values, setValues, setErrors, resetForm } = useForm<IContractorCombinedCreate>({
+const { isSubmitting, handleSubmit, values, setFieldValue, setValues, setErrors, resetForm } = useForm<IContractorCombinedCreate>({
   initialValues: {
     contractor: {
       name: '',
@@ -59,6 +58,7 @@ const { isSubmitting, handleSubmit, values, setValues, setErrors, resetForm } = 
       swift: '',
       bankName: '',
     },
+    registryConfirmation: emptyRegistryConfirmation,
     options: {
       fetchLogo: true,
     },
@@ -79,11 +79,7 @@ const onSubmit = handleSubmit(async (values) => {
 })
 
 const onCompanyLookup = (company: ICompanyLookupResponse) => {
-  externalSources.value = company.sources ?? {
-    regon: false,
-    vies: false,
-    mf: false,
-  }
+  setFieldValue('registryConfirmation', company.sources ?? { ...emptyRegistryConfirmation })
 
   setValues({
     contractor: {
@@ -119,15 +115,15 @@ const onCompanyLookup = (company: ICompanyLookupResponse) => {
       <div class="p-6 md:p-8 border rounded-md shadow-lg">
         <form class="flex flex-col gap-y-2 gap-x-8" @submit.prevent="onSubmit">
           <div class="flex flex-row gap-2 items-center justify-end">
-            <Badge v-if="externalSources.regon" v-tooltip="t('company.sources.tooltip.regon')" variant="success">
+            <Badge v-if="values.registryConfirmation?.regon" v-tooltip="t('company.sources.tooltip.regon')" variant="success">
               <Check class="size-4 mr-2" />
               REGON
             </Badge>
-            <Badge v-if="externalSources.vies" v-tooltip="t('company.sources.tooltip.vies')" variant="success">
+            <Badge v-if="values.registryConfirmation?.vies" v-tooltip="t('company.sources.tooltip.vies')" variant="success">
               <Check class="size-4 mr-2" />
               VIES
             </Badge>
-            <Badge v-if="externalSources.mf" v-tooltip="t('company.sources.tooltip.mf')" variant="success">
+            <Badge v-if="values.registryConfirmation?.mf" v-tooltip="t('company.sources.tooltip.mf')" variant="success">
               <Check class="size-4 mr-2" />
               MF
             </Badge>

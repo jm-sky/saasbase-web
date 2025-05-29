@@ -18,7 +18,7 @@ import EditContractorButton from '@/domains/contractor/components/actions/EditCo
 import { contractorService, type IContractorFilters } from '@/domains/contractor/services/ContractorService'
 import { useContractorStore } from '@/domains/contractor/store/contractor.store'
 import AuthenticatedLayout from '@/layouts/AuthenticatedLayout.vue'
-import { toDateString } from '@/lib/toDateString'
+import { toDateTimeString } from '@/lib/toDateTimeString'
 import type { ColumnDef } from '@tanstack/vue-table'
 import type { IContractor } from '@/domains/contractor/types/contractor.type'
 import type { IResourceMeta } from '@/domains/shared/types/resource.type'
@@ -66,7 +66,7 @@ const columns: ColumnDef<IContractor>[] = [
   {
     accessorKey: 'createdAt',
     header: t('common.createdAt'),
-    cell: (info: { row: { original: IContractor } }) => toDateString(info.row.original.createdAt),
+    cell: (info: { row: { original: IContractor } }) => toDateTimeString(info.row.original.createdAt),
   },
   {
     accessorKey: 'tags',

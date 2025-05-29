@@ -11,7 +11,7 @@ import DeleteProductButton from '@/domains/product/components/DeleteProductButto
 import EditProductButton from '@/domains/product/components/EditProductButton.vue'
 import { type IProductFilters, productService } from '@/domains/product/services/ProductService'
 import AuthenticatedLayout from '@/layouts/AuthenticatedLayout.vue'
-import { toDateString } from '@/lib/toDateString'
+import { toDateTimeString } from '@/lib/toDateTimeString'
 import type { ColumnDef } from '@tanstack/vue-table'
 import type { IProduct } from '@/domains/product/models/product.model'
 import type { IResourceMeta } from '@/domains/shared/types/resource.type'
@@ -50,7 +50,7 @@ const columns: ColumnDef<IProduct>[] = [
   {
     accessorKey: 'createdAt',
     header: t('product.fields.createdAt'),
-    cell: (info: { row: { original: IProduct } }) => toDateString(info.row.original.createdAt),
+    cell: (info: { row: { original: IProduct } }) => toDateTimeString(info.row.original.createdAt),
   },
   {
     id: 'actions',

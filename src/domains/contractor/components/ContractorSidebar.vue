@@ -1,8 +1,10 @@
 <script setup lang="ts">
+import { ShieldCheck, X } from 'lucide-vue-next'
 import { useI18n } from 'vue-i18n'
 import AvatarUploader from '@/components/Inputs/AvatarUploader.vue'
 import InfoSection from '@/components/Sections/InfoSection.vue'
 import TagList from '@/components/TagList.vue'
+import Badge from '@/components/ui/badge/Badge.vue'
 import Separator from '@/components/ui/separator/Separator.vue'
 import { toDateTimeString } from '@/lib/toDateTimeString'
 import type { IContractor } from '../types/contractor.type'
@@ -40,6 +42,24 @@ const emit = defineEmits<{
   <div v-if="contractor?.email" class="text-sm text-muted-foreground">
     {{ contractor?.email ?? '...' }}
   </div>
+
+  <template v-if="contractor?.registryConfirmations">
+    <Separator class="my-2" />
+
+    <div class="flex flex-row items-center justify-center gap-1 text-left">
+      <Badge
+        v-for="confirmation in contractor.registryConfirmations"
+        :key="confirmation.id"
+        v-tooltip="t(`company.sources.tooltip.${confirmation.type}`)"
+        :variant="confirmation.success ? 'dark' : 'outline'"
+      >
+        <ShieldCheck v-if="confirmation.success" class="size-4 mr-2" />
+        <X v-else class="size-4 mr-1" />
+        {{ confirmation.type.toUpperCase() }}
+      </Badge>
+    </div>
+  </template>
+
 
   <Separator class="my-2" />
 
