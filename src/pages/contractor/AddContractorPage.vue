@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { Check } from 'lucide-vue-next'
 import { useForm } from 'vee-validate'
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
@@ -21,7 +22,6 @@ import AddressForm from './AddContractorPage/AddressForm.vue'
 import BankAccountForm from './AddContractorPage/BankAccountForm.vue'
 import type { IContractorCombinedCreate } from '@/domains/contractor/types/contractor.type'
 import type { ICompanyLookupResponse, ICompanyLookupSource } from '@/domains/utils/types/companyLookup.type'
-import { Check } from 'lucide-vue-next'
 
 const { t } = useI18n()
 const { toast } = useToast()
