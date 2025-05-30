@@ -16,13 +16,14 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover'
+import { type ISkill } from '@/domains/skill/models/skill.model'
 import { cn } from '@/lib/utils'
 import { skillService } from '../services/skillService'
-import { type ISkill } from '@/domains/skill/models/skill.model'
-  
+
 const { t } = useI18n()
 
 const modelValue = defineModel<string | undefined>('modelValue', { required: true })
+const modelId = defineModel<string | undefined>('modelId', { required: true })
 
 defineProps<{
   popoverContentClass?: string
@@ -38,7 +39,8 @@ const loadSkills = async () => {
   try {
     loading.value = true
     error.value = null
-    skills.value = await skillService.list()
+    const response = await skillService.index()
+    skills.value = response.data
   } catch (err) {
     error.value = 'Failed to load skills'
     console.error('[SkillLookup][loadSkills] error:', err)
@@ -50,6 +52,7 @@ const loadSkills = async () => {
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const onSelect = (event: any) => {
   const id = event.detail.value
+  modelId.value = id
   modelValue.value = skills.value.find((skill) => skill.id === id)?.name ?? undefined
   open.value = false
 }
@@ -71,13 +74,13 @@ watch(open, (newValue) => {
         :disabled="disabled || loading"
         class="w-full justify-between"
       >
-        {{ modelValue || t('skill.select') }}
-        <ChevronsUpDown class="ml-2 h-4 w-4 shrink-0 opacity-50" />
+        {{ modelValue || t('skills.select') }}
+        <ChevronsUpDown class="ml-2 size-4 shrink-0 opacity-50" />
       </Button>
     </PopoverTrigger>
     <PopoverContent :class="cn('w-full p-0', popoverContentClass)">
       <Command>
-        <CommandInput :placeholder="t('skill.search')" />
+        <CommandInput :placeholder="t('skills.search')" />
         <CommandList>
           <CommandEmpty>{{ t('skill.notFound') }}</CommandEmpty>
           <CommandGroup>
@@ -85,13 +88,19 @@ watch(open, (newValue) => {
               v-for="skill in skills"
               :key="skill.id"
               :value="skill.id"
+              class="flex flex-wrap flex-row items-center justify-between gap-2 max-w-[calc(100vw-6rem)]"
               @select="onSelect"
             >
-              <Check
-                class="mr-2 h-4 w-4"
-                :class="modelValue === skill.name ? 'opacity-100' : 'opacity-0'"
-              />
-              {{ skill.name }}
+              <span class="flex flex-row items-center gap-2">
+                <Check
+                  class="mr-2 size-4"
+                  :class="modelValue === skill.name ? 'opacity-100' : 'opacity-0'"
+                />
+                {{ skill.name }}
+              </span>
+              <div class="text-xs text-right text-muted-foreground overflow-hidden text-ellipsis">
+                {{ skill.description }}
+              </div>
             </CommandItem>
           </CommandGroup>
         </CommandList>

@@ -1,8 +1,9 @@
 import api from '@/lib/api'
-import type { IUserSkill } from '@/domains/user/types/user.type'
 import type { IResource, IResourceCollection } from '@/domains/shared/types/resource.type'
+import type { IUserSkill } from '@/domains/user/types/user.type'
 
 export interface IUserSkillCreate {
+  userId: string
   skillId: string
   level: number
   acquiredAt?: string

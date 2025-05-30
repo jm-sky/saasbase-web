@@ -75,7 +75,7 @@ const toggleChat = () => {
         class="absolute top-2 right-2 sm:hidden"
         @click="toggleChat"
       >
-        <X class="h-4 w-4" />
+        <X class="size-4" />
       </Button>
     </div>
     <ExpandableChatToggle

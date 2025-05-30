@@ -71,7 +71,7 @@ watch(open, (newValue) => {
         class="w-full justify-between"
       >
         {{ modelValue || t('role.select') }}
-        <ChevronsUpDown class="ml-2 h-4 w-4 shrink-0 opacity-50" />
+        <ChevronsUpDown class="ml-2 size-4 shrink-0 opacity-50" />
       </Button>
     </PopoverTrigger>
     <PopoverContent :class="cn('w-full p-0', popoverContentClass)">
@@ -87,7 +87,7 @@ watch(open, (newValue) => {
               @select="onSelect"
             >
               <Check
-                class="mr-2 h-4 w-4"
+                class="mr-2 size-4"
                 :class="modelValue === role.name ? 'opacity-100' : 'opacity-0'"
               />
               {{ role.name }}

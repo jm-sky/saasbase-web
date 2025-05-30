@@ -1,11 +1,12 @@
 <script setup lang="ts">
+import { Edit, Plus } from 'lucide-vue-next'
 import { useForm } from 'vee-validate'
 import { computed, onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
+import ButtonLink from '@/components/ButtonLink.vue'
 import NoItems from '@/components/DataLists/NoItems.vue'
 import { FileUpload } from '@/components/Inputs'
 import AvatarUploader from '@/components/Inputs/AvatarUploader.vue'
-import Badge from '@/components/ui/badge/Badge.vue'
 import { Button } from '@/components/ui/button'
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
@@ -14,6 +15,8 @@ import Switch from '@/components/ui/switch/Switch.vue'
 import { Textarea } from '@/components/ui/textarea'
 import { toast } from '@/components/ui/toast'
 import { useAuthStore } from '@/domains/auth/store/auth.store'
+import AddUserSkillModal from '@/domains/user/components/AddUserSkillModal.vue'
+import UserSkillBadge from '@/domains/user/components/UserSkillBadge.vue'
 import { userProfileImageService } from '@/domains/user/services/userProfileImageService'
 import { type IUserProfile, userProfileService } from '@/domains/user/services/userProfileService'
 import { userProfilechema } from '@/domains/user/validation/profileSchema'
@@ -23,6 +26,7 @@ import SettingsHeader from '../partials/SettingsHeader.vue'
 const authStore = useAuthStore()
 const { t } = useI18n()
 
+const isAddUserSkillModalOpen = ref(false)
 const isLoading = ref(false)
 const isUploading = ref(false)
 const isRemoving = ref(false)
@@ -165,14 +169,21 @@ onMounted(async () => {
   </FormField>
 
   <Separator />
-  <div class="flex flex-row items-center gap-2">
-    <Badge
+  <div class="flex flex-row flex-wrap items-center gap-2">
+    <UserSkillBadge
       v-for="skill in profile?.skills"
       :key="skill.id"
-      variant="info-outline"
+      :skill="skill"
+      @remove="refresh()"
+    />
+    <Button
+      variant="outline"
+      size="icon"
+      class="rounded-full h-7"
+      @click="isAddUserSkillModalOpen = true"
     >
-      {{ skill.name }}
-    </Badge>
+      <Plus class="size-4" />
+    </Button>
     <NoItems v-if="!profile?.skills?.length" :message="t('settings.profile.skills.noSkills')" />
   </div>
   <Separator />
@@ -183,7 +194,17 @@ onMounted(async () => {
         <FormItem class="w-full">
           <FormLabel>{{ t('settings.profile.user.email') }}</FormLabel>
           <FormControl>
-            <Input v-bind="componentField" disabled />
+            <div class="relative">
+              <Input v-bind="componentField" disabled />
+              <ButtonLink
+                to="/settings/account"
+                variant="ghost"
+                size="icon"
+                class="absolute right-0 top-0"
+              >
+                <Edit />
+              </ButtonLink>
+            </div>
           </FormControl>
           <FormMessage />
         </FormItem>
@@ -204,7 +225,17 @@ onMounted(async () => {
         <FormItem class="w-full">
           <FormLabel>{{ t('settings.profile.user.phone') }}</FormLabel>
           <FormControl>
-            <Input v-bind="componentField" disabled />
+            <div class="relative">
+              <Input v-bind="componentField" disabled />
+              <ButtonLink
+                to="/settings/account"
+                variant="ghost"
+                size="icon"
+                class="absolute right-0 top-0"
+              >
+                <Edit />
+              </ButtonLink>
+            </div>
           </FormControl>
           <FormMessage />
         </FormItem>
@@ -350,4 +381,8 @@ onMounted(async () => {
       </div>
     </div>
   </form>
+
+  <AddUserSkillModal
+    v-model:open="isAddUserSkillModalOpen"
+  />
 </template>

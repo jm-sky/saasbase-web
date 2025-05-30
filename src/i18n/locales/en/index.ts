@@ -11,6 +11,7 @@ import { invitation } from './invitation'
 import { log } from './log'
 import { product } from './product'
 import { settings } from './settings'
+import { skills } from './skills'
 import { tenant } from './tenant'
 import { user } from './user'
 import { utils } from './utils'
@@ -47,6 +48,7 @@ export const en = {
   },
   product,
   settings,
+  skills,
   tenant,
   user,
   utils,
