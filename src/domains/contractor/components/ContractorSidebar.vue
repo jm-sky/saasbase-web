@@ -51,7 +51,7 @@ const emit = defineEmits<{
         v-for="confirmation in contractor.registryConfirmations"
         :key="confirmation.id"
         v-tooltip="t(`company.sources.tooltip.${confirmation.type}`)"
-        :variant="confirmation.success ? 'dark' : 'outline'"
+        :variant="confirmation.success ? 'success-outline' : 'standout-outline'"
       >
         <ShieldCheck v-if="confirmation.success" class="size-4 mr-2" />
         <X v-else class="size-4 mr-1" />

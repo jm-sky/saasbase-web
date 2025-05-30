@@ -49,7 +49,7 @@ const handleDelete = async () => {
 <template>
   <div
     class="border rounded-md px-3 py-2 grid md:grid-cols-[1fr_1fr_auto] items-center gap-x-3 gap-y-1"
-    :class="{ 'border-primary/50': bankAccount.isDefault, 'pointer-events-none opacity-80 blur-xs': isDeleting }"
+    :class="{ 'border-primary/50 ring-1 ring-primary/30': bankAccount.isDefault, 'pointer-events-none opacity-80 blur-xs': isDeleting }"
   >
     <div class="flex flex-row gap-2 items-center order-1 max-w-full overflow-hidden">
       <Icon icon="lucide:banknote" :class="bankAccount.isDefault ? 'text-primary' : 'text-muted-foreground'" />

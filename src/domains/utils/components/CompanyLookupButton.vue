@@ -3,6 +3,7 @@ import { SearchCheck } from 'lucide-vue-next'
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import Button from '@/components/ui/button/Button.vue'
+import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
 import type { ICompanyLookupResponse } from '../types/companyLookup.type'
 import { companyLookupService } from '../services/companyLookup.service'
 
@@ -28,6 +29,7 @@ const lookupVatId = async () => {
     const company = await companyLookupService.lookup(`${country}`, `${vatId}`)
     emit('lookup', company)
   } catch (error) {
+    handleErrorWithToast(t('utils.companyLookup.error'), error)
     console.error(error)
   } finally {
     loading.value = false
@@ -37,7 +39,7 @@ const lookupVatId = async () => {
 
 <template>
   <Button
-    v-tooltip="t('companyLookup.tooltip')"
+    v-tooltip="t('utils.companyLookup.tooltip')"
     variant="outline"
     type="button"
     size="sm"

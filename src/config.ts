@@ -13,6 +13,11 @@ export const config = {
   appDomain: import.meta.env.VITE_APP_DOMAIN ?? 'saasbase.com',
   appName: import.meta.env.VITE_APP_NAME ?? 'SaasBase',
   timeZone: 'Europe/Warsaw',
+  defaults: {
+    country: import.meta.env.VITE_DEFAULTS_COUNTRY ?? 'PL',
+    language: import.meta.env.VITE_DEFAULTS_LANGUAGE ?? 'pl',
+    currency: import.meta.env.VITE_DEFAULTS_CURRENCY ?? 'PLN',
+  },
   chat: {
     enabled: import.meta.env.VITE_CHAT_ENABLED ? import.meta.env.VITE_CHAT_ENABLED === '1' : true,
     botId: import.meta.env.VITE_CHAT_BOT_ID ?? DEFAULT_CHAT_BOT_ID,

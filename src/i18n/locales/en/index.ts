@@ -13,6 +13,7 @@ import { product } from './product'
 import { settings } from './settings'
 import { tenant } from './tenant'
 import { user } from './user'
+import { utils } from './utils'
 
 export const en = {
   address,
@@ -35,9 +36,6 @@ export const en = {
       },
     },
   },
-  companyLookup: {
-    tooltip: 'Lookup company by country and VAT ID',
-  },
   layout: {
     darkMode: 'Dark Mode',
     lightMode: 'Light Mode',
@@ -47,10 +45,11 @@ export const en = {
   errors: {
     uploadFailed: 'Upload failed',
   },
-  settings,
   product,
+  settings,
   tenant,
   user,
+  utils,
   role: {
     select: 'Select role',
     search: 'Search role',

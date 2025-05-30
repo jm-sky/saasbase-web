@@ -10,6 +10,7 @@ import Textarea from '@/components/ui/textarea/Textarea.vue'
 import { contractorAddressesService } from '@/domains/contractor/services/ContractorAddressesService'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
 import { isValidationError } from '@/lib/validation'
+import ContractorAddressTypeLookup from './ContractorAddressTypeLookup.vue'
 import type { IContractorAddress } from '@/domains/contractor/types/contractor.type'
 
 const { t } = useI18n()
@@ -25,7 +26,7 @@ const emit = defineEmits<{
   update: [IContractorAddress]
 }>()
 
-const { handleSubmit, setErrors, setValues, isSubmitting } = useForm<IContractorAddress>({
+const { handleSubmit, values, setErrors, setValues, setFieldValue, isSubmitting } = useForm<IContractorAddress>({
   // TODO: add validation schema
   initialValues: {
     id: address.id,
@@ -72,8 +73,11 @@ watch(open, (value) => {
       :class="{ 'opacity-50': isSubmitting }"
       @submit.prevent="onSubmit"
     >
-      <FormFieldLabeled v-slot="{ componentField }" name="type" :label="t('address.fields.type')">
-        <Input v-bind="componentField" />
+      <FormFieldLabeled name="type" :label="t('address.fields.type')">
+        <ContractorAddressTypeLookup
+          :model-value="values.type"
+          @update:model-value="setFieldValue('type', $event)"
+        />
       </FormFieldLabeled>
 
       <FormFieldLabeled

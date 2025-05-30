@@ -2,11 +2,22 @@
 import { useI18n } from 'vue-i18n'
 import FormFieldLabeled from '@/components/Form/FormFieldLabeled.vue'
 import Input from '@/components/ui/input/Input.vue'
+import IbanLookupButton from '@/domains/utils/components/IbanLookupButton.vue'
+import type { IIbanInfo } from '@/domains/utils/services/IbanInfoService'
 const { t } = useI18n()
 
 defineProps<{
+  country?: string
   isSubmitting: boolean
 }>()
+
+const emit = defineEmits<{
+  lookup: [ibanInfo: IIbanInfo]
+}>()
+
+const handleLookup = (ibanInfo: IIbanInfo) => {
+  emit('lookup', ibanInfo)
+}
 </script>
 
 <template>
@@ -21,7 +32,15 @@ defineProps<{
       :disabled="isSubmitting"
       class="col-span-full"
     >
-      <Input v-bind="componentField" class="bg-white/50 dark:bg-black/50" />
+      <div class="flex flex-row gap-2 items-center grow">
+        <Input v-bind="componentField" class="bg-white/50 dark:bg-black/50" />
+        <IbanLookupButton
+          :iban="componentField.modelValue"
+          :country
+          class="h-9"
+          @lookup="handleLookup"
+        />
+      </div>
     </FormFieldLabeled>
     <FormFieldLabeled
       v-slot="{ componentField }"

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useForm } from 'vee-validate'
+import { watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import FormFieldLabeled from '@/components/Form/FormFieldLabeled.vue'
 import ModalComponent from '@/components/ModalComponent.vue'
@@ -9,6 +10,7 @@ import Textarea from '@/components/ui/textarea/Textarea.vue'
 import { contractorAddressesService } from '@/domains/contractor/services/ContractorAddressesService'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
 import { isValidationError } from '@/lib/validation'
+import ContractorAddressTypeLookup from './ContractorAddressTypeLookup.vue'
 import type { IContractorAddressCreate } from '@/domains/contractor/types/contractor.type'
 
 const { t } = useI18n()
@@ -23,7 +25,7 @@ const emit = defineEmits<{
   create: [IContractorAddressCreate]
 }>()
 
-const { handleSubmit, setErrors, isSubmitting } = useForm<IContractorAddressCreate>({
+const { handleSubmit, values, resetForm, setErrors, setFieldValue, isSubmitting } = useForm<IContractorAddressCreate>({
   initialValues: {
     country: '',
     postalCode: '',
@@ -47,6 +49,12 @@ const onSubmit = handleSubmit(async (values: IContractorAddressCreate) => {
     handleErrorWithToast(t('address.add.error'), error)
   }
 })
+
+watch(open, (isOpen) => {
+  if (isOpen) {
+    resetForm()
+  }
+})
 </script>
 
 <template>
@@ -62,8 +70,11 @@ const onSubmit = handleSubmit(async (values: IContractorAddressCreate) => {
       :class="{ 'opacity-50': isSubmitting }"
       @submit.prevent="onSubmit"
     >
-      <FormFieldLabeled v-slot="{ componentField }" name="type" :label="t('address.fields.type')">
-        <Input v-bind="componentField" />
+      <FormFieldLabeled name="type" :label="t('address.fields.type')">
+        <ContractorAddressTypeLookup
+          :model-value="values.type"
+          @update:model-value="setFieldValue('type', $event)"
+        />
       </FormFieldLabeled>
 
       <FormFieldLabeled v-slot="{ componentField }" name="country" :label="t('address.fields.country')">

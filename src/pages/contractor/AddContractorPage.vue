@@ -20,6 +20,7 @@ import { isValidationError } from '@/lib/validation'
 import AddressForm from './AddContractorPage/AddressForm.vue'
 import BankAccountForm from './AddContractorPage/BankAccountForm.vue'
 import type { IContractorCombinedCreate } from '@/domains/contractor/types/contractor.type'
+import type { IIbanInfo } from '@/domains/utils/services/IbanInfoService'
 import type { ICompanyLookupResponse, ICompanyRegistryConfirmation } from '@/domains/utils/types/companyLookup.type'
 
 const { t } = useI18n()
@@ -103,6 +104,16 @@ const onCompanyLookup = (company: ICompanyLookupResponse) => {
     },
   })
 }
+
+const onBankAccountLookup = (ibanInfo: IIbanInfo) => {
+  setValues({
+    bankAccount: {
+      iban: ibanInfo.iban,
+      swift: ibanInfo.swift ?? '',
+      bankName: ibanInfo.bankName,
+    },
+  })
+}
 </script>
 
 <template>
@@ -115,20 +126,19 @@ const onCompanyLookup = (company: ICompanyLookupResponse) => {
       <div class="p-6 md:p-8 border rounded-md shadow-lg">
         <form class="flex flex-col gap-y-2 gap-x-8" @submit.prevent="onSubmit">
           <div class="flex flex-row gap-2 items-center justify-end">
-            <Badge v-if="values.registryConfirmation?.regon" v-tooltip="t('company.sources.tooltip.regon')" variant="success">
+            <Badge v-if="values.registryConfirmation?.regon" v-tooltip="t('company.sources.tooltip.regon')" variant="success-outline">
               <Check class="size-4 mr-2" />
               REGON
             </Badge>
-            <Badge v-if="values.registryConfirmation?.vies" v-tooltip="t('company.sources.tooltip.vies')" variant="success">
+            <Badge v-if="values.registryConfirmation?.vies" v-tooltip="t('company.sources.tooltip.vies')" variant="success-outline">
               <Check class="size-4 mr-2" />
               VIES
             </Badge>
-            <Badge v-if="values.registryConfirmation?.mf" v-tooltip="t('company.sources.tooltip.mf')" variant="success">
+            <Badge v-if="values.registryConfirmation?.mf" v-tooltip="t('company.sources.tooltip.mf')" variant="success-outline">
               <Check class="size-4 mr-2" />
               MF
             </Badge>
           </div>
-
 
           <div class="grid grid-cols-1 md:grid-cols-[10rem_1fr] gap-x-8 gap-y-2">
             <FormFieldLabeled
@@ -173,6 +183,7 @@ const onCompanyLookup = (company: ICompanyLookupResponse) => {
                   <CompanyLookupButton
                     :country="values.contractor.country"
                     :vat-id="values.contractor.vatId"
+                    class="h-9"
                     @lookup="onCompanyLookup"
                   />
                 </div>
@@ -256,7 +267,7 @@ const onCompanyLookup = (company: ICompanyLookupResponse) => {
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <AddressForm :is-submitting />
 
-            <BankAccountForm :is-submitting />
+            <BankAccountForm :is-submitting :country="values.contractor.country" @lookup="onBankAccountLookup" />
           </div>
 
           <Separator class="my-2" />

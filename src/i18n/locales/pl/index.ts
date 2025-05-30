@@ -13,6 +13,7 @@ import { product } from './product'
 import { settings } from './settings'
 import { tenant } from './tenant'
 import { user } from './user'
+import { utils } from './utils'
 
 export const pl = {
   address,
@@ -35,9 +36,6 @@ export const pl = {
       },
     },
   },
-  companyLookup: {
-    tooltip: 'Wyszukaj firmę po kraju i numerze VAT',
-  },
   layout: {
     darkMode: 'Tryb ciemny',
     lightMode: 'Tryb jasny',
@@ -47,10 +45,11 @@ export const pl = {
   errors: {
     uploadFailed: 'Wystąpił błąd podczas przesyłania pliku',
   },
-  settings,
   product,
+  settings,
   tenant,
   user,
+  utils,
   role: {
     select: 'Wybierz rolę',
     search: 'Szukaj roli',

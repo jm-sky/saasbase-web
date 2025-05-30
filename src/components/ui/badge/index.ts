@@ -13,7 +13,12 @@ export const badgeVariants = cva(
         destructive: 'border-transparent bg-destructive text-destructive-foreground hover:bg-destructive/80',
         outline: 'text-foreground',
         dark: 'border-transparent bg-gray-800 text-white hover:bg-gray-700',
-        info: 'border-transparent bg-purple-500 text-white hover:bg-purple-600',
+        info: 'border-transparent bg-info text-info-foreground hover:bg-info/80',
+        standout: 'border-transparent bg-standout text-standout-foreground hover:bg-standout/80',
+        'success-outline': 'border-success/50 text-success bg-success/10',
+        'destructive-outline': 'border-destructive/50 text-destructive bg-destructive/10',
+        'info-outline': 'border-info/50 text-info bg-info/10',
+        'standout-outline': 'border-standout/50 text-standout bg-standout/10',
       },
     },
     defaultVariants: {
