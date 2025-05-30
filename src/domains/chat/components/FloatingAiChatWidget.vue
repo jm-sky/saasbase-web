@@ -2,6 +2,8 @@
 import { Send } from 'lucide-vue-next'
 import { v4 } from 'uuid'
 import { computed, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
+import LoadingIcon from '@/components/Icons/LoadingIcon.vue'
 import Button from '@/components/ui/button/Button.vue'
 import ChatBubble from '@/components/ui/chat/ChatBubble.vue'
 import ChatBubbleAvatar from '@/components/ui/chat/ChatBubbleAvatar.vue'
@@ -13,6 +15,7 @@ import ExpandableChatBody from '@/components/ui/chat/ExpandableChatBody.vue'
 import ExpandableChatFooter from '@/components/ui/chat/ExpandableChatFooter.vue'
 import ExpandableChatHeader from '@/components/ui/chat/ExpandableChatHeader.vue'
 import { useToast } from '@/components/ui/toast'
+import { config } from '@/config'
 import { useAuthStore } from '@/domains/auth/store/auth.store'
 import { ChatMessage } from '@/domains/chat/models/chat.model'
 import { aiChatService } from '@/domains/chat/services/aiChatService'
@@ -21,12 +24,14 @@ import { initials } from '@/lib/initials'
 import echo from '@/plugins/echo.js'
 import type { IChatMessage } from '../types/chat.type'
 import type { IAiChatMessage } from '@/domains/chat/types/aiChat.type'
+import type { IUserPreview } from '@/domains/user/types/user.type'
 
 const { toast } = useToast()
+const { t } = useI18n()
 const authStore = useAuthStore()
 
 const createNewAiMessage = (): IChatMessage => ({
-  id: v4(),
+  tempId: v4(),
   userId: 'ai',
   user: {
     id: 'ai',
@@ -64,23 +69,36 @@ const joinRoom = () => {
   })
 }
 
+const currentUser = (): IUserPreview => ({
+  id: authStore.userData?.id ?? '',
+  name: authStore.user?.fullName ?? '',
+  email: authStore.userData?.email ?? '',
+  createdAt: authStore.userData?.createdAt ?? new Date().toISOString(),
+})
+
 const sendMessage = async () => {
   try {
     isSendingMessage.value = true
     messages.value.push({
       id: v4(),
-      userId: authStore.userData?.id ?? '',
-      user: {
-        id: authStore.userData?.id ?? '',
-        name: `${authStore.userData?.firstName} ${authStore.userData?.lastName}`,
-        email: authStore.userData?.email ?? '',
-        createdAt: authStore.userData?.createdAt ?? new Date().toISOString(),
-      },
+      tempId: v4(),
+      userId: currentUser().id,
+      user: currentUser(),
       content: message.value,
       createdAt: new Date().toISOString(),
     })
+
     startNewResponse()
-    await aiChatService.sendMessage(message.value)
+
+    if (config.chat.streaming) {
+      await aiChatService.sendMessage(message.value)
+    } else {
+      // Return message with id, tempId, content
+      const response = await aiChatService.sendMessage(message.value) // musi zwracać treść AI
+      currentAiMessage.value.content = response.content
+      currentAiMessage.value.id = response.id
+    }
+
     message.value = ''
   } catch (error) {
     handleErrorWithToast('Error sending message', error)
@@ -113,6 +131,10 @@ const onOpened = () => {
           <ChatBubbleAvatar :src="msg.user?.avatarUrl" :fallback="initials(msg.user?.name)" :title="msg.user?.name" />
           <ChatBubbleMessage :variant="msg.getVariant(authStore.user?.id ?? '')" :created-at="msg.createdAt">
             {{ msg.content }}
+            <div v-if="!msg.content && msg.id === currentAiMessage.id" class="flex items-center gap-2 opacity-50 text-xs">
+              <LoadingIcon class="size-4" />
+              {{ t('common.loading') }}
+            </div>
           </ChatBubbleMessage>
         </ChatBubble>
       </ChatMessageList>

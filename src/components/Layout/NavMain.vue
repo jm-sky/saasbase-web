@@ -17,6 +17,8 @@ import {
   SidebarMenuSubItem,
 } from '@/components/ui/sidebar'
 import type { MenuItem } from './menu.type'
+import ComingSoonIcon from './Menu/ComingSoonIcon.vue'
+import FeatureLockedIcon from './Menu/FeatureLockedIcon.vue'
 
 defineProps<{
   items: MenuItem[]
@@ -49,9 +51,12 @@ defineProps<{
                     <SidebarMenuSubButton
                       :is-active="isExactActive"
                       :href
+                      :class="{ 'pointer-events-none opacity-50': subItem.locked }"
                       @click="navigate"
                     >
                       <span>{{ subItem.title }}</span>
+                      <FeatureLockedIcon v-if="subItem.locked" class="ml-auto" />
+                      <ComingSoonIcon v-if="subItem.soon" class="ml-auto" />
                     </SidebarMenuSubButton>
                   </RouterLink>
                 </SidebarMenuSubItem>
@@ -64,10 +69,13 @@ defineProps<{
             <SidebarMenuButton
               :is-active="isExactActive"
               :href
+              :class="{ 'pointer-events-none opacity-50': item.locked }"
               @click="navigate"
             >
               <component :is="item.icon" v-if="item.icon" />
               <span>{{ item.title }}</span>
+              <FeatureLockedIcon v-if="item.locked" class="ml-auto" />
+              <ComingSoonIcon v-if="item.soon" class="ml-auto" />
             </SidebarMenuButton>
           </RouterLink>
         </SidebarMenuItem>

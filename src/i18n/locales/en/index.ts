@@ -6,6 +6,7 @@ import { comments } from './comments'
 import { common } from './common'
 import { contacts } from './contacts'
 import { contractor } from './contractor'
+import { dashboard } from './dashboard'
 import { invitation } from './invitation'
 import { log } from './log'
 import { product } from './product'
@@ -22,6 +23,7 @@ export const en = {
   common,
   comments,
   contacts,
+  dashboard,
   notifications: 'Notifications',
   invitation,
   company: {

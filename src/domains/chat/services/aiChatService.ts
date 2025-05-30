@@ -1,4 +1,11 @@
 import api from '@/lib/api'
+import type { IResource } from '@/domains/shared/types/resource.type'
+
+interface IChatResponse {
+  id: string
+  content: string
+  streaming: boolean
+}
 
 class AiChatService {
   // async index() {
@@ -16,8 +23,8 @@ class AiChatService {
   //   return response.data
   // }
 
-  async sendMessage(message: string) {
-    const response = (await api.post('/ai/chat', { message })).data
+  async sendMessage(message: string): Promise<IChatResponse> {
+    const response = (await api.post<IResource<IChatResponse>>('/ai/chat', { message })).data.data
     return response
   }
 

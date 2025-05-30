@@ -37,4 +37,8 @@ export const common = {
     acceptedFormats: 'Accepted formats: {formats}',
     remove: 'Remove'
   },
+  feature: {
+    locked: 'Feature locked',
+    commingSoon: 'Feature coming soon'
+  }
 }

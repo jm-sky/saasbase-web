@@ -6,4 +6,6 @@ export interface MenuItem {
   icon?: LucideIcon
   isActive?: boolean
   items?: MenuItem[]
+  locked?: boolean
+  soon?: boolean
 }

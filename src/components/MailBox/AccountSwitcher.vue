@@ -9,6 +9,7 @@ interface AccountSwitcherProps {
     email: string
     icon: string
     label: string
+    disabled?: boolean
   }[]
   isCollapsed: boolean
 }
@@ -45,6 +46,7 @@ const selectedEmailData = computed(() => props.accounts.find(item => item.email 
         v-for="account of accounts"
         :key="account.email"
         :value="account.email"
+        :disabled="account.disabled"
       >
         <div class="flex items-center gap-3 [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-foreground">
           <Icon

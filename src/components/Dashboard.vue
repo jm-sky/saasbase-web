@@ -6,7 +6,7 @@ import SubscriptionsCard from '@/components/Dashboard/Cards/SubscriptionsCard.vu
 import TotalRevenueCard from '@/components/Dashboard/Cards/TotalRevenueCard.vue'
 import DateRangePicker from '@/components/Dashboard/DateRangePicker.vue'
 import Overview from '@/components/Dashboard/Overview.vue'
-import RecentSales from '@/components/Dashboard/RecentSales.vue'
+import RecentUsers from '@/components/Dashboard/RecentUsers.vue'
 import {
   Card,
   CardContent,
@@ -87,7 +87,7 @@ const endDate = ref(new Date())
               <Overview />
             </CardContent>
           </Card>
-          <RecentSales class="col-span-3 overflow-x-auto" />
+          <RecentUsers class="col-span-3 overflow-x-auto" />
         </div>
       </TabsContent>
     </Tabs>

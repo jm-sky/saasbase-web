@@ -1,7 +1,8 @@
 import type { IUserPreview } from '@/domains/user/types/user.type'
 
 export interface IChatMessage {
-  id: string
+  id?: string
+  tempId?: string
   userId: string
   user?: IUserPreview
   content: string

@@ -2,6 +2,7 @@
 import {
   Building2,
   Mail,
+  MailCheck,
   Package,
   Rocket,
   Settings2,
@@ -50,6 +51,13 @@ const menu = computed<MenuItem[]>(() => {
       title: 'Mailbox',
       url: '/mailbox/inbox',
       icon: Mail,
+      soon: true,
+    },
+    {
+      title: 'E-Doręczalnia',
+      url: '/e-doreczenia',
+      icon: MailCheck,
+      locked: true,
     },
     {
       title: 'Chat',
