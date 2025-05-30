@@ -1,6 +1,7 @@
 export const skills = {
   select: 'Select skill',
   search: 'Search skill',
+  notFound: 'No skills found',
   fields: {
     skill: 'Skill',
     level: 'Level',

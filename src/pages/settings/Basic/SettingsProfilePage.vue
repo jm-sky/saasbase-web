@@ -176,6 +176,7 @@ onMounted(async () => {
       :skill="skill"
       @remove="refresh()"
     />
+    <NoItems v-if="!profile?.skills?.length" :message="t('settings.profile.skills.noSkills')" />
     <Button
       variant="outline"
       size="icon"
@@ -184,7 +185,6 @@ onMounted(async () => {
     >
       <Plus class="size-4" />
     </Button>
-    <NoItems v-if="!profile?.skills?.length" :message="t('settings.profile.skills.noSkills')" />
   </div>
   <Separator />
 

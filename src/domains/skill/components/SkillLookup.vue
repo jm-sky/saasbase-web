@@ -82,7 +82,7 @@ watch(open, (newValue) => {
       <Command>
         <CommandInput :placeholder="t('skills.search')" />
         <CommandList>
-          <CommandEmpty>{{ t('skill.notFound') }}</CommandEmpty>
+          <CommandEmpty>{{ t('skills.notFound') }}</CommandEmpty>
           <CommandGroup>
             <CommandItem
               v-for="skill in skills"

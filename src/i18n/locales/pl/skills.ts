@@ -1,6 +1,7 @@
 export const skills = {
   select: 'Wybierz umiejętność',
   search: 'Szukaj umiejętności',
+  notFound: 'Nie znaleziono umiejętności',
   fields: {
     skill: 'Umiejętność',
     level: 'Poziom',
