@@ -18,7 +18,6 @@ import { isValidationError } from '@/lib/validation'
 const { t } = useI18n()
 const open = defineModel<boolean>('open', { required: true })
 
-const { userId } = defineProps<{ userId: string }>()
 const emit = defineEmits<{ create: [IUserSkill] }>()
 
 const schema = toTypedSchema(
@@ -38,7 +37,11 @@ const { handleSubmit, values, setFieldValue, setErrors, isSubmitting } = useForm
 
 const onSubmit = handleSubmit(async (formValues) => {
   try {
-    const userSkill = await userSkillService.add(userId, formValues)
+    // Usuń userId — serwis korzysta z aktualnego użytkownika
+    const userSkill = await userSkillService.add({
+      skillId: formValues.skill,
+      level: formValues.level
+    })
     emit('create', userSkill)
     open.value = false
   } catch (error) {
