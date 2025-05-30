@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { storeToRefs } from 'pinia'
 import { useForm } from 'vee-validate'
 import { onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
@@ -13,16 +12,14 @@ import FormLabel from '@/components/ui/form/FormLabel.vue'
 import FormMessage from '@/components/ui/form/FormMessage.vue'
 import Input from '@/components/ui/input/Input.vue'
 import Textarea from '@/components/ui/textarea/Textarea.vue'
-import { toast } from '@/components/ui/toast'
 import TenantSectionTitle from '@/domains/tenant/components/TenantSectionTitle.vue'
+import { useTenantBranding } from '@/domains/tenant/composables/useTenantBranding'
 import { tenantBrandingService } from '@/domains/tenant/services/TenantBrandingService'
-import { useTenantStore } from '@/domains/tenant/store/tenant.store'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
-import type { ITenant, ITenantBrandingCreate } from '@/domains/tenant/types/tenant.type'
+import type { ITenant, ITenantBrandingUpdate } from '@/domains/tenant/types/tenant.type'
 
 const { t } = useI18n()
-const tenantStore = useTenantStore()
-const { tenantBranding } = storeToRefs(tenantStore)
+const { tenantId, tenantBranding, loadTenantBranding } = useTenantBranding()
 
 const loading = ref(false)
 
@@ -30,7 +27,7 @@ defineProps<{
   tenant?: ITenant
 }>()
 
-const { handleSubmit, values, setValues, setFieldValue } = useForm<ITenantBrandingCreate>({
+const { handleSubmit, values, setValues, setFieldValue, isSubmitting } = useForm<ITenantBrandingUpdate>({
   initialValues: {
     colorPrimary: '',
     colorSecondary: '',
@@ -46,27 +43,29 @@ const { handleSubmit, values, setValues, setFieldValue } = useForm<ITenantBrandi
   },
 })
 
-const submit = handleSubmit((values) => {
-  toast.info('Not implemented', {
-    description: JSON.stringify(values),
-  })
+const submit = handleSubmit(async (values) => {
+  try {
+    await tenantBrandingService.update(tenantId ?? '', values)
+  } catch (error) {
+    handleErrorWithToast('tenant.branding.update.error', error)
+  }
 })
 
-const loadTenantBranding = async () => {
+const loadTenantBrandingAndSetForm = async () => {
   try {
-    tenantBranding.value = await tenantBrandingService.show(tenantStore.tenantId ?? '')
+    await loadTenantBranding()
     setValues({
-      colorPrimary: tenantBranding.value.colorPrimary,
-      colorSecondary: tenantBranding.value.colorSecondary,
-      shortName: tenantBranding.value.shortName,
-      theme: tenantBranding.value.theme,
-      pdfAccentColor: tenantBranding.value.pdfAccentColor,
-      emailSignatureHtml: tenantBranding.value.emailSignatureHtml,
-      logo: tenantBranding.value.logo,
-      favicon: tenantBranding.value.favicon,
-      customFont: tenantBranding.value.customFont,
-      pdfLogo: tenantBranding.value.pdfLogo,
-      emailHeaderImage: tenantBranding.value.emailHeaderImage,
+      colorPrimary: tenantBranding.value?.colorPrimary,
+      colorSecondary: tenantBranding.value?.colorSecondary,
+      shortName: tenantBranding.value?.shortName,
+      theme: tenantBranding.value?.theme,
+      pdfAccentColor: tenantBranding.value?.pdfAccentColor,
+      emailSignatureHtml: tenantBranding.value?.emailSignatureHtml,
+      logo: tenantBranding.value?.logo,
+      favicon: tenantBranding.value?.favicon,
+      customFont: tenantBranding.value?.customFont,
+      pdfLogo: tenantBranding.value?.pdfLogo,
+      emailHeaderImage: tenantBranding.value?.emailHeaderImage,
     })
   } catch (error) {
     handleErrorWithToast('tenant.branding.show.error', error)
@@ -76,7 +75,7 @@ const loadTenantBranding = async () => {
 }
 
 onMounted(async () => {
-  await loadTenantBranding()
+  await loadTenantBrandingAndSetForm()
 })
 </script>
 
@@ -84,7 +83,7 @@ onMounted(async () => {
   <div class="flex flex-col gap-2 border rounded-md p-4 shadow-lg/5">
     <TenantSectionTitle :title="$t('tenant.branding.title')" />
 
-    <form class="grid grid-cols-1 gap-4 mt-4" @submit.prevent="submit">
+    <form class="grid grid-cols-1 gap-4 mt-4" :class="{ 'opacity-50': isSubmitting }" @submit.prevent="submit">
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <FormField v-slot="{ componentField }" name="shortName">
           <FormItem class="flex flex-row items-center gap-1">
@@ -226,7 +225,7 @@ onMounted(async () => {
       </div>
 
       <div class="col-span-full">
-        <Button type="submit" class="w-full">
+        <Button type="submit" :loading="isSubmitting" class="w-full">
           {{ $t('settings.save') }}
         </Button>
       </div>

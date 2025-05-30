@@ -81,7 +81,7 @@ export interface ITenantBranding {
   emailHeaderImage?: IMedia
 }
 
-export interface ITenantBrandingCreate {
+export interface ITenantBrandingUpdate {
   colorPrimary?: string
   colorSecondary?: string
   shortName?: string

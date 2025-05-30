@@ -18,9 +18,9 @@ import {
   SidebarHeader,
   SidebarRail,
 } from '@/components/ui/sidebar'
-import VersionInfo from '@/components/VersionInfo.vue'
 import { config } from '@/config'
 import { useAuthStore } from '@/domains/auth/store/auth.store'
+import TenantBrandInfo from '@/domains/tenant/components/branding/TenantBrandInfo.vue'
 import type { MenuItem } from './menu.type'
 import type { SidebarProps } from '@/components/ui/sidebar'
 
@@ -111,9 +111,8 @@ const menu = computed<MenuItem[]>(() => {
     <SidebarContent>
       <NavMain :items="menu" />
     </SidebarContent>
-    <SidebarFooter>
-      <VersionInfo />
-      <UserNav />
+    <SidebarFooter class="p-4">
+      <TenantBrandInfo />
     </SidebarFooter>
     <SidebarRail />
   </Sidebar>
