@@ -9,10 +9,14 @@ import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
 import ContractorAddBankAccountModal from './ContractorAddBankAccountModal.vue'
 import ContractorBankAccountsListItem from './ContractorBankAccountsListItem.vue'
 import ContractorEditBankAccountModal from './ContractorEditBankAccountModal.vue'
-import type { IContractorBankAccount } from '@/domains/contractor/types/contractor.type'
+import type { IContractor, IContractorBankAccount } from '@/domains/contractor/types/contractor.type'
 
 const route = useRoute()
 const { t } = useI18n()
+
+defineProps<{
+  contractor?: IContractor
+}>()
 
 const contractorId = route.params.id as string
 const bankAccounts = ref<IContractorBankAccount[]>([])
@@ -74,6 +78,7 @@ const handleSetDefault = async (bankAccount: IContractorBankAccount) => {
     <ContractorAddBankAccountModal
       v-model:open="addModalOpen"
       :contractor-id="contractorId"
+      :country="contractor?.country"
       @create="refresh"
     />
 
