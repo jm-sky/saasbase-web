@@ -383,6 +383,10 @@ onMounted(async () => {
   </form>
 
   <AddUserSkillModal
+    v-if="profile"
     v-model:open="isAddUserSkillModalOpen"
+    :skills="profile.skills ?? []"
+    @update:skills="profile.skills = $event"
+    @create="refresh()"
   />
 </template>

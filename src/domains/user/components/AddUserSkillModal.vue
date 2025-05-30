@@ -19,6 +19,7 @@ const { t } = useI18n()
 const authStore = useAuthStore()
 
 const open = defineModel<boolean>('open', { required: true })
+const skills = defineModel<IUserSkill[]>('skills', { required: true })
 
 const emit = defineEmits<{ create: [IUserSkill] }>()
 
@@ -47,6 +48,7 @@ const onSubmit = handleSubmit(async (formValues) => {
       skillId: formValues.skillId,
       level: formValues.level
     })
+    skills.value.push(userSkill)
     emit('create', userSkill)
     open.value = false
   } catch (error) {
