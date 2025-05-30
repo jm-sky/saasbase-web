@@ -18,7 +18,7 @@ const emit = defineEmits<{
 </script>
 
 <template>
-  <div class="flex flex-col md:flex-row gap-4 items-center justify-between h-15">
+  <div class="flex flex-col md:flex-row flex-wrap gap-4 items-center justify-between h-15">
     <div>
       <h3 class="text-lg font-medium">
         {{ title }}

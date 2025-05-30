@@ -16,12 +16,14 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover'
+import { type ISkill } from '@/domains/skill/models/skill.model'
 import { cn } from '@/lib/utils'
-import { type IRole, roleService } from '../services/roleService'
+import { skillService } from '../services/skillService'
 
 const { t } = useI18n()
 
 const modelValue = defineModel<string | undefined>('modelValue', { required: true })
+const modelId = defineModel<string | undefined>('modelId', { required: true })
 
 defineProps<{
   popoverContentClass?: string
@@ -29,18 +31,19 @@ defineProps<{
 }>()
 
 const open = ref(false)
-const roles = ref<IRole[]>([])
+const skills = ref<ISkill[]>([])
 const loading = ref(false)
 const error = ref<string | null>(null)
 
-const loadRoles = async () => {
+const loadSkills = async () => {
   try {
     loading.value = true
     error.value = null
-    roles.value = await roleService.list()
+    const response = await skillService.index()
+    skills.value = response.data
   } catch (err) {
-    error.value = 'Failed to load roles'
-    console.error('[RoleLookup][loadRoles] error:', err)
+    error.value = 'Failed to load skills'
+    console.error('[SkillLookup][loadSkills] error:', err)
   } finally {
     loading.value = false
   }
@@ -49,13 +52,14 @@ const loadRoles = async () => {
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const onSelect = (event: any) => {
   const id = event.detail.value
-  modelValue.value = roles.value.find((role) => role.id === id)?.name ?? undefined
+  modelId.value = id
+  modelValue.value = skills.value.find((skill) => skill.id === id)?.name ?? undefined
   open.value = false
 }
 
 watch(open, (newValue) => {
-  if (newValue && roles.value.length === 0) {
-    void loadRoles()
+  if (newValue && skills.value.length === 0) {
+    void loadSkills()
   }
 })
 </script>
@@ -70,27 +74,33 @@ watch(open, (newValue) => {
         :disabled="disabled || loading"
         class="w-full justify-between"
       >
-        {{ modelValue || t('role.select') }}
+        {{ modelValue || t('skills.select') }}
         <ChevronsUpDown class="ml-2 size-4 shrink-0 opacity-50" />
       </Button>
     </PopoverTrigger>
     <PopoverContent :class="cn('w-full p-0', popoverContentClass)">
       <Command>
-        <CommandInput :placeholder="t('role.search')" />
+        <CommandInput :placeholder="t('skills.search')" />
         <CommandList>
-          <CommandEmpty>{{ t('role.notFound') }}</CommandEmpty>
+          <CommandEmpty>{{ t('skills.notFound') }}</CommandEmpty>
           <CommandGroup>
             <CommandItem
-              v-for="role in roles"
-              :key="role.id"
-              :value="role.id"
+              v-for="skill in skills"
+              :key="skill.id"
+              :value="skill.id"
+              class="flex flex-wrap flex-row items-center justify-between gap-2 max-w-[calc(100vw-6rem)]"
               @select="onSelect"
             >
-              <Check
-                class="mr-2 size-4"
-                :class="modelValue === role.name ? 'opacity-100' : 'opacity-0'"
-              />
-              {{ role.name }}
+              <span class="flex flex-row items-center gap-2">
+                <Check
+                  class="mr-2 size-4"
+                  :class="modelValue === skill.name ? 'opacity-100' : 'opacity-0'"
+                />
+                {{ skill.name }}
+              </span>
+              <div class="text-xs text-right text-muted-foreground overflow-hidden text-ellipsis">
+                {{ skill.description }}
+              </div>
             </CommandItem>
           </CommandGroup>
         </CommandList>

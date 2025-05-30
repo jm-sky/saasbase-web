@@ -55,7 +55,7 @@ const onSelect = (event: any) => {
         class="w-full justify-between"
       >
         {{ t(`address.type.${modelValue}`) || t('address.select') }}
-        <ChevronsUpDown class="ml-2 h-4 w-4 shrink-0 opacity-50" />
+        <ChevronsUpDown class="ml-2 size-4 shrink-0 opacity-50" />
       </Button>
     </PopoverTrigger>
     <PopoverContent :class="cn('w-full p-0', popoverContentClass)">
@@ -71,7 +71,7 @@ const onSelect = (event: any) => {
               @select="onSelect"
             >
               <Check
-                class="mr-2 h-4 w-4"
+                class="mr-2 size-4"
                 :class="modelValue === option.value ? 'opacity-100' : 'opacity-0'"
               />
               {{ option.label }}

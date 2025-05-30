@@ -31,7 +31,7 @@ const emit = defineEmits<{
       <div class="flex gap-2">
         <slot name="actions">
           <Button variant="outline" @click="emit('refresh')">
-            <RefreshCw class="h-4 w-4" />
+            <RefreshCw class="size-4" />
           </Button>
           <ButtonLink v-if="addRoute" variant="default" :to="addRoute">
             {{ t('common.add') }}
