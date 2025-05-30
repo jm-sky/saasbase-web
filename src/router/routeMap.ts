@@ -25,6 +25,7 @@ export const routeMap = {
     mfaSetup: 'mfaSetup',
   },
   userProfile: 'userProfile',
+  userPublicProfile: 'userPublicProfile',
 }
 
 export const routeTo = {
@@ -41,4 +42,5 @@ export const routeTo = {
   settingsAccount: (): RouteLocationRaw => ({ name: routeMap.settings.account }),
   settingsAppearance: (): RouteLocationRaw => ({ name: routeMap.settings.appearance }),
   settingsNotifications: (): RouteLocationRaw => ({ name: routeMap.settings.notifications }),
+  userPublicProfile: (id: string): RouteLocationRaw => ({ name: routeMap.userPublicProfile, params: { id } }),
 }

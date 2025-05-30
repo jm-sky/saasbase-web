@@ -11,6 +11,10 @@ export const settings = {
   error: 'Błąd',
   loading: 'Ładowanie...',
 
+  publicProfile: {
+    title: 'Profil publiczny',
+  },
+
   profile: {
     title: 'Profil',
     description: 'Tak będą Cię widzieć inni na stronie.',
@@ -55,6 +59,11 @@ export const settings = {
       failedToUpload: 'Nie udało się przesłać zdjęcia',
       failedToRemove: 'Nie udało się usunąć zdjęcia',
       success: 'Zdjęcie profilowe zaktualizowane pomyślnie',
+    },
+    skills: {
+      title: 'Umiejętności',
+      description: 'Zarządzaj swoimi umiejętnościami',
+      noSkills: 'Brak umiejętności',
     }
   },
 

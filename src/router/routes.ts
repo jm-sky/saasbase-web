@@ -59,7 +59,7 @@ export const routes: RouteRecordRaw[] = [
   },
   {
     path: '/users/:id',
-    name: 'userProfile',
+    name: routeMap.userPublicProfile,
     component: () => import('@/pages/users/UserProfilePage.vue'),
     meta: {
       middlewares: [isAuthenticated, isVerified],

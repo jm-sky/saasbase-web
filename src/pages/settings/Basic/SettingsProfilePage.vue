@@ -2,8 +2,10 @@
 import { useForm } from 'vee-validate'
 import { computed, onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
+import NoItems from '@/components/DataLists/NoItems.vue'
 import { FileUpload } from '@/components/Inputs'
 import AvatarUploader from '@/components/Inputs/AvatarUploader.vue'
+import Badge from '@/components/ui/badge/Badge.vue'
 import { Button } from '@/components/ui/button'
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
@@ -162,6 +164,17 @@ onMounted(async () => {
     </FormItem>
   </FormField>
 
+  <Separator />
+  <div class="flex flex-row items-center gap-2">
+    <Badge
+      v-for="skill in profile?.skills"
+      :key="skill.id"
+      variant="info-outline"
+    >
+      {{ skill.name }}
+    </Badge>
+    <NoItems v-if="!profile?.skills?.length" :message="t('settings.profile.skills.noSkills')" />
+  </div>
   <Separator />
 
   <form class="grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-8" :class="{ 'opacity-50': isLoading }" @submit="onSubmit">

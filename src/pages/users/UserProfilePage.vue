@@ -6,6 +6,7 @@ import { useRoute } from 'vue-router'
 import Avatar from '@/components/ui/avatar/Avatar.vue'
 import AvatarFallback from '@/components/ui/avatar/AvatarFallback.vue'
 import AvatarImage from '@/components/ui/avatar/AvatarImage.vue'
+import Badge from '@/components/ui/badge/Badge.vue'
 import Button from '@/components/ui/button/Button.vue'
 import UIIcon from '@/components/UIIcon.vue'
 import { userService } from '@/domains/user/services/userService'
@@ -38,7 +39,7 @@ onMounted(() => refresh())
     <div class="m-4 md:m-8 grid grid-cols-1 md:grid-cols-[20rem_2fr] gap-6">
       <div class="col-span-full border rounded-lg shadow-lg p-4 flex flex-row items-center justify-between gap-4">
         <div class="flex flex-row items-center gap-2">
-          <Avatar class="size-12">
+          <Avatar class="size-24">
             <AvatarImage
               :src="user?.avatarUrl ?? ''"
               :alt="user?.name.slice(0, 2)"
@@ -51,6 +52,15 @@ onMounted(() => refresh())
             </div>
             <div class="text-sm text-muted-foreground">
               {{ user?.position ?? '-' }}
+            </div>
+            <div class="flex flex-row items-center gap-2">
+              <Badge
+                v-for="skill in user?.skills"
+                :key="skill.id"
+                variant="info-outline"
+              >
+                {{ skill.name }}
+              </Badge>
             </div>
           </div>
         </div>

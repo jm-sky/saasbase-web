@@ -10,7 +10,6 @@ import {
 } from 'lucide-vue-next'
 import { computed } from 'vue'
 import NavMain from '@/components/Layout/NavMain.vue'
-import UserNav from '@/components/Layout/UserNav.vue'
 import {
   Sidebar,
   SidebarContent,

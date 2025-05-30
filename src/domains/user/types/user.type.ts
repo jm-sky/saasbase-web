@@ -42,6 +42,13 @@ export interface IUserPreview {
   createdAt: TDateTime
 }
 
+export interface IUserSkill {
+  id: TUUID
+  name: string
+  level: number
+  acquiredAt?: TDate
+}
+
 export interface IUserProfileLegacy {
   id: TUUID
   name: string
@@ -53,6 +60,7 @@ export interface IUserProfileLegacy {
   website?: string
   socialLinks?: Record<string, string>
   avatarUrl?: string
+  skills?: IUserSkill[]
   createdAt: TDateTime
 }
 

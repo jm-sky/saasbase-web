@@ -1,4 +1,5 @@
 import api from '@/lib/api'
+import type { IUserSkill } from '../types/user.type'
 
 export interface IUserProfile {
   email?: string
@@ -21,6 +22,7 @@ export interface IUserProfile {
     phone?: boolean
     birthDate?: boolean
   },
+  skills?: IUserSkill[]
 }
 
 class UserProfileService {
