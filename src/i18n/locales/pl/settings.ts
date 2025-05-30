@@ -1,6 +1,8 @@
 export const settings = {
   // Common settings translations
   pageTitle: 'Ustawienia',
+  title: 'Ustawienia',
+  description: 'Zarządzaj swoimi ustawieniami konta i preferencjami e-mail.',
   save: 'Zapisz',
   cancel: 'Anuluj',
   delete: 'Usuń',

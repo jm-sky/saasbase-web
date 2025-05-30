@@ -6,13 +6,13 @@ import SettingsSidebarMenu from './partials/SettingsSidebarMenu.vue'
 
 <template>
   <AuthenticatedLayout>
-    <div class="px-8 pt-6 space-y-6 p-10 pb-16 md:block">
+    <div class="px-6 md:px-8 pt-6 space-y-6 p-10 pb-16 md:block">
       <div class="space-y-0.5">
         <h2 class="text-2xl font-bold tracking-tight">
-          Settings
+          {{ $t('settings.title') }}
         </h2>
         <p class="text-muted-foreground">
-          Manage your account settings and set e-mail preferences.
+          {{ $t('settings.description') }}
         </p>
       </div>
       <Separator class="my-6" />

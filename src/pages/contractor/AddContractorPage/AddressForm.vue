@@ -46,6 +46,7 @@ defineProps<{
       name="address.building"
       :label="t('address.fields.building')"
       :disabled="isSubmitting"
+      class="col-span-2 md:col-span-1"
     >
       <Input v-bind="componentField" class="bg-white/50 dark:bg-black/50" />
     </FormFieldLabeled>
@@ -54,6 +55,7 @@ defineProps<{
       name="address.flat"
       :label="t('address.fields.flat')"
       :disabled="isSubmitting"
+      class="col-span-2 md:col-span-1"
     >
       <Input v-bind="componentField" class="bg-white/50 dark:bg-black/50" />
     </FormFieldLabeled>

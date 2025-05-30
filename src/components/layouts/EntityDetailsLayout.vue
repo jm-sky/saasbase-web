@@ -6,12 +6,13 @@ import Button from '@/components/ui/button/Button.vue'
 
 const { t } = useI18n()
 
-defineProps<{
+const { showSidebar = true } = defineProps<{
   title: string
   backLink: string
   editLink?: string
   loading?: boolean
   notRefreshable?: boolean
+  showSidebar?: boolean
 }>()
 
 const emit = defineEmits<{
@@ -61,13 +62,13 @@ const emit = defineEmits<{
     <!-- Content -->
     <div class="grid grid-cols-1 md:grid-cols-[20rem_1fr] gap-6" :class="{ 'opacity-50': loading }">
       <!-- Sidebar -->
-      <div class="flex flex-col text-center gap-2 border rounded-md p-4 shadow-lg/5">
+      <div v-if="showSidebar" class="flex flex-col text-center gap-2 border rounded-md p-4 shadow-lg/5">
         <slot name="sidebar" />
       </div>
 
       <!-- Main content -->
       <div class="flex flex-col gap-4">
-        <div class="flex flex-row items-center gap-2 font-semibold">
+        <div class="flex flex-row items-center gap-2 font-semibold whitespace-nowrap overflow-x-auto">
           <slot name="tabs" />
         </div>
 

@@ -24,7 +24,7 @@ const emit = defineEmits<{
 
 <template>
   <div class="px-4 md:px-8 py-4 md:py-6 mx-auto relative">
-    <div class="flex justify-between items-center mb-6">
+    <div class="flex flex-col md:flex-row justify-between items-center gap-3 mb-6">
       <h1 class="text-2xl font-bold">
         {{ title }}
       </h1>
@@ -34,7 +34,7 @@ const emit = defineEmits<{
             <RefreshCw class="h-4 w-4" />
           </Button>
           <ButtonLink v-if="addRoute" variant="default" :to="addRoute">
-            Add
+            {{ t('common.add') }}
           </ButtonLink>
         </slot>
       </div>

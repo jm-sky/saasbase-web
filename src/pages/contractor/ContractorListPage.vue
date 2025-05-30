@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { RefreshCw } from 'lucide-vue-next'
+import { Plus, RefreshCw } from 'lucide-vue-next'
 import { storeToRefs } from 'pinia'
 import { onMounted, ref, type Ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
@@ -114,7 +114,10 @@ watch(filters, () => refresh(), { deep: true })
           <RefreshCw class="h-4 w-4" />
         </Button>
         <ButtonLink v-tooltip="t('contractor.add.description')" variant="default" to="/contractors/add">
-          {{ t('contractor.add.title') }}
+          <Plus class="size-4 md:hidden" />
+          <span class="hidden md:block">
+            {{ t('contractor.add.title') }}
+          </span>
         </ButtonLink>
       </template>
 

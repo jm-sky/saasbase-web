@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useMediaQuery } from '@vueuse/core'
 import { storeToRefs } from 'pinia'
 import { useForm } from 'vee-validate'
 import { onMounted, ref } from 'vue'
@@ -31,6 +32,8 @@ const { contractor } = storeToRefs(useContractorStore())
 
 const loading = ref(false)
 const error = ref<string | null>(null)
+
+const isMobile = useMediaQuery('(max-width: 767px)')
 
 const { isSubmitting, handleSubmit, setValues, setErrors, resetForm } = useForm<Omit<IContractor, 'createdAt' | 'updatedAt'>>({
   initialValues: {
@@ -87,6 +90,7 @@ onMounted(async () => {
       :name="contractor?.name"
       :email="contractor?.email"
       :logo="contractor?.logoUrl"
+      :show-sidebar="!isMobile"
       :loading
       @refresh="refresh"
     >
