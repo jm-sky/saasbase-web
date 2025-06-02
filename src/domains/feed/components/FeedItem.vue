@@ -17,7 +17,9 @@ import { useAuthStore } from '@/domains/auth/store/auth.store'
 import { timeAgo } from '@/lib/timeAgo'
 import { toDateTimeString } from '@/lib/toDateTimeString'
 import type { IFeed } from '@/domains/feed/types/feed.type'
+import MarkdownIt from 'markdown-it'
 
+const md = new MarkdownIt()
 const { t } = useI18n()
 const router = useRouter()
 const authStore = useAuthStore()
@@ -31,6 +33,8 @@ const emit = defineEmits<{
   edit: [feed: IFeed]
   delete: [feed: IFeed]
 }>()
+
+const renderedContent = computed(() => md.render(feed.content))
 
 const canEdit = computed(() => feed.creator?.id === authStore.user?.id)
 const canDelete = computed(() => feed.creator?.id === authStore.user?.id)
@@ -79,9 +83,8 @@ const canDelete = computed(() => feed.creator?.id === authStore.user?.id)
         </div>
       </div>
 
-      <p class="text-muted-foreground">
-        {{ feed.content }}
-      </p>
+      <!-- eslint-disable-next-line vue/no-v-html -->
+      <div class="text-muted-foreground" v-html="renderedContent" />
 
       <div class="text-sm text-muted-foreground">
         {{ t('feed.by') }}

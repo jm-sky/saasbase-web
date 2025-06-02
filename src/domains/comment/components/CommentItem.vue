@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { Pencil, Trash2 } from 'lucide-vue-next'
-import { ref } from 'vue'
+import MarkdownIt from 'markdown-it'
+import { computed, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import Avatar from '@/components/ui/avatar/Avatar.vue'
 import AvatarFallback from '@/components/ui/avatar/AvatarFallback.vue'
@@ -13,6 +14,7 @@ import type { IComment } from '@/domains/comment/types/comment.type'
 const authStore = useAuthStore()
 const router = useRouter()
 
+const md = new MarkdownIt()
 const loading = ref(false)
 
 const { comment } = defineProps<{
@@ -23,6 +25,8 @@ const emit = defineEmits<{
   edit: [comment: IComment]
   delete: [comment: IComment]
 }>()
+
+const renderedContent = computed(() => md.render(comment.content))
 
 const formatDate = (date: string) => {
   return new Date(date).toLocaleString()
@@ -70,9 +74,8 @@ const formatDate = (date: string) => {
           </Button>
         </div>
       </div>
-      <div class="text-muted-foreground pb-1">
-        {{ comment.content }}
-      </div>
+      <!-- eslint-disable-next-line vue/no-v-html -->
+      <div class="text-muted-foreground pb-1" v-html="renderedContent" />
     </div>
   </div>
 </template>
