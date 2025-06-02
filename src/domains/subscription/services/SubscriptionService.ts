@@ -1,5 +1,5 @@
 import api from '@/lib/api'
-import type { ISubscriptionPlan } from '../types/subscription.type'
+import type { ISubscriptionPlan, StoreSubscriptionRequest } from '../types/subscription.type'
 import type { TUUID } from '@/domains/shared/types/common'
 import type { IResource, IResourceCollection } from '@/domains/shared/types/resource.type'
 
@@ -11,6 +11,11 @@ class SubscriptionService {
 
   async show(id: TUUID) {
     const response = await api.get<IResource<ISubscriptionPlan>>(`/subscription-plans/${id}`)
+    return response.data
+  }
+
+  async buy(request: StoreSubscriptionRequest) {
+    const response = await api.post('/subscriptions', request)
     return response.data
   }
 }

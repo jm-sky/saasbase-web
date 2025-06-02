@@ -2,9 +2,12 @@ export const subscription = {
   plans: {
     title: 'Plany',
     description: 'Wybierz plan, który najlepiej odpowiada Twoim potrzebom',
-    monthly: 'Miesięcznie',
-    yearly: 'Rocznie',
     save: 'Zaoszczędź {amount}%',
+  },
+  billingInterval: {
+    monthly: 'Miesięcznie',
+    quarterly: 'Kwartalnie',
+    yearly: 'Rocznie',
   },
   features: {
     title: 'Cechy',
@@ -18,6 +21,18 @@ export const subscription = {
       edoreczenia_integration: 'Integracja z e-Doręczenia',
       unlimited_gus_vies: 'Nieograniczona liczba zapytań GUS/VIES',
       auto_contractor_logo: 'Automatyczne pobieranie logotypu kontrahenta z GUS/VIES',
+    },
+  },
+  buy: {
+    title: 'Kup Subskrypcję',
+    description: 'Kup Subskrypcję',
+    button: 'Kup',
+    paymentDetails: 'Dane płatności',
+    fields: {
+      cardNumber: 'Numer karty',
+      expiry: 'Data ważności',
+      cvc: 'CVC',
+      name: 'Imię i nazwisko',
     },
   },
 }
