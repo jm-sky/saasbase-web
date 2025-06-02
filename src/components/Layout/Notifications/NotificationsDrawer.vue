@@ -61,7 +61,7 @@ onMounted(async () => {
   <Sheet>
     <SheetTrigger>
       <Button
-        v-tooltip="t('notifications')"
+        v-tooltip="t('notifications.title')"
         variant="ghost-primary"
         size="icon"
         class="relative rounded-full"
@@ -72,7 +72,7 @@ onMounted(async () => {
     </SheetTrigger>
     <SheetContent>
       <SheetHeader class="border-b border-border">
-        <SheetTitle>{{ $t('notifications') }}</SheetTitle>
+        <SheetTitle>{{ $t('notifications.title') }}</SheetTitle>
       </SheetHeader>
       <div class="grow flex flex-col gap-4 pb-4 border-border">
         <div v-if="loading" class="flex items-center justify-center h-full">

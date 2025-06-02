@@ -12,7 +12,7 @@ import { contractorCommentsService } from '@/domains/contractor/services/Contrac
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
 import { isValidationError } from '@/lib/validation'
 import ContractorCommentsListItem from './ContractorCommentsListItem.vue'
-import type { IComment } from '@/domains/comment/models/comment.model'
+import type { IComment } from '@/domains/comment/types/comment.type'
 import type { IContractor } from '@/domains/contractor/types/contractor.type'
 
 const { t } = useI18n()

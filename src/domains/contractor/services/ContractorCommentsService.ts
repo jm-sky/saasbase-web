@@ -1,6 +1,6 @@
 import api from '@/lib/api'
 import { apiRoutesMap } from '@/lib/api/apiRoutes'
-import type { IComment, ICommentCreate } from '@/domains/comment/models/comment.model'
+import type { IComment, ICommentCreate } from '@/domains/comment/types/comment.type'
 import type { IResourceCollection } from '@/domains/shared/types/resource.type'
 
 class ContractorCommentsService {

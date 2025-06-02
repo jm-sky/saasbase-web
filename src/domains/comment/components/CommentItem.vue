@@ -8,7 +8,7 @@ import AvatarImage from '@/components/ui/avatar/AvatarImage.vue'
 import Button from '@/components/ui/button/Button.vue'
 import { useAuthStore } from '@/domains/auth/store/auth.store'
 import { timeAgo } from '@/lib/timeAgo'
-import type { IComment } from '@/domains/comment/models/comment.model'
+import type { IComment } from '@/domains/comment/types/comment.type'
 
 const authStore = useAuthStore()
 const router = useRouter()

@@ -7,8 +7,10 @@ import { common } from './common'
 import { contacts } from './contacts'
 import { contractor } from './contractor'
 import { dashboard } from './dashboard'
+import feed from './feed'
 import { invitation } from './invitation'
 import { log } from './log'
+import { notifications } from './notifications'
 import { product } from './product'
 import { settings } from './settings'
 import { skills } from './skills'
@@ -26,7 +28,8 @@ export const en = {
   comments,
   contacts,
   dashboard,
-  notifications: 'Notifications',
+  feed,
+  notifications,
   invitation,
   company: {
     sources: {

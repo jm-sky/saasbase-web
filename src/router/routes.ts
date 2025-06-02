@@ -4,6 +4,7 @@ import { isInTenant } from '@/router/middleware/isInTenant'
 import { isVerified } from '@/router/middleware/isVerified'
 import { authRoutes } from '@/router/routes/auth'
 import { contractorRoutes } from '@/router/routes/contractor'
+import { feedRoutes } from '@/router/routes/feeds'
 import { productRoutes } from '@/router/routes/product'
 import { publicRoutes } from '@/router/routes/public'
 import { settingsRoutes } from '@/router/routes/settings'
@@ -39,6 +40,7 @@ export const routes: RouteRecordRaw[] = [
   ...contractorRoutes,
   ...productRoutes,
   ...tenantRoutes,
+  ...feedRoutes,
 
   {
     path: '/chat/:roomId?',

@@ -11,7 +11,7 @@ import ProductCommentsListItem from '@/domains/product/components/comments/Produ
 import { productCommentsService } from '@/domains/product/services/ProductCommentsService'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
 import { isValidationError } from '@/lib/validation'
-import type { IComment } from '@/domains/comment/models/comment.model'
+import type { IComment } from '@/domains/comment/types/comment.type'
 import type { IProduct } from '@/domains/product/models/product.model'
 
 const { t } = useI18n()

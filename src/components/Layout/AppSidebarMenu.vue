@@ -3,6 +3,7 @@ import {
   Building2,
   Mail,
   MailCheck,
+  Newspaper,
   Package,
   Rocket,
   Settings2,
@@ -35,6 +36,11 @@ const menu = computed<MenuItem[]>(() => {
       title: 'Dashboard',
       url: '/',
       icon: Rocket,
+    },
+    {
+      title: 'Feeds',
+      url: '/feeds',
+      icon: Newspaper,
     },
     {
       title: 'Contractors',
