@@ -18,6 +18,15 @@ export const config = {
     language: import.meta.env.VITE_DEFAULTS_LANGUAGE ?? 'pl',
     currency: import.meta.env.VITE_DEFAULTS_CURRENCY ?? 'PLN',
   },
+  pusher: {
+    appKey: import.meta.env.VITE_PUSHER_APP_KEY ?? 'saasbase-key',
+    appCluster: import.meta.env.VITE_PUSHER_APP_CLUSTER ?? 'mt1',
+    wsHost: import.meta.env.VITE_PUSHER_HOST ?? window.location.hostname,
+    wsPort: parseInt(import.meta.env.VITE_PUSHER_PORT ?? '6001'),
+    wssPort: parseInt(import.meta.env.VITE_PUSHER_PORT ?? '6001'),
+    forceTLS: import.meta.env.VITE_PUSHER_SCHEME === 'https',
+    encrypted: import.meta.env.VITE_PUSHER_SCHEME === 'https',
+  },
   chat: {
     enabled: import.meta.env.VITE_CHAT_ENABLED ? import.meta.env.VITE_CHAT_ENABLED === '1' : true,
     botId: import.meta.env.VITE_CHAT_BOT_ID ?? DEFAULT_CHAT_BOT_ID,
