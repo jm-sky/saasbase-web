@@ -51,3 +51,9 @@ export interface StoreSubscriptionRequest {
   couponCode?: string;   // max 50 chars
   metadata?: Record<string, string>;
 }
+
+export interface CreateCheckoutSessionRequest {
+  planId: string
+  successUrl: string
+  cancelUrl: string
+}

@@ -3,16 +3,15 @@ import { storeToRefs } from 'pinia'
 import { useForm } from 'vee-validate'
 import { computed, onMounted, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
-import FormFieldLabeled from '@/components/Form/FormFieldLabeled.vue'
 import ModalComponent from '@/components/ModalComponent.vue'
 import Button from '@/components/ui/button/Button.vue'
-import Input from '@/components/ui/input/Input.vue'
 import { tenantAddressesService } from '@/domains/tenant/services/TenantAddressesService'
 import { useTenantStore } from '@/domains/tenant/store/tenant.store'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
 import { isValidationError } from '@/lib/validation'
 import type { ISubscriptionPlan, StoreSubscriptionRequest, TBillingInterval } from '../types/subscription.type'
 import { subscriptionService } from '../services/SubscriptionService'
+import StripeCheckoutForm from './StripeCheckoutForm.vue'
 
 const { t } = useI18n()
 const tenantStore = useTenantStore()
@@ -122,35 +121,7 @@ onMounted(async () => {
           {{ t('subscription.buy.paymentDetails') }}
         </div>
         <div class="grid grid-cols-2 gap-2 text-sm">
-          <FormFieldLabeled v-slot="{ componentField }" name="paymentDetails.name">
-            <Input
-              v-bind="componentField"
-              autocomplete="cc-name"
-              :placeholder="t('subscription.buy.fields.name')"
-            />
-          </FormFieldLabeled>
-          <FormFieldLabeled v-slot="{ componentField }" name="paymentDetails.cardNumber">
-            <Input
-              v-bind="componentField"
-              autocomplete="card-number"
-              :placeholder="t('subscription.buy.fields.cardNumber')"
-            />
-          </FormFieldLabeled>
-          <FormFieldLabeled v-slot="{ componentField }" name="paymentDetails.expiry">
-            <Input
-              v-bind="componentField"
-              type="date"
-              autocomplete="cc-exp"
-              :placeholder="t('subscription.buy.fields.expiry')"
-            />
-          </FormFieldLabeled>
-          <FormFieldLabeled v-slot="{ componentField }" name="paymentDetails.cvc">
-            <Input
-              v-bind="componentField"
-              autocomplete="cc-csc"
-              :placeholder="t('subscription.buy.fields.cvc')"
-            />
-          </FormFieldLabeled>
+          <StripeCheckoutForm :plan />
         </div>
       </div>
 

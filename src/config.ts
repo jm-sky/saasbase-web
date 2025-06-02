@@ -48,4 +48,7 @@ export const config = {
     mockBackend: import.meta.env.VITE_API_MOCK === '1',
     logoutOnUnauthorized: false,
   },
+  stripe: {
+    publishableKey: import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY ?? 'pk_test_51N0000000000000000000000000000000000000000000000000000000000000000000000000000000',
+  },
 }
