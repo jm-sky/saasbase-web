@@ -10,6 +10,7 @@ import CardContent from '@/components/ui/card/CardContent.vue'
 import { accountService, type BillingHistory } from '@/domains/account/services/AccountService'
 import TenantSectionTitle from '@/domains/tenant/components/TenantSectionTitle.vue'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
+import { money } from '@/lib/money'
 
 const loading = ref(false)
 const history = ref<BillingHistory[]>([])
@@ -38,10 +39,7 @@ const formatDate = (dateString: string) => {
 }
 
 const formatAmount = (amount: number, currency: string) => {
-  return new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency,
-  }).format(amount)
+  return money(amount, currency)
 }
 
 const getStatusColor = (status: string) => {

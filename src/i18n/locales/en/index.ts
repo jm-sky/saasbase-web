@@ -14,6 +14,7 @@ import { notifications } from './notifications'
 import { product } from './product'
 import { settings } from './settings'
 import { skills } from './skills'
+import { subscription } from './subscription'
 import { tenant } from './tenant'
 import { user } from './user'
 import { utils } from './utils'
@@ -51,6 +52,7 @@ export const en = {
   },
   product,
   settings,
+  subscription,
   skills,
   tenant,
   user,

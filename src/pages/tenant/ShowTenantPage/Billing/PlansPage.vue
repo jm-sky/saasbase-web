@@ -2,18 +2,28 @@
 import { Icon } from '@iconify/vue'
 import { Info } from 'lucide-vue-next'
 import { onMounted, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
 import Alert from '@/components/ui/alert/Alert.vue'
 import AlertTitle from '@/components/ui/alert/AlertTitle.vue'
 import { Button } from '@/components/ui/button'
 import Card from '@/components/ui/card/Card.vue'
 import CardContent from '@/components/ui/card/CardContent.vue'
 import Switch from '@/components/ui/switch/Switch.vue'
-import { accountService, type BillingPlan } from '@/domains/account/services/AccountService'
+import { subscriptionService } from '@/domains/subscription/services/SubscriptionService'
 import TenantSectionTitle from '@/domains/tenant/components/TenantSectionTitle.vue'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
+import { money } from '@/lib/money'
+import type { ISubscriptionPlan } from '@/domains/subscription/types/subscription.type'
+
+const { t } = useI18n()
+
+const discount = {
+  amount: 20,
+  interval: 'year',
+}
 
 const loading = ref(false)
-const plans = ref<BillingPlan[]>([])
+const plans = ref<ISubscriptionPlan[]>([])
 const selectedInterval = ref<'month' | 'year'>('month')
 
 onMounted(async () => {
@@ -23,7 +33,7 @@ onMounted(async () => {
 const fetchPlans = async () => {
   loading.value = true
   try {
-    plans.value = await accountService.getBillingPlans()
+    plans.value = await subscriptionService.index()
   } catch (error: unknown) {
     handleErrorWithToast('Failed to fetch plans', error)
   } finally {
@@ -31,20 +41,17 @@ const fetchPlans = async () => {
   }
 }
 
-const formatPrice = (plan: BillingPlan) => {
-  const price = selectedInterval.value === 'year' ? plan.price * 10 : plan.price
-  return new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: plan.currency,
-  }).format(price)
+const formatPrice = (plan: ISubscriptionPlan) => {
+  const price = selectedInterval.value === discount.interval ? plan.price * (100 - discount.amount) / 100 : plan.price
+  return money(price, plan.currency)
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-const getIntervalLabel = (plan: BillingPlan) => {
-  return selectedInterval.value === 'year' ? 'per year' : 'per month'
+const getIntervalLabel = (plan: ISubscriptionPlan) => {
+  return selectedInterval.value === 'year' ? t('subscription.plans.yearly') : t('subscription.plans.monthly')
 }
 
-const handlePlanSelect = async (plan: BillingPlan) => {
+const handlePlanSelect = async (plan: ISubscriptionPlan) => {
   if (plan.isCurrent) return
 
   try {
@@ -87,12 +94,14 @@ const handlePlanSelect = async (plan: BillingPlan) => {
         :class="selectedInterval === 'month' ? 'text-primary' : 'text-muted-foreground'"
         @click="selectedInterval = 'month'"
       >
-        Monthly
+        {{ t('subscription.plans.monthly') }}
       </span>
       <Switch :checked="selectedInterval === 'year'" @update:checked="selectedInterval = selectedInterval === 'year' ? 'month' : 'year'" />
       <span class="text-sm font-medium cursor-pointer" :class="selectedInterval === 'year' ? 'text-primary' : 'text-muted-foreground'" @click="selectedInterval = 'year'">
-        Yearly
-        <span class="ml-1 text-xs text-success">Save 20%</span>
+        {{ t('subscription.plans.yearly') }}
+        <span class="ml-1 text-xs text-success">
+          {{ t('subscription.plans.save', { amount: discount.amount }) }}
+        </span>
       </span>
     </div>
 
@@ -105,13 +114,6 @@ const handlePlanSelect = async (plan: BillingPlan) => {
         :class="{ 'border-primary': plan.isCurrent }"
       >
         <CardContent class="p-5 flex flex-col h-full">
-          <!-- Popular Badge -->
-          <div v-if="plan.isPopular" class="absolute -top-3 left-1/2 -translate-x-1/2">
-            <span class="px-3 py-1 text-xs font-medium rounded-full bg-primary text-primary-foreground">
-              Most Popular
-            </span>
-          </div>
-
           <!-- Plan Header -->
           <div class="text-center mb-6">
             <h3 class="text-lg font-semibold">
@@ -132,14 +134,26 @@ const handlePlanSelect = async (plan: BillingPlan) => {
           <ul class="space-y-3 mb-6">
             <li
               v-for="feature in plan.features"
-              :key="feature"
-              class="flex items-center gap-2 text-sm"
+              :key="feature.id"
+              class="grid grid-cols-[1fr_auto] items-center gap-2 text-sm"
             >
-              <Icon
-                icon="heroicons:check"
-                class="size-5 text-success flex-shrink-0"
-              />
-              {{ feature }}
+              <div class="flex items-center gap-2">
+                <Icon
+                  icon="heroicons:check"
+                  class="size-5 text-success flex-shrink-0"
+                />
+                <span class="font-medium">
+                  {{ t(`subscription.features.type.${feature.name}`) }}
+                </span>
+              </div>
+              <div class="text-muted-foreground text-right px-2">
+                <template v-if="feature.type === 'boolean'">
+                  {{ feature.value ? 'Yes' : 'No' }}
+                </template>
+                <template v-else>
+                  {{ feature.value }}
+                </template>
+              </div>
             </li>
           </ul>
 
