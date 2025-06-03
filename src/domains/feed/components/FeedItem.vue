@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { Icon } from '@iconify/vue'
+import MarkdownIt from 'markdown-it'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
@@ -17,7 +18,6 @@ import { useAuthStore } from '@/domains/auth/store/auth.store'
 import { timeAgo } from '@/lib/timeAgo'
 import { toDateTimeString } from '@/lib/toDateTimeString'
 import type { IFeed } from '@/domains/feed/types/feed.type'
-import MarkdownIt from 'markdown-it'
 
 const md = new MarkdownIt()
 const { t } = useI18n()

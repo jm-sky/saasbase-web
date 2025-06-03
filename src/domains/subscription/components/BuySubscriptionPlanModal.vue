@@ -9,7 +9,7 @@ import { tenantAddressesService } from '@/domains/tenant/services/TenantAddresse
 import { useTenantStore } from '@/domains/tenant/store/tenant.store'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
 import { isValidationError } from '@/lib/validation'
-import type { ISubscriptionPlan, StoreSubscriptionRequest, TBillingInterval } from '../types/subscription.type'
+import type { IBillingPrice, ISubscriptionPlan, StoreSubscriptionRequest, TBillingInterval } from '../types/subscription.type'
 import { subscriptionService } from '../services/SubscriptionService'
 import StripeCheckoutForm from './StripeCheckoutForm.vue'
 
@@ -19,8 +19,9 @@ const { tenant, tenantId, tenantBillingAddress } = storeToRefs(tenantStore)
 
 const open = defineModel<boolean>('open', { required: true })
 
-const { plan, billingInterval } = defineProps<{
+const { plan, price, billingInterval } = defineProps<{
   plan: ISubscriptionPlan
+  price: IBillingPrice
   billingInterval: TBillingInterval
 }>()
 
@@ -88,7 +89,7 @@ onMounted(async () => {
             {{ plan.name }}
           </div>
           <div class="text-sm text-muted-foreground">
-            {{ plan.price }} {{ plan.currency }} / {{ plan.billingInterval }}
+            {{ price.price }} {{ price.currency }} / {{ billingInterval }}
           </div>
         </div>
         <div class="text-sm text-muted-foreground">
@@ -120,7 +121,7 @@ onMounted(async () => {
         <div class="text-xs font-semibold">
           {{ t('subscription.buy.paymentDetails') }}
         </div>
-        <StripeCheckoutForm :plan="plan" />
+        <StripeCheckoutForm :plan="plan" :price-id="price.id" />
       </div>
 
       <Button

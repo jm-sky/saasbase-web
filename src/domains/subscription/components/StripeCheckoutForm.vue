@@ -9,8 +9,9 @@ import { subscriptionService } from '../services/SubscriptionService'
 
 const { t } = useI18n()
 
-const { plan } = defineProps<{
+const { plan, priceId } = defineProps<{
   plan: ISubscriptionPlan
+  priceId: string
 }>()
 
 const loading = ref(false)
@@ -29,6 +30,7 @@ async function redirectToCheckout() {
 
     const response = await subscriptionService.createCheckoutSession({
       planId: plan.id,
+      priceId,
       billableType: 'tenant',
       successUrl: `${window.location.origin}/subscription/success`,
       cancelUrl: `${window.location.origin}/subscription/cancel`

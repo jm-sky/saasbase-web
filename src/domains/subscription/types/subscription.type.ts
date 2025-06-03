@@ -13,18 +13,27 @@ export interface IFeature {
   updatedAt: TDateTime
 }
 
+export interface IBillingPrice {
+  id: TUUID
+  stripePriceId: string
+  billingPeriod: TBillingInterval
+  price: number
+  currency: string
+  isActive: boolean
+  createdAt: TDateTime
+  updatedAt: TDateTime
+}
+
 export interface ISubscriptionPlan {
   id: TUUID
   name: string
   description: string
-  price: number
+  prices: IBillingPrice[]
   billingInterval: string
   stripeProductId: string
   stripePriceId: string
   features: IFeature[]
   // -----------------
-  // To be implemented
-  currency: string
   isCurrent: boolean
   // -----------------
   createdAt: TDateTime
@@ -44,7 +53,7 @@ export interface PaymentDetails {
 }
 
 export interface StoreSubscriptionRequest {
-  planId: string;
+  planId: TUUID;
   billingInterval: TBillingInterval;
   paymentDetails: PaymentDetails;
   trialEndsAt?: string;  // ISO date string
@@ -53,7 +62,8 @@ export interface StoreSubscriptionRequest {
 }
 
 export interface CreateCheckoutSessionRequest {
-  planId: string
+  planId: TUUID
+  priceId: TUUID
   billableType: 'tenant' | 'user'
   successUrl: string
   cancelUrl: string
