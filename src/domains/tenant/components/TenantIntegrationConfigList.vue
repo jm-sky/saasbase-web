@@ -1,0 +1,141 @@
+<script setup lang="ts">
+import {
+  Form,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormControl
+} from '@/components/ui/form'
+import { Card } from '@/components/ui/card'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { z } from 'zod'
+import { toTypedSchema } from '@vee-validate/zod'
+import { ref } from 'vue'
+import {
+  Brain,
+  Cloud,
+  Calendar,
+  CalendarDays,
+  Database,
+  Network
+} from 'lucide-vue-next'
+
+const integrations = [
+  {
+    id: 'azure_ai',
+    name: 'Azure Intelligence Studio',
+    description: 'Powerful OCR and AI services for document processing.',
+    icon: Brain,
+    fields: [
+      { name: 'app_id', label: 'App ID', type: 'text' },
+      { name: 'app_secret', label: 'App Secret', type: 'password' },
+      { name: 'endpoint', label: 'Endpoint', type: 'text' }
+    ]
+  },
+  {
+    id: 's3_storage',
+    name: 'S3 Storage',
+    description: 'Object storage integration for backups and files.',
+    icon: Cloud,
+    fields: [
+      { name: 'access_key', label: 'Access Key', type: 'text' },
+      { name: 'secret_key', label: 'Secret Key', type: 'password' },
+      { name: 'bucket', label: 'Bucket Name', type: 'text' },
+      { name: 'endpoint', label: 'Endpoint', type: 'text' }
+    ]
+  },
+  {
+    id: 'regon',
+    name: 'REGON API',
+    description: 'Business registry integration for company data verification.',
+    icon: Database,
+    fields: [
+      { name: 'app_id', label: 'App ID', type: 'text' },
+      { name: 'app_secret', label: 'App Secret', type: 'password' }
+    ]
+  },
+  {
+    id: 'google_calendar',
+    name: 'Google Calendar',
+    description: 'Calendar integration for scheduling and events.',
+    icon: Calendar,
+    fields: [
+      { name: 'client_id', label: 'Client ID', type: 'text' },
+      { name: 'client_secret', label: 'Client Secret', type: 'password' }
+    ]
+  },
+  {
+    id: 'microsoft_calendar',
+    name: 'Microsoft Calendar',
+    description: 'Microsoft 365 Calendar integration (Exchange/Outlook).',
+    icon: CalendarDays,
+    fields: [
+      { name: 'client_id', label: 'Client ID', type: 'text' },
+      { name: 'client_secret', label: 'Client Secret', type: 'password' },
+      { name: 'tenant_id', label: 'Tenant ID', type: 'text' }
+    ]
+  },
+  {
+    id: 'jira',
+    name: 'JIRA',
+    description: 'Project tracking and issue management integration.',
+    icon: Network,
+    fields: [
+      { name: 'domain', label: 'JIRA Domain', type: 'text' },
+      { name: 'email', label: 'User Email', type: 'email' },
+      { name: 'api_token', label: 'API Token', type: 'password' }
+    ]
+  }
+]
+
+const formValues = ref<Record<string, Record<string, string>>>(
+  integrations.reduce((acc, integration) => {
+    acc[integration.id] = integration.fields.reduce((obj, field) => {
+      obj[field.name] = ''
+      return obj
+    }, {} as Record<string, string>)
+    return acc
+  }, {} as Record<string, Record<string, string>>)
+)
+
+const schema = toTypedSchema(z.object({
+  config: z.record(z.string(), z.record(z.string(), z.string()))
+}))
+
+function onSubmit(integrationId: string) {
+  return (values: any) => {
+    const config = values.config[integrationId]
+    console.log(`Saving config for ${integrationId}:`, config)
+    // Make API call here to save integration config
+  }
+}
+</script>
+
+<template>
+  <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+    <Card v-for="integration in integrations" :key="integration.id" class="p-4 space-y-4">
+      <div class="flex items-center space-x-3">
+        <component :is="integration.icon" class="w-6 h-6 text-primary" />
+        <h2 class="text-lg font-semibold">{{ integration.name }}</h2>
+      </div>
+      <p class="text-sm text-muted-foreground">{{ integration.description }}</p>
+
+      <Form :validation-schema="schema" @submit="onSubmit(integration.id)">
+        <div class="space-y-3">
+          <div v-for="field in integration.fields" :key="field.name">
+            <FormField :name="`config.${integration.id}.${field.name}`">
+              <FormItem>
+                <FormLabel>{{ field.label }}</FormLabel>
+                <FormControl>
+                  <Input v-model="formValues[integration.id][field.name]" :type="field.type" />
+                </FormControl>
+              </FormItem>
+            </FormField>
+          </div>
+          <Button type="submit">Save</Button>
+        </div>
+      </Form>
+    </Card>
+  </div>
+</template>
