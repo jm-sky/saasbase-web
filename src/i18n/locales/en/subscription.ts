@@ -9,6 +9,14 @@ export const subscription = {
     quarterly: 'Quarterly',
     yearly: 'Yearly',
   },
+  checkout: {
+    title: 'Checkout',
+    description: 'Checkout',
+    button: 'Checkout',
+    paymentDetails: 'Payment details',
+    redirecting: 'Redirecting...',
+    error: 'Error',
+  },
   features: {
     title: 'Features',
     description: 'Features available in this plan',

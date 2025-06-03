@@ -2,9 +2,12 @@
 import { loadStripe } from '@stripe/stripe-js'
 import { isAxiosError } from 'axios'
 import { ref } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { config } from '@/config'
 import type { ISubscriptionPlan } from '../types/subscription.type'
 import { subscriptionService } from '../services/SubscriptionService'
+
+const { t } = useI18n()
 
 const { plan } = defineProps<{
   plan: ISubscriptionPlan
@@ -26,6 +29,7 @@ async function redirectToCheckout() {
 
     const response = await subscriptionService.createCheckoutSession({
       planId: plan.id,
+      billableType: 'tenant',
       successUrl: `${window.location.origin}/subscription/success`,
       cancelUrl: `${window.location.origin}/subscription/cancel`
     })
@@ -42,13 +46,13 @@ async function redirectToCheckout() {
 
 
 <template>
-  <div class="p-4 max-w-md mx-auto bg-white rounded shadow">
+  <div class="p-4 mx-auto">
     <button
       :disabled="loading"
-      class="px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700"
+      class="px-4 py-2 bg-primary text-white rounded hover:bg-primary/80"
       @click="redirectToCheckout"
     >
-      {{ loading ? 'Redirecting...' : 'Checkout' }}
+      {{ loading ? t('subscription.checkout.redirecting') : t('subscription.checkout.button') }}
     </button>
     <p v-if="error" class="mt-2 text-sm text-red-600">
       {{ error }}

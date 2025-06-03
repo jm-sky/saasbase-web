@@ -120,9 +120,7 @@ onMounted(async () => {
         <div class="text-xs font-semibold">
           {{ t('subscription.buy.paymentDetails') }}
         </div>
-        <div class="grid grid-cols-2 gap-2 text-sm">
-          <StripeCheckoutForm :plan />
-        </div>
+        <StripeCheckoutForm :plan="plan" />
       </div>
 
       <Button

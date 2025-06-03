@@ -54,6 +54,7 @@ export interface StoreSubscriptionRequest {
 
 export interface CreateCheckoutSessionRequest {
   planId: string
+  billableType: 'tenant' | 'user'
   successUrl: string
   cancelUrl: string
 }
