@@ -22,7 +22,7 @@ const emit = defineEmits<{
 }>()
 
 const formatPrice = (plan: ISubscriptionPlan) => {
-  const price = selectedInterval === plan.billingInterval ? plan.price * (100 - discount.amount) / 100 : plan.price
+  const price = selectedInterval === plan.billingInterval ? plan.price : (plan.price * 12) * ((100 - discount.amount) / 100)
   return money(price, plan.currency)
 }
 
