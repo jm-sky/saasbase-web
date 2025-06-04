@@ -45,7 +45,7 @@ const canDelete = computed(() => feed.creator?.id === authStore.user?.id)
     <div class="w-28 flex flex-col items-center text-center justify-center gap-1">
       <Avatar size="base" class="cursor-pointer" @click="router.push(`/users/${feed.creator?.id}`)">
         <AvatarImage :src="feed.creator?.avatarUrl ?? ''" :alt="feed.creator?.name" />
-        <AvatarFallback>{{ feed.creator?.name.slice(0, 2) ?? 'X' }}</AvatarFallback>
+        <AvatarFallback>{{ feed.creator?.name?.slice(0, 2) ?? 'X' }}</AvatarFallback>
       </Avatar>
     </div>
 

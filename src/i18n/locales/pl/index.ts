@@ -5,6 +5,7 @@ import { bankAccounts } from './bankAccounts'
 import { billing } from './billing'
 import { comments } from './comments'
 import { common } from './common'
+import { components } from './components'
 import { contacts } from './contacts'
 import { contractor } from './contractor'
 import { dashboard } from './dashboard'
@@ -29,6 +30,7 @@ export const pl = {
   contractor,
   common,
   comments,
+  components,
   contacts,
   dashboard,
   feed,
