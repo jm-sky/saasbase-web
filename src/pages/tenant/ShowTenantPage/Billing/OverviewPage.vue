@@ -1,44 +1,47 @@
 <script setup lang="ts">
 import { Icon } from '@iconify/vue'
-import { Info } from 'lucide-vue-next'
+import { Info, RefreshCcw } from 'lucide-vue-next'
 import { onMounted, ref } from 'vue'
+import ButtonLink from '@/components/ButtonLink.vue'
 import Alert from '@/components/ui/alert/Alert.vue'
 import AlertTitle from '@/components/ui/alert/AlertTitle.vue'
 import { Button } from '@/components/ui/button'
 import Card from '@/components/ui/card/Card.vue'
 import CardContent from '@/components/ui/card/CardContent.vue'
 import CardHeader from '@/components/ui/card/CardHeader.vue'
-import { accountService, type BillingPlan } from '@/domains/account/services/AccountService'
 import TenantSectionTitle from '@/domains/tenant/components/TenantSectionTitle.vue'
+import { type ICurrentSubscriptionQuotas, tenantSubscriptionService } from '@/domains/tenant/services/TenantSubscriptionService'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
+import type { ISubscriptionPlan } from '@/domains/subscription/types/subscription.type'
+import type { ITenant } from '@/domains/tenant/types/tenant.type'
+
+const { tenant } = defineProps<{
+  tenant?: ITenant
+}>()
 
 const loading = ref(false)
-const currentPlan = ref<BillingPlan | null>(null)
-const usage = ref({
+const currentPlan = ref<ISubscriptionPlan | null>(null)
+const usage = ref<ICurrentSubscriptionQuotas>({
   storage: {
-    used: 45.2,
-    total: 100,
-    unit: 'GB',
+    used: 0,
+    total: 500,
+    unit: 'MB',
   },
   users: {
-    used: 3,
-    total: 5,
+    used: 0,
+    total: 10,
   },
   apiCalls: {
-    used: 12500,
-    total: 50000,
+    used: 0,
+    total: 100000,
   },
-})
-
-onMounted(async () => {
-  await fetchCurrentPlan()
 })
 
 const fetchCurrentPlan = async () => {
   loading.value = true
   try {
-    const plans = await accountService.getBillingPlans()
-    currentPlan.value = plans.find(plan => plan.isCurrent) ?? null
+    const plan = await tenantSubscriptionService.getCurrentPlan(tenant?.id ?? '')
+    currentPlan.value = plan
   } catch (error: unknown) {
     handleErrorWithToast('Failed to fetch current plan', error)
   } finally {
@@ -46,10 +49,33 @@ const fetchCurrentPlan = async () => {
   }
 }
 
+const fetchUsage = async () => {
+  try {
+    const quotas = await tenantSubscriptionService.getQuotas(tenant?.id ?? '')
+    usage.value = quotas
+  } catch (error: unknown) {
+    handleErrorWithToast('Failed to fetch usage', error)
+  } finally {
+    loading.value = false
+  }
+}
+
+const refresh = async () => {
+  loading.value = true
+  await fetchCurrentPlan()
+  await fetchUsage()
+  loading.value = false
+}
+
 const formatUsage = (used: number, total: number, unit = '') => {
   const percentage = Math.round((used / total) * 100)
   return `${used}${unit} / ${total}${unit} (${percentage}%)`
 }
+
+onMounted(async () => {
+  await refresh()
+})
+
 </script>
 
 <template>
@@ -57,11 +83,11 @@ const formatUsage = (used: number, total: number, unit = '') => {
     <div class="flex items-center justify-between">
       <TenantSectionTitle :title="$t('tenant.billing.overview.title')" />
       <Button
-        variant="outline"
+        variant="ghost"
         :disabled="loading"
-        @click="fetchCurrentPlan"
+        @click="refresh"
       >
-        Refresh
+        <RefreshCcw class="size-4" />
       </Button>
     </div>
 
@@ -93,13 +119,14 @@ const formatUsage = (used: number, total: number, unit = '') => {
           </p>
         </div>
         <div class="ml-auto">
-          <Button
-            variant="default"
+          <ButtonLink
+            v-if="currentPlan"
+            variant="primary"
             :disabled="loading"
-            @click="$router.push('/account/billing/plans')"
+            :to="`/tenants/${tenant?.id}/show/billing/plans`"
           >
             Change Plan
-          </Button>
+          </ButtonLink>
         </div>
       </CardContent>
     </Card>
@@ -128,6 +155,7 @@ const formatUsage = (used: number, total: number, unit = '') => {
             <div class="h-2 bg-muted rounded-full overflow-hidden">
               <div
                 class="h-full bg-primary transition-all"
+                :class="{ 'bg-red-500': usage.storage.used > usage.storage.total }"
                 :style="{ width: `${(usage.storage.used / usage.storage.total) * 100}%` }"
               />
             </div>
@@ -150,6 +178,7 @@ const formatUsage = (used: number, total: number, unit = '') => {
             <div class="h-2 bg-muted rounded-full overflow-hidden">
               <div
                 class="h-full bg-primary transition-all"
+                :class="{ 'bg-red-500': usage.users.used > usage.users.total }"
                 :style="{ width: `${(usage.users.used / usage.users.total) * 100}%` }"
               />
             </div>
@@ -172,42 +201,10 @@ const formatUsage = (used: number, total: number, unit = '') => {
             <div class="h-2 bg-muted rounded-full overflow-hidden">
               <div
                 class="h-full bg-primary transition-all"
+                :class="{ 'bg-red-500': usage.apiCalls.used > usage.apiCalls.total }"
                 :style="{ width: `${(usage.apiCalls.used / usage.apiCalls.total) * 100}%` }"
               />
             </div>
-          </div>
-        </div>
-      </CardContent>
-    </Card>
-
-    <!-- Payment Method -->
-    <Card>
-      <CardHeader class="font-semibold">
-        Payment Method
-      </CardHeader>
-      <CardContent>
-        <div class="flex items-center gap-4">
-          <div class="size-12 rounded-full bg-muted flex items-center justify-center">
-            <Icon
-              icon="heroicons:credit-card"
-              class="size-6 text-muted-foreground"
-            />
-          </div>
-          <div>
-            <h4 class="font-medium">
-              Visa ending in 4242
-            </h4>
-            <p class="text-sm text-muted-foreground">
-              Expires 12/2024
-            </p>
-          </div>
-          <div class="ml-auto">
-            <Button
-              variant="outline"
-              :disabled="loading"
-            >
-              Update
-            </Button>
           </div>
         </div>
       </CardContent>

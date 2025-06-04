@@ -1,6 +1,5 @@
 import api from '@/lib/api'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
-import type { AccountActivity, AccountProfile, AccountSettings } from '../types'
 import type { IResourceCollection } from '@/domains/shared/types/resource.type'
 
 const delay = (ms = 500) => new Promise((resolve) => setTimeout(resolve, ms))
@@ -48,18 +47,6 @@ export interface CreateApiKeyData {
   expiresAt: string
 }
 
-export interface BillingPlan {
-  id: string
-  name: string
-  description: string
-  price: number
-  currency: string
-  interval: 'month' | 'year'
-  features: string[]
-  isCurrent: boolean
-  isPopular?: boolean
-}
-
 export interface BillingHistory {
   id: string
   date: string
@@ -74,96 +61,6 @@ export interface BillingHistory {
 export class AccountService {
   async delay(ms = 500): Promise<void> {
     return new Promise((resolve) => setTimeout(resolve, ms))
-  }
-
-  async getProfile(): Promise<AccountProfile> {
-    try {
-      await this.delay()
-      // TODO: Replace with actual API call
-      return {
-        id: '1',
-        firstName: 'John',
-        lastName: 'Doe',
-        email: 'john.doe@example.com',
-      }
-    } catch (error) {
-      handleErrorWithToast('Failed to fetch profile', error)
-      throw error
-    }
-  }
-
-  async updateProfile(data: Partial<AccountProfile>): Promise<AccountProfile> {
-    try {
-      await this.delay()
-      // TODO: Replace with actual API call
-      return {
-        id: '1',
-        firstName: data.firstName ?? 'John',
-        lastName: data.lastName ?? 'Doe',
-        email: data.email ?? 'john.doe@example.com',
-        avatar: data.avatar,
-      }
-    } catch (error) {
-      handleErrorWithToast('Failed to update profile', error)
-      throw error
-    }
-  }
-
-  async getSettings(): Promise<AccountSettings> {
-    try {
-      await this.delay()
-      // TODO: Replace with actual API call
-      return {
-        id: '1',
-        emailNotifications: true,
-        marketingEmails: false,
-        securityAlerts: true,
-        twoFactorEnabled: false,
-        theme: 'light',
-        dataCollection: true,
-        analytics: true,
-        thirdPartySharing: false,
-        personalizedAds: false,
-        locationTracking: false,
-      }
-    } catch (error) {
-      handleErrorWithToast('Failed to fetch settings', error)
-      throw error
-    }
-  }
-
-  async updateSettings(data: Partial<AccountSettings>): Promise<AccountSettings> {
-    try {
-      await this.delay()
-      // TODO: Replace with actual API call
-      return {
-        id: '1',
-        emailNotifications: data.emailNotifications ?? true,
-        marketingEmails: data.marketingEmails ?? false,
-        securityAlerts: data.securityAlerts ?? true,
-        twoFactorEnabled: data.twoFactorEnabled ?? false,
-        theme: data.theme ?? 'light',
-        dataCollection: data.dataCollection ?? true,
-        analytics: data.analytics ?? true,
-        thirdPartySharing: data.thirdPartySharing ?? false,
-        personalizedAds: data.personalizedAds ?? false,
-        locationTracking: data.locationTracking ?? false,
-      }
-    } catch (error) {
-      handleErrorWithToast('Failed to update settings', error)
-      throw error
-    }
-  }
-
-  async getActivity(): Promise<AccountActivity[]> {
-    try {
-      await this.delay()
-      // TODO: Replace with actual API call
-      return []
-    } catch (error) {
-      handleErrorWithToast('Failed to fetch activity', error)
-      throw error
-    }
   }
 
   async getApiKeys(): Promise<IResourceCollection<ApiKey>> {
@@ -194,68 +91,6 @@ export class AccountService {
       console.log('Revoking API key:', keyId)
     } catch (error) {
       handleErrorWithToast('Failed to revoke API key', error)
-      throw error
-    }
-  }
-
-  async getBillingPlans(): Promise<BillingPlan[]> {
-    try {
-      await this.delay()
-      // TODO: Replace with actual API call
-      return [
-        {
-          id: '1',
-          name: 'Starter',
-          description: 'Perfect for small teams and individuals',
-          price: 29,
-          currency: 'USD',
-          interval: 'month',
-          features: [
-            '5 team members',
-            '100GB storage',
-            '50,000 API calls',
-            'Basic support',
-          ],
-          isCurrent: false,
-        },
-        {
-          id: '2',
-          name: 'Professional',
-          description: 'Best for growing businesses',
-          price: 99,
-          currency: 'USD',
-          interval: 'month',
-          features: [
-            '20 team members',
-            '500GB storage',
-            '200,000 API calls',
-            'Priority support',
-            'Advanced analytics',
-          ],
-          isCurrent: true,
-          isPopular: true,
-        },
-        {
-          id: '3',
-          name: 'Enterprise',
-          description: 'For large organizations with advanced needs',
-          price: 299,
-          currency: 'USD',
-          interval: 'month',
-          features: [
-            'Unlimited team members',
-            '2TB storage',
-            '1,000,000 API calls',
-            '24/7 support',
-            'Advanced analytics',
-            'Custom integrations',
-            'SLA guarantee',
-          ],
-          isCurrent: false,
-        },
-      ]
-    } catch (error) {
-      handleErrorWithToast('Failed to fetch billing plans', error)
       throw error
     }
   }
@@ -332,40 +167,6 @@ export class AccountService {
         lastActive: '2024-03-20T09:15:00Z',
         location: 'New York, USA',
         isCurrent: false,
-      },
-    ]
-  }
-
-  async getSecurityLog(): Promise<SecurityLog[]> {
-    // TODO: Implement API call
-    await delay()
-    return [
-      {
-        id: '1',
-        type: 'login',
-        timestamp: '2024-03-20T10:30:00Z',
-        ip: '192.168.1.1',
-        location: 'New York, USA',
-        device: 'MacBook Pro',
-        status: 'success',
-      },
-      {
-        id: '2',
-        type: 'password_change',
-        timestamp: '2024-03-19T15:45:00Z',
-        ip: '192.168.1.1',
-        location: 'New York, USA',
-        device: 'MacBook Pro',
-        status: 'success',
-      },
-      {
-        id: '3',
-        type: '2fa_enabled',
-        timestamp: '2024-03-18T09:15:00Z',
-        ip: '192.168.1.1',
-        location: 'New York, USA',
-        device: 'iPhone 13',
-        status: 'success',
       },
     ]
   }

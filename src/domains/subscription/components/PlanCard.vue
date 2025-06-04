@@ -39,7 +39,7 @@ const isFree = computed(() => plan.prices.length === 0)
 <template>
   <Card
     class="card relative shadow-md"
-    :class="{ 'border-primary': plan.isCurrent }"
+    :class="{ 'border-primary': plan.isActive }"
   >
     <CardContent class="p-5 flex flex-col h-full">
       <!-- Plan Header -->
@@ -88,11 +88,11 @@ const isFree = computed(() => plan.prices.length === 0)
       <!-- Action Button -->
       <Button
         class="w-full mt-auto mb-0"
-        :variant="plan.isCurrent ? 'outline' : 'default'"
-        :disabled="plan.isCurrent || loading || (!isFree && !price)"
+        :variant="plan.isActive ? 'outline' : 'default'"
+        :disabled="plan.isActive || loading || (!isFree && !price)"
         @click="emit('select', plan)"
       >
-        {{ plan.isCurrent ? 'Current Plan' : 'Select Plan' }}
+        {{ plan.isActive ? 'Current Plan' : 'Select Plan' }}
       </Button>
     </CardContent>
   </Card>

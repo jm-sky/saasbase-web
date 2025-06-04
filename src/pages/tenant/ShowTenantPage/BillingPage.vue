@@ -35,11 +35,11 @@ const navigationItems = computed(() => [
 
     <!-- Main Content -->
     <div class="flex-1">
-      <router-view v-slot="{ Component }">
+      <RouterView v-slot="{ Component }">
         <Transition name="fade" mode="out-in">
-          <component :is="Component" />
+          <component :is="Component" :tenant />
         </Transition>
-      </router-view>
+      </RouterView>
     </div>
   </div>
 </template>

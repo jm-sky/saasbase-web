@@ -33,9 +33,7 @@ export interface ISubscriptionPlan {
   stripeProductId: string
   stripePriceId: string
   features: IFeature[]
-  // -----------------
-  isCurrent: boolean
-  // -----------------
+  isActive: boolean
   createdAt: TDateTime
   updatedAt: TDateTime
 }
