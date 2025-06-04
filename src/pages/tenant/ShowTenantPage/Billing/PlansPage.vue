@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Info, RefreshCcw } from 'lucide-vue-next'
-import { onMounted, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import Alert from '@/components/ui/alert/Alert.vue'
 import AlertTitle from '@/components/ui/alert/AlertTitle.vue'
@@ -11,7 +11,7 @@ import PlanCard from '@/domains/subscription/components/PlanCard.vue'
 import { subscriptionService } from '@/domains/subscription/services/SubscriptionService'
 import TenantSectionTitle from '@/domains/tenant/components/TenantSectionTitle.vue'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
-import type { ISubscriptionPlan, ISubscriptionPlanDiscount, TBillingInterval } from '@/domains/subscription/types/subscription.type'
+import type { IBillingPrice, ISubscriptionPlan, ISubscriptionPlanDiscount, TBillingInterval } from '@/domains/subscription/types/subscription.type'
 
 const { t } = useI18n()
 
@@ -27,8 +27,9 @@ const loading = ref(false)
 const plans = ref<ISubscriptionPlan[]>([])
 const selectedInterval = ref<TBillingInterval>('monthly')
 
-onMounted(async () => {
-  await fetchPlans()
+const selectedPrice = computed<IBillingPrice | null>(() => {
+  if (!selectedPlan.value) return null
+  return selectedPlan.value.prices.find(p => p.billingPeriod === selectedInterval.value) ?? null
 })
 
 const fetchPlans = async () => {
@@ -46,6 +47,10 @@ const handlePlanSelect = (plan: ISubscriptionPlan) => {
   selectedPlan.value = plan
   showBuySubscriptionPlanModal.value = true
 }
+
+onMounted(async () => {
+  await fetchPlans()
+})
 </script>
 
 <template>
@@ -95,6 +100,7 @@ const handlePlanSelect = (plan: ISubscriptionPlan) => {
         v-for="plan in plans"
         :key="plan.id"
         :plan="plan"
+        :price="selectedPrice"
         :selected-interval="selectedInterval"
         :discount
         :loading
@@ -103,10 +109,11 @@ const handlePlanSelect = (plan: ISubscriptionPlan) => {
     </div>
 
     <BuySubscriptionPlanModal
-      v-if="selectedPlan"
+      v-if="selectedPlan && selectedPrice"
       v-model:open="showBuySubscriptionPlanModal"
       :billing-interval="selectedInterval"
       :plan="selectedPlan"
+      :price="selectedPrice"
     />
   </div>
 </template>

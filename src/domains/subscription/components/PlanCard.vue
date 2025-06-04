@@ -5,12 +5,13 @@ import { useI18n } from 'vue-i18n'
 import { Button } from '@/components/ui/button'
 import Card from '@/components/ui/card/Card.vue'
 import CardContent from '@/components/ui/card/CardContent.vue'
+import { config } from '@/config'
 import { money } from '@/lib/money'
-import type { ISubscriptionPlan, ISubscriptionPlanDiscount, TBillingInterval } from '@/domains/subscription/types/subscription.type'
+import type { IBillingPrice, ISubscriptionPlan, ISubscriptionPlanDiscount, TBillingInterval } from '@/domains/subscription/types/subscription.type'
 
-const { t } = useI18n()
+const { t, locale } = useI18n()
 
-const { plan, discount, selectedInterval } = defineProps<{
+const { plan, selectedInterval } = defineProps<{
   plan: ISubscriptionPlan
   selectedInterval: TBillingInterval
   discount: ISubscriptionPlanDiscount
@@ -21,12 +22,18 @@ const emit = defineEmits<{
   select: [ISubscriptionPlan]
 }>()
 
-const formatPrice = (plan: ISubscriptionPlan) => {
-  const price = selectedInterval === plan.billingInterval ? plan.price * (100 - discount.amount) / 100 : plan.price
-  return money(price, plan.currency)
-}
-
 const intervalLabel = computed(() => t(`subscription.billingInterval.${selectedInterval}`).toLowerCase())
+
+const price = computed<IBillingPrice | null>(() => {
+  return plan.prices.find(p => p.billingPeriod === selectedInterval) ?? null
+})
+
+const priceFormatted = computed(() => {
+  if (!price.value) return money(0, config.defaults.currency, locale.value)
+  return money(price.value.price, price.value.currency, locale.value)
+})
+
+const isFree = computed(() => plan.prices.length === 0)
 </script>
 
 <template>
@@ -44,7 +51,7 @@ const intervalLabel = computed(() => t(`subscription.billingInterval.${selectedI
           {{ plan.description }}
         </p>
         <div class="text-3xl font-bold">
-          {{ formatPrice(plan) }}
+          {{ priceFormatted }}
           <span class="text-sm font-normal text-muted-foreground">
             {{ intervalLabel }}
           </span>
@@ -82,7 +89,7 @@ const intervalLabel = computed(() => t(`subscription.billingInterval.${selectedI
       <Button
         class="w-full mt-auto mb-0"
         :variant="plan.isCurrent ? 'outline' : 'default'"
-        :disabled="plan.isCurrent || loading"
+        :disabled="plan.isCurrent || loading || (!isFree && !price)"
         @click="emit('select', plan)"
       >
         {{ plan.isCurrent ? 'Current Plan' : 'Select Plan' }}

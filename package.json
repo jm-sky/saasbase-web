@@ -19,6 +19,7 @@
     "@fortawesome/vue-fontawesome": "^3.0.8",
     "@iconify/vue": "^4.3.0",
     "@internationalized/date": "3.7.0",
+    "@stripe/stripe-js": "^7.3.1",
     "@tanstack/vue-table": "^8.21.2",
     "@types/uuid": "^9.0.8",
     "@unovis/ts": "^1.5.1",
