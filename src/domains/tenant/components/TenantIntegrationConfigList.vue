@@ -1,25 +1,25 @@
 <script setup lang="ts">
-import {
-  Form,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormControl
-} from '@/components/ui/form'
-import { Card } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { z } from 'zod'
 import { toTypedSchema } from '@vee-validate/zod'
-import { ref } from 'vue'
 import {
   Brain,
-  Cloud,
   Calendar,
   CalendarDays,
+  Cloud,
   Database,
   Network
 } from 'lucide-vue-next'
+import { ref } from 'vue'
+import { z } from 'zod'
+import { Button } from '@/components/ui/button'
+import { Card } from '@/components/ui/card'
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel
+} from '@/components/ui/form'
+import { Input } from '@/components/ui/input'
 
 const integrations = [
   {
@@ -90,13 +90,13 @@ const integrations = [
 ]
 
 const formValues = ref<Record<string, Record<string, string>>>(
-  integrations.reduce((acc, integration) => {
-    acc[integration.id] = integration.fields.reduce((obj, field) => {
+  integrations.reduce<Record<string, Record<string, string>>>((acc, integration) => {
+    acc[integration.id] = integration.fields.reduce<Record<string, string>>((obj, field) => {
       obj[field.name] = ''
       return obj
-    }, {} as Record<string, string>)
+    }, {})
     return acc
-  }, {} as Record<string, Record<string, string>>)
+  }, {})
 )
 
 const schema = toTypedSchema(z.object({
@@ -104,6 +104,7 @@ const schema = toTypedSchema(z.object({
 }))
 
 function onSubmit(integrationId: string) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return (values: any) => {
     const config = values.config[integrationId]
     console.log(`Saving config for ${integrationId}:`, config)
@@ -117,9 +118,13 @@ function onSubmit(integrationId: string) {
     <Card v-for="integration in integrations" :key="integration.id" class="p-4 space-y-4">
       <div class="flex items-center space-x-3">
         <component :is="integration.icon" class="w-6 h-6 text-primary" />
-        <h2 class="text-lg font-semibold">{{ integration.name }}</h2>
+        <h2 class="text-lg font-semibold">
+          {{ integration.name }}
+        </h2>
       </div>
-      <p class="text-sm text-muted-foreground">{{ integration.description }}</p>
+      <p class="text-sm text-muted-foreground">
+        {{ integration.description }}
+      </p>
 
       <Form :validation-schema="schema" @submit="onSubmit(integration.id)">
         <div class="space-y-3">
@@ -133,7 +138,9 @@ function onSubmit(integrationId: string) {
               </FormItem>
             </FormField>
           </div>
-          <Button type="submit">Save</Button>
+          <Button type="submit">
+            Save
+          </Button>
         </div>
       </Form>
     </Card>
