@@ -1,21 +1,22 @@
 <script setup lang="ts">
+import { loadStripe } from '@stripe/stripe-js'
+import { isAxiosError } from 'axios'
 import { storeToRefs } from 'pinia'
-import { useForm } from 'vee-validate'
-import { computed, onMounted, ref, watch } from 'vue'
+import { onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import ModalComponent from '@/components/ModalComponent.vue'
 import Button from '@/components/ui/button/Button.vue'
+import UIIcon from '@/components/UIIcon.vue'
+import { config } from '@/config'
 import { tenantAddressesService } from '@/domains/tenant/services/TenantAddressesService'
 import { useTenantStore } from '@/domains/tenant/store/tenant.store'
-import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
-import { isValidationError } from '@/lib/validation'
-import type { IBillingPrice, ISubscriptionPlan, StoreSubscriptionRequest, TBillingInterval } from '../types/subscription.type'
+import type { IBillingPrice, ISubscriptionPlan, TBillingInterval } from '../types/subscription.type'
 import { subscriptionService } from '../services/SubscriptionService'
-import StripeCheckoutForm from './StripeCheckoutForm.vue'
+import BillingInfoForm from './BillingInfoForm.vue'
 
 const { t } = useI18n()
 const tenantStore = useTenantStore()
-const { tenant, tenantId, tenantBillingAddress } = storeToRefs(tenantStore)
+const { tenantId, tenantBillingAddress } = storeToRefs(tenantStore)
 
 const open = defineModel<boolean>('open', { required: true })
 
@@ -26,48 +27,40 @@ const { plan, price, billingInterval } = defineProps<{
 }>()
 
 const loading = ref(false)
-
-const address = computed(() => {
-  if (!tenantBillingAddress.value) {
-    return 'No billing address found'
-  }
-
-  return `${tenantBillingAddress.value.street} ${tenantBillingAddress.value.postalCode} ${tenantBillingAddress.value.city}`
-})
+const error = ref('')
+const stripePromise = loadStripe(config.stripe.publishableKey)
 
 const fetchBillingAddress = async () => {
   const response = await tenantAddressesService.index(tenantId.value ?? '')
   tenantBillingAddress.value = response.data.find(address => address.isDefault) ?? response.data[0]
 }
 
-const { handleSubmit, setErrors, resetForm } = useForm<StoreSubscriptionRequest>({
-  initialValues: {
-    planId: plan.id,
-    billingInterval,
-    paymentDetails: {
-      cardNumber: '',
-      expiry: '',
-      cvc: '',
-      name: '',
-    },
-  },
-})
+async function redirectToCheckout() {
+  loading.value = true
+  error.value = ''
 
-const buySubscription = handleSubmit(async (values) => {
   try {
-    loading.value = true
-    await subscriptionService.buy(values)
-  } catch (error) {
-    if (isValidationError(error)) setErrors(error.response.data.errors)
-    handleErrorWithToast(t('common.error'), error)
+    const stripe = await stripePromise
+    if (!stripe) {
+      throw new Error('Stripe failed to initialize.')
+    }
+
+    const response = await subscriptionService.createCheckoutSession({
+      planId: plan.id,
+      priceId: price.id,
+      billableType: 'tenant',
+      successUrl: `${window.location.origin}/billing/checkout/success`,
+      cancelUrl: `${window.location.origin}/billing/checkout/cancel`
+    })
+
+    await stripe.redirectToCheckout({ sessionId: response.data.sessionId })
+
+  } catch (err: unknown) {
+    error.value = isAxiosError(err) ? err.response?.data.message : 'Unexpected error.'
   } finally {
     loading.value = false
   }
-})
-
-watch(open, (value) => {
-  if (!value) resetForm()
-})
+}
 
 onMounted(async () => {
   await fetchBillingAddress()
@@ -82,7 +75,7 @@ onMounted(async () => {
     :open="open"
     @update:open="open = $event"
   >
-    <form class="flex flex-col gap-3" @submit.prevent="buySubscription">
+    <div class="flex flex-col gap-3">
       <div class="flex flex-col gap-2 px-4 py-2 border rounded-md shadow">
         <div class="flex flex-row gap-2 items-center justify-between">
           <div class="text-2xl font-bold">
@@ -97,42 +90,40 @@ onMounted(async () => {
         </div>
       </div>
 
-      <div class="flex flex-col gap-2 px-4 py-2 border rounded-md shadow" :class="{ 'opacity-50': loading }">
-        <div class="text-xs font-semibold">
-          Billing info
-        </div>
-        <div class="grid grid-cols-2 gap-2 text-sm">
-          <div class="text-muted-foreground">
-            Name:
-          </div>
-          <div>
-            {{ tenant?.name }}
-          </div>
-          <div class="text-muted-foreground">
-            Address:
-          </div>
-          <div>
-            {{ address }}
-          </div>
+      <BillingInfoForm :loading />
+
+      <div class="p-4 mx-auto">
+        <Button
+          :disabled="loading"
+          variant="default"
+          class="w-full"
+          @click="redirectToCheckout"
+        >
+          {{ loading ? t('subscription.checkout.redirecting') : t('subscription.checkout.button') }}
+        </Button>
+        <div v-if="error" class="mt-2 text-sm text-destructive">
+          <UIIcon icon="lucide:alert-circle" />
+          {{ error }}
         </div>
       </div>
 
-      <div class="flex flex-col gap-2 px-4 py-2 border rounded-md shadow" :class="{ 'opacity-50': loading }">
-        <div class="text-xs font-semibold">
-          {{ t('subscription.buy.paymentDetails') }}
+      <div class="flex flex-col gap-1 bg-muted/30 text-muted-foreground text-sm border rounded-md p-2 shadow">
+        <div class="font-semibold">
+          Stripe test card:
         </div>
-        <StripeCheckoutForm :plan="plan" :price-id="price.id" />
+        <pre>4242424242424242  05/25  123</pre>
+        <div class="text-xs">
+          More:
+          <a
+            href="https://docs.stripe.com/testing#cards"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="hover:underline"
+          >
+            https://docs.stripe.com/testing#cards
+          </a>
+        </div>
       </div>
-
-      <Button
-        class="w-full"
-        variant="default"
-        type="submit"
-        :loading="loading"
-        :disabled="loading"
-      >
-        {{ t('subscription.buy.button') }}
-      </Button>
-    </form>
+    </div>
   </ModalComponent>
 </template>

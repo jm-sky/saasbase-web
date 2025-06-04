@@ -2,6 +2,7 @@ import { address } from './address'
 import { attachments } from './attachments'
 import { auth } from './auth'
 import { bankAccounts } from './bankAccounts'
+import { billing } from './billing'
 import { comments } from './comments'
 import { common } from './common'
 import { contacts } from './contacts'
@@ -24,6 +25,7 @@ export const pl = {
   auth,
   attachments,
   bankAccounts,
+  billing,
   contractor,
   common,
   comments,
