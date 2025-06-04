@@ -2,6 +2,7 @@
 import { useForm } from 'vee-validate'
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
+import RichTextEditor from '@/components/Inputs/RichTextEditor.vue'
 import Button from '@/components/ui/button/Button.vue'
 import { FormField } from '@/components/ui/form'
 import FormControl from '@/components/ui/form/FormControl.vue'
@@ -10,15 +11,15 @@ import FormItem from '@/components/ui/form/FormItem.vue'
 import FormLabel from '@/components/ui/form/FormLabel.vue'
 import FormMessage from '@/components/ui/form/FormMessage.vue'
 import Input from '@/components/ui/input/Input.vue'
-import Textarea from '@/components/ui/textarea/Textarea.vue'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
 import type { IFeed, IFeedCreate } from '../types/feed.type'
 import { feedService } from '../services/FeedService'
 
 const  { t } = useI18n()
 const loading = ref(false)
+const html = ref('To jest mój pierwszy post')
 
-const { handleSubmit, resetForm } = useForm<IFeedCreate>({
+const { handleSubmit, setFieldValue, resetForm } = useForm<IFeedCreate>({
   initialValues: {
     title: 'Mój pierwszy post',
     content: 'To jest mój pierwszy post',
@@ -64,7 +65,11 @@ const onSubmit = handleSubmit(async (values) => {
           <FormItem>
             <FormLabel>{{ t('feed.fields.content') }}</FormLabel>
             <FormControl>
-              <Textarea v-bind="componentField" />
+              <RichTextEditor
+                v-model="html"
+                :name="componentField.name"
+                @update:markdown="setFieldValue('content', $event)"
+              />
             </FormControl>
             <FormDescription />
             <FormMessage />

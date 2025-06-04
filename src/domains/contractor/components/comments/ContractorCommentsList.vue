@@ -1,16 +1,13 @@
 <script setup lang="ts">
 import { Icon } from '@iconify/vue'
-import { useForm } from 'vee-validate'
 import { onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import NoItems from '@/components/DataLists/NoItems.vue'
-import FormFieldLabeled from '@/components/Form/FormFieldLabeled.vue'
 import Button from '@/components/ui/button/Button.vue'
 import TablePagination from '@/components/ui/table/TablePagination.vue'
-import Textarea from '@/components/ui/textarea/Textarea.vue'
+import CommentForm from '@/domains/comment/components/CommentForm.vue'
 import { contractorCommentsService } from '@/domains/contractor/services/ContractorCommentsService'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
-import { isValidationError } from '@/lib/validation'
 import ContractorCommentsListItem from './ContractorCommentsListItem.vue'
 import type { IComment } from '@/domains/comment/types/comment.type'
 import type { IContractor } from '@/domains/contractor/types/contractor.type'
@@ -22,6 +19,7 @@ const { contractor } =defineProps<{
 }>()
 
 const comments = ref<IComment[]>([])
+const showForm = ref(false)
 const loading = ref(false)
 const total = ref(0)
 const page = ref(1)
@@ -42,26 +40,6 @@ const refresh = async () => {
 }
 
 onMounted(refresh)
-
-const { values, handleSubmit, setErrors, isSubmitting, resetForm } = useForm({
-  initialValues: {
-    content: '',
-  },
-})
-
-const handleAdd = handleSubmit(async (values) => {
-  try {
-    loading.value = true
-    await contractorCommentsService.create(contractor.id, values.content)
-    resetForm()
-    await refresh()
-  } catch (error: unknown) {
-    if (isValidationError(error)) setErrors(error.response.data.errors)
-    handleErrorWithToast(t('comments.add.error'), error)
-  } finally {
-    loading.value = false
-  }
-})
 </script>
 
 <template>
@@ -69,7 +47,7 @@ const handleAdd = handleSubmit(async (values) => {
     <div class="flex flex-row items-center justify-between">
       <div class="flex flex-row items-center gap-2">
         <div class="font-bold">
-          Comments
+          {{ t('comments.title') }}
         </div>
       </div>
       <Button :loading variant="ghost" @click="refresh">
@@ -78,7 +56,7 @@ const handleAdd = handleSubmit(async (values) => {
     </div>
 
     <div v-if="comments.length === 0" class="flex justify-center py-4 text-muted-foreground">
-      <NoItems message="No comments yet" />
+      <NoItems :message="t('comments.list.empty')" />
     </div>
 
     <div v-else class="flex flex-col gap-4">
@@ -102,24 +80,14 @@ const handleAdd = handleSubmit(async (values) => {
       />
     </div>
 
-    <form class="flex flex-col gap-2" @submit.prevent="handleAdd">
-      <FormFieldLabeled
-        v-slot="{ componentField }"
-        name="content"
-        :label="t('comments.add.label')"
-      >
-        <Textarea
-          v-bind="componentField"
-          :placeholder="t('comments.add.placeholder')"
-        />
-      </FormFieldLabeled>
-      <Button
-        :disabled="!values.content || isSubmitting"
-        :loading="isSubmitting"
-        type="submit"
-      >
-        Add Comment
-      </Button>
-    </form>
+    <Button v-if="!showForm" variant="outline" @click="showForm = true">
+      {{ t('comments.add.label') }}
+    </Button>
+    <CommentForm
+      v-if="showForm"
+      :commentable-id="contractor.id"
+      :service="contractorCommentsService"
+      @create="[refresh, showForm = false]"
+    />
   </div>
 </template>

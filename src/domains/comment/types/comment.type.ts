@@ -17,3 +17,8 @@ export interface IComment {
 }
 
 export type ICommentCreate = Omit<IComment, 'id' | 'createdAt' | 'updatedAt'>
+
+export type TCommentCreateFunction = (commentableId: string, content: string) => Promise<IComment>
+export interface ICommentService {
+  create: TCommentCreateFunction
+}

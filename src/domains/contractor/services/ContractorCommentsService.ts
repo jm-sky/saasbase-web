@@ -1,9 +1,9 @@
 import api from '@/lib/api'
 import { apiRoutesMap } from '@/lib/api/apiRoutes'
-import type { IComment, ICommentCreate } from '@/domains/comment/types/comment.type'
+import type { IComment, ICommentCreate, ICommentService } from '@/domains/comment/types/comment.type'
 import type { IResourceCollection } from '@/domains/shared/types/resource.type'
 
-class ContractorCommentsService {
+class ContractorCommentsService implements ICommentService {
   async index(contractorId: string, page = 1, perPage = 10): Promise<IResourceCollection<IComment>> {
     const response = (await api.get<IResourceCollection<IComment>>(`${apiRoutesMap.contractors}/${contractorId}/comments`, {
       params: { page, perPage },

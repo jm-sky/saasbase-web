@@ -1,4 +1,5 @@
 export const comments = {
+  title: 'Comments',
   add: {
     label: 'Add a comment',
     placeholder: 'Add a comment',
@@ -14,5 +15,6 @@ export const comments = {
   },
   list: {
     error: 'Error fetching comments',
+    empty: 'No comments yet',
   },
 }
