@@ -1,7 +1,12 @@
 import api from '@/lib/api'
-import type { ISubscriptionPlan, StoreSubscriptionRequest } from '../types/subscription.type'
+import type { CreateCheckoutSessionRequest, ISubscriptionPlan, StoreSubscriptionRequest } from '../types/subscription.type'
 import type { TUUID } from '@/domains/shared/types/common'
 import type { IResource, IResourceCollection } from '@/domains/shared/types/resource.type'
+
+export interface ICreateCheckoutSessionResponse {
+  checkoutUrl: string
+  sessionId: string
+}
 
 class SubscriptionService {
   async index() {
@@ -16,6 +21,11 @@ class SubscriptionService {
 
   async buy(request: StoreSubscriptionRequest) {
     const response = await api.post('/subscriptions', request)
+    return response.data
+  }
+
+  async createCheckoutSession(request: CreateCheckoutSessionRequest) {
+    const response = await api.post<IResource<ICreateCheckoutSessionResponse>>('/subscription/checkout', request)
     return response.data
   }
 }
