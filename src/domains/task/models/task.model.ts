@@ -1,3 +1,4 @@
+import type { TDateTime } from '@/domains/shared/types/common'
 import type { TTaskPriority, TTaskStatus } from '@/domains/task/types/task.type'
 import type { ITask } from '@/domains/task/types/task.type'
 
@@ -11,8 +12,8 @@ export class Task {
   assignedToId?: string
   createdById: string
   dueDate?: string
-  createdAt: string
-  updatedAt: string
+  createdAt: TDateTime
+  updatedAt: TDateTime
 
   constructor(data: ITask) {
     this.id = data.id

@@ -1,3 +1,5 @@
+import type { TDateTime } from '@/domains/shared/types/common'
+
 export type TTaskPriority = 'low' | 'medium' | 'high'
 export type TTaskStatus = 'todo' | 'in_progress' | 'done'
 export interface ITask {
@@ -10,8 +12,8 @@ export interface ITask {
   assignedToId?: string
   createdById: string
   dueDate?: string
-  createdAt: string
-  updatedAt: string
+  createdAt: TDateTime
+  updatedAt: TDateTime
 }
 
 export type ITaskCreate = Omit<ITask, 'id' | 'createdAt' | 'updatedAt'>

@@ -1,5 +1,6 @@
 import api from '@/lib/api'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
+import type { TDateTime } from '@/domains/shared/types/common'
 import type { IResourceCollection } from '@/domains/shared/types/resource.type'
 
 const delay = (ms = 500) => new Promise((resolve) => setTimeout(resolve, ms))
@@ -36,15 +37,15 @@ export interface UserSession {
 export interface ApiKey {
   id: string
   name: string
-  createdAt: string
-  expiresAt: string
-  lastUsedAt?: string
+  createdAt: TDateTime
+  expiresAt: TDateTime
+  lastUsedAt?: TDateTime
   isActive: boolean
 }
 
 export interface CreateApiKeyData {
   name: string
-  expiresAt: string
+  expiresAt: TDateTime
 }
 
 export interface BillingHistory {

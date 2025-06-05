@@ -1,10 +1,15 @@
 import api from '@/lib/api'
+import type { TDateTime } from '@/domains/shared/types/common'
 import type { IResource } from '@/domains/shared/types/resource.type'
 
 interface IChatResponse {
   id: string
+  tempId: string
   content: string
   streaming: boolean
+  role: string
+  isAi: boolean
+  createdAt: TDateTime
 }
 
 class AiChatService {

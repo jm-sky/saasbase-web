@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import { Send } from 'lucide-vue-next'
+import { Send, Square } from 'lucide-vue-next'
 import { v4 } from 'uuid'
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import LoadingIcon from '@/components/Icons/LoadingIcon.vue'
+import Badge from '@/components/ui/badge/Badge.vue'
 import Button from '@/components/ui/button/Button.vue'
 import ChatBubble from '@/components/ui/chat/ChatBubble.vue'
 import ChatBubbleAvatar from '@/components/ui/chat/ChatBubbleAvatar.vue'
@@ -26,6 +27,8 @@ import type { IChatMessage } from '../types/chat.type'
 import type { IAiChatMessage } from '@/domains/chat/types/aiChat.type'
 import type { IUserPreview } from '@/domains/user/types/user.type'
 
+const STREAMING_DONE_TOKEN = '[DONE]'
+
 const { toast } = useToast()
 const { t } = useI18n()
 const authStore = useAuthStore()
@@ -46,6 +49,7 @@ const createNewAiMessage = (): IChatMessage => ({
 const message = ref('')
 const messages = ref<IChatMessage[]>([])
 const isSendingMessage = ref(false)
+const isStreamingAnswer = ref(false)
 
 const currentAiMessage = ref<IChatMessage>(createNewAiMessage())
 
@@ -56,13 +60,17 @@ const startNewResponse = () => {
   messages.value.push(currentAiMessage.value)
 }
 
-const handleMessageSent = (chatMessage: IAiChatMessage) => {
-  currentAiMessage.value.content = `${currentAiMessage.value.content}${chatMessage.content}`
+const handleResponseMessage = (chatMessage: IAiChatMessage) => {
+  if (chatMessage.content === STREAMING_DONE_TOKEN) {
+    isStreamingAnswer.value = false
+  } else {
+    currentAiMessage.value.content = `${currentAiMessage.value.content}${chatMessage.content}`
+  }
 }
 
 const joinRoom = () => {
   const channel = echo.private(`chat.ai.${authStore.userData?.id}`)
-  channel.listen('.AiChatMessageStreamed', handleMessageSent)
+  channel.listen('.AiChatMessageStreamed', handleResponseMessage)
   channel.error((error: unknown) => {
     console.error('[FloatingAiChatWidget] Error joining room', error)
     toast.error('Could not join room')
@@ -91,6 +99,7 @@ const sendMessage = async () => {
     startNewResponse()
 
     if (config.chat.streaming) {
+      isStreamingAnswer.value = true
       await aiChatService.sendMessage(message.value)
     } else {
       // Return message with id, tempId, content
@@ -107,6 +116,15 @@ const sendMessage = async () => {
   }
 }
 
+const stopSendingMessage = async () => {
+  try {
+    await aiChatService.stopStream()
+    isStreamingAnswer.value = false
+  } catch (error) {
+    handleErrorWithToast('Error stopping message', error)
+  }
+}
+
 const onOpened = () => {
   joinRoom()
 }
@@ -116,9 +134,14 @@ const onOpened = () => {
   <ExpandableChat size="md" position="bottom-right" @opened="onOpened">
     <ExpandableChatHeader class="flex-col text-center justify-center">
       <h1 class="text-xl font-semibold">
-        Chat with our AI ✨
+        {{ t('chat.ai.title') }} ✨
       </h1>
-      <p>Ask any question for our AI to answer</p>
+      <p class="text-sm text-muted-foreground">
+        {{ t('chat.ai.description') }}
+      </p>
+      <Badge v-if="config.chat.streaming" variant="info-outline" class="text-xs absolute top-10 md:top-2 right-2">
+        {{ t('chat.live') }}
+      </Badge>
     </ExpandableChatHeader>
 
     <ExpandableChatBody>
@@ -146,9 +169,11 @@ const onOpened = () => {
           v-model="message"
           :disabled="isSendingMessage"
           class="min-h-12 bg-background shadow-none"
-          @keydown.ctrl.enter="sendMessage"
+          @keydown.enter="sendMessage"
         />
         <Button
+          v-if="!isStreamingAnswer"
+          v-tooltip="t('chat.ai.send.title')"
           type="submit"
           class="absolute top-1/2 right-2 transform size-8 -translate-y-1/2"
           size="icon"
@@ -156,6 +181,16 @@ const onOpened = () => {
           :loading="isSendingMessage"
         >
           <Send class="size-4" />
+        </Button>
+        <Button
+          v-else
+          v-tooltip="t('chat.ai.stop.title')"
+          type="button"
+          class="absolute top-1/2 right-2 transform size-8 -translate-y-1/2"
+          size="icon"
+          @click="stopSendingMessage"
+        >
+          <Square class="size-4" />
         </Button>
       </form>
     </ExpandableChatFooter>

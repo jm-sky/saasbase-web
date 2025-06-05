@@ -3,6 +3,7 @@ import { attachments } from './attachments'
 import { auth } from './auth'
 import { bankAccounts } from './bankAccounts'
 import { billing } from './billing'
+import { chat } from './chat'
 import { comments } from './comments'
 import { common } from './common'
 import { components } from './components'
@@ -27,6 +28,7 @@ export const en = {
   attachments,
   bankAccounts,
   billing,
+  chat,
   contractor,
   common,
   comments,

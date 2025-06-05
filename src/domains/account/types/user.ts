@@ -1,3 +1,5 @@
+import type { TDate, TDateTime } from '@/domains/shared/types/common'
+
 export interface UserProfile {
   id: string
   userId: string
@@ -8,8 +10,8 @@ export interface UserProfile {
   position?: string
   website?: string
   socialLinks?: Record<string, string>
-  createdAt: string
-  updatedAt: string
+  createdAt: TDateTime
+  updatedAt: TDateTime
 }
 
 export interface UserPreference {
@@ -23,8 +25,8 @@ export interface UserPreference {
   isProfilePublic: boolean
   fieldVisibility?: Record<string, boolean>
   visibilityPerTenant?: Record<string, Record<string, boolean>>
-  createdAt: string
-  updatedAt: string
+  createdAt: TDateTime
+  updatedAt: TDateTime
 }
 
 export interface UserTableSetting {
@@ -35,8 +37,8 @@ export interface UserTableSetting {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   config: Record<string, any>
   isDefault: boolean
-  createdAt: string
-  updatedAt: string
+  createdAt: TDateTime
+  updatedAt: TDateTime
 }
 
 export interface NotificationSetting {
@@ -45,8 +47,8 @@ export interface NotificationSetting {
   channel: string
   settingKey: string
   enabled: boolean
-  createdAt: string
-  updatedAt: string
+  createdAt: TDateTime
+  updatedAt: TDateTime
 }
 
 export interface TrustedDevice {
@@ -57,11 +59,11 @@ export interface TrustedDevice {
   browser: string
   os: string
   location?: string
-  lastActiveAt: string
+  lastActiveAt: TDateTime
   ipAddress: string
   trustedUntil?: string
-  createdAt: string
-  updatedAt: string
+  createdAt: TDateTime
+  updatedAt: TDateTime
 }
 
 export interface SecurityEvent {
@@ -69,8 +71,8 @@ export interface SecurityEvent {
   userId: string
   eventType: string
   ipAddress: string
-  createdAt: string
-  updatedAt: string
+  createdAt: TDateTime
+  updatedAt: TDateTime
 }
 
 // Request/Response types
@@ -78,7 +80,7 @@ export interface UpdateProfileRequest {
   avatarUrl?: string
   bio?: string
   location?: string
-  birthDate?: string
+  birthDate?: TDate
   position?: string
   website?: string
   socialLinks?: Record<string, string>

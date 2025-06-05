@@ -1,3 +1,4 @@
+import type { TDateTime } from '@/domains/shared/types/common'
 import type { IUserPreview } from '@/domains/user/types/user.type'
 
 export interface IChatMessage {
@@ -7,8 +8,8 @@ export interface IChatMessage {
   user?: IUserPreview
   content: string
   parentId?: string
-  createdAt: string
-  editedAt?: string
+  createdAt: TDateTime
+  editedAt?: TDateTime
 }
 
 export interface IMessageSentEvent {
