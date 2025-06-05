@@ -81,7 +81,7 @@ onMounted(async () => {
 
 <template>
   <div class="flex flex-col gap-2 border rounded-md p-4 shadow-lg/5">
-    <TenantSectionTitle :title="$t('tenant.branding.title')" />
+    <TenantSectionTitle :title="t('tenant.branding.title')" />
 
     <form class="grid grid-cols-1 gap-4 mt-4" :class="{ 'opacity-50': isSubmitting }" @submit.prevent="submit">
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">

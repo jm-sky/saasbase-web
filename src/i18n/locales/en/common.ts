@@ -9,6 +9,8 @@ export const common = {
   download: 'Download',
   reset: 'Reset',
   save: 'Save',
+  yes: 'Yes',
+  no: 'No',
   loading: 'Loading...',
   refresh: 'Refresh',
   or: 'or',

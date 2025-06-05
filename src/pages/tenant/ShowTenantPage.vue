@@ -132,6 +132,13 @@ onMounted(async () => {
           {{ $t('tenant.billing.title') }}
         </RouterLink>
         <RouterLink
+          :to="`/tenants/${tenantId}/show/integrations`"
+          class="border-b-2 border-transparent hover:border-muted-foreground px-2 py-1"
+          exact-active-class="text-primary border-primary!"
+        >
+          {{ $t('tenant.integrations.title') }}
+        </RouterLink>
+        <RouterLink
           :to="`/tenants/${tenantId}/show/settings`"
           class="border-b-2 border-transparent hover:border-muted-foreground px-2 py-1"
           exact-active-class="text-primary border-primary!"

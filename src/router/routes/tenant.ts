@@ -36,6 +36,11 @@ export const tenantRoutes: RouteRecordRaw[] = [
         component: () => import('@/pages/tenant/ShowTenantPage/TenantBrandingPage.vue'),
       },
       {
+        path: 'integrations',
+        name: 'tenant.show.integrations',
+        component: () => import('@/pages/tenant/ShowTenantPage/TenantIntegrationsPage.vue'),
+      },
+      {
         path: 'public-profile',
         name: 'tenant.show.public-profile',
         component: () => import('@/pages/tenant/ShowTenantPage/TenantPublicProfilePage.vue'),

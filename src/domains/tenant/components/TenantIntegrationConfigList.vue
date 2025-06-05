@@ -8,7 +8,8 @@ import {
   Database,
   Network
 } from 'lucide-vue-next'
-import { ref } from 'vue'
+import { type Component, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { z } from 'zod'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
@@ -21,7 +22,18 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 
-const integrations = [
+const { t } = useI18n()
+
+interface Integration {
+  id: string
+  name: string
+  description: string
+  icon: Component
+  fields: { name: string; label: string; type: string }[]
+  disabled?: boolean
+}
+
+const integrations: Integration[] = [
   {
     id: 'azure_ai',
     name: 'Azure Intelligence Studio',
@@ -63,7 +75,8 @@ const integrations = [
     fields: [
       { name: 'client_id', label: 'Client ID', type: 'text' },
       { name: 'client_secret', label: 'Client Secret', type: 'password' }
-    ]
+    ],
+    disabled: true
   },
   {
     id: 'microsoft_calendar',
@@ -74,7 +87,8 @@ const integrations = [
       { name: 'client_id', label: 'Client ID', type: 'text' },
       { name: 'client_secret', label: 'Client Secret', type: 'password' },
       { name: 'tenant_id', label: 'Tenant ID', type: 'text' }
-    ]
+    ],
+    disabled: true
   },
   {
     id: 'jira',
@@ -85,7 +99,8 @@ const integrations = [
       { name: 'domain', label: 'JIRA Domain', type: 'text' },
       { name: 'email', label: 'User Email', type: 'email' },
       { name: 'api_token', label: 'API Token', type: 'password' }
-    ]
+    ],
+    disabled: true
   }
 ]
 
@@ -115,7 +130,12 @@ function onSubmit(integrationId: string) {
 
 <template>
   <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-    <Card v-for="integration in integrations" :key="integration.id" class="p-4 space-y-4">
+    <Card
+      v-for="integration in integrations"
+      :key="integration.id"
+      class="p-4 space-y-4"
+      :class="{ 'opacity-50 pointer-events-none bg-muted/50': integration.disabled }"
+    >
       <div class="flex items-center space-x-3">
         <component :is="integration.icon" class="w-6 h-6 text-primary" />
         <h2 class="text-lg font-semibold">
@@ -138,8 +158,8 @@ function onSubmit(integrationId: string) {
               </FormItem>
             </FormField>
           </div>
-          <Button type="submit">
-            Save
+          <Button type="submit" :disabled="integration.disabled">
+            {{ t('common.save') }}
           </Button>
         </div>
       </Form>

@@ -126,6 +126,9 @@ export const tenant = {
       emailHeaderImage: 'Obraz nagłówka email'
     }
   },
+  integrations: {
+    title: 'Integracje',
+  },
   billing: {
     title: 'Rozliczenia',
     overview: {

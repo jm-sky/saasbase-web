@@ -170,6 +170,9 @@ export const tenant = {
       }
     }
   },
+  integrations: {
+    title: 'Integrations',
+  },
   settings: {
     title: 'Settings',
     fields: {

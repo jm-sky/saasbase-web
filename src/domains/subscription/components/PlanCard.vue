@@ -39,7 +39,7 @@ const isFree = computed(() => plan.prices.length === 0)
 <template>
   <Card
     class="card relative shadow-md"
-    :class="{ 'border-primary': plan.isActive }"
+    :class="{ 'border-primary': plan.isCurrent }"
   >
     <CardContent class="p-5 flex flex-col h-full">
       <!-- Plan Header -->
@@ -67,8 +67,14 @@ const isFree = computed(() => plan.prices.length === 0)
         >
           <div class="flex items-center gap-2">
             <Icon
+              v-if="feature.value"
               icon="heroicons:check"
               class="size-5 text-success flex-shrink-0"
+            />
+            <Icon
+              v-else
+              icon="heroicons:x-mark"
+              class="size-5 text-destructive flex-shrink-0"
             />
             <span class="font-medium">
               {{ t(`subscription.features.type.${feature.name}`) }}
@@ -76,7 +82,7 @@ const isFree = computed(() => plan.prices.length === 0)
           </div>
           <div class="text-muted-foreground text-right px-2">
             <template v-if="feature.type === 'boolean'">
-              {{ feature.value ? 'Yes' : 'No' }}
+              {{ feature.value ? t('common.yes') : t('common.no') }}
             </template>
             <template v-else>
               {{ feature.value }}
@@ -88,11 +94,11 @@ const isFree = computed(() => plan.prices.length === 0)
       <!-- Action Button -->
       <Button
         class="w-full mt-auto mb-0"
-        :variant="plan.isActive ? 'outline' : 'default'"
-        :disabled="plan.isActive || loading || (!isFree && !price)"
+        :variant="plan.isCurrent ? 'outline' : 'default'"
+        :disabled="plan.isCurrent || loading || (!isFree && !price)"
         @click="emit('select', plan)"
       >
-        {{ plan.isActive ? 'Current Plan' : 'Select Plan' }}
+        {{ plan.isCurrent ? t('subscription.currentPlan') : t('subscription.selectPlan') }}
       </Button>
     </CardContent>
   </Card>
