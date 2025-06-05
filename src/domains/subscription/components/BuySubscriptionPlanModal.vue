@@ -49,8 +49,8 @@ async function redirectToCheckout() {
       planId: plan.id,
       priceId: price.id,
       billableType: 'tenant',
-      successUrl: `${window.location.origin}/billing/checkout/success`,
-      cancelUrl: `${window.location.origin}/billing/checkout/cancel`
+      successUrl: `${window.location.origin}/billing/checkout/success?source_path=${window.location.pathname}`,
+      cancelUrl: `${window.location.origin}/billing/checkout/cancel?source_path=${window.location.pathname}`,
     })
 
     await stripe.redirectToCheckout({ sessionId: response.data.sessionId })
@@ -101,7 +101,7 @@ onMounted(async () => {
         >
           {{ loading ? t('subscription.checkout.redirecting') : t('subscription.checkout.button') }}
         </Button>
-        <div v-if="error" class="mt-2 text-sm text-destructive">
+        <div v-if="error" class="mt-2 text-sm text-destructive whitespace-nowrap">
           <UIIcon icon="lucide:alert-circle" />
           {{ error }}
         </div>
