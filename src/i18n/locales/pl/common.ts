@@ -21,6 +21,7 @@ export const common = {
   createdAt: 'Utworzono',
   tags: 'Tagi',
   themeColor: 'Kolor motywu',
+  secondsLeft: 'sekund pozostało',
   copyToClipboard: {
     copy: 'Kopiuj',
     copied: 'Skopiowano',
@@ -44,5 +45,10 @@ export const common = {
   feature: {
     locked: 'Funkcja zablokowana',
     commingSoon: 'Funkcja wkrótce'
+  },
+  error404: {
+    title: 'Strona nie znaleziona',
+    description: 'Przepraszamy, nie udało się znaleźć strony, której szukasz.',
+    goBackHome: 'Wróć do strony głównej'
   }
 }

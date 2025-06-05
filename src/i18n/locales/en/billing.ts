@@ -15,7 +15,7 @@ export const billing = {
       title: 'Checkout Success',
       description: 'Your subscription has been successfully purchased.',
     },
-    cancelled: {
+    cancel: {
       title: 'Checkout Cancelled',
       description: 'Your subscription has been cancelled.',
     },

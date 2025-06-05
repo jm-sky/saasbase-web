@@ -21,6 +21,7 @@ export const common = {
   createdAt: 'Created at',
   tags: 'Tags',
   themeColor: 'Theme color',
+  secondsLeft: 'seconds left',
   copyToClipboard: {
     copy: 'Copy',
     copied: 'Copied',
@@ -44,5 +45,10 @@ export const common = {
   feature: {
     locked: 'Feature locked',
     commingSoon: 'Feature coming soon'
+  },
+  error404: {
+    title: 'Page not found',
+    description: 'Sorry, we couldn’t find the page you’re looking for.',
+    goBackHome: 'Go back home'
   }
 }
