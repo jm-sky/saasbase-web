@@ -1,5 +1,7 @@
 export const common = {
   actions: 'Actions',
+  active: 'Active',
+  inactive: 'Inactive',
   add: 'Add',
   back: 'Back',
   edit: 'Edit',
