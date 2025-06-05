@@ -66,7 +66,7 @@ const loadTenantPublicProfile = async () => {
       address: tenantPublicProfile.value.address,
     })
   } catch (error) {
-    handleErrorWithToast('tenant.publicProfile.show.error', error)
+    handleErrorWithToast(t('tenant.publicProfile.show.error'), error)
   } finally {
     loading.value = false
   }
