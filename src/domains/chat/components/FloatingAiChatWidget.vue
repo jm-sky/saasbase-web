@@ -125,6 +125,8 @@ const stopSendingMessage = async () => {
   }
 }
 
+const isLastAiMessage = (msg: IChatMessage) => msg.id === currentAiMessage.value.id
+
 const onOpened = () => {
   joinRoom()
 }
@@ -154,7 +156,7 @@ const onOpened = () => {
           <ChatBubbleAvatar :src="msg.user?.avatarUrl" :fallback="initials(msg.user?.name)" :title="msg.user?.name" />
           <ChatBubbleMessage :variant="msg.getVariant(authStore.user?.id ?? '')" :created-at="msg.createdAt">
             {{ msg.content }}
-            <div v-if="!msg.content && msg.id === currentAiMessage.id" class="flex items-center gap-2 opacity-50 text-xs">
+            <div v-if="(isSendingMessage && isLastAiMessage(msg)) || (!msg.content && isLastAiMessage(msg))" class="flex items-center gap-2 opacity-50 text-xs">
               <LoadingIcon class="size-4" />
               {{ t('common.loading') }}
             </div>
@@ -168,7 +170,7 @@ const onOpened = () => {
         <ChatInput
           v-model="message"
           :disabled="isSendingMessage"
-          class="min-h-12 bg-background shadow-none"
+          class="min-h-12 bg-background shadow-none pr-10"
           @keydown.enter="sendMessage"
         />
         <Button
