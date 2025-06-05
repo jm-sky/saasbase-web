@@ -45,12 +45,13 @@ async function redirectToCheckout() {
       throw new Error('Stripe failed to initialize.')
     }
 
+    const encodedSourcePath = encodeURIComponent(window.location.pathname)
     const response = await subscriptionService.createCheckoutSession({
       planId: plan.id,
       priceId: price.id,
       billableType: 'tenant',
-      successUrl: `${window.location.origin}/billing/checkout/success?source_path=${window.location.pathname}`,
-      cancelUrl: `${window.location.origin}/billing/checkout/cancel?source_path=${window.location.pathname}`,
+      successUrl: `${window.location.origin}/billing/checkout/success?source_path=${encodedSourcePath}`,
+      cancelUrl: `${window.location.origin}/billing/checkout/cancel?source_path=${encodedSourcePath}`,
     })
 
     await stripe.redirectToCheckout({ sessionId: response.data.sessionId })
