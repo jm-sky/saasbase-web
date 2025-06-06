@@ -2,7 +2,6 @@
 import { toTypedSchema } from '@vee-validate/zod'
 import { useForm } from 'vee-validate'
 import { computed, ref } from 'vue'
-import { useRouter } from 'vue-router'
 import { z } from 'zod'
 import Accordion from '@/components/ui/accordion/Accordion.vue'
 import AccordionContent from '@/components/ui/accordion/AccordionContent.vue'
@@ -12,11 +11,11 @@ import Button from '@/components/ui/button/Button.vue'
 import Input from '@/components/ui/input/Input.vue'
 import { tenantService } from '@/domains/tenant/services/TenantService'
 import CompanyLookupButton from '@/domains/utils/components/CompanyLookupButton.vue'
+import IbanLookupButton from '@/domains/utils/components/IbanLookupButton.vue'
 import GuestLayout from '@/layouts/GuestLayout.vue'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
+import type { IIbanInfo } from '@/domains/utils/services/IbanInfoService'
 import type { ICompanyLookupResponse } from '@/domains/utils/types/companyLookup.type'
-
-const router = useRouter()
 
 const schema = z.object({
   country: z.string().min(2),
@@ -39,11 +38,11 @@ const schema = z.object({
   bankAccount: z.object({
     iban: z.string().min(10),
     bankName: z.string().min(2),
-    swift_code: z.string().optional(),
+    swift: z.string().optional(),
   }),
 })
 
-const { isSubmitting, handleSubmit, values, setFieldValue, setValues, setErrors } = useForm({
+const { isSubmitting, handleSubmit, values, setValues, setFieldValue } = useForm({
   validationSchema: toTypedSchema(schema),
   initialValues: {
     country: 'PL',
@@ -66,15 +65,27 @@ const { isSubmitting, handleSubmit, values, setFieldValue, setValues, setErrors 
     bankAccount: {
       iban: '',
       bankName: '',
-      swift_code: '',
+      swift: '',
     },
   },
 })
 
-const openSection = ref(['company']) // Accordion expects array for multiple, string for single
+const openSection = ref(['company'])
 
 const isCompanySectionFilled = computed(() => {
   return values.country && values.name && values.name.length > 1
+})
+
+const isOtherDetailsSectionFilled = computed(() => {
+  return values.email && values.phone && values.website && values.description
+})
+
+const isAddressSectionFilled = computed(() => {
+  return values.address?.street && values.address.postalCode && values.address.city && values.address.country
+})
+
+const isBankSectionFilled = computed(() => {
+  return values.bankAccount?.iban && values.bankAccount.bankName
 })
 
 const companySectionTitle = computed(() => {
@@ -84,6 +95,27 @@ const companySectionTitle = computed(() => {
   return 'Company Info'
 })
 
+const otherDetailsSectionTitle = computed(() => {
+  if (isOtherDetailsSectionFilled.value) {
+    return `${values.email}, ${values.phone}, ${values.website}`
+  }
+  return 'Other Details'
+})
+
+const addressSectionTitle = computed(() => {
+  if (isAddressSectionFilled.value) {
+    return `${values.address?.street}, ${values.address?.city}, ${values.address?.postalCode}`
+  }
+  return 'Address'
+})
+
+const bankSectionTitle = computed(() => {
+  if (isBankSectionFilled.value) {
+    return `${values.bankAccount?.iban} (${values.bankAccount?.bankName})`
+  }
+  return 'Bank Account'
+})
+
 const onCompanyLookup = (company: ICompanyLookupResponse) => {
   setValues({
     country: company.country,
@@ -91,6 +123,20 @@ const onCompanyLookup = (company: ICompanyLookupResponse) => {
     name: company.name,
     // ...other fields for later sections
   })
+}
+
+const onIbanLookup = (ibanInfo: IIbanInfo) => {
+  setValues({
+    bankAccount: {
+      iban: ibanInfo.iban,
+      bankName: ibanInfo.bankName,
+      swift: ibanInfo.swift,
+    },
+  })
+}
+
+const goToSection = (section: string) => {
+  openSection.value = [section]
 }
 
 const onSubmit = handleSubmit(async (formData) => {
@@ -135,9 +181,132 @@ const onSubmit = handleSubmit(async (formData) => {
                   <Input v-model="values.name" />
                 </div>
                 <div class="pt-2 text-right">
-                  <Button type="button" :disabled="!isCompanySectionFilled" @click="openSection = []">
+                  <Button type="button" :disabled="!isCompanySectionFilled" @click="goToSection('other')">
                     Next
                   </Button>
+                </div>
+              </div>
+            </AccordionContent>
+          </AccordionItem>
+          <AccordionItem value="other">
+            <AccordionTrigger>
+              <span :class="isOtherDetailsSectionFilled ? 'text-green-600 font-semibold' : ''">
+                {{ otherDetailsSectionTitle }}
+              </span>
+            </AccordionTrigger>
+            <AccordionContent>
+              <div class="space-y-4 py-4">
+                <div>
+                  <label class="block text-sm font-medium mb-1">Email</label>
+                  <Input v-model="values.email" />
+                </div>
+                <div>
+                  <label class="block text-sm font-medium mb-1">Phone</label>
+                  <Input v-model="values.phone" />
+                </div>
+                <div>
+                  <label class="block text-sm font-medium mb-1">Website</label>
+                  <Input v-model="values.website" />
+                </div>
+                <div>
+                  <label class="block text-sm font-medium mb-1">Description</label>
+                  <Input v-model="values.description" />
+                </div>
+                <div class="pt-2 text-right">
+                  <Button type="button" :disabled="!isOtherDetailsSectionFilled" @click="goToSection('address')">
+                    Next
+                  </Button>
+                </div>
+              </div>
+            </AccordionContent>
+          </AccordionItem>
+          <AccordionItem value="address">
+            <AccordionTrigger>
+              <span :class="isAddressSectionFilled ? 'text-green-600 font-semibold' : ''">
+                {{ addressSectionTitle }}
+              </span>
+            </AccordionTrigger>
+            <AccordionContent>
+              <div class="space-y-4 py-4">
+                <div>
+                  <label class="block text-sm font-medium mb-1">Street</label>
+                  <Input
+                    :model-value="values.address?.street"
+                    @update:model-value="setFieldValue('address.street', $event as string)"
+                  />
+                </div>
+                <div>
+                  <label class="block text-sm font-medium mb-1">Postal Code</label>
+                  <Input
+                    :model-value="values.address?.postalCode"
+                    @update:model-value="setFieldValue('address.postalCode', $event as string)"
+                  />
+                </div>
+                <div>
+                  <label class="block text-sm font-medium mb-1">City</label>
+                  <Input
+                    :model-value="values.address?.city"
+                    @update:model-value="setFieldValue('address.city', $event as string)"
+                  />
+                </div>
+                <div>
+                  <label class="block text-sm font-medium mb-1">Region</label>
+                  <Input
+                    :model-value="values.address?.region"
+                    @update:model-value="setFieldValue('address.region', $event as string)"
+                  />
+                </div>
+                <div>
+                  <label class="block text-sm font-medium mb-1">Country</label>
+                  <Input
+                    :model-value="values.address?.country"
+                    @update:model-value="setFieldValue('address.country', $event as string)"
+                  />
+                </div>
+                <div class="pt-2 text-right">
+                  <Button type="button" :disabled="!isAddressSectionFilled" @click="goToSection('bank')">
+                    Next
+                  </Button>
+                </div>
+              </div>
+            </AccordionContent>
+          </AccordionItem>
+          <AccordionItem value="bank">
+            <AccordionTrigger>
+              <span :class="isBankSectionFilled ? 'text-green-600 font-semibold' : ''">
+                {{ bankSectionTitle }}
+              </span>
+            </AccordionTrigger>
+            <AccordionContent>
+              <div class="space-y-4 py-4">
+                <div>
+                  <label class="block text-sm font-medium mb-1">Account Number (IBAN)</label>
+                  <div class="flex flex-row gap-2 items-center grow">
+                    <Input
+                      :model-value="values.bankAccount?.iban"
+                      @update:model-value="setFieldValue('bankAccount.iban', $event as string)"
+                    />
+                    <IbanLookupButton
+                      :iban="values.bankAccount?.iban"
+                      :country="values.country"
+                      class="h-9"
+                      @lookup="onIbanLookup"
+                    />
+                  </div>
+                </div>
+                <div>
+                  <label class="block text-sm font-medium mb-1">Bank Name</label>
+                  <Input
+                    :model-value="values.bankAccount?.bankName"
+                    @update:model-value="setFieldValue('bankAccount.bankName', $event as string)"
+                  />
+                </div>
+                <div>
+                  <label class="block text-sm font-medium mb-1">SWIFT Code</label>
+                  <Input
+                    :model-value="values.bankAccount?.swift"
+                    @update:model-value="setFieldValue('bankAccount.swift', $event as string)"
+                  />
                 </div>
               </div>
             </AccordionContent>
