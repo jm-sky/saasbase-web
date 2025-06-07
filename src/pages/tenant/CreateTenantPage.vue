@@ -3,11 +3,17 @@ import { toTypedSchema } from '@vee-validate/zod'
 import { useForm } from 'vee-validate'
 import { computed, ref } from 'vue'
 import { z } from 'zod'
+import CountryPicker from '@/components/Inputs/CountryPicker.vue'
 import Accordion from '@/components/ui/accordion/Accordion.vue'
 import AccordionContent from '@/components/ui/accordion/AccordionContent.vue'
 import AccordionItem from '@/components/ui/accordion/AccordionItem.vue'
 import AccordionTrigger from '@/components/ui/accordion/AccordionTrigger.vue'
 import Button from '@/components/ui/button/Button.vue'
+import { FormField } from '@/components/ui/form'
+import FormControl from '@/components/ui/form/FormControl.vue'
+import FormItem from '@/components/ui/form/FormItem.vue'
+import FormLabel from '@/components/ui/form/FormLabel.vue'
+import FormMessage from '@/components/ui/form/FormMessage.vue'
 import Input from '@/components/ui/input/Input.vue'
 import { tenantService } from '@/domains/tenant/services/TenantService'
 import CompanyLookupButton from '@/domains/utils/components/CompanyLookupButton.vue'
@@ -151,35 +157,60 @@ const onSubmit = handleSubmit(async (formData) => {
 
 <template>
   <GuestLayout>
-    <div class="max-w-md mx-auto p-6">
+    <div class="max-w-3xl mx-auto p-6">
       <h1 class="text-2xl font-bold mb-6 text-center">
         Create your company
       </h1>
       <form @submit.prevent="onSubmit">
         <Accordion v-model="openSection" type="single" collapsible>
           <AccordionItem value="company">
-            <AccordionTrigger>
+            <AccordionTrigger class="border bg-white/50 dark:bg-black/50 px-4 -mx-4">
               <span :class="isCompanySectionFilled ? 'text-green-600 font-semibold' : ''">
                 {{ companySectionTitle }}
               </span>
             </AccordionTrigger>
             <AccordionContent>
-              <div class="space-y-4 py-4">
-                <div>
-                  <label class="block text-sm font-medium mb-1">Country</label>
-                  <Input v-model="values.country" />
+              <div class="flex flex-col gap-2 py-2">
+                <div class="grid grid-cols-[4rem_1fr] gap-4">
+                  <FormField v-slot="{ componentField }" name="country">
+                    <FormItem>
+                      <FormLabel>Country</FormLabel>
+                      <FormControl>
+                        <CountryPicker
+                          v-bind="componentField"
+                          :model-value="values.country"
+                          class="bg-white/50 dark:bg-black/50"
+                          @update:model-value="setFieldValue('country', $event as string)"
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  </FormField>
+
+                  <FormField v-slot="{ componentField }" name="vatId">
+                    <FormItem>
+                      <FormLabel>VAT ID</FormLabel>
+                      <FormControl>
+                        <Input v-bind="componentField" class="bg-white/50 dark:bg-black/50" />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  </FormField>
                 </div>
-                <div>
-                  <label class="block text-sm font-medium mb-1">VAT ID</label>
-                  <div class="flex gap-2 items-center">
-                    <Input v-model="values.vat_id" />
-                    <CompanyLookupButton :country="values.country" :vat-id="values.vat_id" @lookup="onCompanyLookup" />
-                  </div>
-                </div>
-                <div>
-                  <label class="block text-sm font-medium mb-1">Company Name</label>
-                  <Input v-model="values.name" />
-                </div>
+
+                <FormField v-slot="{ componentField }" name="name">
+                  <FormItem>
+                    <FormLabel>Company Name</FormLabel>
+                    <FormControl>
+                      <div class="flex gap-2 items-center">
+                        <Input v-bind="componentField" class="bg-white/50 dark:bg-black/50" />
+                        <CompanyLookupButton :country="values.country" :vat-id="values.vat_id" @lookup="onCompanyLookup" />
+                      </div>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                </FormField>
+
                 <div class="pt-2 text-right">
                   <Button type="button" :disabled="!isCompanySectionFilled" @click="goToSection('other')">
                     Next
@@ -189,7 +220,7 @@ const onSubmit = handleSubmit(async (formData) => {
             </AccordionContent>
           </AccordionItem>
           <AccordionItem value="other">
-            <AccordionTrigger>
+            <AccordionTrigger class="border bg-white/50 dark:bg-black/50 px-4 -mx-4">
               <span :class="isOtherDetailsSectionFilled ? 'text-green-600 font-semibold' : ''">
                 {{ otherDetailsSectionTitle }}
               </span>
@@ -221,7 +252,7 @@ const onSubmit = handleSubmit(async (formData) => {
             </AccordionContent>
           </AccordionItem>
           <AccordionItem value="address">
-            <AccordionTrigger>
+            <AccordionTrigger class="border bg-white/50 dark:bg-black/50 px-4 -mx-4">
               <span :class="isAddressSectionFilled ? 'text-green-600 font-semibold' : ''">
                 {{ addressSectionTitle }}
               </span>
@@ -272,7 +303,7 @@ const onSubmit = handleSubmit(async (formData) => {
             </AccordionContent>
           </AccordionItem>
           <AccordionItem value="bank">
-            <AccordionTrigger>
+            <AccordionTrigger class="border bg-white/50 dark:bg-black/50 px-4 -mx-4">
               <span :class="isBankSectionFilled ? 'text-green-600 font-semibold' : ''">
                 {{ bankSectionTitle }}
               </span>

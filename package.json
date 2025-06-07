@@ -50,6 +50,7 @@
     "pusher-js": "^8.4.0",
     "qrcode": "^1.5.4",
     "radix-vue": "^1.9.17",
+    "recaptcha-v3": "^1.11.3",
     "reka-ui": "^2.2.0",
     "turndown": "^7.2.0",
     "uuid": "^9.0.1",

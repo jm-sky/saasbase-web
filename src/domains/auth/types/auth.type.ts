@@ -2,6 +2,7 @@ export interface Credentials {
   email: string
   password: string
   remember?: boolean
+  recaptchaToken?: string
 }
 
 export interface ResetPasswordData {

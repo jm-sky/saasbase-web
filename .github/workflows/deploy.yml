@@ -52,6 +52,7 @@ jobs:
           VITE_PUSHER_HOST: ${{ secrets.VITE_PUSHER_HOST }}
           VITE_PUSHER_PORT: 443
           VITE_PUSHER_SCHEME: https
+          VITE_RECAPCHA_KEY: ${{ vars.VITE_RECAPCHA_KEY }}
           VITE_STRIPE_PUBLISHABLE_KEY: ${{ vars.VITE_STRIPE_PUBLISHABLE_KEY }}
 
       - name: Upload dist as artifact
