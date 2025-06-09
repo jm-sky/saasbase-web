@@ -8,20 +8,24 @@ import Input from '@/components/ui/input/Input.vue'
 import { useToast } from '@/components/ui/toast'
 import UIIcon from '@/components/UIIcon.vue'
 import { authService } from '@/domains/auth/services/authService'
-import { type ResetPasswordData } from '@/domains/auth/types/auth.type'
+import { type ForgotPasswordData } from '@/domains/auth/types/auth.type'
 import { resetPasswordSchema } from '@/domains/auth/validation/auth.schema'
+import { useRepatcha } from '@/domains/shared/composables/useRepatcha'
 import GuestLayout from '@/layouts/GuestLayout.vue'
 
 const router = useRouter()
 const { toast } = useToast()
 
-const { isSubmitting, handleSubmit } = useForm<ResetPasswordData>({
+const { isSubmitting, handleSubmit } = useForm<ForgotPasswordData>({
   validationSchema: resetPasswordSchema,
 })
 
 const onSubmit = handleSubmit(async (values) => {
   try {
-    await authService.resetPassword(values)
+    const token = await useRepatcha().getToken('forgot-password')
+    values.recaptchaToken = token
+
+    await authService.sendResetLinkEmail(values)
 
     await router.push('/')
 
