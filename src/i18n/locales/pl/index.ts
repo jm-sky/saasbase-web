@@ -9,6 +9,7 @@ import { common } from './common'
 import { components } from './components'
 import { contacts } from './contacts'
 import { contractor } from './contractor'
+import { country } from './country'
 import { dashboard } from './dashboard'
 import feed from './feed'
 import { invitation } from './invitation'
@@ -34,6 +35,7 @@ export const pl = {
   comments,
   components,
   contacts,
+  country,
   dashboard,
   feed,
   notifications,

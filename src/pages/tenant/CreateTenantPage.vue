@@ -1,8 +1,7 @@
 <script setup lang="ts">
-import { toTypedSchema } from '@vee-validate/zod'
 import { useForm } from 'vee-validate'
 import { computed, ref } from 'vue'
-import { z } from 'zod'
+import { useI18n } from 'vue-i18n'
 import CountryPicker from '@/components/Inputs/CountryPicker.vue'
 import Accordion from '@/components/ui/accordion/Accordion.vue'
 import AccordionContent from '@/components/ui/accordion/AccordionContent.vue'
@@ -16,6 +15,7 @@ import FormLabel from '@/components/ui/form/FormLabel.vue'
 import FormMessage from '@/components/ui/form/FormMessage.vue'
 import Input from '@/components/ui/input/Input.vue'
 import { tenantService } from '@/domains/tenant/services/TenantService'
+import { tenantCreateSchema } from '@/domains/tenant/validation/tenant.schema'
 import CompanyLookupButton from '@/domains/utils/components/CompanyLookupButton.vue'
 import IbanLookupButton from '@/domains/utils/components/IbanLookupButton.vue'
 import GuestLayout from '@/layouts/GuestLayout.vue'
@@ -23,36 +23,13 @@ import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
 import type { IIbanInfo } from '@/domains/utils/services/IbanInfoService'
 import type { ICompanyLookupResponse } from '@/domains/utils/types/companyLookup.type'
 
-const schema = z.object({
-  country: z.string().min(2),
-  vat_id: z.string().optional(),
-  name: z.string().min(2),
-  slug: z.string().optional(),
-  regon: z.string().optional(),
-  tax_id: z.string().optional(),
-  email: z.string().email().optional(),
-  phone: z.string().optional(),
-  website: z.string().url().optional(),
-  description: z.string().optional(),
-  address: z.object({
-    street: z.string().min(1),
-    postalCode: z.string().min(1),
-    city: z.string().min(1),
-    region: z.string().optional(),
-    country: z.string().min(2),
-  }),
-  bankAccount: z.object({
-    iban: z.string().min(10),
-    bankName: z.string().min(2),
-    swift: z.string().optional(),
-  }),
-})
+const { t } = useI18n()
 
 const { isSubmitting, handleSubmit, values, setValues, setFieldValue } = useForm({
-  validationSchema: toTypedSchema(schema),
+  validationSchema: tenantCreateSchema,
   initialValues: {
     country: 'PL',
-    vat_id: '',
+    vatId: '',
     name: '',
     slug: '',
     regon: '',
@@ -96,36 +73,36 @@ const isBankSectionFilled = computed(() => {
 
 const companySectionTitle = computed(() => {
   if (isCompanySectionFilled.value) {
-    return `${values.name} (${values.country}${values.vat_id ? ', VAT: ' + values.vat_id : ''})`
+    return `${values.name} (${values.country}${values.vatId ? `, VAT: ${values.vatId}` : ''})`
   }
-  return 'Company Info'
+  return t('tenant.create.companyInfo')
 })
 
 const otherDetailsSectionTitle = computed(() => {
   if (isOtherDetailsSectionFilled.value) {
     return `${values.email}, ${values.phone}, ${values.website}`
   }
-  return 'Other Details'
+  return t('tenant.create.otherDetails')
 })
 
 const addressSectionTitle = computed(() => {
   if (isAddressSectionFilled.value) {
     return `${values.address?.street}, ${values.address?.city}, ${values.address?.postalCode}`
   }
-  return 'Address'
+  return t('tenant.create.address')
 })
 
 const bankSectionTitle = computed(() => {
   if (isBankSectionFilled.value) {
     return `${values.bankAccount?.iban} (${values.bankAccount?.bankName})`
   }
-  return 'Bank Account'
+  return t('tenant.create.bankAccount')
 })
 
 const onCompanyLookup = (company: ICompanyLookupResponse) => {
   setValues({
     country: company.country,
-    vat_id: company.vatId ?? '',
+    vatId: company.vatId ?? '',
     name: company.name,
     // ...other fields for later sections
   })
@@ -174,7 +151,7 @@ const onSubmit = handleSubmit(async (formData) => {
                 <div class="grid grid-cols-[4rem_1fr] gap-4">
                   <FormField v-slot="{ componentField }" name="country">
                     <FormItem>
-                      <FormLabel>Country</FormLabel>
+                      <FormLabel>{{ t('tenant.fields.country') }}</FormLabel>
                       <FormControl>
                         <CountryPicker
                           v-bind="componentField"
@@ -189,7 +166,7 @@ const onSubmit = handleSubmit(async (formData) => {
 
                   <FormField v-slot="{ componentField }" name="vatId">
                     <FormItem>
-                      <FormLabel>VAT ID</FormLabel>
+                      <FormLabel>{{ t('tenant.fields.vatId') }}</FormLabel>
                       <FormControl>
                         <Input v-bind="componentField" class="bg-white/50 dark:bg-black/50" />
                       </FormControl>
@@ -200,11 +177,11 @@ const onSubmit = handleSubmit(async (formData) => {
 
                 <FormField v-slot="{ componentField }" name="name">
                   <FormItem>
-                    <FormLabel>Company Name</FormLabel>
+                    <FormLabel>{{ t('tenant.fields.name') }}</FormLabel>
                     <FormControl>
                       <div class="flex gap-2 items-center">
                         <Input v-bind="componentField" class="bg-white/50 dark:bg-black/50" />
-                        <CompanyLookupButton :country="values.country" :vat-id="values.vat_id" @lookup="onCompanyLookup" />
+                        <CompanyLookupButton :country="values.country" :vat-id="values.vatId" @lookup="onCompanyLookup" />
                       </div>
                     </FormControl>
                     <FormMessage />

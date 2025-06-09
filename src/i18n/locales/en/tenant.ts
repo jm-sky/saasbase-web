@@ -16,6 +16,12 @@ export const tenant = {
     updatedAt: 'Updated At',
     deletedAt: 'Deleted At',
   },
+  create: {
+    companyInfo: 'Company Info',
+    otherDetails: 'Other Details',
+    address: 'Address',
+    bankAccount: 'Bank Account',
+  },
   add: {
     title: 'Add Tenant',
     description: 'Add a new tenant to the system.',
@@ -187,9 +193,17 @@ export const tenant = {
   publicProfile: {
     title: 'Public Profile',
     fields: {
+      country: 'Country',
+      name: 'Name',
+      slug: 'Slug',
+      vatId: 'VAT ID',
+      regon: 'REGON',
+      taxId: 'Tax ID',
+      email: 'Email',
+      phone: 'Phone',
+      website: 'Website',
       visible: 'Visible',
       publicName: 'Public Name',
-      websiteUrl: 'Website URL',
       industry: 'Industry',
       locationCity: 'City',
       locationCountry: 'Country',
@@ -197,7 +211,10 @@ export const tenant = {
       publicLogo: 'Public Logo',
       bannerImage: 'Banner Image',
       socialLinks: 'Social Links',
-      address: 'Address'
+      address: 'Address',
+      createdAt: 'Created At',
+      updatedAt: 'Updated At',
+      deletedAt: 'Deleted At',
     },
     save: 'Save',
     show: {
