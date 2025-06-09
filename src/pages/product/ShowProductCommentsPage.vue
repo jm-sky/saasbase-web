@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import ProductCommentsList from '@/domains/product/components/comments/ProductCommentsList.vue'
-import type { IProduct } from '@/domains/product/models/product.model'
+import type { IProduct } from '@/domains/product/types/product.type'
 
 const { product } = defineProps<{
   product: IProduct

@@ -5,7 +5,7 @@ import CommentItem from '@/domains/comment/components/CommentItem.vue'
 import { productCommentsService } from '@/domains/product/services/ProductCommentsService'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
 import type { IComment } from '@/domains/comment/types/comment.type'
-import type { IProduct } from '@/domains/product/models/product.model'
+import type { IProduct } from '@/domains/product/types/product.type'
 
 const { t } = useI18n()
 

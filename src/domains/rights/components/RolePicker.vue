@@ -40,7 +40,7 @@ const loadRoles = async () => {
     roles.value = await roleService.list()
   } catch (err) {
     error.value = 'Failed to load roles'
-    console.error('[RoleLookup][loadRoles] error:', err)
+    console.error('[RolePicker][loadRoles] error:', err)
   } finally {
     loading.value = false
   }

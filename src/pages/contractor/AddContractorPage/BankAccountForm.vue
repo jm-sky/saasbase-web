@@ -22,8 +22,8 @@ const handleLookup = (ibanInfo: IIbanInfo) => {
 
 <template>
   <div class="grid grid-cols-1 md:grid-cols-2 gap-4 font-semibold mt-2 mb-2 border rounded-md p-4 bg-gray-50">
-    <div class="col-span-full text-sm text-muted-foreground mb-4">
-      Konto bankowe
+    <div class="col-span-full text-sm text-muted-foreground">
+      {{ t('bankAccounts.title') }}
     </div>
     <FormFieldLabeled
       v-slot="{ componentField }"

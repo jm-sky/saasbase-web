@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import ProductAttachmentsList from '@/domains/product/components/attachments/ProductAttachmentsList.vue'
-import type { IProduct } from '@/domains/product/models/product.model'
+import type { IProduct } from '@/domains/product/types/product.type'
 
 defineProps<{
   product?: IProduct

@@ -5,7 +5,7 @@ import ActivityLogList from '@/components/activity-log/ActivityLogList.vue'
 import { ProductActivityLogService } from '@/domains/product/services/ProductActivityLogService'
 import { type ProductActivityLog, ProductActivityType } from '@/domains/product/types/activity-log'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
-import type { IProduct } from '@/domains/product/models/product.model'
+import type { IProduct } from '@/domains/product/types/product.type'
 
 defineProps<{
   product?: IProduct

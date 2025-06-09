@@ -3,6 +3,7 @@ export const product = {
   productDetails: 'Szczegóły produktu',
   fields: {
     name: 'Nazwa',
+    type: 'Typ',
     description: 'Opis',
     price: 'Cena',
     unit: 'Jednostka',
@@ -12,6 +13,10 @@ export const product = {
     actions: 'Akcje',
     createdAt: 'Data utworzenia',
     updatedAt: 'Data aktualizacji',
+  },
+  type: {
+    product: 'Produkt',
+    service: 'Usługa',
   },
   show: {
     title: 'Produkt',
@@ -25,5 +30,14 @@ export const product = {
     success: 'Produkt usunięty pomyślnie',
     error: 'Nie udało się usunąć produktu',
     confirm: 'Czy na pewno chcesz usunąć ten produkt?'
+  },
+  overview: {
+    title: 'Przegląd',
+  },
+  comments: {
+    title: 'Komentarze',
+  },
+  logs: {
+    title: 'Logi',
   },
 }

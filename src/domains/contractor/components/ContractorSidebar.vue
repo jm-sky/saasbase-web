@@ -13,14 +13,14 @@ import { contractorLogoService } from '../services/ContractorLogoService'
 const { t } = useI18n()
 
 defineProps<{
-  contractorId: string
+  contractorId?: string
   contractor?: IContractor | null
+  disabled?: boolean
 }>()
 
 const emit = defineEmits<{
   refresh: []
 }>()
-
 </script>
 
 <template>
@@ -28,9 +28,9 @@ const emit = defineEmits<{
     :model-id="contractorId"
     :avatar-url="contractor?.logoUrl"
     :uploader-service="contractorLogoService"
-    :disabled="!contractor?.id"
     auto-upload
     size="lg"
+    :disabled
     @uploaded="emit('refresh')"
     @removed="emit('refresh')"
   />

@@ -10,13 +10,15 @@ import { Button } from '@/components/ui/button'
 import DeleteProductButton from '@/domains/product/components/DeleteProductButton.vue'
 import EditProductButton from '@/domains/product/components/EditProductButton.vue'
 import { type IProductFilters, productService } from '@/domains/product/services/ProductService'
+import { useProductStore } from '@/domains/product/stores/product.store'
 import AuthenticatedLayout from '@/layouts/AuthenticatedLayout.vue'
 import { toDateTimeString } from '@/lib/toDateTimeString'
 import type { ColumnDef } from '@tanstack/vue-table'
-import type { IProduct } from '@/domains/product/models/product.model'
+import type { IProduct } from '@/domains/product/types/product.type'
 import type { IResourceMeta } from '@/domains/shared/types/resource.type'
 
 const { t } = useI18n()
+const productStore = useProductStore()
 
 const products = ref<IProduct[]>([])
 const meta = ref<IResourceMeta>({
@@ -112,8 +114,8 @@ watch(filters, () => refresh(), { deep: true })
         </template>
         <template #actions="{ data }">
           <div class="flex gap-2 justify-end w-full whitespace-nowrap min-w-0">
-            <EditProductButton :id="data.id" />
-            <DeleteProductButton :id="data.id" />
+            <EditProductButton :id="data.id" @click="productStore.setProduct(data)" />
+            <DeleteProductButton :id="data.id" @deleted="refresh" />
           </div>
         </template>
         <template #actions-header>

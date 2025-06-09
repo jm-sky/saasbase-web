@@ -17,6 +17,7 @@ import { log } from './log'
 import { notifications } from './notifications'
 import { product } from './product'
 import { settings } from './settings'
+import { shared } from './shared'
 import { skills } from './skills'
 import { subscription } from './subscription'
 import { tenant } from './tenant'
@@ -59,6 +60,7 @@ export const en = {
     uploadFailed: 'Upload failed',
   },
   product,
+  shared,
   settings,
   subscription,
   skills,

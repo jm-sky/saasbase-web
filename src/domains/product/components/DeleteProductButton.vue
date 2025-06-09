@@ -16,12 +16,17 @@ const props = defineProps<{
 
 const loading = ref(false)
 
+const emit = defineEmits<{
+  deleted: [id: string]
+}>()
+
 const deleteProduct = async () => {
   if (!confirm(t('product.delete.confirm', 'Are you sure you want to delete this product?'))) return
   try {
     loading.value = true
     await productService.delete(props.id)
     loading.value = false
+    emit('deleted', props.id)
     toast.success(t('product.delete.success'))
   } catch (error) {
     loading.value = false

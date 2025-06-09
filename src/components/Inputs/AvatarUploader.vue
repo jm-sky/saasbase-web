@@ -14,7 +14,7 @@ interface UploaderService {
 const { t } = useI18n()
 
 const { modelId, autoUpload, avatarUrl, uploaderService, readonly, disabled } = defineProps<{
-  modelId: string
+  modelId?: string
   avatarUrl?: string
   fallbackText?: string
   disabled?: boolean
@@ -80,6 +80,7 @@ const upload = async () => {
   emit('upload', file.value)
 
   if (!uploaderService) return
+  if (!modelId) return
 
   try {
     isUploading.value = true
@@ -104,6 +105,7 @@ const removeFile = async () => {
 
   if (!avatarUrl) return
   if (!uploaderService) return
+  if (!modelId) return
 
   try {
     isRemoving.value = true

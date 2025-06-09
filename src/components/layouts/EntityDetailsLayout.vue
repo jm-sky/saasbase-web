@@ -68,7 +68,7 @@ const emit = defineEmits<{
 
       <!-- Main content -->
       <div class="flex flex-col gap-4">
-        <div class="flex flex-row items-center gap-2 font-semibold whitespace-nowrap overflow-x-auto">
+        <div v-if="$slots.tabs" class="flex flex-row items-center gap-2 font-semibold whitespace-nowrap overflow-x-auto">
           <slot name="tabs" />
         </div>
 
