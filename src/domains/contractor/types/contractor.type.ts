@@ -89,3 +89,10 @@ export interface IContractorCombinedCreate {
   }
   registryConfirmation?: ICompanyRegistryConfirmation
 }
+
+export interface IContractorUpdate{
+  contractor: IContractor
+  options: {
+    fetchLogo?: boolean
+  }
+}

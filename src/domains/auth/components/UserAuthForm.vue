@@ -123,10 +123,10 @@ const useAuthProviders = computed<boolean>(() => Object.values(config.auth.provi
 
           <div>
             <RouterLink
-              to="/password-forgot"
+              to="/forgot-password"
               class="text-sm font-medium text-muted-foreground hover:text-primary transition-colors"
             >
-              {{ t('auth.forgotPassword') }}
+              {{ t('auth.login.forgotPassword') }}
             </RouterLink>
           </div>
         </div>

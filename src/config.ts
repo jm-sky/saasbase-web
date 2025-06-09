@@ -45,6 +45,7 @@ export const config = {
   },
   api: {
     baseUrl: import.meta.env.VITE_API_URL ?? '/api/v1',
+    recaptchaKey: import.meta.env.VITE_RECAPTCHA_KEY ?? '',
     mockBackend: import.meta.env.VITE_API_MOCK === '1',
     logoutOnUnauthorized: false,
   },

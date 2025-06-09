@@ -12,6 +12,7 @@ import Input from '@/components/ui/input/Input.vue'
 import { useToast } from '@/components/ui/toast/use-toast'
 import { authService } from '@/domains/auth/services/authService'
 import { registrationSchema } from '@/domains/auth/validation/auth.schema'
+import { useRepatcha } from '@/domains/shared/composables/useRepatcha'
 import { useInvitation } from '@/domains/tenant/composables/useTenantInvitation'
 import GuestLayout from '@/layouts/GuestLayout.vue'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
@@ -37,6 +38,9 @@ const { isSubmitting, handleSubmit, setFieldValue, resetForm, setErrors } = useF
 
 const onSubmit = handleSubmit(async (values) => {
   try {
+    const token = await useRepatcha().getToken('register')
+    values.recaptchaToken = token
+
     await authService.register(values)
 
     toast({

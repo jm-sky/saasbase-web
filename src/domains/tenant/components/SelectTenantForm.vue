@@ -73,7 +73,10 @@ onMounted(async () => {
       </Button>
     </div>
 
-    <div class="text-center mt-4">
+    <div class="flex flex-col gap-3 text-center mt-4">
+      <ButtonLink variant="ghost" size="sm" to="/tenants/create">
+        {{ t('auth.selectTenant.createTenant') }}
+      </ButtonLink>
       <Button variant="ghost" size="sm" @click="logout">
         {{ t('auth.signOut') }}
       </Button>

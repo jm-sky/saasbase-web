@@ -2,6 +2,7 @@ export const tenant = {
   title: 'Zespoły',
   tenantDetails: 'Szczegóły zespołu',
   fields: {
+    country: 'Kraj',
     name: 'Nazwa',
     slug: 'Slug',
     vatId: 'NIP',
@@ -10,11 +11,32 @@ export const tenant = {
     email: 'Email',
     phone: 'Telefon',
     website: 'Strona internetowa',
-    country: 'Kraj',
+    visible: 'Widoczny',
+    publicName: 'Nazwa publiczna',
+    industry: 'Branża',
+    locationCity: 'Miasto',
+    locationCountry: 'Kraj',
     description: 'Opis',
+    publicLogo: 'Logo publiczne',
+    bannerImage: 'Obraz banera',
+    socialLinks: 'Linki społecznościowe',
+    address: 'Adres',
     createdAt: 'Data utworzenia',
     updatedAt: 'Data aktualizacji',
     deletedAt: 'Data usunięcia',
+  },
+  create: {
+    title: 'Utwórz zespół',
+    companyInfo: 'Informacje o firmie',
+    otherDetails: 'Inne szczegóły',
+    address: 'Adres',
+    bankAccount: 'Konto bankowe',
+    success: 'Zespół utworzony pomyślnie',
+    error: 'Nie udało się utworzyć zespołu',
+  },
+  welcome: {
+    title: 'Witaj w zespole',
+    description: 'Proszę wybrać plan, aby rozpocząć',
   },
   add: {
     title: 'Dodaj zespół',
@@ -106,6 +128,7 @@ export const tenant = {
   },
   overview: {
     title: 'Przegląd',
+    description: 'Przegląd zespołu',
   },
   logs: {
     title: 'Logi',
@@ -152,6 +175,7 @@ export const tenant = {
     },
     plans: {
       title: 'Plany',
+      description: 'Dostępne plany do wyboru',
       monthly: 'Miesięcznie',
       yearly: 'Rocznie',
       save: 'Oszczędź 20%',

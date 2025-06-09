@@ -4,6 +4,7 @@ export const routeMap = {
   auth: {
     login: 'login',
     passwordForgot: 'passwordForgot',
+    resetPassword: 'resetPassword',
     register: 'register',
     verifyEmail: 'verifyEmail',
     mfaVerify: 'mfaVerify',
@@ -31,6 +32,7 @@ export const routeMap = {
 export const routeTo = {
   login: (): RouteLocationRaw => ({ name: routeMap.auth.login }),
   passwordForgot: (): RouteLocationRaw => ({ name: routeMap.auth.passwordForgot }),
+  resetPassword: (): RouteLocationRaw => ({ name: routeMap.auth.resetPassword }),
   register: (): RouteLocationRaw => ({ name: routeMap.auth.register }),
   selectTenant: (): RouteLocationRaw => ({ name: routeMap.auth.selectTenant }),
   userProfile: (): RouteLocationRaw => ({ name: routeMap.userProfile }),

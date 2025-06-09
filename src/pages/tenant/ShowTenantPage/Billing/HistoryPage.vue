@@ -2,6 +2,7 @@
 import { Icon } from '@iconify/vue'
 import { Info } from 'lucide-vue-next'
 import { onMounted, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
 import Alert from '@/components/ui/alert/Alert.vue'
 import AlertTitle from '@/components/ui/alert/AlertTitle.vue'
 import { Button } from '@/components/ui/button'
@@ -11,6 +12,8 @@ import { accountService, type BillingHistory } from '@/domains/account/services/
 import TenantSectionTitle from '@/domains/tenant/components/TenantSectionTitle.vue'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
 import { money } from '@/lib/money'
+
+const { locale } = useI18n()
 
 const loading = ref(false)
 const history = ref<BillingHistory[]>([])
@@ -39,7 +42,7 @@ const formatDate = (dateString: string) => {
 }
 
 const formatAmount = (amount: number, currency: string) => {
-  return money(amount, currency)
+  return money(amount, currency, locale.value)
 }
 
 const getStatusColor = (status: string) => {

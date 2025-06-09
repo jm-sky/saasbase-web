@@ -5,6 +5,22 @@ import type { RouteRecordRaw } from 'vue-router'
 
 export const tenantRoutes: RouteRecordRaw[] = [
   {
+    path: '/tenants/create',
+    name: 'createTenant',
+    component: () => import('@/pages/tenant/CreateTenantPage.vue'),
+    meta: {
+      middlewares: [isAuthenticated, isVerified],
+    },
+  },
+  {
+    path: '/tenants/welcome',
+    name: 'welcomeTenant',
+    component: () => import('@/pages/tenant/TenantWelcomePage.vue'),
+    meta: {
+      middlewares: [isAuthenticated, isVerified],
+    },
+  },
+  {
     path: '/tenants',
     name: 'tenants',
     component: () => import('@/pages/tenant/SelectTenantPage.vue'),

@@ -2,7 +2,7 @@ import { useAuthStore } from '@/domains/auth/store/auth.store'
 import { type IUser } from '@/domains/user/types/user.type'
 import api from '@/lib/api'
 import { apiRoutesMap } from '@/lib/api/apiRoutes'
-import type { Credentials, RegistrationData, ResetPasswordData } from '@/domains/auth/types/auth.type'
+import type { Credentials, ForgotPasswordData, RegistrationData, ResetPasswordData } from '@/domains/auth/types/auth.type'
 
 export interface AuthResponse {
   accessToken: string
@@ -35,13 +35,13 @@ class AuthService {
     useAuthStore().clearData()
   }
 
+  async sendResetLinkEmail(data: ForgotPasswordData): Promise<void> {
+    await api.post<{ message: string }>(apiRoutesMap.authForgotPassword, data)
+  }
+
   async resetPassword(data: ResetPasswordData) {
     const response = await api.post<{ message: string }>(apiRoutesMap.authResetPassword, data)
     return response
-  }
-
-  async forgotPassword(email: string): Promise<void> {
-    await api.post<{ message: string }>(apiRoutesMap.authForgotPassword, { email })
   }
 
   async register(registrationData: RegistrationData): Promise<void> {

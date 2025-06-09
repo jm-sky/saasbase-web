@@ -114,4 +114,27 @@ export interface ITenant {
   updatedAt: TDateTime
 }
 
-export type ITenantCreate = Omit<ITenant, 'id' | 'slug' | 'tenantId' | 'logo' | 'logoUrl' | 'createdAt' | 'updatedAt'>
+export interface ITenantCreate {
+  country: string
+  vatId: string
+  name: string
+  slug: string
+  regon: string
+  taxId: string
+  email: string
+  phone: string
+  website: string
+  description: string
+  address: {
+    street: string
+    postalCode: string
+    city: string
+    region: string
+    country: string
+  }
+  bankAccount: {
+    iban: string
+    bankName: string
+    swift: string
+  }
+}

@@ -287,18 +287,18 @@ const onBankAccountLookup = (ibanInfo: IIbanInfo) => {
             </Button>
           </div>
 
-          <div class="col-span-full grid grid-cols-1 md:grid-cols-3 gap-x-8 gap-y-2 border rounded-md p-4 bg-gray-50 dark:bg-gray-800">
+          <div class="col-span-full grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-2 border rounded-md p-4 bg-gray-50 dark:bg-gray-800">
             <div class="col-span-full font-semibold mt-2 mb-2">
-              Opcje
+              {{ t('common.options') }}
             </div>
             <FormFieldLabeled
-              v-slot="{ componentField }"
+              v-slot="{ value, handleChange }"
               name="options.fetchLogo"
               :label="t('contractor.add.fetchLogo')"
               :disabled="isSubmitting"
               class="flex flex-col gap-2"
             >
-              <Switch type="checkbox" v-bind="componentField" />
+              <Switch type="checkbox" :model-value="value" @update:model-value="handleChange" />
               <FormDescription>
                 {{ t('contractor.add.fetchLogoDescription') }}
               </FormDescription>
