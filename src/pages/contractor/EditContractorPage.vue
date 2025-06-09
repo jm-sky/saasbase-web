@@ -77,7 +77,6 @@ const onSubmit = handleSubmit(async (values) => {
 })
 
 onMounted(async () => {
-  console.log('[EditContractorPage] onMounted', contractor.value)
   await refresh()
 })
 </script>

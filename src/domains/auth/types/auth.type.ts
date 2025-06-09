@@ -5,12 +5,16 @@ export interface Credentials {
   recaptchaToken?: string
 }
 
-export interface ResetPasswordData {
-  email: string
-}
-
 export interface ForgotPasswordData {
   email: string
+  recaptchaToken?: string
+}
+
+export interface ResetPasswordData {
+  token: string
+  email: string
+  password: string
+  passwordConfirmation: string
   recaptchaToken?: string
 }
 
