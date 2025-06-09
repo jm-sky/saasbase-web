@@ -17,10 +17,17 @@ export const tenant = {
     deletedAt: 'Deleted At',
   },
   create: {
+    title: 'Create Tenant',
     companyInfo: 'Company Info',
     otherDetails: 'Other Details',
     address: 'Address',
     bankAccount: 'Bank Account',
+    success: 'Tenant created successfully',
+    error: 'Failed to create tenant',
+  },
+  welcome: {
+    title: 'Welcome to the tenant',
+    description: 'Please select a plan to get started',
   },
   add: {
     title: 'Add Tenant',
@@ -107,6 +114,7 @@ export const tenant = {
   },
   overview: {
     title: 'Overview',
+    description: 'Overview of the tenant',
   },
   logs: {
     title: 'Logs',
@@ -150,6 +158,7 @@ export const tenant = {
     },
     plans: {
       title: 'Plans',
+      description: 'Available plans to choose from',
       monthly: 'Monthly',
       yearly: 'Yearly',
       save: 'Save 20%',

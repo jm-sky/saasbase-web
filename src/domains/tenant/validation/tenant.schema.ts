@@ -12,16 +12,18 @@ export const tenantSchema = toTypedSchema<ZodSchema, ITenantCreate>(z.object({
 }))
 
 export const tenantCreateSchema = toTypedSchema<ZodSchema, ITenantCreate>(z.object({
-  country: z.string().min(2),
-  vatId: z.string().optional(),
-  name: z.string().min(2),
-  slug: z.string().optional(),
-  regon: z.string().optional(),
-  taxId: z.string().optional(),
-  email: z.string().email().optional(),
-  phone: z.string().optional(),
-  website: z.string().url().optional(),
-  description: z.string().optional(),
+  tenant: z.object({
+    country: z.string().min(2),
+    vatId: z.string().optional(),
+    name: z.string().min(2),
+    slug: z.string().optional(),
+    regon: z.string().optional(),
+    taxId: z.string().optional(),
+    email: z.string().optional(),
+    phone: z.string().optional(),
+    website: z.string().optional(),
+    description: z.string().optional(),
+  }),
   address: z.object({
     street: z.string().min(1),
     postalCode: z.string().min(1),

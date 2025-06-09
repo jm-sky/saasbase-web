@@ -26,10 +26,17 @@ export const tenant = {
     deletedAt: 'Data usunięcia',
   },
   create: {
+    title: 'Utwórz zespół',
     companyInfo: 'Informacje o firmie',
     otherDetails: 'Inne szczegóły',
     address: 'Adres',
     bankAccount: 'Konto bankowe',
+    success: 'Zespół utworzony pomyślnie',
+    error: 'Nie udało się utworzyć zespołu',
+  },
+  welcome: {
+    title: 'Witaj w zespole',
+    description: 'Proszę wybrać plan, aby rozpocząć',
   },
   add: {
     title: 'Dodaj zespół',
@@ -121,6 +128,7 @@ export const tenant = {
   },
   overview: {
     title: 'Przegląd',
+    description: 'Przegląd zespołu',
   },
   logs: {
     title: 'Logi',
@@ -167,6 +175,7 @@ export const tenant = {
     },
     plans: {
       title: 'Plany',
+      description: 'Dostępne plany do wyboru',
       monthly: 'Miesięcznie',
       yearly: 'Rocznie',
       save: 'Oszczędź 20%',

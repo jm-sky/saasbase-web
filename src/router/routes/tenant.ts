@@ -13,6 +13,14 @@ export const tenantRoutes: RouteRecordRaw[] = [
     },
   },
   {
+    path: '/tenants/welcome',
+    name: 'welcomeTenant',
+    component: () => import('@/pages/tenant/TenantWelcomePage.vue'),
+    meta: {
+      middlewares: [isAuthenticated, isVerified],
+    },
+  },
+  {
     path: '/tenants',
     name: 'tenants',
     component: () => import('@/pages/tenant/SelectTenantPage.vue'),

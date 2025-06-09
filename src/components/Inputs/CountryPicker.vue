@@ -27,9 +27,11 @@ const { t } = useI18n()
 
 const modelValue = defineModel<string | undefined>('modelValue', { required: true })
 
-defineProps<{
+const props = defineProps<{
   popoverContentClass?: string
   disabled?: boolean
+  placeholder?: string
+  class?: string
 }>()
 
 const open = ref(false)
@@ -75,9 +77,9 @@ const onSelect = (event: any) => {
         role="combobox"
         :aria-expanded="open"
         :disabled="disabled"
-        class="w-full justify-between"
+        :class="cn('w-full justify-between', props.class)"
       >
-        {{ modelValue || t('country.select') }}
+        {{ modelValue ?? placeholder ?? t('country.select') }}
         <ChevronsUpDown class="ml-2 size-4 shrink-0 opacity-50" />
       </Button>
     </PopoverTrigger>
