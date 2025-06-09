@@ -11,6 +11,7 @@ import { settingsRoutes } from '@/router/routes/settings'
 import { tenantRoutes } from '@/router/routes/tenant'
 import { routeMap } from './routeMap'
 import { billingRoutes } from './routes/billing'
+import { invoiceRoutes } from './routes/invoice'
 import type { RouteRecordRaw } from 'vue-router'
 
 export const routes: RouteRecordRaw[] = [
@@ -40,6 +41,7 @@ export const routes: RouteRecordRaw[] = [
   ...settingsRoutes,
   ...contractorRoutes,
   ...productRoutes,
+  ...invoiceRoutes,
   ...tenantRoutes,
   ...feedRoutes,
   ...billingRoutes,

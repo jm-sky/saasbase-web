@@ -13,6 +13,7 @@ import { country } from './country'
 import { dashboard } from './dashboard'
 import feed from './feed'
 import { invitation } from './invitation'
+import invoice from './invoice'
 import { log } from './log'
 import { notifications } from './notifications'
 import { product } from './product'
@@ -39,8 +40,9 @@ export const en = {
   country,
   dashboard,
   feed,
-  notifications,
   invitation,
+  invoice,
+  notifications,
   company: {
     sources: {
       tooltip: {

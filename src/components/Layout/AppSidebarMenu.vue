@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import {
   Building2,
+  FileText,
   Mail,
   MailCheck,
   Newspaper,
@@ -10,6 +11,7 @@ import {
   Users,
 } from 'lucide-vue-next'
 import { computed } from 'vue'
+import { useI18n } from 'vue-i18n'
 import NavMain from '@/components/Layout/NavMain.vue'
 import {
   Sidebar,
@@ -24,6 +26,7 @@ import TenantBrandInfo from '@/domains/tenant/components/branding/TenantBrandInf
 import type { MenuItem } from './menu.type'
 import type { SidebarProps } from '@/components/ui/sidebar'
 
+const { t } = useI18n()
 const authStore = useAuthStore()
 
 const props = withDefaults(defineProps<SidebarProps>(), {
@@ -33,24 +36,29 @@ const props = withDefaults(defineProps<SidebarProps>(), {
 const menu = computed<MenuItem[]>(() => {
   const items: MenuItem[] = [
     {
-      title: 'Dashboard',
+      title: t('dashboard.title'),
       url: '/',
       icon: Rocket,
     },
     {
-      title: 'Feeds',
+      title: t('feed.title'),
       url: '/feeds',
       icon: Newspaper,
     },
     {
-      title: 'Contractors',
+      title: t('contractor.title'),
       url: '/contractors',
       icon: Users,
     },
     {
-      title: 'Products',
+      title: t('product.title'),
       url: '/products',
       icon: Package,
+    },
+    {
+      title: t('invoice.title'),
+      url: '/invoices',
+      icon: FileText,
     },
     {
       title: 'Mailbox',
