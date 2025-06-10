@@ -17,6 +17,7 @@ import invoice from './invoice'
 import { log } from './log'
 import { notifications } from './notifications'
 import { product } from './product'
+import { project } from './project'
 import { settings } from './settings'
 import { shared } from './shared'
 import { skills } from './skills'
@@ -62,6 +63,7 @@ export const en = {
     uploadFailed: 'Upload failed',
   },
   product,
+  project,
   shared,
   settings,
   subscription,

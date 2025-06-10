@@ -8,6 +8,7 @@ import {
   Package,
   Rocket,
   Settings2,
+  Tag,
   Users,
 } from 'lucide-vue-next'
 import { computed } from 'vue'
@@ -59,6 +60,11 @@ const menu = computed<MenuItem[]>(() => {
       title: t('invoice.title'),
       url: '/invoices',
       icon: FileText,
+    },
+    {
+      title: t('project.title'),
+      url: '/projects',
+      icon: Tag,
     },
     {
       title: 'Mailbox',

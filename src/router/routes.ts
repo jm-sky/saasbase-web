@@ -12,6 +12,7 @@ import { tenantRoutes } from '@/router/routes/tenant'
 import { routeMap } from './routeMap'
 import { billingRoutes } from './routes/billing'
 import { invoiceRoutes } from './routes/invoice'
+import { projectRoutes } from './routes/project'
 import type { RouteRecordRaw } from 'vue-router'
 
 export const routes: RouteRecordRaw[] = [
@@ -42,6 +43,7 @@ export const routes: RouteRecordRaw[] = [
   ...contractorRoutes,
   ...productRoutes,
   ...invoiceRoutes,
+  ...projectRoutes,
   ...tenantRoutes,
   ...feedRoutes,
   ...billingRoutes,
