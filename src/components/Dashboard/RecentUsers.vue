@@ -56,7 +56,7 @@ onMounted(async () => refresh())
       <div class="space-y-8">
         <div v-for="user in users" :key="user.id" class="flex items-center">
           <RouterLink :to="`/users/${user.id}`" class="flex items-center">
-            <Avatar class="size-9">
+            <Avatar class="size-10">
               <AvatarImage
                 :src="user.avatarUrl ?? ''"
                 :alt="initials(user.name)"

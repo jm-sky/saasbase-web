@@ -54,7 +54,7 @@ export interface IUserProfileLegacy {
   name: string
   email?: string
   phone?: string
-  description?: string
+  bio?: string
   location?: string
   position?: string
   website?: string
