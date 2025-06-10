@@ -95,7 +95,8 @@ export interface IInvoiceSeller {
   address: string;
   country: string;
   iban: string;
-  email: string | null;
+  email?: string;
+  phone?: string;
 }
 
 export interface IInvoiceBuyer {
@@ -106,7 +107,8 @@ export interface IInvoiceBuyer {
   address: string;
   country: string;
   iban: string | null;
-  email: string;
+  email?: string;
+  phone?: string;
 }
 
 export interface IInvoiceData {

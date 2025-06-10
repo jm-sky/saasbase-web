@@ -1,5 +1,7 @@
 <script setup lang="ts">
+import { storeToRefs } from 'pinia'
 import { useForm } from 'vee-validate'
+import { onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
 import FormFieldLabeled from '@/components/Form/FormFieldLabeled.vue'
@@ -8,6 +10,8 @@ import Input from '@/components/ui/input/Input.vue'
 import { useToast } from '@/components/ui/toast/use-toast'
 import NumberingTemplatePicker from '@/domains/invoice/components/NumberingTemplatePicker.vue'
 import { invoiceService } from '@/domains/invoice/services/invoiceService'
+import { tenantService } from '@/domains/tenant/services/TenantService'
+import { useTenantStore } from '@/domains/tenant/store/tenant.store'
 import AuthenticatedLayout from '@/layouts/AuthenticatedLayout.vue'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
 import { isValidationError } from '@/lib/validation'
@@ -15,8 +19,10 @@ import PartySideCard from './partials/PartySideCard.vue'
 import type { IInvoiceCreate } from '@/domains/invoice/types/invoice.type'
 
 const { t } = useI18n()
-const router = useRouter()
 const { toast } = useToast()
+const router = useRouter()
+const tenantStore = useTenantStore()
+const { tenant, tenantBillingAddress } = storeToRefs(tenantStore)
 
 const { isSubmitting, handleSubmit, values, setErrors, setFieldValue, resetForm } = useForm<IInvoiceCreate>({
   initialValues: {
@@ -30,22 +36,22 @@ const { isSubmitting, handleSubmit, values, setErrors, setFieldValue, resetForm 
     currency: 'PLN',
     exchangeRate: 1,
     seller: {
-      contractorId: 0,
-      contractorType: '',
-      name: '',
-      taxId: '',
-      address: '',
-      country: '',
+      contractorId: undefined,
+      contractorType: 'company',
+      name: tenant.value?.name ?? 'DEMO COMPANY',
+      taxId: tenant.value?.taxId ?? '',
+      address: tenantBillingAddress.value?.street ?? 'OUR ADDRESS',
+      country: tenant.value?.country ?? 'PL',
       iban: '',
-      email: '',
+      email: tenant.value?.email ??'',
     },
     buyer: {
-      contractorId: 0,
-      contractorType: '',
-      name: '',
+      contractorId: undefined,
+      contractorType: 'company',
+      name: 'DEMO BUYER',
       taxId: '',
-      address: '',
-      country: '',
+      address: 'Random street 123',
+      country: 'PL',
       iban: '',
       email: '',
     },
@@ -79,6 +85,15 @@ const { isSubmitting, handleSubmit, values, setErrors, setFieldValue, resetForm 
   },
 })
 
+onMounted(async () => {
+  tenant.value ??= await tenantService.get(tenantStore.tenantId ?? '')
+  setFieldValue('seller.name', tenant.value.name)
+  setFieldValue('seller.taxId', tenant.value.taxId ?? '')
+  setFieldValue('seller.address', tenantBillingAddress.value?.street ?? 'OUR ADDRESS')
+  setFieldValue('seller.country', tenant.value.country ?? 'PL')
+  setFieldValue('seller.email', tenant.value.email ?? '')
+})
+
 const onSubmit = handleSubmit(async (values) => {
   try {
     const invoice = await invoiceService.create(values)
@@ -102,8 +117,8 @@ const onSubmit = handleSubmit(async (values) => {
 
       <form class="flex flex-col gap-y-2 gap-x-8" @submit.prevent="onSubmit">
         <div class="grid grid-cols-2 gap-x-8 gap-y-2 mb-4">
-          <PartySideCard title="Seller" />
-          <PartySideCard title="Buyer" />
+          <PartySideCard title="Seller" :values="values.seller" />
+          <PartySideCard title="Buyer" :values="values.buyer" />
         </div>
 
         <div class="flex flex-col gap-y-2 items-center justify-center mt-2 mb-6">
