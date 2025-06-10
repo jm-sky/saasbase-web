@@ -15,7 +15,9 @@ import { useTenantStore } from '@/domains/tenant/store/tenant.store'
 import AuthenticatedLayout from '@/layouts/AuthenticatedLayout.vue'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
 import { isValidationError } from '@/lib/validation'
-import PartySideCard from './partials/PartySideCard.vue'
+import PartySideForContractorCard from './partials/PartySideForContractorCard.vue'
+import PartySideForTenantCard from './partials/PartySideForTenantCard.vue'
+import type { IContractor } from '@/domains/contractor/types/contractor.type'
 import type { IInvoiceCreate } from '@/domains/invoice/types/invoice.type'
 
 const { t } = useI18n()
@@ -106,6 +108,14 @@ const onSubmit = handleSubmit(async (values) => {
     handleErrorWithToast(t('invoice.add.error', 'Could not add invoice'), error)
   }
 })
+
+const updateBuyer = (contractor: IContractor | undefined) => {
+  if (!contractor) return
+  setFieldValue('buyer.contractorId', contractor.id)
+  setFieldValue('buyer.contractorType', 'contractor')
+  setFieldValue('buyer.name', contractor.name)
+  setFieldValue('buyer.taxId', contractor.vatId)
+}
 </script>
 
 <template>
@@ -117,8 +127,8 @@ const onSubmit = handleSubmit(async (values) => {
 
       <form class="flex flex-col gap-y-2 gap-x-8" @submit.prevent="onSubmit">
         <div class="grid grid-cols-2 gap-x-8 gap-y-2 mb-4">
-          <PartySideCard title="Seller" :values="values.seller" />
-          <PartySideCard title="Buyer" :values="values.buyer" />
+          <PartySideForTenantCard title="Seller" :values="values.seller" />
+          <PartySideForContractorCard title="Buyer" :values="values.buyer" @contractor-selected="updateBuyer" />
         </div>
 
         <div class="flex flex-col gap-y-2 items-center justify-center mt-2 mb-6">

@@ -15,6 +15,8 @@ export const contractor = {
     roles: 'Roles',
     isSupplier: 'Is Supplier?',
     isBuyer: 'Is Buyer?',
+    supplier: 'Supplier',
+    buyer: 'Buyer',
   },
   add: {
     title: 'Add Contractor',

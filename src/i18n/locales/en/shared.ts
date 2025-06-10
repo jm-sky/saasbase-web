@@ -14,4 +14,19 @@ export const shared = {
     search: 'Search numbering template',
     notFound: 'No numbering templates found',
   },
+  bankAccount: {
+    select: 'Select bank account',
+    search: 'Search bank account',
+    notFound: 'No bank accounts found',
+  },
+  address: {
+    select: 'Select address',
+    search: 'Search address',
+    notFound: 'No addresses found',
+  },
+  contractor: {
+    select: 'Select contractor',
+    search: 'Search contractor',
+    notFound: 'No contractors found',
+  },
 }

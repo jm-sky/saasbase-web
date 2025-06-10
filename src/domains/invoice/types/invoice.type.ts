@@ -1,5 +1,5 @@
 import type { IInvoiceNumberingTemplate } from './numberingTemplate.type'
-import type { TDate, TDateTime } from '@/domains/shared/types/common'
+import type { TDate, TDateTime, TUUID } from '@/domains/shared/types/common'
 
 export type TInvoiceStatus = 'draft' | 'sent' | 'paid' | 'partiallyPaid' | 'overdue' | 'cancelled'
 
@@ -45,7 +45,7 @@ export type TVatRate =
 
 // Main Invoice interface
 export interface IInvoice {
-  id: string;
+  id: TUUID;
   tenantId: string;
   type: TInvoiceType;
   status: string;
@@ -88,25 +88,25 @@ export interface IInvoiceCreate {
 
 // Nested interfaces
 export interface IInvoiceSeller {
-  contractorId: number;
-  contractorType: string;
+  contractorId?: TUUID;
+  contractorType?: string;
   name: string;
-  taxId: string;
-  address: string;
+  taxId?: string;
+  address?: string;
   country: string;
-  iban: string;
+  iban?: string;
   email?: string;
   phone?: string;
 }
 
 export interface IInvoiceBuyer {
-  contractorId: number;
-  contractorType: string;
+  contractorId?: TUUID;
+  contractorType?: string;
   name: string;
-  taxId: string;
-  address: string;
+  taxId?: string;
+  address?: string;
   country: string;
-  iban: string | null;
+  iban?: string | null;
   email?: string;
   phone?: string;
 }
@@ -118,7 +118,7 @@ export interface IInvoiceData {
 }
 
 export interface IInvoiceLine {
-  id: string;
+  id: TUUID;
   description: string;
   quantity: number;
   unitPrice: number;

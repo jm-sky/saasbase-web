@@ -44,5 +44,10 @@ export default {
     partiallyPaid: 'Partially paid',
     overdue: 'Overdue',
     cancelled: 'Cancelled',
-  }
+  },
+  add: {
+    title: 'Add invoice',
+    success: 'Invoice added successfully',
+    error: 'Failed to add invoice',
+  },
 }

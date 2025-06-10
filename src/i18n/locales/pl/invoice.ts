@@ -44,5 +44,10 @@ export default {
     partiallyPaid: 'Częściowo opłacona',
     overdue: 'Zaległa',
     cancelled: 'Anulowana',
-  }
+  },
+  add: {
+    title: 'Dodawanie faktury',
+    success: 'Faktura dodana pomyślnie',
+    error: 'Nie udało się dodać faktury',
+  },
 }
