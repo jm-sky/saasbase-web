@@ -1,7 +1,7 @@
 
 import api from '@/lib/api'
 import { apiRoutesMap } from '@/lib/api/apiRoutes'
-import type { IInvoice, TInvoiceStatus } from '@/domains/invoice/types/invoice.type'
+import type { IInvoice, IInvoiceCreate, TInvoiceStatus } from '@/domains/invoice/types/invoice.type'
 import type { IResource, IResourceCollection } from '@/domains/shared/types/resource.type'
 
 export interface IInvoiceGetParams {
@@ -24,7 +24,7 @@ class InvoiceService {
     return response.data.data
   }
 
-  async create(invoice: Omit<IInvoice, 'id' | 'createdAt' | 'updatedAt'>): Promise<IInvoice> {
+  async create(invoice: IInvoiceCreate): Promise<IInvoice> {
     const response = await api.post<IResource<IInvoice>>(apiRoutesMap.invoices, invoice)
     return response.data.data
   }

@@ -1,3 +1,4 @@
+import type { IInvoiceNumberingTemplate } from './numberingTemplate.type'
 import type { TDate, TDateTime } from '@/domains/shared/types/common'
 
 export type TInvoiceStatus = 'draft' | 'sent' | 'paid' | 'partiallyPaid' | 'overdue' | 'cancelled'
@@ -63,7 +64,26 @@ export interface IInvoice {
   issueDate?: TDate | null;
   createdAt?: TDateTime | null;
   updatedAt?: TDateTime | null;
-  numberingTemplate?: INumberingTemplate;
+  numberingTemplate?: IInvoiceNumberingTemplate;
+}
+
+export interface IInvoiceCreate {
+  type: TInvoiceType;
+  status: string;
+  number: string;
+  numberingTemplateId?: string;
+  totalNet: number;
+  totalTax: number;
+  totalGross: number;
+  currency: string;
+  exchangeRate: number;
+  seller: IInvoiceSeller;
+  buyer: IInvoiceBuyer;
+  data: IInvoiceData;
+  payment: IInvoicePayment;
+  options: IInvoiceOptions;
+  issueDate?: TDate | null;
+  numberingTemplate?: IInvoiceNumberingTemplate;
 }
 
 // Nested interfaces
@@ -136,19 +156,4 @@ export interface IInvoiceOptions {
   template: string;
   sendEmail: boolean;
   emailTo: string[];
-}
-
-export interface INumberingTemplate {
-  id: string;
-  tenantId: string;
-  name: string;
-  invoiceType: string;
-  format: string;
-  nextNumber: number;
-  resetPeriod: string;
-  prefix: string;
-  suffix: string;
-  isDefault: boolean;
-  createdAt: string;
-  updatedAt: string;
 }

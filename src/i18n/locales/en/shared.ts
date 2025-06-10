@@ -9,4 +9,9 @@ export const shared = {
     search: 'Search vat rate',
     notFound: 'No vat rates found',
   },
+  numberingTemplate: {
+    select: 'Select numbering template',
+    search: 'Search numbering template',
+    notFound: 'No numbering templates found',
+  },
 }

@@ -9,4 +9,9 @@ export const shared = {
     search: 'Szukaj stawki VAT',
     notFound: 'Nie znaleziono stawki VAT',
   },
+  numberingTemplate: {
+    select: 'Wybierz szablon numeracji',
+    search: 'Szukaj szablonu numeracji',
+    notFound: 'Nie znaleziono szablonów numeracji',
+  },
 }
