@@ -38,6 +38,12 @@ class ContractorService {
   async delete(id: string): Promise<void> {
     await api.delete(`${apiRoutesMap.contractors}/${id}`)
   }
+
+  async export(filters?: IContractorFilters): Promise<Blob> {
+    const params = buildSpatieQuery(filters ?? { filter: {} })
+    const response = await api.get(`${apiRoutesMap.contractors}/export`, { params, responseType: 'blob' })
+    return response.data
+  }
 }
 
 export const contractorService = new ContractorService()

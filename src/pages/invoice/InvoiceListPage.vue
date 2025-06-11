@@ -7,7 +7,8 @@ import DataListsWrapper from '@/components/DataLists/DataListsWrapper.vue'
 import SearchField from '@/components/DataLists/Filters/SearchField.vue'
 import DataTable from '@/components/DataTable.vue'
 import { Button } from '@/components/ui/button'
-import { invoiceService } from '@/domains/invoice/services/invoiceService'
+import InvoiceListDropdown from '@/domains/invoice/components/InvoiceListDropdown.vue'
+import { type IInvoiceFilters, invoiceService } from '@/domains/invoice/services/invoiceService'
 import AuthenticatedLayout from '@/layouts/AuthenticatedLayout.vue'
 import { toDateTimeString } from '@/lib/toDateTimeString'
 import type { ColumnDef } from '@tanstack/vue-table'
@@ -25,10 +26,17 @@ const meta = ref<IResourceMeta>({
 })
 const loading = ref(false)
 const error = ref<string | null>(null)
-const filters = ref({
+const filters = ref<IInvoiceFilters>({
   search: '',
   page: 1,
   perPage: 10,
+  filter: {
+    number: { value: '', operator: 'eq' },
+    type: { value: '', operator: 'eq' },
+    status: { value: '', operator: 'eq' },
+    createdAt: { value: '', operator: 'eq' },
+  },
+  sort: [],
 })
 
 const columns: ColumnDef<IInvoice>[] = [
@@ -65,10 +73,7 @@ const refresh = async () => {
     loading.value = true
     error.value = null
     // For now, ignore filters except pagination
-    const response = await invoiceService.index({
-      limit: filters.value.perPage,
-      offset: (filters.value.page - 1) * filters.value.perPage,
-    })
+    const response = await invoiceService.index(filters.value)
     invoices.value = response.data
     meta.value = response.meta
   } catch (err) {
@@ -97,14 +102,20 @@ watch(filters, () => refresh(), { deep: true })
         <ButtonLink v-tooltip="t('invoice.add.description', 'Add a new invoice')" variant="default" to="/invoices/add">
           {{ t('invoice.add.title', 'Add Invoice') }}
         </ButtonLink>
+        <InvoiceListDropdown :filters />
       </template>
+
       <DataTable
         v-model:page="filters.page"
         v-model:page-size="filters.perPage"
+        v-model:column-filters="filters.filter"
+        v-model:sorting="filters.sort"
         :columns="columns"
         :data="invoices"
         :total="meta.total"
         :page-size-options="[10, 20, 30, 40, 50]"
+        :show-column-filters="true"
+        :loading
       >
         <template #number="{ data }">
           <ButtonLink :to="`/invoices/${data.id}/show/overview`">

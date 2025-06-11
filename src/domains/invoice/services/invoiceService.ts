@@ -1,20 +1,22 @@
 
+import { buildSpatieQuery } from '@/domains/shared/helpers/filtering'
 import api from '@/lib/api'
 import { apiRoutesMap } from '@/lib/api/apiRoutes'
-import type { IInvoice, IInvoiceCreate, TInvoiceStatus } from '@/domains/invoice/types/invoice.type'
-import type { IResource, IResourceCollection } from '@/domains/shared/types/resource.type'
+import type { SortingState } from '@tanstack/vue-table'
+import type { IInvoice, IInvoiceCreate } from '@/domains/invoice/types/invoice.type'
+import type { FilterDefinition, IResource, IResourceCollection } from '@/domains/shared/types/resource.type'
 
-export interface IInvoiceGetParams {
-  contractorId?: string
-  status?: TInvoiceStatus
-  startDate?: string
-  endDate?: string
-  limit?: number
-  offset?: number
+export interface IInvoiceFilters {
+  search?: string
+  page?: number
+  perPage?: number
+  filter?: Record<string, FilterDefinition>
+  sort?: SortingState
 }
 
 class InvoiceService {
-  async index(params?: IInvoiceGetParams): Promise<IResourceCollection<IInvoice>> {
+  async index(filters?: IInvoiceFilters): Promise<IResourceCollection<IInvoice>> {
+    const params = buildSpatieQuery(filters ?? { filter: {} })
     const response = await api.get<IResourceCollection<IInvoice>>(apiRoutesMap.invoices, { params })
     return response.data
   }
@@ -36,6 +38,12 @@ class InvoiceService {
 
   async delete(id: string): Promise<void> {
     await api.delete(`${apiRoutesMap.invoices}/${id}`)
+  }
+
+  async export(filters?: IInvoiceFilters): Promise<Blob> {
+    const params = buildSpatieQuery(filters ?? { filter: {} })
+    const response = await api.get(`${apiRoutesMap.invoices}/export`, { params, responseType: 'blob' })
+    return response.data
   }
 }
 

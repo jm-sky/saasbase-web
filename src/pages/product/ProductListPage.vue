@@ -9,6 +9,7 @@ import DataTable from '@/components/DataTable.vue'
 import { Button } from '@/components/ui/button'
 import DeleteProductButton from '@/domains/product/components/DeleteProductButton.vue'
 import EditProductButton from '@/domains/product/components/EditProductButton.vue'
+import ProductListDropdown from '@/domains/product/components/ProductListDropdown.vue'
 import { type IProductFilters, productService } from '@/domains/product/services/ProductService'
 import { useProductStore } from '@/domains/product/stores/product.store'
 import AuthenticatedLayout from '@/layouts/AuthenticatedLayout.vue'
@@ -93,7 +94,9 @@ watch(filters, () => refresh(), { deep: true })
         <ButtonLink v-tooltip="t('product.add.description')" variant="default" to="/products/add">
           {{ t('product.add.title') }}
         </ButtonLink>
+        <ProductListDropdown :filters />
       </template>
+
       <DataTable
         v-model:page="filters.page"
         v-model:page-size="filters.perPage"

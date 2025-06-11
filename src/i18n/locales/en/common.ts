@@ -25,10 +25,14 @@ export const common = {
   tags: 'Tags',
   themeColor: 'Theme color',
   secondsLeft: 'seconds left',
+  settings: 'Settings',
   copyToClipboard: {
     copy: 'Copy',
     copied: 'Copied',
     success: 'Copied to clipboard'
+  },
+  export: {
+    excel: 'Export to Excel'
   },
   fields: {
     id: 'ID',

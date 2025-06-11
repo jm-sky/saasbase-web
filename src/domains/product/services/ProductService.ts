@@ -38,6 +38,12 @@ class ProductService {
   async delete(id: string): Promise<void> {
     await api.delete(`${apiRoutesMap.products}/${id}`)
   }
+
+  async export(filters?: IProductFilters): Promise<Blob> {
+    const params = buildSpatieQuery(filters ?? { filter: {} })
+    const response = await api.get(`${apiRoutesMap.products}/export`, { params, responseType: 'blob' })
+    return response.data
+  }
 }
 
 export const productService = new ProductService()

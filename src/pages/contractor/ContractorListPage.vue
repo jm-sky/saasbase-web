@@ -19,6 +19,7 @@ import { contractorService, type IContractorFilters } from '@/domains/contractor
 import { useContractorStore } from '@/domains/contractor/store/contractor.store'
 import AuthenticatedLayout from '@/layouts/AuthenticatedLayout.vue'
 import { toDateTimeString } from '@/lib/toDateTimeString'
+import ContractorListDropdown from '../../domains/contractor/components/ContractorListDropdown.vue'
 import type { ColumnDef } from '@tanstack/vue-table'
 import type { IContractor } from '@/domains/contractor/types/contractor.type'
 import type { IResourceMeta } from '@/domains/shared/types/resource.type'
@@ -119,6 +120,7 @@ watch(filters, () => refresh(), { deep: true })
             {{ t('contractor.add.title') }}
           </span>
         </ButtonLink>
+        <ContractorListDropdown :filters />
       </template>
 
       <DataTable
