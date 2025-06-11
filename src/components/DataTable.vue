@@ -93,7 +93,7 @@ const switchSorting = (header: Header<TData, unknown>) => {
         </TableRow>
         <template v-if="props.showColumnFilters">
           <TableRow v-for="headerGroup in table.getHeaderGroups()" :key="headerGroup.id">
-            <TableHead v-for="header in headerGroup.headers" :key="header.id" class="bg-gray-50">
+            <TableHead v-for="header in headerGroup.headers" :key="header.id" class="bg-gray-50 dark:bg-gray-900">
               <slot :name="`${header.id}-filter`" :header="header">
                 <ColumnFilter v-model="columnFilters[header.id]" />
               </slot>
