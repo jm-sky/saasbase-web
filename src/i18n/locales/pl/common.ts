@@ -32,7 +32,8 @@ export const common = {
     success: 'Skopiowano do schowka'
   },
   export: {
-    excel: 'Eksportuj do Excel'
+    excel: 'Eksportuj do Excel',
+    error: 'Błąd podczas eksportowania danych'
   },
   fields: {
     id: 'ID',

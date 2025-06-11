@@ -7,10 +7,12 @@ import DropdownMenu from '@/components/ui/dropdown-menu/DropdownMenu.vue'
 import DropdownMenuContent from '@/components/ui/dropdown-menu/DropdownMenuContent.vue'
 import DropdownMenuItem from '@/components/ui/dropdown-menu/DropdownMenuItem.vue'
 import DropdownMenuTrigger from '@/components/ui/dropdown-menu/DropdownMenuTrigger.vue'
+import { useToast } from '@/components/ui/toast'
 import { contractorService, type IContractorFilters } from '@/domains/contractor/services/ContractorService'
 import { downloadBlob } from '@/lib/downloadBlob'
 
 const { t } = useI18n()
+const { toast } = useToast()
 
 const { filters } = defineProps<{
   filters: IContractorFilters
@@ -25,6 +27,7 @@ const exportToExcel = async () => {
     downloadBlob(blob, 'contractors.xlsx')
     loading.value = false
   } catch (error) {
+    toast.error(t('common.export.error'))
     console.error(error)
   } finally {
     loading.value = false

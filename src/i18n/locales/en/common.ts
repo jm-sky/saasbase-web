@@ -32,7 +32,8 @@ export const common = {
     success: 'Copied to clipboard'
   },
   export: {
-    excel: 'Export to Excel'
+    excel: 'Export to Excel',
+    error: 'Error exporting data'
   },
   fields: {
     id: 'ID',
