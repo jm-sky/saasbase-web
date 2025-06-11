@@ -75,11 +75,11 @@ function setLink() {
 <template>
   <div class="border rounded-lg overflow-hidden">
     <!-- Toolbar -->
-    <div class="flex gap-1 flex-wrap items-center p-2 border-b bg-gray-50">
+    <div class="flex gap-1 flex-wrap items-center p-2 border-b bg-gray-50 dark:bg-gray-900">
       <button
         v-tooltip.bottom="t('components.textEditor.bold')"
         type="button"
-        class="size-6 flex items-center justify-center text-sm rounded hover:bg-gray-200"
+        class="size-6 flex items-center justify-center text-sm rounded hover:bg-gray-200 dark:hover:bg-gray-800"
         :class="{ 'bg-gray-300': editor?.isActive('bold') }"
         @click="editor?.chain().focus().toggleBold().run()"
       >
@@ -88,7 +88,7 @@ function setLink() {
       <button
         v-tooltip.bottom="t('components.textEditor.italic')"
         type="button"
-        class="size-6 flex items-center justify-center text-sm rounded hover:bg-gray-200"
+        class="size-6 flex items-center justify-center text-sm rounded hover:bg-gray-200 dark:hover:bg-gray-800"
         :class="{ 'bg-gray-300': editor?.isActive('italic') }"
         @click="editor?.chain().focus().toggleItalic().run()"
       >
@@ -97,7 +97,7 @@ function setLink() {
       <button
         v-tooltip.bottom="t('components.textEditor.underline')"
         type="button"
-        class="size-6 flex items-center justify-center text-sm rounded hover:bg-gray-200"
+        class="size-6 flex items-center justify-center text-sm rounded hover:bg-gray-200 dark:hover:bg-gray-800"
         :class="{ 'bg-gray-300': editor?.isActive('underline') }"
         @click="editor?.chain().focus().toggleUnderline().run()"
       >
@@ -106,7 +106,7 @@ function setLink() {
 
       <DropdownMenu>
         <DropdownMenuTrigger as-child>
-          <button class="size-6 flex items-center justify-center text-sm rounded hover:bg-gray-200">
+          <button class="size-6 flex items-center justify-center text-sm rounded hover:bg-gray-200 dark:hover:bg-gray-800">
             <MoreVertical class="size-4" />
           </button>
         </DropdownMenuTrigger>

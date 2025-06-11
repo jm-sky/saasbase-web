@@ -18,7 +18,7 @@ const goToPage = (idx: number) => {
 </script>
 
 <template>
-  <div v-if="total > 0" class="flex items-center flex-wrap gap-2 justify-between px-2 py-2 border-t bg-gray-50 rounded-b-md">
+  <div v-if="total > 0" class="flex items-center flex-wrap gap-2 justify-between px-2 py-2 border-t bg-gray-50 dark:bg-gray-900 rounded-b-md">
     <div class="flex items-center space-x-2">
       <span class="text-sm font-medium">Rows per page</span>
       <select
