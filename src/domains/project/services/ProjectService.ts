@@ -1,17 +1,21 @@
+import { buildSpatieQuery } from '@/domains/shared/helpers/filtering'
 import api from '@/lib/api'
 import { apiRoutesMap } from '@/lib/api/apiRoutes'
+import type { SortingState } from '@tanstack/vue-table'
 import type { IProject } from '@/domains/project/types/project.type'
-import type { TProjectStatus } from '@/domains/project/types/project.type'
-import type { IResource, IResourceCollection } from '@/domains/shared/types/resource.type'
+import type { FilterDefinition, IResource, IResourceCollection } from '@/domains/shared/types/resource.type'
 
-export interface IProjectGetParams {
-  status?: TProjectStatus
-  limit?: number
-  offset?: number
+export interface IProjectFilters {
+  search?: string
+  page?: number
+  perPage?: number
+  filter?: Record<string, FilterDefinition>
+  sort?: SortingState
 }
 
 class ProjectService {
-  async index(params?: IProjectGetParams): Promise<IResourceCollection<IProject>> {
+  async index(filters?: IProjectFilters): Promise<IResourceCollection<IProject>> {
+    const params = buildSpatieQuery(filters ?? { filter: {} })
     const response = await api.get<IResourceCollection<IProject>>(apiRoutesMap.projects, { params })
     return response.data
   }

@@ -16,6 +16,8 @@ export interface IProject {
   owner: IUserPreview
   users: IUserPreview[]
   requiredSkills: IProjectRequiredSkill[]
+  tags: string[]
+  logoUrl?: string
   createdAt: TDateTime | Date
   updatedAt: TDateTime | Date
 }

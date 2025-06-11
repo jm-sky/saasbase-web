@@ -14,6 +14,12 @@ export const project = {
     createdAt: 'Utworzono',
     updatedAt: 'Zaktualizowano',
   },
+  list: {
+    title: 'Lista projektów',
+  },
+  board: {
+    title: 'Tablica projektów',
+  },
   show: {
     title: 'Projekt',
     error: 'Nie udało się załadować projektu',

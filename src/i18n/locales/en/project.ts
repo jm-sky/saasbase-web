@@ -14,6 +14,12 @@ export const project = {
     createdAt: 'Created At',
     updatedAt: 'Updated At',
   },
+  list: {
+    title: 'Projects list',
+  },
+  board: {
+    title: 'Projects board',
+  },
   show: {
     title: 'Project',
     error: 'Could not load project',

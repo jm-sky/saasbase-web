@@ -63,8 +63,18 @@ const menu = computed<MenuItem[]>(() => {
     },
     {
       title: t('project.title'),
-      url: '/projects',
+      url: '#',
       icon: Tag,
+      items: [
+        {
+          title: t('project.list.title'),
+          url: '/projects',
+        },
+        {
+          title: t('project.board.title'),
+          url: '/projects-board',
+        },
+      ],
     },
     {
       title: 'Mailbox',

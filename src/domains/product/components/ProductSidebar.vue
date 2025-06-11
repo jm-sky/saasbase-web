@@ -10,7 +10,7 @@ import { money } from '@/lib/money'
 import { toDateTimeString } from '@/lib/toDateTimeString'
 import type { IProduct } from '@/domains/product/types/product.type'
 
-const { t, locale} = useI18n()
+const { t, locale } = useI18n()
 
 defineProps<{
   productId?: string

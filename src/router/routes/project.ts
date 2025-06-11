@@ -5,6 +5,14 @@ import type { RouteRecordRaw } from 'vue-router'
 
 export const projectRoutes: RouteRecordRaw[] = [
   {
+    path: '/projects-board',
+    name: 'projectsBoard',
+    component: () => import('@/pages/project/ProjectBoardPage.vue'),
+    meta: {
+      middlewares: [isAuthenticated, isVerified, isInTenant],
+    },
+  },
+  {
     path: '/projects',
     name: 'projects',
     component: () => import('@/pages/project/ProjectListPage.vue'),
