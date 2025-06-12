@@ -216,9 +216,17 @@ export const tenant = {
   publicProfile: {
     title: 'Profil publiczny',
     fields: {
+      country: 'Kraj',
+      name: 'Nazwa',
+      slug: 'Slug',
+      vatId: 'NIP',
+      regon: 'REGON',
+      taxId: 'Identyfikator podatkowy',
+      email: 'Email',
+      phone: 'Telefon',
+      website: 'Strona internetowa',
       visible: 'Widoczny',
       publicName: 'Nazwa publiczna',
-      websiteUrl: 'Adres strony internetowej',
       industry: 'Branża',
       locationCity: 'Miasto',
       locationCountry: 'Kraj',
@@ -226,7 +234,10 @@ export const tenant = {
       publicLogo: 'Logo publiczne',
       bannerImage: 'Obraz banera',
       socialLinks: 'Linki społecznościowe',
-      address: 'Adres'
+      address: 'Adres',
+      createdAt: 'Data utworzenia',
+      updatedAt: 'Data aktualizji',
+      deletedAt: 'Data usunięcia',
     },
     save: 'Zapisz',
     show: {

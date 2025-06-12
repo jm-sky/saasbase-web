@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+import { useI18n } from 'vue-i18n'
 import ActiveNowCard from '@/components/Dashboard/Cards/ActiveNowCard.vue'
 import SalesCard from '@/components/Dashboard/Cards/SalesCard.vue'
 import SubscriptionsCard from '@/components/Dashboard/Cards/SubscriptionsCard.vue'
@@ -19,9 +20,8 @@ import {
   TabsList,
   TabsTrigger,
 } from '@/components/ui/tabs'
-import { useTranslate } from '@/i18n/useTranslate'
 
-const tr = useTranslate()
+const { t } = useI18n()
 
 const startDate = ref(new Date(new Date().setDate(new Date().getDate() - 30)))
 const endDate = ref(new Date())
@@ -31,7 +31,7 @@ const endDate = ref(new Date())
   <div class="flex-1 space-y-4 p-8 pt-6">
     <div class="flex flex-col md:flex-row items-center justify-between space-y-2">
       <h2 class="text-3xl font-bold tracking-tight">
-        Dashboard
+        {{ t('dashboard.title') }}
       </h2>
       <div class="flex flex-col md:flex-row items-center gap-2">
         <DateRangePicker
@@ -47,25 +47,25 @@ const endDate = ref(new Date())
     >
       <TabsList class="max-w-full">
         <TabsTrigger value="overview">
-          Overview
+          {{ t('dashboard.tabs.overview') }}
         </TabsTrigger>
         <TabsTrigger
           value="analytics"
           disabled
         >
-          Analytics
+          {{ t('dashboard.tabs.analytics') }}
         </TabsTrigger>
         <TabsTrigger
           value="reports"
           disabled
         >
-          Reports
+          {{ t('dashboard.tabs.reports') }}
         </TabsTrigger>
         <TabsTrigger
           value="notifications"
           disabled
         >
-          Notifications
+          {{ t('dashboard.tabs.notifications') }}
         </TabsTrigger>
       </TabsList>
       <TabsContent
@@ -81,7 +81,7 @@ const endDate = ref(new Date())
         <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
           <Card class="col-span-4 max-w-[calc(100vw-4rem)] overflow-x-auto">
             <CardHeader>
-              <CardTitle>{{ tr('Overview') }}</CardTitle>
+              <CardTitle>{{ t('Overview') }}</CardTitle>
             </CardHeader>
             <CardContent class="pl-2">
               <Overview />

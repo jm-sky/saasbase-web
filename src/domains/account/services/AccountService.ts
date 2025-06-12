@@ -1,7 +1,4 @@
-import api from '@/lib/api'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
-import type { TDateTime } from '@/domains/shared/types/common'
-import type { IResourceCollection } from '@/domains/shared/types/resource.type'
 
 const delay = (ms = 500) => new Promise((resolve) => setTimeout(resolve, ms))
 
@@ -34,20 +31,6 @@ export interface UserSession {
   isCurrent: boolean
 }
 
-export interface ApiKey {
-  id: string
-  name: string
-  createdAt: TDateTime
-  expiresAt: TDateTime
-  lastUsedAt?: TDateTime
-  isActive: boolean
-}
-
-export interface CreateApiKeyData {
-  name: string
-  expiresAt: TDateTime
-}
-
 export interface BillingHistory {
   id: string
   date: string
@@ -62,38 +45,6 @@ export interface BillingHistory {
 export class AccountService {
   async delay(ms = 500): Promise<void> {
     return new Promise((resolve) => setTimeout(resolve, ms))
-  }
-
-  async getApiKeys(): Promise<IResourceCollection<ApiKey>> {
-    return (await api.get<IResourceCollection<ApiKey>>('/api-keys')).data
-  }
-
-  async createApiKey(data: CreateApiKeyData): Promise<ApiKey> {
-    try {
-      await this.delay()
-      // TODO: Replace with actual API call
-      return {
-        id: Math.random().toString(36).substring(7),
-        name: data.name,
-        createdAt: new Date().toISOString(),
-        expiresAt: data.expiresAt,
-        isActive: true,
-      }
-    } catch (error) {
-      handleErrorWithToast('Failed to create API key', error)
-      throw error
-    }
-  }
-
-  async revokeApiKey(keyId: string): Promise<void> {
-    try {
-      await this.delay()
-      // TODO: Replace with actual API call
-      console.log('Revoking API key:', keyId)
-    } catch (error) {
-      handleErrorWithToast('Failed to revoke API key', error)
-      throw error
-    }
   }
 
   async getBillingHistory(): Promise<BillingHistory[]> {

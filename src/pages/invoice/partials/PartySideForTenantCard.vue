@@ -17,7 +17,7 @@ const tenantAddress = ref<ITenantAddress | undefined>(undefined)
 </script>
 
 <template>
-  <div class="flex flex-col gap-y-2 rounded-lg border p-4">
+  <div class="flex flex-col gap-y-2 p-4">
     <div class="font-bold">
       {{ title }}
     </div>

@@ -1,5 +1,3 @@
-import type { TDateTime } from '@/domains/shared/types/common'
-
 export interface AccountProfile {
   id: string
   firstName: string
@@ -35,15 +33,6 @@ export interface AccountActivity {
   ipAddress?: string
   device?: string
   location?: string
-}
-
-export interface ApiKey {
-  id: string
-  name: string
-  key: string
-  createdAt: TDateTime
-  lastUsed?: TDateTime
-  expiresAt?: TDateTime
 }
 
 export interface BillingPlan {

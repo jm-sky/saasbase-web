@@ -1,4 +1,5 @@
 import { address } from './address'
+import { apiKeys } from './apiKeys'
 import { attachments } from './attachments'
 import { auth } from './auth'
 import { bankAccounts } from './bankAccounts'
@@ -28,8 +29,9 @@ import { utils } from './utils'
 
 export const pl = {
   address,
-  auth,
+  apiKeys,
   attachments,
+  auth,
   bankAccounts,
   billing,
   chat,

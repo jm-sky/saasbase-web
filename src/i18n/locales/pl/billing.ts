@@ -15,7 +15,7 @@ export const billing = {
       title: 'Płatność zakończona pomyślnie',
       description: 'Twoja subskrypcja została pomyślnie zakupiona.',
     },
-    cancelled: {
+    cancel: {
       title: 'Płatność anulowana',
       description: 'Twoja subskrypcja została anulowana.',
     },

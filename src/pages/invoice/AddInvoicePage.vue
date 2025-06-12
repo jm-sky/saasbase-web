@@ -19,6 +19,7 @@ import PartySideForContractorCard from './partials/PartySideForContractorCard.vu
 import PartySideForTenantCard from './partials/PartySideForTenantCard.vue'
 import type { IContractor } from '@/domains/contractor/types/contractor.type'
 import type { IInvoiceCreate } from '@/domains/invoice/types/invoice.type'
+import Separator from '@/components/ui/separator/Separator.vue'
 
 const { t } = useI18n()
 const { toast } = useToast()
@@ -190,9 +191,11 @@ const updateBuyer = (contractor: IContractor | undefined) => {
           </FormFieldLabeled>
         </div>
 
+        <Separator class="my-4" />
+
         <div class="col-span-2">
           <Button type="submit" :disabled="isSubmitting" class="w-full">
-            {{ t('invoice.add.title', 'Add Invoice') }}
+            {{ t('common.add') }}
           </Button>
         </div>
       </form>
