@@ -36,6 +36,7 @@ export default {
     'debit-note-correction': 'Nota obciążeniowa korekta',
     'import': 'Faktura import towarów',
     'import-correction': 'Faktura import towarów korekta',
+    undefined: ''
   },
   status: {
     draft: 'Wersja robocza',
@@ -44,10 +45,22 @@ export default {
     partiallyPaid: 'Częściowo opłacona',
     overdue: 'Zaległa',
     cancelled: 'Anulowana',
+    undefined: ''
+  },
+  paymentStatus: {
+    pending: 'Oczekuje',
+    paid: 'Opłacona',
+    overdue: 'Zaległa',
+    cancelled: 'Anulowana',
+    undefined: ''
   },
   add: {
     title: 'Dodawanie faktury',
+    description: 'Dodaj nową fakturę do systemu',
     success: 'Faktura dodana pomyślnie',
     error: 'Nie udało się dodać faktury',
+  },
+  show: {
+    title: 'Faktura',
   },
 }

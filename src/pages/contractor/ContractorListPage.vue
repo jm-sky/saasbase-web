@@ -5,8 +5,8 @@ import { onMounted, ref, type Ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import ButtonLink from '@/components/ButtonLink.vue'
 import DataListsWrapper from '@/components/DataLists/DataListsWrapper.vue'
+import DataTable from '@/components/DataLists/DataTable.vue'
 import SearchField from '@/components/DataLists/Filters/SearchField.vue'
-import DataTable from '@/components/DataTable.vue'
 import TagList from '@/components/TagList.vue'
 import Avatar from '@/components/ui/avatar/Avatar.vue'
 import AvatarFallback from '@/components/ui/avatar/AvatarFallback.vue'
@@ -76,6 +76,7 @@ const columns: ColumnDef<IContractor>[] = [
   {
     id: 'actions',
     header: t('common.actions'),
+    enableColumnFilter: false,
   },
 ]
 

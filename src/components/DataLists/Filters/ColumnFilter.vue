@@ -1,5 +1,10 @@
 <script setup lang="ts">
 import { computed } from 'vue'
+import Button from '@/components/ui/button/Button.vue'
+import DropdownMenu from '@/components/ui/dropdown-menu/DropdownMenu.vue'
+import DropdownMenuContent from '@/components/ui/dropdown-menu/DropdownMenuContent.vue'
+import DropdownMenuItem from '@/components/ui/dropdown-menu/DropdownMenuItem.vue'
+import DropdownMenuTrigger from '@/components/ui/dropdown-menu/DropdownMenuTrigger.vue'
 import Input from '@/components/ui/input/Input.vue'
 import type { FilterDefinition } from '@/domains/shared/types/resource.type'
 
@@ -66,10 +71,26 @@ const value = computed<string>({
 <template>
   <div class="flex items-center gap-2">
     <Input v-model.lazy.trim="value" class="w-full h-8" />
-    <select v-model="modelValue.operator" class="w-4 h-8">
-      <option v-for="operator in operators" :key="operator.value" :value="operator.value">
-        {{ operator.value }}
-      </option>
-    </select>
+    <DropdownMenu>
+      <DropdownMenuTrigger as-child>
+        <Button variant="outline" size="icon" class="h-8">
+          {{ modelValue.operator?.slice(0, 3) ?? 'eq' }}
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent>
+        <DropdownMenuItem
+          v-for="operator in operators"
+          :key="operator.value"
+          :value="operator.value"
+          class="flex items-center justify-between gap-2 cursor-pointer"
+          @click="modelValue.operator = operator.value"
+        >
+          {{ operator.value }}
+          <span class="text-xs text-muted-foreground">
+            {{ operator.label }}
+          </span>
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
   </div>
 </template>

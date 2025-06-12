@@ -4,8 +4,8 @@ import { onMounted, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import ButtonLink from '@/components/ButtonLink.vue'
 import DataListsWrapper from '@/components/DataLists/DataListsWrapper.vue'
+import DataTable from '@/components/DataLists/DataTable.vue'
 import SearchField from '@/components/DataLists/Filters/SearchField.vue'
-import DataTable from '@/components/DataTable.vue'
 import { Button } from '@/components/ui/button'
 import InvoiceListDropdown from '@/domains/invoice/components/InvoiceListDropdown.vue'
 import { type IInvoiceFilters, invoiceService } from '@/domains/invoice/services/invoiceService'
@@ -65,6 +65,10 @@ const columns: ColumnDef<IInvoice>[] = [
   {
     id: 'actions',
     header: t('common.actions'),
+    enableColumnFilter: false,
+    meta: {
+      clearFilters: true,
+    },
   },
 ]
 
@@ -118,7 +122,7 @@ watch(filters, () => refresh(), { deep: true })
         :loading
       >
         <template #number="{ data }">
-          <ButtonLink :to="`/invoices/${data.id}/show/overview`">
+          <ButtonLink :to="`/invoices/${data.id}/show`">
             {{ data.number }}
           </ButtonLink>
         </template>

@@ -53,7 +53,7 @@ const { isSubmitting, handleSubmit, setValues, setErrors, resetForm } = useForm<
       iban: '',
       email: '',
     },
-    data: {
+    body: {
       lines: [],
       vatSummary: [],
       exchange: {

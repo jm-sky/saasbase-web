@@ -36,6 +36,7 @@ export default {
     'debit-note-correction': 'Debit note correction',
     'import': 'Import invoice',
     'import-correction': 'Import invoice correction',
+    undefined: ''
   },
   status: {
     draft: 'Draft',
@@ -44,10 +45,22 @@ export default {
     partiallyPaid: 'Partially paid',
     overdue: 'Overdue',
     cancelled: 'Cancelled',
+    undefined: ''
+  },
+  paymentStatus: {
+    pending: 'Pending',
+    paid: 'Paid',
+    overdue: 'Overdue',
+    cancelled: 'Cancelled',
+    undefined: ''
   },
   add: {
     title: 'Add invoice',
+    description: 'Add a new invoice to the system',
     success: 'Invoice added successfully',
     error: 'Failed to add invoice',
+  },
+  show: {
+    title: 'Invoice',
   },
 }

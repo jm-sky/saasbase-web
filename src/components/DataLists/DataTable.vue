@@ -8,6 +8,7 @@ import {
 } from '@tanstack/vue-table'
 import { ArrowDown, ArrowUp } from 'lucide-vue-next'
 import { computed, ref } from 'vue'
+import ColumnFilter from '@/components/DataLists/Filters/ColumnFilter.vue'
 import {
   Table,
   TableBody,
@@ -16,9 +17,8 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
+import TablePagination from '@/components/ui/table/TablePagination.vue'
 import { valueUpdater } from '@/lib/utils'
-import ColumnFilter from './DataLists/Filters/ColumnFilter.vue'
-import TablePagination from './ui/table/TablePagination.vue'
 import type { ColumnDef, Header, SortingState, VisibilityState } from '@tanstack/vue-table'
 import type { FilterDefinition } from '@/domains/shared/types/resource.type'
 
@@ -95,7 +95,9 @@ const switchSorting = (header: Header<TData, unknown>) => {
           <TableRow v-for="headerGroup in table.getHeaderGroups()" :key="headerGroup.id">
             <TableHead v-for="header in headerGroup.headers" :key="header.id" class="bg-gray-50 dark:bg-gray-900">
               <slot :name="`${header.id}-filter`" :header="header">
-                <ColumnFilter v-model="columnFilters[header.id]" />
+                <template v-if="header.column.columnDef.enableColumnFilter !== false">
+                  <ColumnFilter v-model="columnFilters[header.id]" />
+                </template>
               </slot>
             </TableHead>
           </TableRow>

@@ -58,7 +58,7 @@ export interface IInvoice {
   exchangeRate: number;
   seller: IInvoiceSeller;
   buyer: IInvoiceBuyer;
-  data: IInvoiceData;
+  body: IInvoiceBody;
   payment: IInvoicePayment;
   options: IInvoiceOptions;
   issueDate?: TDate | null;
@@ -79,7 +79,7 @@ export interface IInvoiceCreate {
   exchangeRate: number;
   seller: IInvoiceSeller;
   buyer: IInvoiceBuyer;
-  data: IInvoiceData;
+  data: IInvoiceBody;
   payment: IInvoicePayment;
   options: IInvoiceOptions;
   issueDate?: TDate | null;
@@ -111,7 +111,7 @@ export interface IInvoiceBuyer {
   phone?: string;
 }
 
-export interface IInvoiceData {
+export interface IInvoiceBody {
   lines: IInvoiceLine[];
   vatSummary: IInvoiceVatSummary[];
   exchange: IInvoiceExchange;
