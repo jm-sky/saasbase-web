@@ -7,6 +7,7 @@ import { useRouter } from 'vue-router'
 import FormFieldLabeled from '@/components/Form/FormFieldLabeled.vue'
 import Button from '@/components/ui/button/Button.vue'
 import Input from '@/components/ui/input/Input.vue'
+import Separator from '@/components/ui/separator/Separator.vue'
 import { useToast } from '@/components/ui/toast/use-toast'
 import NumberingTemplatePicker from '@/domains/invoice/components/NumberingTemplatePicker.vue'
 import { invoiceService } from '@/domains/invoice/services/invoiceService'
@@ -19,7 +20,6 @@ import PartySideForContractorCard from './partials/PartySideForContractorCard.vu
 import PartySideForTenantCard from './partials/PartySideForTenantCard.vue'
 import type { IContractor } from '@/domains/contractor/types/contractor.type'
 import type { IInvoiceCreate } from '@/domains/invoice/types/invoice.type'
-import Separator from '@/components/ui/separator/Separator.vue'
 
 const { t } = useI18n()
 const { toast } = useToast()
