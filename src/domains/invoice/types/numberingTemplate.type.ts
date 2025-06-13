@@ -1,4 +1,4 @@
-import type { TInvoiceType } from './invoice.type'
+import type { TInvoiceType } from '@/domains/financial/types/financial.type'
 import type { TDateTime, TUUID } from '@/domains/shared/types/common'
 
 export interface IInvoiceNumberingTemplate {

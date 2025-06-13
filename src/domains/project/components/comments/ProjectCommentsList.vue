@@ -6,16 +6,17 @@ import NoItems from '@/components/DataLists/NoItems.vue'
 import Button from '@/components/ui/button/Button.vue'
 import TablePagination from '@/components/ui/table/TablePagination.vue'
 import CommentForm from '@/domains/comment/components/CommentForm.vue'
-import ProductCommentsListItem from '@/domains/product/components/comments/ProductCommentsListItem.vue'
 import { productCommentsService } from '@/domains/product/services/ProductCommentsService'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
+import type { IProject } from '../../types/project.type'
+import { projectCommentsService } from '../../services/ProjectCommentsService'
+import ProjectCommentsListItem from './ProjectCommentsListItem.vue'
 import type { IComment } from '@/domains/comment/types/comment.type'
-import type { IProduct } from '@/domains/product/types/product.type'
 
 const { t } = useI18n()
 
-const { product } =defineProps<{
-  product: IProduct
+const { project } =defineProps<{
+  project: IProject
 }>()
 
 const comments = ref<IComment[]>([])
@@ -28,7 +29,7 @@ const pageSizeOptions = [10, 20, 50]
 const refresh = async () => {
   loading.value = true
   try {
-    const res = await productCommentsService.index(product.id, page.value, pageSize.value)
+    const res = await projectCommentsService.index(project.id, page.value, pageSize.value)
     comments.value = res.data
     total.value = res.meta.total
   } catch (err) {
@@ -59,11 +60,11 @@ onMounted(refresh)
     </div>
 
     <div v-else class="flex flex-col gap-4">
-      <ProductCommentsListItem
+      <ProjectCommentsListItem
         v-for="comment in comments"
         :key="comment.id"
-        :product="product"
-        :comment="comment"
+        :project
+        :comment
         @refresh="refresh"
       />
 
@@ -80,7 +81,7 @@ onMounted(refresh)
     </div>
 
     <CommentForm
-      :commentable-id="product.id"
+      :commentable-id="project.id"
       :service="productCommentsService"
       @create="refresh"
     />

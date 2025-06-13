@@ -1,10 +1,9 @@
 export default {
-  title: 'Invoices',
+  title: 'Expenses',
   fields: {
     type: 'Type',
     status: 'Status',
     number: 'Number',
-    numberingTemplateId: 'Numbering Template ID',
     totalNet: 'Total Net',
     totalTax: 'Total Tax',
     totalGross: 'Total Gross',
@@ -18,15 +17,14 @@ export default {
     issueDate: 'Issue Date',
     createdAt: 'Created At',
     updatedAt: 'Updated At',
-    numberingTemplate: 'Numbering Template',
   },
   add: {
-    title: 'Add invoice',
-    description: 'Add a new invoice to the system',
-    success: 'Invoice added successfully',
-    error: 'Failed to add invoice',
+    title: 'Add expense',
+    description: 'Add a new expense to the system',
+    success: 'Expense added successfully',
+    error: 'Failed to add expense',
   },
   show: {
-    title: 'Invoice',
+    title: 'Expense',
   },
 }

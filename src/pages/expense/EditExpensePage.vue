@@ -7,22 +7,22 @@ import FormFieldLabeled from '@/components/Form/FormFieldLabeled.vue'
 import Button from '@/components/ui/button/Button.vue'
 import Input from '@/components/ui/input/Input.vue'
 import { useToast } from '@/components/ui/toast/use-toast'
-import { invoiceService } from '@/domains/invoice/services/invoiceService'
+import { expenseService } from '@/domains/expense/services/expenseService'
 import AuthenticatedLayout from '@/layouts/AuthenticatedLayout.vue'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
 import { isValidationError } from '@/lib/validation'
-import type { IInvoice } from '@/domains/invoice/types/invoice.type'
+import type { IExpense } from '@/domains/expense/types/expense.type'
 
 const { t } = useI18n()
 const route = useRoute()
 const router = useRouter()
 const { toast } = useToast()
 
-const invoiceId = route.params.id as string
+const expenseId = route.params.id as string
 const loading = ref(false)
 const error = ref<string | null>(null)
 
-const { isSubmitting, handleSubmit, setValues, setErrors, resetForm } = useForm<Omit<IInvoice, 'id' | 'createdAt' | 'updatedAt'>>({
+const { isSubmitting, handleSubmit, setValues, setErrors, resetForm } = useForm<Omit<IExpense, 'id' | 'createdAt' | 'updatedAt'>>({
   initialValues: {
     number: '',
     type: 'basic',
@@ -79,7 +79,6 @@ const { isSubmitting, handleSubmit, setValues, setErrors, resetForm } = useForm<
       emailTo: [],
     },
     issueDate: '',
-    numberingTemplate: undefined,
   },
 })
 
@@ -87,11 +86,11 @@ const refresh = async () => {
   try {
     loading.value = true
     error.value = null
-    const response = await invoiceService.get(invoiceId)
+    const response = await expenseService.get(expenseId)
     setValues(response)
   } catch (err) {
-    handleErrorWithToast(t('invoice.show.error', 'Error'), err)
-    error.value = t('invoice.show.error', 'Failed to load invoice')
+    handleErrorWithToast(t('expense.show.error', 'Error'), err)
+    error.value = t('expense.show.error', 'Failed to load expense')
   } finally {
     loading.value = false
   }
@@ -99,14 +98,14 @@ const refresh = async () => {
 
 const onSubmit = handleSubmit(async (values) => {
   try {
-    await invoiceService.update(invoiceId, values)
-    toast.success(t('invoice.edit.success', 'Invoice updated successfully'))
+    await expenseService.update(expenseId, values)
+    toast.success(t('expense.edit.success', 'Expense updated successfully'))
     resetForm()
-    await router.push(`/invoices/${invoiceId}/show/overview`)
+    await router.push(`/expenses/${expenseId}/show/overview`)
   } catch (error: unknown) {
-    console.error('[EditInvoicePage][onSubmit] error:', error)
+    console.error('[EditExpensePage][onSubmit] error:', error)
     if (isValidationError(error)) setErrors(error.response.data.errors)
-    handleErrorWithToast(t('invoice.edit.error', 'Could not edit invoice'), error)
+    handleErrorWithToast(t('expense.edit.error', 'Could not edit expense'), error)
   }
 })
 
@@ -122,7 +121,7 @@ onMounted(async () => {
         <FormFieldLabeled
           v-slot="{ componentField }"
           name="number"
-          :label="t('invoice.fields.number', 'Number')"
+          :label="t('expense.fields.number', 'Number')"
           :disabled="isSubmitting"
         >
           <Input v-bind="componentField" class="bg-white/50 dark:bg-black/50" />
@@ -130,7 +129,7 @@ onMounted(async () => {
         <FormFieldLabeled
           v-slot="{ componentField }"
           name="type"
-          :label="t('invoice.fields.type', 'Type')"
+          :label="t('expense.fields.type', 'Type')"
           :disabled="isSubmitting"
         >
           <Input v-bind="componentField" class="bg-white/50 dark:bg-black/50" />
@@ -138,7 +137,7 @@ onMounted(async () => {
         <FormFieldLabeled
           v-slot="{ componentField }"
           name="status"
-          :label="t('invoice.fields.status', 'Status')"
+          :label="t('expense.fields.status', 'Status')"
           :disabled="isSubmitting"
         >
           <Input v-bind="componentField" class="bg-white/50 dark:bg-black/50" />
@@ -146,14 +145,14 @@ onMounted(async () => {
         <FormFieldLabeled
           v-slot="{ componentField }"
           name="currency"
-          :label="t('invoice.fields.currency', 'Currency')"
+          :label="t('expense.fields.currency', 'Currency')"
           :disabled="isSubmitting"
         >
           <Input v-bind="componentField" class="bg-white/50 dark:bg-black/50" />
         </FormFieldLabeled>
         <div class="col-span-2">
           <Button type="submit" :disabled="isSubmitting" class="w-full">
-            {{ t('invoice.edit.title', 'Edit Invoice') }}
+            {{ t('expense.edit.title', 'Edit Expense') }}
           </Button>
         </div>
       </form>

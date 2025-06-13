@@ -57,6 +57,11 @@ const menu = computed<MenuItem[]>(() => {
       icon: Package,
     },
     {
+      title: t('expense.title'),
+      url: '/expenses',
+      icon: FileText,
+    },
+    {
       title: t('invoice.title'),
       url: '/invoices',
       icon: FileText,

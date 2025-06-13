@@ -4,7 +4,7 @@ import { ref } from 'vue'
 import Input from '@/components/ui/input/Input.vue'
 import TenantAddressPicker from '@/domains/tenant/components/TenantAddressPicker.vue'
 import TenantBankAccountPicker from '@/domains/tenant/components/TenantBankAccountPicker.vue'
-import type { IInvoiceBuyer, IInvoiceSeller } from '@/domains/invoice/types/invoice.type'
+import type { IInvoiceBuyer, IInvoiceSeller } from '../types/financial.type'
 import type { ITenantAddress, ITenantBankAccount } from '@/domains/tenant/types/tenant.type'
 
 defineProps<{

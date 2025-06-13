@@ -9,17 +9,16 @@ import Button from '@/components/ui/button/Button.vue'
 import Input from '@/components/ui/input/Input.vue'
 import Separator from '@/components/ui/separator/Separator.vue'
 import { useToast } from '@/components/ui/toast/use-toast'
+import { expenseService } from '@/domains/expense/services/expenseService'
 import PartySideForContractorCard from '@/domains/financial/components/PartySideForContractorCard.vue'
 import PartySideForTenantCard from '@/domains/financial/components/PartySideForTenantCard.vue'
-import NumberingTemplatePicker from '@/domains/invoice/components/NumberingTemplatePicker.vue'
-import { invoiceService } from '@/domains/invoice/services/invoiceService'
 import { tenantService } from '@/domains/tenant/services/TenantService'
 import { useTenantStore } from '@/domains/tenant/store/tenant.store'
 import AuthenticatedLayout from '@/layouts/AuthenticatedLayout.vue'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
 import { isValidationError } from '@/lib/validation'
 import type { IContractor } from '@/domains/contractor/types/contractor.type'
-import type { IInvoiceCreate } from '@/domains/invoice/types/invoice.type'
+import type { IExpenseCreate } from '@/domains/expense/types/expense.type'
 
 const { t } = useI18n()
 const { toast } = useToast()
@@ -27,7 +26,7 @@ const router = useRouter()
 const tenantStore = useTenantStore()
 const { tenant, tenantBillingAddress } = storeToRefs(tenantStore)
 
-const { isSubmitting, handleSubmit, values, setErrors, setFieldValue, resetForm } = useForm<IInvoiceCreate>({
+const { isSubmitting, handleSubmit, values, setErrors, setFieldValue, resetForm } = useForm<IExpenseCreate>({
   initialValues: {
     number: 'TEST/0001',
     type: 'basic',
@@ -41,22 +40,22 @@ const { isSubmitting, handleSubmit, values, setErrors, setFieldValue, resetForm 
     seller: {
       contractorId: undefined,
       contractorType: 'company',
-      name: tenant.value?.name ?? 'DEMO COMPANY',
-      taxId: tenant.value?.taxId ?? '',
-      address: tenantBillingAddress.value?.street ?? 'OUR ADDRESS',
-      country: tenant.value?.country ?? 'PL',
-      iban: '',
-      email: tenant.value?.email ??'',
-    },
-    buyer: {
-      contractorId: undefined,
-      contractorType: 'company',
       name: 'DEMO BUYER',
       taxId: '',
       address: 'Random street 123',
       country: 'PL',
       iban: '',
       email: '',
+    },
+    buyer: {
+      contractorId: undefined,
+      contractorType: 'company',
+      name: tenant.value?.name ?? 'DEMO COMPANY',
+      taxId: tenant.value?.taxId ?? '',
+      address: tenantBillingAddress.value?.street ?? 'OUR ADDRESS',
+      country: tenant.value?.country ?? 'PL',
+      iban: '',
+      email: tenant.value?.email ??'',
     },
     data: {
       lines: [],
@@ -84,7 +83,6 @@ const { isSubmitting, handleSubmit, values, setErrors, setFieldValue, resetForm 
       emailTo: [],
     },
     issueDate: '2025-01-01',
-    numberingTemplate: undefined,
   },
 })
 
@@ -99,14 +97,14 @@ onMounted(async () => {
 
 const onSubmit = handleSubmit(async (values) => {
   try {
-    const invoice = await invoiceService.create(values)
-    toast.success(t('invoice.add.success', 'Invoice added successfully'))
+    const expense = await expenseService.create(values)
+    toast.success(t('expense.add.success', 'Expense added successfully'))
     resetForm()
-    await router.push(`/invoices/${invoice.id}/show/overview`)
+    await router.push(`/expenses/${expense.id}/show/overview`)
   } catch (error: unknown) {
-    console.error('[AddInvoicePage][onSubmit] error:', error)
+    console.error('[AddExpensePage][onSubmit] error:', error)
     if (isValidationError(error)) setErrors(error.response.data.errors)
-    handleErrorWithToast(t('invoice.add.error', 'Could not add invoice'), error)
+    handleErrorWithToast(t('expense.add.error', 'Could not add expense'), error)
   }
 })
 
@@ -123,7 +121,7 @@ const updateBuyer = (contractor: IContractor | undefined) => {
   <AuthenticatedLayout>
     <div class="m-6 p-6 md:p-8 border rounded-md shadow-lg">
       <div class="font-bold text-2xl mb-4 text-center">
-        {{ t('invoice.add.title', 'Add Invoice') }}
+        {{ t('expense.add.title', 'Add Expense') }}
       </div>
 
       <form class="flex flex-col gap-y-2 gap-x-8" @submit.prevent="onSubmit">
@@ -134,18 +132,9 @@ const updateBuyer = (contractor: IContractor | undefined) => {
 
         <div class="flex flex-col gap-y-2 items-center justify-center mt-2 mb-6">
           <div class="font-bold text-lg">
-            {{ t(`invoice.type.${values.type}`, 'Type') }}
+            {{ t(`expense.type.${values.type}`, 'Type') }}
           </div>
           <div class="font-bold text-xl">
-            <FormFieldLabeled name="numberingTemplateId" :disabled="isSubmitting">
-              <NumberingTemplatePicker
-                :id="values.numberingTemplateId"
-                :model-value="values.numberingTemplate"
-                :invoice-type="values.type"
-                @update:model-value="setFieldValue('numberingTemplate', $event)"
-                @update:id="setFieldValue('numberingTemplateId', $event)"
-              />
-            </FormFieldLabeled>
             <FormFieldLabeled
               v-slot="{ componentField }"
               name="number"
@@ -160,7 +149,7 @@ const updateBuyer = (contractor: IContractor | undefined) => {
           <FormFieldLabeled
             v-slot="{ componentField }"
             name="issueDate"
-            :label="t('invoice.fields.issueDate', 'issueDate')"
+            :label="t('expense.fields.issueDate', 'issueDate')"
             :disabled="isSubmitting"
           >
             <Input type="date" v-bind="componentField" class="bg-white/50 dark:bg-black/50" />
@@ -168,7 +157,7 @@ const updateBuyer = (contractor: IContractor | undefined) => {
           <FormFieldLabeled
             v-slot="{ componentField }"
             name="type"
-            :label="t('invoice.fields.type', 'Type')"
+            :label="t('expense.fields.type', 'Type')"
             :disabled="isSubmitting"
           >
             <Input v-bind="componentField" class="bg-white/50 dark:bg-black/50" />
@@ -176,7 +165,7 @@ const updateBuyer = (contractor: IContractor | undefined) => {
           <FormFieldLabeled
             v-slot="{ componentField }"
             name="status"
-            :label="t('invoice.fields.status', 'Status')"
+            :label="t('expense.fields.status', 'Status')"
             :disabled="isSubmitting"
           >
             <Input v-bind="componentField" class="bg-white/50 dark:bg-black/50" />
@@ -184,7 +173,7 @@ const updateBuyer = (contractor: IContractor | undefined) => {
           <FormFieldLabeled
             v-slot="{ componentField }"
             name="currency"
-            :label="t('invoice.fields.currency', 'Currency')"
+            :label="t('expense.fields.currency', 'Currency')"
             :disabled="isSubmitting"
           >
             <Input v-bind="componentField" class="bg-white/50 dark:bg-black/50" />

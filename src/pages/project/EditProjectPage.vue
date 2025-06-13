@@ -47,8 +47,8 @@ const refresh = async () => {
       description: response.description,
     })
   } catch (err) {
-    handleErrorWithToast(t('project.show.error', 'Error'), err)
-    error.value = t('project.show.error', 'Failed to load project')
+    handleErrorWithToast(t('project.edit.error', 'Error'), err)
+    error.value = t('project.edit.error', 'Failed to load project')
   } finally {
     loading.value = false
   }
@@ -75,7 +75,7 @@ onMounted(async () => {
 <template>
   <AuthenticatedLayout>
     <EntityDetailsLayout
-      :title="t('project.add.title')"
+      :title="t('project.edit.title')"
       back-link="/projects"
     >
       <template #back-link-text>
@@ -109,7 +109,7 @@ onMounted(async () => {
 
             <div>
               <Button type="submit" :disabled="isSubmitting" class="w-full">
-                {{ t('project.add.title') }}
+                {{ t('common.save', 'Save') }}
               </Button>
             </div>
           </form>

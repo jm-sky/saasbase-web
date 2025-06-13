@@ -16,6 +16,7 @@ export const apiRoutesMap = {
   tenants: '/tenants',
   tenantsPreview: '/tenants/preview',
   contractors: '/contractors',
+  expenses: '/expenses',
   invoices: '/invoices',
   products: '/products',
   tags: '/tags',

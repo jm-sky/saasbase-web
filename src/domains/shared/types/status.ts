@@ -1,4 +1,4 @@
-import type { TInvoiceStatus } from '@/domains/invoice/types/invoice.type'
+import type { TInvoiceStatus } from '@/domains/financial/types/financial.type'
 import type { TProjectStatus } from '@/domains/project/types/project.type'
 import type { TSkillLevel } from '@/domains/skill/types/skill.type'
 import type { TTaskPriority, TTaskStatus } from '@/domains/task/types/task.type'

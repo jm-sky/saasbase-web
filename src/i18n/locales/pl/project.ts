@@ -28,6 +28,11 @@ export const project = {
     title: 'Dodaj projekt',
     description: 'Dodaj nowy projekt do systemu.'
   },
+  edit: {
+    title: 'Edytuj projekt',
+    success: 'Projekt zaktualizowany pomyślnie',
+    error: 'Nie udało się zaktualizować projektu',
+  },
   delete: {
     success: 'Projekt usunięty pomyślnie',
     error: 'Nie udało się usunąć projektu',

@@ -12,7 +12,9 @@ import { contacts } from './contacts'
 import { contractor } from './contractor'
 import { country } from './country'
 import { dashboard } from './dashboard'
+import expense from './expense'
 import feed from './feed'
+import { financial } from './financial'
 import { invitation } from './invitation'
 import invoice from './invoice'
 import { log } from './log'
@@ -42,7 +44,9 @@ export const pl = {
   contacts,
   country,
   dashboard,
+  expense,
   feed,
+  financial,
   invitation,
   invoice,
   notifications,

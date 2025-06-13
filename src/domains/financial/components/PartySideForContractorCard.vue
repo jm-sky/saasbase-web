@@ -4,8 +4,8 @@ import { ref } from 'vue'
 import Input from '@/components/ui/input/Input.vue'
 import ContractorAddressPicker from '@/domains/contractor/components/ContractorAddressPicker.vue'
 import ContractorPicker from '@/domains/contractor/components/ContractorPicker.vue'
+import type { IInvoiceBuyer, IInvoiceSeller } from '../types/financial.type'
 import type { IContractor, IContractorAddress } from '@/domains/contractor/types/contractor.type'
-import type { IInvoiceBuyer, IInvoiceSeller } from '@/domains/invoice/types/invoice.type'
 
 const { type = 'buyer' } = defineProps<{
   title: string

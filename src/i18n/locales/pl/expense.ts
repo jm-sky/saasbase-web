@@ -1,10 +1,9 @@
 export default {
-  title: 'Faktury',
+  title: 'Wydatki',
   fields: {
     type: 'Typ',
     status: 'Status faktury',
     number: 'Numer',
-    numberingTemplateId: 'Szablon numeracji',
     totalNet: 'Netto',
     totalTax: 'VAT',
     totalGross: 'Brutto',
@@ -18,15 +17,14 @@ export default {
     issueDate: 'Data wystawienia',
     createdAt: 'Data utworzenia',
     updatedAt: 'Data aktualizacji',
-    numberingTemplate: 'Szablon numeracji',
   },
   add: {
-    title: 'Dodawanie faktury',
-    description: 'Dodaj nową fakturę do systemu',
-    success: 'Faktura dodana pomyślnie',
-    error: 'Nie udało się dodać faktury',
+    title: 'Dodawanie wydatku',
+    description: 'Dodaj nowy wydatku do systemu',
+    success: 'Wydatku dodana pomyślnie',
+    error: 'Nie udało się dodać wydatku',
   },
   show: {
-    title: 'Faktura',
+    title: 'Wydatek',
   },
 }

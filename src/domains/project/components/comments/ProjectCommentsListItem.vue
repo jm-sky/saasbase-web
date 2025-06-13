@@ -4,15 +4,15 @@ import { useI18n } from 'vue-i18n'
 import CommentItem from '@/domains/comment/components/CommentItem.vue'
 import { productCommentsService } from '@/domains/product/services/ProductCommentsService'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
+import type { IProject } from '../../types/project.type'
 import type { IComment } from '@/domains/comment/types/comment.type'
-import type { IProduct } from '@/domains/product/types/product.type'
 
 const { t } = useI18n()
 
 const loading = ref(false)
 
-const { product, comment } = defineProps<{
-  product: IProduct
+const { project, comment } = defineProps<{
+  project: IProject
   comment: IComment
 }>()
 
@@ -28,7 +28,7 @@ const handleDelete = async (comment: IComment) => {
   try {
     if (!confirm(t('comments.delete.confirmation'))) return
     loading.value = true
-    await productCommentsService.delete(product.id, comment.id)
+    await productCommentsService.delete(project.id, comment.id)
     emit('refresh')
   } catch (err) {
     handleErrorWithToast(t('comments.delete.error'), err)

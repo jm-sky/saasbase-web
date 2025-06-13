@@ -1,9 +1,11 @@
 import { storeToRefs } from 'pinia'
 import { ref } from 'vue'
+import { useToast } from '@/components/ui/toast'
 import { TagService } from '../services/tag.service'
 import { useTagStore } from '../stores/tag.store'
 
 export const useTags = () => {
+  const { toast } = useToast()
   const store = useTagStore()
   const { availableTags } = storeToRefs(store)
   const isLoading = ref(false)
@@ -17,6 +19,7 @@ export const useTags = () => {
       store.setTags(tags)
     } catch (e) {
       error.value = 'Failed to load tags'
+      toast.error('Failed to load tags')
       console.error('Error loading tags:', e)
     } finally {
       isLoading.value = false
@@ -30,6 +33,7 @@ export const useTags = () => {
       store.addTag(response)
     } catch (e) {
       error.value = 'Failed to create tag'
+      toast.error('Failed to create tag')
       console.error('Error creating tag:', e)
       throw e
     }
@@ -42,6 +46,7 @@ export const useTags = () => {
       store.removeTag(tag)
     } catch (e) {
       error.value = 'Failed to delete tag'
+      toast.error('Failed to delete tag')
       console.error('Error deleting tag:', e)
       throw e
     }

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ChevronRight } from 'lucide-vue-next'
 import { RouterLink } from 'vue-router'
+import { useRoute } from 'vue-router'
 import {
   Collapsible,
   CollapsibleContent,
@@ -23,6 +24,13 @@ import FeatureLockedIcon from './Menu/FeatureLockedIcon.vue'
 defineProps<{
   items: MenuItem[]
 }>()
+
+const route = useRoute()
+
+const isGroupActive = (item: MenuItem) => {
+  // return item.items?.some(child => route.path.startsWith(child.url)) ?? false
+  return route.matched.some(record => item.items?.some(link => link.url.includes(record.path)))
+}
 </script>
 
 <template>
@@ -33,7 +41,7 @@ defineProps<{
         <Collapsible
           v-if="item.items"
           as-child
-          :default-open="item.isActive"
+          :default-open="isGroupActive(item)"
           class="group/collapsible"
         >
           <SidebarMenuItem>

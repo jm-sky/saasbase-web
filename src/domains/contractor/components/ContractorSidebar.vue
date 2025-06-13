@@ -6,9 +6,11 @@ import InfoSection from '@/components/Sections/InfoSection.vue'
 import TagList from '@/components/TagList.vue'
 import Badge from '@/components/ui/badge/Badge.vue'
 import Separator from '@/components/ui/separator/Separator.vue'
+import TagsEditable from '@/domains/tags/components/TagsEditable.vue'
 import { toDateTimeString } from '@/lib/toDateTimeString'
 import type { IContractor } from '../types/contractor.type'
 import { contractorLogoService } from '../services/ContractorLogoService'
+import { contractorTagsService } from '../services/ContractorTagsService'
 
 const { t } = useI18n()
 
@@ -71,7 +73,16 @@ const emit = defineEmits<{
     <InfoSection :label="t('contractor.fields.email')" :value="contractor?.email" />
     <InfoSection :label="t('contractor.fields.phone')" :value="contractor?.phone" />
     <InfoSection :label="t('contractor.fields.tags')">
-      <TagList :tags="contractor?.tags ?? []" />
+      <TagList
+        v-if="contractor && disabled"
+        :tags="contractor.tags"
+      />
+      <TagsEditable
+        v-if="contractor && !disabled"
+        :model-value="contractor.tags"
+        :tag-service="contractorTagsService"
+        :model-id="contractor.id"
+      />
     </InfoSection>
     <InfoSection v-if="contractor" :label="t('common.fields.createdAt')" :value="toDateTimeString(contractor.createdAt)" />
     <InfoSection v-if="contractor" :label="t('common.fields.updatedAt')" :value="toDateTimeString(contractor.updatedAt)" />

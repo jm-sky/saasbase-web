@@ -7,8 +7,8 @@ import { useRoute } from 'vue-router'
 import Badge from '@/components/ui/badge/Badge.vue'
 import Button from '@/components/ui/button/Button.vue'
 import Separator from '@/components/ui/separator/Separator.vue'
-import { invoiceService } from '@/domains/invoice/services/invoiceService'
-import { useInvoiceStore } from '@/domains/invoice/stores/invoice.store'
+import { expenseService } from '@/domains/expense/services/expenseService'
+import { useExpenseStore } from '@/domains/expense/stores/expense.store'
 import AuthenticatedLayout from '@/layouts/AuthenticatedLayout.vue'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
 import { toDateString } from '@/lib/toDateString'
@@ -16,10 +16,10 @@ import type { BadgeVariants } from '@/components/ui/badge'
 
 const { t } = useI18n()
 const route = useRoute()
-const invoiceId = route.params.id as string
+const expenseId = route.params.id as string
 
-const invoiceStore = useInvoiceStore()
-const { invoice } = storeToRefs(invoiceStore)
+const expenseStore = useExpenseStore()
+const { expense } = storeToRefs(expenseStore)
 
 const loading = ref(false)
 const error = ref<string | null>(null)
@@ -28,10 +28,10 @@ const refresh = async () => {
   try {
     loading.value = true
     error.value = null
-    invoice.value = await invoiceService.get(invoiceId)
+    expense.value = await expenseService.get(expenseId)
   } catch (err) {
-    handleErrorWithToast(t('invoice.show.error', 'Error'), err)
-    error.value = 'Failed to load invoice'
+    handleErrorWithToast(t('expense.show.error', 'Error'), err)
+    error.value = 'Failed to load expense'
   } finally {
     loading.value = false
   }
@@ -57,11 +57,11 @@ onMounted(async () => {
       <div class="flex flex-row gap-4 items-center justify-between">
         <div>
           <div class="font-bold">
-            {{ t('invoice.show.title') }}
+            {{ t('expense.show.title') }}
           </div>
           <div class="text-sm text-muted-foreground">
-            <RouterLink :to="'/invoices'">
-              {{ t('invoice.title') }}
+            <RouterLink :to="'/expenses'">
+              {{ t('expense.title') }}
             </RouterLink>
           </div>
         </div>
@@ -83,10 +83,10 @@ onMounted(async () => {
           <div class="grid grid-cols-2 gap-8">
             <div class="col-span-2 mb-6">
               <h1 class="text-xl font-bold">
-                {{ t(`financial.invoiceType.${invoice?.type}`) }}
+                {{ t(`expense.type.${expense?.type}`) }}
               </h1>
               <h2 class="text-2xl font-bold">
-                {{ invoice?.number }}
+                {{ expense?.number }}
               </h2>
             </div>
 
@@ -95,7 +95,7 @@ onMounted(async () => {
                 Issue date
               </div>
               <div class="font-semibold">
-                {{ invoice?.issueDate ? toDateString(invoice?.issueDate) : 'N/A' }}
+                {{ expense?.issueDate ? toDateString(expense?.issueDate) : 'N/A' }}
               </div>
             </div>
             <div>
@@ -103,7 +103,7 @@ onMounted(async () => {
                 Due date
               </div>
               <div class="font-semibold">
-                {{ invoice?.payment?.dueDate ? toDateString(invoice?.payment?.dueDate) : 'N/A' }}
+                {{ expense?.payment?.dueDate ? toDateString(expense?.payment?.dueDate) : 'N/A' }}
               </div>
             </div>
 
@@ -112,10 +112,10 @@ onMounted(async () => {
                 Issued for
               </div>
               <div class="font-semibold">
-                {{ invoice?.buyer?.name }}
+                {{ expense?.buyer?.name }}
               </div>
               <div class="text-sm text-muted-foreground">
-                {{ invoice?.buyer?.address }}
+                {{ expense?.buyer?.address }}
               </div>
             </div>
 
@@ -124,10 +124,10 @@ onMounted(async () => {
                 Issued by
               </div>
               <div class="font-semibold">
-                {{ invoice?.seller?.name }}
+                {{ expense?.seller?.name }}
               </div>
               <div class="text-sm text-muted-foreground">
-                {{ invoice?.seller?.address }}
+                {{ expense?.seller?.address }}
               </div>
             </div>
 
@@ -150,7 +150,7 @@ onMounted(async () => {
                   </tr>
                 </thead>
                 <tbody>
-                  <tr v-for="item in invoice?.body.lines" :key="item.id">
+                  <tr v-for="item in expense?.body.lines" :key="item.id">
                     <td class="p-2">
                       {{ item.description }}
                     </td>
@@ -162,7 +162,7 @@ onMounted(async () => {
                     </td>
                     <td class="p-2 text-end font-semibold">
                       {{ item.totalGross.toFixed(2) }}
-                      {{ invoice?.currency }}
+                      {{ expense?.currency }}
                     </td>
                   </tr>
                 </tbody>
@@ -172,22 +172,22 @@ onMounted(async () => {
 
               <div class="ml-auto w-1/2 grid grid-cols-2 items-center gap-3 text-sm text-end pe-2">
                 <div class="text-muted-foreground text-end">
-                  {{ t(`invoice.fields.totalNet`) }}:
+                  {{ t(`expense.fields.totalNet`) }}:
                 </div>
                 <div class="font-bold">
-                  {{ invoice?.totalNet?.toFixed(2) }} {{ invoice?.currency }}
+                  {{ expense?.totalNet?.toFixed(2) }} {{ expense?.currency }}
                 </div>
                 <div class="text-muted-foreground text-end">
-                  {{ t(`invoice.fields.totalTax`) }}:
+                  {{ t(`expense.fields.totalTax`) }}:
                 </div>
                 <div class="font-bold">
-                  {{ invoice?.totalTax?.toFixed(2) }} {{ invoice?.currency }}
+                  {{ expense?.totalTax?.toFixed(2) }} {{ expense?.currency }}
                 </div>
                 <div class="text-muted-foreground text-end">
-                  {{ t(`invoice.fields.totalGross`) }}:
+                  {{ t(`expense.fields.totalGross`) }}:
                 </div>
                 <div class="font-bold">
-                  {{ invoice?.totalGross?.toFixed(2) }} {{ invoice?.currency }}
+                  {{ expense?.totalGross?.toFixed(2) }} {{ expense?.currency }}
                 </div>
               </div>
             </div>
@@ -196,39 +196,39 @@ onMounted(async () => {
           <!-- Sidebar -->
           <div class="flex flex-col gap-4 border border-dashed rounded-lg p-8">
             <div class="flex flex-row gap-2 mb-2">
-              <Badge :variant="getStatusBadgeVariant(invoice?.status)">
-                {{ t(`financial.invoiceStatus.${invoice?.status}`) }}
+              <Badge :variant="getStatusBadgeVariant(expense?.status)">
+                {{ t(`expense.status.${expense?.status}`) }}
               </Badge>
             </div>
 
             <div class="uppercase text-sm font-bold text-muted-foreground">
-              {{ t('financial.fields.payment') }}
+              Payment
             </div>
             <div class="flex flex-col gap-4">
               <div>
                 <div class="text-sm text-muted-foreground">
-                  {{ t('financial.payment.fields.method') }}
+                  Method
                 </div>
                 <div class="font-semibold">
-                  {{ t(`financial.payment.method.${invoice?.payment?.method}`) }}
+                  {{ expense?.payment?.method }}
                 </div>
               </div>
 
               <div>
                 <div class="text-sm text-muted-foreground">
-                  {{ t('financial.payment.fields.status') }}
+                  Status
                 </div>
                 <div class="font-semibold">
-                  {{ t(`financial.payment.status.${invoice?.payment?.status}`) }}
+                  {{ t(`expense.paymentStatus.${expense?.payment?.status}`) }}
                 </div>
               </div>
 
               <div>
                 <div class="text-sm text-muted-foreground">
-                  {{ t('financial.payment.fields.dueDate') }}
+                  Due date
                 </div>
                 <div class="font-semibold">
-                  {{ invoice?.payment?.dueDate ? toDateString(invoice?.payment?.dueDate) : 'N/A' }}
+                  {{ expense?.payment?.dueDate ? toDateString(expense?.payment?.dueDate) : 'N/A' }}
                 </div>
               </div>
             </div>

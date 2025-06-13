@@ -29,7 +29,7 @@ export const projectRoutes: RouteRecordRaw[] = [
     },
   },
   {
-    path: '/project/:id/show',
+    path: '/projects/:id/show',
     name: 'showProject',
     component: () => import('@/pages/project/ShowProjectPage.vue'),
     meta: {
