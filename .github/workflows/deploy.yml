@@ -28,12 +28,11 @@ jobs:
             env_file_content: ${{ vars.ENV_STAGING_MADEYSKI }}
           - server: STAGING_OVH
             env_file_content: ${{ vars.ENV_STAGING_OVH }}
+    if: |
+      github.event_name == 'push' ||
+      (github.event_name == 'workflow_dispatch' && github.event.inputs.server == matrix.server)
 
     steps:
-      - name: Skip job if not matching server
-        if: github.event_name == 'workflow_dispatch' && github.event.inputs.server != matrix.server
-        run: echo "Skipping build for ${{ matrix.server }}" && exit 0
-
       - name: Checkout repo
         uses: actions/checkout@v3
 
@@ -80,19 +79,18 @@ jobs:
         include:
           - server: STAGING_MADEYSKI
           - server: STAGING_OVH
+    if: |
+      github.event_name == 'push' ||
+      (github.event_name == 'workflow_dispatch' && github.event.inputs.server == matrix.server)
 
     steps:
-      - name: Skip job if not matching server
-        if: github.event_name == 'workflow_dispatch' && github.event.inputs.server != matrix.server
-        run: echo "Skipping deploy for ${{ matrix.server }}" && exit 0
-
       - name: Download build artifact
         uses: actions/download-artifact@v4
         with:
           name: dist-${{ matrix.server }}
           path: dist
 
-      - name: Set SSH variables
+      - name: Set SSH variables & write SSH key
         id: vars
         run: |
           if [ "${{ matrix.server }}" = "STAGING_MADEYSKI" ]; then
@@ -100,18 +98,15 @@ jobs:
             echo "host=${{ vars.SSH_HOST_STAGING_MADEYSKI }}" >> "$GITHUB_OUTPUT"
             echo "port=${{ vars.SSH_PORT_STAGING_MADEYSKI }}" >> "$GITHUB_OUTPUT"
             echo "target=${{ secrets.SSH_TARGET_STAGING_MADEYSKI }}" >> "$GITHUB_OUTPUT"
-            echo "ssh_key=${{ secrets.SSH_KEY_STAGING_MADEYSKI }}" >> "$GITHUB_OUTPUT"
+            echo "${{ secrets.SSH_KEY_STAGING_MADEYSKI }}" > id_rsa
           elif [ "${{ matrix.server }}" = "STAGING_OVH" ]; then
             echo "username=${{ secrets.SSH_USER_STAGING_OVH }}" >> "$GITHUB_OUTPUT"
             echo "host=${{ vars.SSH_HOST_STAGING_OVH }}" >> "$GITHUB_OUTPUT"
             echo "port=${{ vars.SSH_PORT_STAGING_OVH }}" >> "$GITHUB_OUTPUT"
             echo "target=${{ secrets.SSH_TARGET_STAGING_OVH }}" >> "$GITHUB_OUTPUT"
-            echo "ssh_key=${{ secrets.SSH_KEY_STAGING_OVH }}" >> "$GITHUB_OUTPUT"
+            echo "${{ secrets.SSH_KEY_STAGING_OVH }}" > id_rsa
           fi
 
-      - name: Write SSH key to file
-        run: |
-          echo "${{ steps.vars.outputs.ssh_key }}" > id_rsa
           chmod 600 id_rsa
 
       - name: Deploy via SCP
@@ -123,4 +118,4 @@ jobs:
           key_path: id_rsa
           source: 'dist/*'
           target: ${{ steps.vars.outputs.target }}
-          strip_components: 1
+          strip_components: 1 
