@@ -136,7 +136,7 @@ watch(filters, () => refresh(), { deep: true })
         >
           <template #number="{ data }">
             <ButtonLink :to="`/expenses/${data.id}/show`">
-              {{ data.number ?? '-' }}
+              {{ data.number ? data.number : t('expense.number.empty', 'No number') }}
             </ButtonLink>
           </template>
           <template #type="{ data }">

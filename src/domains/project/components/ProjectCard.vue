@@ -22,7 +22,7 @@ defineProps<{
 <template>
   <RouterLink v-slot="{ navigate }" :to="`/projects/${project.id}/show/overview`" custom>
     <Card
-      class="flex flex-col min-h-40 cursor-pointer shadow-md hover:border-primary hover:bg-primary-200/10 hover:shadow-lg transition-all duration-300"
+      class="flex flex-col min-h-30 cursor-pointer shadow-md hover:border-primary hover:bg-primary-200/10 hover:shadow-lg transition-all duration-300"
       @click="projectStore.setProject(project); navigate()"
     >
       <CardHeader>
@@ -39,7 +39,7 @@ defineProps<{
         </CardTitle>
       </CardHeader>
       <CardContent class="flex flex-col gap-2">
-        <div class="text-muted-foreground">
+        <div class="text-muted-foreground line-clamp-2">
           <p>{{ project.description }}</p>
         </div>
       </CardContent>
@@ -49,10 +49,11 @@ defineProps<{
             v-for="user in project.users.slice(0, 5)"
             :key="user.id"
             v-tooltip="user.name"
-            :to="`/users/${user.id}/show/overview`"
+            :to="`/users/${user.id}`"
             class="-ml-2 hover:z-10 hover:scale-105 transition-all duration-300"
+            @click.stop
           >
-            <Avatar class="size-10">
+            <Avatar class="size-10 hover:outline-primary/50 hover:outline-2 transition-all">
               <AvatarImage :src="user.avatarUrl ?? ''" />
               <AvatarFallback>
                 {{ user.name.slice(0, 2) }}

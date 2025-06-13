@@ -18,6 +18,9 @@ export default {
     createdAt: 'Data utworzenia',
     updatedAt: 'Data aktualizacji',
   },
+  number: {
+    empty: 'Brak numeru',
+  },
   add: {
     title: 'Dodawanie wydatku',
     description: 'Dodaj nowy wydatku do systemu',

@@ -66,12 +66,12 @@ watch(filters, () => refresh(), { deep: true })
         </ButtonLink>
       </template>
 
-      <div class="grid grid-cols-4 gap-4">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
         <ProjectCard v-for="project in projects" :key="project.id" :project />
 
         <template v-if="loading &&projects.length === 0">
           <template v-for="i in 4" :key="i">
-            <Skeleton class="min-h-40 rounded-lg" />
+            <Skeleton class="min-h-30 rounded-lg" />
           </template>
         </template>
 

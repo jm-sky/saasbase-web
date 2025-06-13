@@ -38,7 +38,7 @@ export interface IInvoiceCreate {
   exchangeRate: number;
   seller: IInvoiceSeller;
   buyer: IInvoiceBuyer;
-  data: IInvoiceBody;
+  body: IInvoiceBody;
   payment: IInvoicePayment;
   options: IInvoiceOptions;
   issueDate?: TDate | null;

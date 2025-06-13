@@ -18,6 +18,9 @@ export default {
     createdAt: 'Created At',
     updatedAt: 'Updated At',
   },
+  number: {
+    empty: 'No number',
+  },
   add: {
     title: 'Add expense',
     description: 'Add a new expense to the system',

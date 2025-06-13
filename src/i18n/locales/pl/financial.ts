@@ -50,7 +50,7 @@ export const financial = {
   },
   invoiceStatus: {
     draft: 'Wersja robocza',
-    ocrProcessing: 'OCR przetwarzanie',
+    ocrProcessing: 'W trakcie OCR',
     sent: 'Wysłana',
     paid: 'Opłacona',
     partiallyPaid: 'Częściowo opłacona',

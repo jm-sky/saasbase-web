@@ -58,7 +58,7 @@ const { isSubmitting, handleSubmit, values, setErrors, setFieldValue, resetForm 
       iban: '',
       email: '',
     },
-    data: {
+    body: {
       lines: [],
       vatSummary: [],
       exchange: {

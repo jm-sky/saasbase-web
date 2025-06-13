@@ -38,13 +38,13 @@ const getColor = () => {
     case 'draft':
       return 'bg-muted/30 border-muted'
     case 'ocrProcessing':
-      return 'text-primary bg-primary/20 border-primary/50'
+      return 'text-primary bg-primary/10 border-primary/50'
     case 'overdue':
       return 'text-destructive bg-destructive/10 border-destructive/50'
     case 'paid':
       return 'text-success bg-success/10 border-success/30'
     case 'partiallyPaid':
-      return 'text-primary bg-primary/20 border-primary/50'
+      return 'text-primary bg-primary/10 border-primary/50'
     case 'sent':
       return 'text-primary bg-primary/10 border-primary/30'
   }
