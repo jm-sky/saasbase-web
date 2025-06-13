@@ -1,20 +1,36 @@
 name: Build & Deploy Vue App
 
 on:
-  workflow_dispatch:  # ręczne uruchamianie
+  workflow_dispatch:
+    inputs:
+      server:
+        description: 'Server to deploy to'
+        required: true
+        type: choice
+        options:
+          - 'STAGING_MADEYSKI'
+          - 'STAGING_OVH'
   push:
     branches:
-      - main           # automatycznie przy push na main
+      - main
 
 permissions:
-  contents: read       # potrzebne do checkout repo
+  contents: read
 
 jobs:
   build:
     name: Build App
     runs-on: ubuntu-latest
     outputs:
-      build-artifact: ${{ steps.upload.outputs.artifact-path }}
+      artifact-name: ${{ steps.upload.outputs.artifact-name }}
+    strategy:
+      matrix:
+        include:
+          - server: STAGING_MADEYSKI
+          - server: STAGING_OVH
+    if: |
+      github.event_name == 'push' ||
+      (github.event_name == 'workflow_dispatch' && github.event.inputs.server == matrix.server)
 
     steps:
       - name: Checkout repo
@@ -40,47 +56,64 @@ jobs:
           BUILD_DATE=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
           echo "{ \"commit\": \"$COMMIT_HASH\", \"buildDate\": \"$BUILD_DATE\" }" > public/version.json
 
+      - name: Setup environment file
+        run: |
+          cp .env.production .env
+          echo "${{ vars['ENV_' + matrix.server] }}" >> .env
+
       - name: Build app
         run: pnpm build
-        env:
-          VITE_API_URL: ${{ vars.VITE_API_URL }}
-          VITE_API_MOCK: ${{ vars.VITE_API_MOCK }}
-          VITE_CHAT_ENABLED: ${{ vars.VITE_CHAT_ENABLED }}
-          VITE_AI_CHAT_ENABLED: ${{ vars.VITE_AI_CHAT_ENABLED }}
-          VITE_OAUTH_GOOGLE: ${{ vars.VITE_OAUTH_GOOGLE }}
-          VITE_PUSHER_APP_KEY: ${{ secrets.VITE_PUSHER_APP_KEY }}
-          VITE_PUSHER_HOST: ${{ secrets.VITE_PUSHER_HOST }}
-          VITE_PUSHER_PORT: 443
-          VITE_PUSHER_SCHEME: https
-          VITE_RECAPCHA_KEY: ${{ vars.VITE_RECAPCHA_KEY }}
-          VITE_STRIPE_PUBLISHABLE_KEY: ${{ vars.VITE_STRIPE_PUBLISHABLE_KEY }}
 
       - name: Upload dist as artifact
         id: upload
         uses: actions/upload-artifact@v4
         with:
-          name: dist
+          name: dist-${{ matrix.server }}
           path: dist
 
   deploy:
     name: Deploy App
     needs: build
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - server: STAGING_MADEYSKI
+            username: ${{ secrets.SSH_USER_STAGING_MADEYSKI }}
+            ssh_key: ${{ secrets.SSH_KEY_STAGING_MADEYSKI }}
+            host: ${{ vars.SSH_HOST_STAGING_MADEYSKI }}
+            port: ${{ vars.SSH_PORT_STAGING_MADEYSKI }}
+            target: ${{ secrets.SSH_TARGET_STAGING_MADEYSKI }}
+
+          - server: STAGING_OVH
+            username: ${{ secrets.SSH_USER_STAGING_OVH }}
+            ssh_key: ${{ secrets.SSH_KEY_STAGING_OVH }}
+            host: ${{ vars.SSH_HOST_STAGING_OVH }}
+            port: ${{ vars.SSH_PORT_STAGING_OVH }}
+            target: ${{ secrets.SSH_TARGET_STAGING_OVH }}
+    if: |
+      github.event_name == 'push' ||
+      (github.event_name == 'workflow_dispatch' && github.event.inputs.server == matrix.server)
 
     steps:
       - name: Download build artifact
         uses: actions/download-artifact@v4
         with:
-          name: dist
+          name: dist-${{ matrix.server }}
           path: dist
+
+      - name: Write SSH key to file
+        run: |
+          echo "${{ matrix.ssh_key }}" > id_rsa
+          chmod 600 id_rsa
 
       - name: Deploy via SCP
         uses: appleboy/scp-action@v0.1.4
         with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USER }}
-          key: ${{ secrets.SSH_KEY }}
-          port: ${{ secrets.SSH_PORT }}
+          host: ${{ matrix.host }}
+          port: ${{ matrix.port }}
+          username: ${{ matrix.username }}
+          key_path: id_rsa
           source: 'dist/*'
-          target: ${{ secrets.SSH_TARGET }}
+          target: ${{ matrix.target }}
           strip_components: 1

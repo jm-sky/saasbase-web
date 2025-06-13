@@ -6,7 +6,7 @@ export interface IConfig {
   }
 }
 
-export const DEFAULT_CHAT_BOT_ID = 'd99468d6-2153-5493-95dc-7cf06043f471'
+export const DEFAULT_CHAT_BOT_ID = '01JXMGRDQVE4FWTZNE1WR9K8G1'
 
 export const config = {
   appId: import.meta.env.VITE_APP_ID ?? 'saasbase',
