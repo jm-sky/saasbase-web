@@ -28,43 +28,51 @@ jobs:
             env_file_content: ${{ vars.ENV_STAGING_MADEYSKI }}
           - server: STAGING_OVH
             env_file_content: ${{ vars.ENV_STAGING_OVH }}
-    if: |
-      github.event_name == 'push' ||
-      (github.event_name == 'workflow_dispatch' && github.event.inputs.server == matrix.server)
-
     steps:
+      - name: Skip if not selected
+        if: github.event_name == 'workflow_dispatch' && github.event.inputs.server != matrix.server
+        run: echo "Skipping ${{ matrix.server }}"
+
       - name: Checkout repo
+        if: github.event_name == 'push' || github.event.inputs.server == matrix.server
         uses: actions/checkout@v3
 
       - name: Install pnpm
+        if: github.event_name == 'push' || github.event.inputs.server == matrix.server
         uses: pnpm/action-setup@v2
         with:
           version: 9
 
       - name: Setup Node.js
+        if: github.event_name == 'push' || github.event.inputs.server == matrix.server
         uses: actions/setup-node@v3
         with:
           node-version: 20
           cache: 'pnpm'
 
       - name: Install dependencies
+        if: github.event_name == 'push' || github.event.inputs.server == matrix.server
         run: pnpm install
 
       - name: Generate version.json
+        if: github.event_name == 'push' || github.event.inputs.server == matrix.server
         run: |
           COMMIT_HASH=$(git rev-parse --short HEAD)
           BUILD_DATE=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
           echo "{ \"commit\": \"$COMMIT_HASH\", \"buildDate\": \"$BUILD_DATE\" }" > public/version.json
 
       - name: Setup environment file
+        if: github.event_name == 'push' || github.event.inputs.server == matrix.server
         run: |
           cp .env.production .env
           echo "${{ matrix.env_file_content }}" >> .env
 
       - name: Build app
+        if: github.event_name == 'push' || github.event.inputs.server == matrix.server
         run: pnpm build
 
       - name: Upload dist as artifact
+        if: github.event_name == 'push' || github.event.inputs.server == matrix.server
         uses: actions/upload-artifact@v4
         with:
           name: dist-${{ matrix.server }}
@@ -79,18 +87,20 @@ jobs:
         include:
           - server: STAGING_MADEYSKI
           - server: STAGING_OVH
-    if: |
-      github.event_name == 'push' ||
-      (github.event_name == 'workflow_dispatch' && github.event.inputs.server == matrix.server)
-
     steps:
+      - name: Skip if not selected
+        if: github.event_name == 'workflow_dispatch' && github.event.inputs.server != matrix.server
+        run: echo "Skipping ${{ matrix.server }}"
+
       - name: Download build artifact
+        if: github.event_name == 'push' || github.event.inputs.server == matrix.server
         uses: actions/download-artifact@v4
         with:
           name: dist-${{ matrix.server }}
           path: dist
 
       - name: Set SSH variables & write SSH key
+        if: github.event_name == 'push' || github.event.inputs.server == matrix.server
         id: vars
         run: |
           if [ "${{ matrix.server }}" = "STAGING_MADEYSKI" ]; then
@@ -110,6 +120,7 @@ jobs:
           chmod 600 id_rsa
 
       - name: Deploy via SCP
+        if: github.event_name == 'push' || github.event.inputs.server == matrix.server
         uses: appleboy/scp-action@v0.1.4
         with:
           host: ${{ steps.vars.outputs.host }}
