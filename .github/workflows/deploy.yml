@@ -28,11 +28,12 @@ jobs:
             env_file_content: ${{ vars.ENV_STAGING_MADEYSKI }}
           - server: STAGING_OVH
             env_file_content: ${{ vars.ENV_STAGING_OVH }}
-    if: |
-      github.event_name == 'push' ||
-      (github.event_name == 'workflow_dispatch' && github.event.inputs.server == matrix.server)
 
     steps:
+      - name: Skip job if not matching server
+        if: github.event_name == 'workflow_dispatch' && github.event.inputs.server != matrix.server
+        run: echo "Skipping build for ${{ matrix.server }}" && exit 0
+
       - name: Checkout repo
         uses: actions/checkout@v3
 
@@ -79,11 +80,12 @@ jobs:
         include:
           - server: STAGING_MADEYSKI
           - server: STAGING_OVH
-    if: |
-      github.event_name == 'push' ||
-      (github.event_name == 'workflow_dispatch' && github.event.inputs.server == matrix.server)
 
     steps:
+      - name: Skip job if not matching server
+        if: github.event_name == 'workflow_dispatch' && github.event.inputs.server != matrix.server
+        run: echo "Skipping deploy for ${{ matrix.server }}" && exit 0
+
       - name: Download build artifact
         uses: actions/download-artifact@v4
         with:
