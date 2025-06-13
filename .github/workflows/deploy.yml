@@ -64,7 +64,7 @@ jobs:
       - name: Setup environment file
         if: github.event_name == 'push' || github.event.inputs.server == matrix.server
         run: |
-          cp .env.production .env
+          cp .env.deploy .env
           echo "${{ matrix.env_file_content }}" >> .env
 
       - name: Build app
