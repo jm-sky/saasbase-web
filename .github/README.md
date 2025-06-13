@@ -7,25 +7,26 @@ Each server requires the following GitHub variables and secrets:
 
 #### Madeyski.org Server
 Variables:
-- `SSH_HOST_STAGING_MADEYSKI` - Server hostname
-- `SSH_PORT_STAGING_MADEYSKI` - SSH port (usually 22)
-- `ENV_STAGING_MADEYSKI` - Environment variables
+- `SSH_HOST_STAGING_MADEYSKI` - Server hostname (e.g., `saasbase.madeyski.org`)
+- `SSH_PORT_STAGING_MADEYSKI` - SSH port (e.g., `22`)
+- `ENV_STAGING_MADEYSKI` - Environment variables (see format below)
 
 Secrets:
-- `SSH_USER_STAGING_MADEYSKI` - SSH username
-- `SSH_KEY_STAGING_MADEYSKI` - SSH private key
-- `SSH_TARGET_STAGING_MADEYSKI` - Target directory path
+- `SSH_USER_STAGING_MADEYSKI` - SSH username (e.g., `deploy`)
+- `SSH_KEY_STAGING_MADEYSKI` - SSH private key (the full private key text)
+- `SSH_TARGET_STAGING_MADEYSKI` - Target directory path (e.g., `/var/www/saasbase/dist`)
 
 #### OVH Server
 Variables:
-- `SSH_HOST_STAGING_OVH` - Server hostname
-- `SSH_PORT_STAGING_OVH` - SSH port (usually 22)
-- `ENV_STAGING_OVH` - Environment variables
+- `SSH_HOST_STAGING_OVH` - Server hostname (e.g., `saasbase.ovh`)
+- `SSH_PORT_STAGING_OVH` - SSH port (e.g., `22`)
+- `ENV_STAGING_OVH` - Environment variables (see format below)
 
 Secrets:
-- `SSH_USER_STAGING_OVH` - SSH username
-- `SSH_KEY_STAGING_OVH` - SSH private key
-- `SSH_TARGET_STAGING_OVH` - Target directory path
+- `SSH_USER_STAGING_OVH` - SSH username (e.g., `deploy`)
+- `SSH_KEY_STAGING_OVH` - SSH private key (the full private key text)
+- `SSH_TARGET_STAGING_OVH` - Target directory path (e.g., `/var/www/saasbase/dist`)
+
 
 ### Environment Variables Format
 The `ENV_*` variables should contain environment configuration in the following format:

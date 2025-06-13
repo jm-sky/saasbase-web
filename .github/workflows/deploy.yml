@@ -21,13 +21,13 @@ jobs:
   build:
     name: Build App
     runs-on: ubuntu-latest
-    outputs:
-      artifact-name: ${{ steps.upload.outputs.artifact-name }}
     strategy:
       matrix:
         include:
           - server: STAGING_MADEYSKI
+            env_file_content: ${{ vars.ENV_STAGING_MADEYSKI }}
           - server: STAGING_OVH
+            env_file_content: ${{ vars.ENV_STAGING_OVH }}
     if: |
       github.event_name == 'push' ||
       (github.event_name == 'workflow_dispatch' && github.event.inputs.server == matrix.server)
@@ -59,13 +59,12 @@ jobs:
       - name: Setup environment file
         run: |
           cp .env.production .env
-          echo "${{ vars['ENV_' + matrix.server] }}" >> .env
+          echo "${{ matrix.env_file_content }}" >> .env
 
       - name: Build app
         run: pnpm build
 
       - name: Upload dist as artifact
-        id: upload
         uses: actions/upload-artifact@v4
         with:
           name: dist-${{ matrix.server }}
@@ -79,18 +78,7 @@ jobs:
       matrix:
         include:
           - server: STAGING_MADEYSKI
-            username: ${{ secrets.SSH_USER_STAGING_MADEYSKI }}
-            ssh_key: ${{ secrets.SSH_KEY_STAGING_MADEYSKI }}
-            host: ${{ vars.SSH_HOST_STAGING_MADEYSKI }}
-            port: ${{ vars.SSH_PORT_STAGING_MADEYSKI }}
-            target: ${{ secrets.SSH_TARGET_STAGING_MADEYSKI }}
-
           - server: STAGING_OVH
-            username: ${{ secrets.SSH_USER_STAGING_OVH }}
-            ssh_key: ${{ secrets.SSH_KEY_STAGING_OVH }}
-            host: ${{ vars.SSH_HOST_STAGING_OVH }}
-            port: ${{ vars.SSH_PORT_STAGING_OVH }}
-            target: ${{ secrets.SSH_TARGET_STAGING_OVH }}
     if: |
       github.event_name == 'push' ||
       (github.event_name == 'workflow_dispatch' && github.event.inputs.server == matrix.server)
@@ -102,18 +90,35 @@ jobs:
           name: dist-${{ matrix.server }}
           path: dist
 
+      - name: Set SSH variables
+        id: vars
+        run: |
+          if [ "${{ matrix.server }}" = "STAGING_MADEYSKI" ]; then
+            echo "username=${{ secrets.SSH_USER_STAGING_MADEYSKI }}" >> "$GITHUB_OUTPUT"
+            echo "host=${{ vars.SSH_HOST_STAGING_MADEYSKI }}" >> "$GITHUB_OUTPUT"
+            echo "port=${{ vars.SSH_PORT_STAGING_MADEYSKI }}" >> "$GITHUB_OUTPUT"
+            echo "target=${{ secrets.SSH_TARGET_STAGING_MADEYSKI }}" >> "$GITHUB_OUTPUT"
+            echo "ssh_key=${{ secrets.SSH_KEY_STAGING_MADEYSKI }}" >> "$GITHUB_OUTPUT"
+          elif [ "${{ matrix.server }}" = "STAGING_OVH" ]; then
+            echo "username=${{ secrets.SSH_USER_STAGING_OVH }}" >> "$GITHUB_OUTPUT"
+            echo "host=${{ vars.SSH_HOST_STAGING_OVH }}" >> "$GITHUB_OUTPUT"
+            echo "port=${{ vars.SSH_PORT_STAGING_OVH }}" >> "$GITHUB_OUTPUT"
+            echo "target=${{ secrets.SSH_TARGET_STAGING_OVH }}" >> "$GITHUB_OUTPUT"
+            echo "ssh_key=${{ secrets.SSH_KEY_STAGING_OVH }}" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Write SSH key to file
         run: |
-          echo "${{ matrix.ssh_key }}" > id_rsa
+          echo "${{ steps.vars.outputs.ssh_key }}" > id_rsa
           chmod 600 id_rsa
 
       - name: Deploy via SCP
         uses: appleboy/scp-action@v0.1.4
         with:
-          host: ${{ matrix.host }}
-          port: ${{ matrix.port }}
-          username: ${{ matrix.username }}
+          host: ${{ steps.vars.outputs.host }}
+          port: ${{ steps.vars.outputs.port }}
+          username: ${{ steps.vars.outputs.username }}
           key_path: id_rsa
           source: 'dist/*'
-          target: ${{ matrix.target }}
+          target: ${{ steps.vars.outputs.target }}
           strip_components: 1
