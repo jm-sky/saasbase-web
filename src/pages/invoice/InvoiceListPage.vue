@@ -7,6 +7,7 @@ import DataListsWrapper from '@/components/DataLists/DataListsWrapper.vue'
 import DataTable from '@/components/DataLists/DataTable.vue'
 import SearchField from '@/components/DataLists/Filters/SearchField.vue'
 import { Button } from '@/components/ui/button'
+import InvoiceStatusBadge from '@/domains/financial/components/InvoiceStatusBadge.vue'
 import InvoiceListDropdown from '@/domains/invoice/components/InvoiceListDropdown.vue'
 import { type IInvoiceFilters, invoiceService } from '@/domains/invoice/services/invoiceService'
 import AuthenticatedLayout from '@/layouts/AuthenticatedLayout.vue'
@@ -127,10 +128,10 @@ watch(filters, () => refresh(), { deep: true })
           </ButtonLink>
         </template>
         <template #type="{ data }">
-          {{ data.type }}
+          {{ t(`financial.invoiceType.${data.type}`, data.type) }}
         </template>
         <template #status="{ data }">
-          {{ data.status }}
+          <InvoiceStatusBadge :status="data.status" />
         </template>
         <template #totalGross="{ data }">
           {{ data.totalGross?.toFixed(2) ?? '-' }} {{ data.currency }}

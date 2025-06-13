@@ -14,6 +14,11 @@ export interface IExpenseFilters {
   sort?: SortingState
 }
 
+export interface IUploadForOcr {
+  files: File[]
+  month?: number
+  year?: number
+}
 class ExpenseService {
   async index(filters?: IExpenseFilters): Promise<IResourceCollection<IExpense>> {
     const params = buildSpatieQuery(filters ?? { filter: {} })
@@ -29,6 +34,21 @@ class ExpenseService {
   async create(invoice: IExpenseCreate): Promise<IExpense> {
     const response = await api.post<IResource<IExpense>>(apiRoutesMap.expenses, invoice)
     return response.data.data
+  }
+
+  async uploadForOcr(values: IUploadForOcr): Promise<void> {
+    const formData = new FormData()
+
+    values.files.forEach(file => { formData.append('files[]', file) })
+
+    if (values.year) { formData.append('year', values.year.toString()) }
+    if (values.month) { formData.append('month', values.month.toString()) }
+
+    await api.post(`${apiRoutesMap.expenses}/upload-for-ocr`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    })
   }
 
   async update(id: string, invoice: Partial<IExpense>): Promise<IExpense> {

@@ -50,6 +50,7 @@ export const financial = {
   },
   invoiceStatus: {
     draft: 'Draft',
+    ocrProcessing: 'OCR processing',
     sent: 'Sent',
     paid: 'Paid',
     partiallyPaid: 'Partially paid',

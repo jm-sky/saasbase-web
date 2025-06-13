@@ -1,5 +1,5 @@
 import type { IInvoiceNumberingTemplate } from './numberingTemplate.type'
-import type { IInvoiceBody, IInvoiceBuyer, IInvoiceOptions, IInvoicePayment, IInvoiceSeller, TInvoiceType } from '@/domains/financial/types/financial.type'
+import type { IInvoiceBody, IInvoiceBuyer, IInvoiceOptions, IInvoicePayment, IInvoiceSeller, TInvoiceStatus, TInvoiceType } from '@/domains/financial/types/financial.type'
 import type { TDate, TDateTime, TUUID } from '@/domains/shared/types/common'
 
 // Main Invoice interface
@@ -7,7 +7,7 @@ export interface IInvoice {
   id: TUUID;
   tenantId: string;
   type: TInvoiceType;
-  status: string;
+  status: TInvoiceStatus;
   number: string;
   numberingTemplateId: string;
   totalNet: number;
@@ -28,7 +28,7 @@ export interface IInvoice {
 
 export interface IInvoiceCreate {
   type: TInvoiceType;
-  status: string;
+  status: TInvoiceStatus;
   number: string;
   numberingTemplateId?: string;
   totalNet: number;

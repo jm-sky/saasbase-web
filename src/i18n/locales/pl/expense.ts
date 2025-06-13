@@ -27,4 +27,12 @@ export default {
   show: {
     title: 'Wydatek',
   },
+  uploadForOcr: {
+    title: 'Prześlij do OCR',
+    description: 'Prześlij pliki, które chcesz przetworzyć za pomocą OCR.',
+    noFiles: 'Nie ma plików do przesłania',
+    upload: 'Prześlij',
+    success: 'Pliki przesłane pomyślnie',
+    error: 'Nie udało się przesłać plików',
+  },
 }

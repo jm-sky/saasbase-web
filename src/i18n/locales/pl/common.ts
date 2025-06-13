@@ -1,6 +1,7 @@
 export const common = {
   actions: 'Akcje',
   active: 'Aktywny',
+  cancel: 'Anuluj',
   inactive: 'Nieaktywny',
   add: 'Dodaj',
   back: 'Wstecz',
@@ -46,6 +47,7 @@ export const common = {
   },
   fileUpload: {
     dragAndDrop: 'Przeciągnij i upuść pliki tutaj lub kliknij, aby przeglądać',
+    dropHere: 'Przeciągnij tutaj pliki do przetworzenia',
     allFilesAccepted: 'Wszystkie pliki akceptowane',
     acceptedFormats: 'Akceptowane formaty: {formats}',
     remove: 'Usuń'

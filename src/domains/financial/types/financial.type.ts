@@ -1,6 +1,6 @@
 import type { TUUID } from '@/domains/shared/types/common'
 
-export type TInvoiceStatus = 'draft' | 'sent' | 'paid' | 'partiallyPaid' | 'overdue' | 'cancelled'
+export type TInvoiceStatus = 'draft' | 'ocrProcessing' | 'sent' | 'paid' | 'partiallyPaid' | 'overdue' | 'cancelled'
 
 // Enums
 export type TInvoiceType  =

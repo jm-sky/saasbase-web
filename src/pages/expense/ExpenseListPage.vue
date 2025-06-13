@@ -1,14 +1,17 @@
 <script setup lang="ts">
-import { RefreshCw } from 'lucide-vue-next'
+import { RefreshCw, Upload } from 'lucide-vue-next'
 import { onMounted, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import ButtonLink from '@/components/ButtonLink.vue'
 import DataListsWrapper from '@/components/DataLists/DataListsWrapper.vue'
 import DataTable from '@/components/DataLists/DataTable.vue'
 import SearchField from '@/components/DataLists/Filters/SearchField.vue'
+import FileDropZoneSlot from '@/components/Inputs/FileDropZoneSlot.vue'
 import { Button } from '@/components/ui/button'
 import ExpenseListDropdown from '@/domains/expense/components/ExpenseListDropdown.vue'
+import UploadForOcrModal from '@/domains/expense/components/UploadForOcrModal.vue'
 import { expenseService, type IExpenseFilters } from '@/domains/expense/services/expenseService'
+import InvoiceStatusBadge from '@/domains/financial/components/InvoiceStatusBadge.vue'
 import AuthenticatedLayout from '@/layouts/AuthenticatedLayout.vue'
 import { toDateTimeString } from '@/lib/toDateTimeString'
 import type { ColumnDef } from '@tanstack/vue-table'
@@ -24,7 +27,10 @@ const meta = ref<IResourceMeta>({
   perPage: 10,
   total: 0,
 })
+
 const loading = ref(false)
+const isUploadModalOpen = ref(false)
+const draggedFiles = ref<File[]>([])
 const error = ref<string | null>(null)
 const filters = ref<IExpenseFilters>({
   search: '',
@@ -103,52 +109,62 @@ watch(filters, () => refresh(), { deep: true })
         <Button variant="outline" @click="refresh">
           <RefreshCw class="size-4" />
         </Button>
+
         <ButtonLink v-tooltip="t('expense.add.description', 'Add a new expense')" variant="default" to="/expenses/add">
           {{ t('expense.add.title', 'Add Expense') }}
         </ButtonLink>
+
+        <Button variant="outline" @click="isUploadModalOpen = true">
+          <Upload class="size-4" />
+        </Button>
+
         <ExpenseListDropdown :filters />
       </template>
 
-      <DataTable
-        v-model:page="filters.page"
-        v-model:page-size="filters.perPage"
-        v-model:column-filters="filters.filter"
-        v-model:sorting="filters.sort"
-        :columns="columns"
-        :data="expenses"
-        :total="meta.total"
-        :page-size-options="[10, 20, 30, 40, 50]"
-        :show-column-filters="true"
-        :loading
-      >
-        <template #number="{ data }">
-          <ButtonLink :to="`/expenses/${data.id}/show`">
-            {{ data.number }}
-          </ButtonLink>
-        </template>
-        <template #type="{ data }">
-          {{ data.type }}
-        </template>
-        <template #status="{ data }">
-          {{ data.status }}
-        </template>
-        <template #totalGross="{ data }">
-          {{ data.totalGross?.toFixed(2) ?? '-' }} {{ data.currency }}
-        </template>
-        <template #actions="{ data }">
-          <div class="flex gap-2 justify-end w-full whitespace-nowrap min-w-0">
-            <ButtonLink :to="`/expenses/${data.id}/edit`" variant="outline">
-              {{ t('common.edit', 'Edit') }}
+      <FileDropZoneSlot v-model:is-active="isUploadModalOpen" v-model:dragged-files="draggedFiles">
+        <DataTable
+          v-model:page="filters.page"
+          v-model:page-size="filters.perPage"
+          v-model:column-filters="filters.filter"
+          v-model:sorting="filters.sort"
+          :columns="columns"
+          :data="expenses"
+          :total="meta.total"
+          :page-size-options="[10, 20, 30, 40, 50]"
+          :show-column-filters="true"
+          :loading
+        >
+          <template #number="{ data }">
+            <ButtonLink :to="`/expenses/${data.id}/show`">
+              {{ data.number ?? '-' }}
             </ButtonLink>
-            <!-- Add delete button if needed -->
-          </div>
-        </template>
-        <template #actions-header>
-          <div class="w-full text-right">
-            {{ t('actions', 'Actions') }}
-          </div>
-        </template>
-      </DataTable>
+          </template>
+          <template #type="{ data }">
+            {{ t(`financial.invoiceType.${data.type}`, data.type) }}
+          </template>
+          <template #status="{ data }">
+            <InvoiceStatusBadge :status="data.status" />
+          </template>
+          <template #totalGross="{ data }">
+            {{ data.totalGross?.toFixed(2) ?? '-' }} {{ data.currency }}
+          </template>
+          <template #actions="{ data }">
+            <div class="flex gap-2 justify-end w-full whitespace-nowrap min-w-0">
+              <ButtonLink :to="`/expenses/${data.id}/edit`" variant="outline">
+                {{ t('common.edit', 'Edit') }}
+              </ButtonLink>
+              <!-- Add delete button if needed -->
+            </div>
+          </template>
+          <template #actions-header>
+            <div class="w-full text-right">
+              {{ t('actions', 'Actions') }}
+            </div>
+          </template>
+        </DataTable>
+      </FileDropZoneSlot>
     </DataListsWrapper>
+
+    <UploadForOcrModal v-model:is-open="isUploadModalOpen" v-model:dragged-files="draggedFiles" @uploaded="refresh" />
   </AuthenticatedLayout>
 </template>

@@ -8,6 +8,10 @@ export interface IConfig {
 
 export const DEFAULT_CHAT_BOT_ID = '01JXMGRDQVE4FWTZNE1WR9K8G1'
 
+export const uploadFileTypesMap: Record<string, string> = {
+  forOcr: 'pdf,jpg,jpeg,png,gif,bmp,tiff,ico,webp,heic,heif,heif-sequence,heic-sequence,avif,avif-sequence',
+}
+
 export const config = {
   appId: import.meta.env.VITE_APP_ID ?? 'saasbase',
   appDomain: import.meta.env.VITE_APP_DOMAIN ?? 'saasbase.com',

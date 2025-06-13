@@ -27,4 +27,12 @@ export default {
   show: {
     title: 'Expense',
   },
+  uploadForOcr: {
+    title: 'Upload for OCR',
+    description: 'Upload the files you want to process with OCR.',
+    noFiles: 'No files to upload',
+    upload: 'Upload',
+    success: 'Files uploaded successfully',
+    error: 'Failed to upload files',
+  },
 }

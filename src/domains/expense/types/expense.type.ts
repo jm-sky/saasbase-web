@@ -1,11 +1,11 @@
-import type { IInvoiceBody, IInvoiceBuyer, IInvoiceOptions, IInvoicePayment, IInvoiceSeller, TInvoiceType } from '@/domains/financial/types/financial.type'
+import type { IInvoiceBody, IInvoiceBuyer, IInvoiceOptions, IInvoicePayment, IInvoiceSeller, TInvoiceStatus, TInvoiceType } from '@/domains/financial/types/financial.type'
 import type { TDate, TDateTime, TUUID } from '@/domains/shared/types/common'
 
 export interface IExpense {
   id: TUUID;
   tenantId: string;
   type: TInvoiceType;
-  status: string;
+  status: TInvoiceStatus;
   number: string;
   numberingTemplateId: string;
   totalNet: number;
@@ -25,7 +25,7 @@ export interface IExpense {
 
 export interface IExpenseCreate {
   type: TInvoiceType;
-  status: string;
+  status: TInvoiceStatus;
   number: string;
   numberingTemplateId?: string;
   totalNet: number;
