@@ -72,7 +72,11 @@ watch(isOpen, (value) => {
       <FileList v-model:files="draggedFiles" />
 
       <FileDropZoneSlot v-model:dragged-files="draggedFiles" class="border border-gray-200 rounded-md px-3 py-1 hover:border-dotted hover:border-primary hover:bg-primary/5" :hide-label="true">
-        <FileUploadClickable v-model:files="draggedFiles" :multiple="true" @change="setFieldValue('files', $event.target.files)" />
+        <FileUploadClickable
+          v-model:files="draggedFiles"
+          :multiple="true"
+          @update:files="setFieldValue('files', $event)"
+        />
       </FileDropZoneSlot>
 
       <Alert v-if="errors.files" variant="destructive">
