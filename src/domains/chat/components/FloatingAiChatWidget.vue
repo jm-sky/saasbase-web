@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Send, Square } from 'lucide-vue-next'
+import { Send, Square, VenetianMask, X } from 'lucide-vue-next'
 import { v4 } from 'uuid'
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
@@ -46,6 +46,8 @@ const createNewAiMessage = (): IChatMessage => ({
   createdAt: new Date().toISOString(),
 })
 
+const isOpen = ref(false)
+const noHistory = ref(false)
 const message = ref('')
 const messages = ref<IChatMessage[]>([])
 const isSendingMessage = ref(false)
@@ -133,17 +135,30 @@ const onOpened = () => {
 </script>
 
 <template>
-  <ExpandableChat size="md" position="bottom-right" @opened="onOpened">
-    <ExpandableChatHeader class="flex-col text-center justify-center">
+  <ExpandableChat
+    v-model:is-open="isOpen"
+    size="md"
+    position="bottom-right"
+    hide-close-button
+    @opened="onOpened"
+  >
+    <ExpandableChatHeader class="flex-row items-center justify-between">
+      <div>
+        <Button variant="ghost" :class="{ 'text-primary ring ring-primary bg-primary/10': noHistory }" @click="noHistory = !noHistory">
+          <VenetianMask class="size-4" />
+        </Button>
+      </div>
       <h1 class="text-xl font-semibold">
-        {{ t('chat.ai.title') }} ✨
+        {{ t('chat.ai.title') }}
       </h1>
-      <p class="text-sm text-muted-foreground">
-        {{ t('chat.ai.description') }}
-      </p>
-      <Badge v-if="config.chat.streaming" variant="info-outline" class="text-xs absolute top-10 md:top-2 right-2">
-        {{ t('chat.live') }}
-      </Badge>
+      <div>
+        <Badge v-if="config.chat.streaming" variant="info-outline" class="text-xs">
+          {{ t('chat.live') }}
+        </Badge>
+        <Button variant="ghost" @click="isOpen = false">
+          <X class="size-4" />
+        </Button>
+      </div>
     </ExpandableChatHeader>
 
     <ExpandableChatBody>

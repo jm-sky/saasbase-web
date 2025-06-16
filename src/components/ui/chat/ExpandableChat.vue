@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { X } from 'lucide-vue-next'
-import { ref } from 'vue'
 import Button from '@/components/ui/button/Button.vue'
 import ExpandableChatToggle from '@/components/ui/chat/ExpandableChatToggle.vue'
 import { cn } from '@/lib/utils'
@@ -35,6 +34,7 @@ const props = withDefaults(defineProps<{
   size?: ChatSize
   icon?: unknown
   class?: string
+  hideCloseButton?: boolean
 }>(), {
   position: 'bottom-right',
   size: 'md',
@@ -45,7 +45,7 @@ const emit = defineEmits<{
   closed: []
 }>()
 
-const isOpen = ref(false)
+const isOpen = defineModel<boolean>('isOpen', { default: false })
 
 const toggleChat = () => {
   isOpen.value = !isOpen.value
@@ -70,6 +70,7 @@ const toggleChat = () => {
     >
       <slot />
       <Button
+        v-if="!hideCloseButton"
         variant="ghost"
         size="icon"
         class="absolute top-2 right-2 sm:hidden"
