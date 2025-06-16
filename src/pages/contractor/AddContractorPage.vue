@@ -293,7 +293,7 @@ const onBankAccountLookup = (ibanInfo: IIbanInfo) => {
                 :disabled="isSubmitting"
                 class="flex flex-col gap-2"
               >
-                <Switch type="checkbox" :model-value="value" @update:model-value="handleChange" />
+                <Switch :model-value="value" @update:model-value="handleChange" />
                 <FormDescription>
                   {{ t('contractor.add.fetchLogoDescription') }}
                 </FormDescription>
