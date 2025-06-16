@@ -21,7 +21,10 @@ const { user } = useAuthStore()
             {{ $t('settings.description') }}
           </p>
         </div>
-        <div>
+        <div class="flex flex-row gap-2">
+          <ButtonLink :to="routeTo.identityConfirmation()" variant="outline">
+            {{ $t('identityConfirmation.title') }}
+          </ButtonLink>
           <ButtonLink :to="routeTo.userPublicProfile(user?.id ?? '')" variant="primary">
             {{ $t('settings.publicProfile.title') }}
           </ButtonLink>

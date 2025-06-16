@@ -12,6 +12,7 @@ export const common = {
   download: 'Download',
   reset: 'Reset',
   save: 'Save',
+  submit: 'Submit',
   yes: 'Yes',
   no: 'No',
   next: 'Next',
@@ -60,5 +61,13 @@ export const common = {
     title: 'Page not found',
     description: 'Sorry, we couldn’t find the page you’re looking for.',
     goBackHome: 'Go back home'
+  },
+  fieldTypes: {
+    text: 'Text',
+    password: 'Password',
+    number: 'Number',
+    email: 'Email',
+    url: 'URL',
+    date: 'Date',
   }
 }

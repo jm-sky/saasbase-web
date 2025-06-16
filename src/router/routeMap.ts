@@ -1,4 +1,5 @@
 import type { RouteLocationRaw } from 'vue-router'
+import type { TIdentityConfirmationType } from '@/domains/identityConfirmation/types/identityConfirmation.type'
 
 export const routeMap = {
   auth: {
@@ -27,6 +28,9 @@ export const routeMap = {
   },
   userProfile: 'userProfile',
   userPublicProfile: 'userPublicProfile',
+  identityConfirmation: {
+    index: 'identityConfirmation',
+  },
 }
 
 export const routeTo = {
@@ -45,4 +49,5 @@ export const routeTo = {
   settingsAppearance: (): RouteLocationRaw => ({ name: routeMap.settings.appearance }),
   settingsNotifications: (): RouteLocationRaw => ({ name: routeMap.settings.notifications }),
   userPublicProfile: (id: string): RouteLocationRaw => ({ name: routeMap.userPublicProfile, params: { id } }),
+  identityConfirmation: (type?: TIdentityConfirmationType): RouteLocationRaw => ({ name: routeMap.identityConfirmation.index, params: { type } }),
 }

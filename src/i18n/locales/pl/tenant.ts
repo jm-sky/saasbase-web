@@ -151,6 +151,65 @@ export const tenant = {
   },
   integrations: {
     title: 'Integracje',
+    types: {
+      azureAi: {
+        title: 'Azure Intelligence Studio',
+        description: 'Potężne usługi OCR i AI do przetwarzania dokumentów.',
+      },
+      ksef: {
+        title: 'Krajowy System e-Faktur (KSeF)',
+        description: 'Integracja z Krajowym Systemem e-Faktur.',
+      },
+      eDelivery: {
+        title: 'e-Doręczenia',
+        description: 'Integracja z systemem e-Doręczeń.',
+      },
+      s3: {
+        title: 'S3 Storage',
+        description: 'Integracja magazynu obiektów do backupów i plików.',
+      },
+      regonApi: {
+        title: 'REGON API',
+        description: 'Integracja rejestru firm do weryfikacji danych firm.',
+      },
+      googleCalendar: {
+        title: 'Google Calendar',
+        description: 'Integracja kalendarza do planowania i wydarzeń.',
+      },
+      microsoftCalendar: {
+        title: 'Microsoft Calendar',
+        description: 'Integracja kalendarza Microsoft 365 (Exchange/Outlook).',
+      },
+      jira: {
+        title: 'JIRA',
+        description: 'Integracja zarządzania projektami i zadaniami.',
+      },
+    },
+    fields: {
+      appId: 'ID aplikacji',
+      appSecret: 'Klucz aplikacji',
+      clientId: 'ID klienta',
+      clientSecret: 'Klucz klienta',
+      domain: 'Domena',
+      email: 'Email',
+      password: 'Hasło',
+      username: 'Nazwa użytkownika',
+      apiKey: 'Klucz API',
+      apiSecret: 'Klucz API',
+      apiToken: 'Token API',
+      apiUrl: 'URL API',
+      endpoint: 'Endpoint',
+      accessKey: 'Klucz dostępu',
+      secretKey: 'Klucz tajny',
+      bucket: 'Bucket',
+      tenantId: 'ID zespołu',
+    },
+    configure: 'Skonfiguruj',
+    save: 'Zapisz',
+    cancel: 'Anuluj',
+    delete: 'Usuń',
+    deleteConfirm: 'Czy na pewno chcesz usunąć tę integrację?',
+    deleteSuccess: 'Integracja usunięta pomyślnie',
   },
   billing: {
     title: 'Rozliczenia',

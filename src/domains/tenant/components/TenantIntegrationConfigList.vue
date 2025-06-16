@@ -6,13 +6,18 @@ import {
   CalendarDays,
   Cloud,
   Database,
+  FileText,
+  Mail,
   Network
 } from 'lucide-vue-next'
-import { type Component, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { useRoute } from 'vue-router'
 import { z } from 'zod'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
+import CardContent from '@/components/ui/card/CardContent.vue'
+import CardHeader from '@/components/ui/card/CardHeader.vue'
 import {
   Form,
   FormControl,
@@ -21,91 +26,54 @@ import {
   FormLabel
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
+import { availableIntegrations, type ITenantIntegration, tenantIntegrationsService, type TTenantIntegrationType } from '../services/TenantIntegrationsService'
+import { useTenantStore } from '../store/tenant.store'
 
 const { t } = useI18n()
+const tenantStore = useTenantStore()
+const route = useRoute()
+const integrationId = computed(() => route.params.integrationId as string)
 
-interface Integration {
-  id: string
-  name: string
-  description: string
-  icon: Component
-  fields: { name: string; label: string; type: string }[]
-  disabled?: boolean
+const search = ref(integrationId.value)
+const integrations = ref<ITenantIntegration[]>(availableIntegrations)
+
+const getIcon = (type: TTenantIntegrationType) => {
+  switch (type) {
+    case 'azureAi': return Brain
+    case 'eDelivery': return Mail
+    case 'googleCalendar': return Calendar
+    case 'jira': return Network
+    case 'ksef': return FileText
+    case 'microsoftCalendar': return CalendarDays
+    case 'regonApi': return Database
+    case 's3': return Cloud
+  }
 }
 
-const integrations: Integration[] = [
-  {
-    id: 'azure_ai',
-    name: 'Azure Intelligence Studio',
-    description: 'Powerful OCR and AI services for document processing.',
-    icon: Brain,
-    fields: [
-      { name: 'app_id', label: 'App ID', type: 'text' },
-      { name: 'app_secret', label: 'App Secret', type: 'password' },
-      { name: 'endpoint', label: 'Endpoint', type: 'text' }
-    ]
-  },
-  {
-    id: 's3_storage',
-    name: 'S3 Storage',
-    description: 'Object storage integration for backups and files.',
-    icon: Cloud,
-    fields: [
-      { name: 'access_key', label: 'Access Key', type: 'text' },
-      { name: 'secret_key', label: 'Secret Key', type: 'password' },
-      { name: 'bucket', label: 'Bucket Name', type: 'text' },
-      { name: 'endpoint', label: 'Endpoint', type: 'text' }
-    ]
-  },
-  {
-    id: 'regon',
-    name: 'REGON API',
-    description: 'Business registry integration for company data verification.',
-    icon: Database,
-    fields: [
-      { name: 'app_id', label: 'App ID', type: 'text' },
-      { name: 'app_secret', label: 'App Secret', type: 'password' }
-    ]
-  },
-  {
-    id: 'google_calendar',
-    name: 'Google Calendar',
-    description: 'Calendar integration for scheduling and events.',
-    icon: Calendar,
-    fields: [
-      { name: 'client_id', label: 'Client ID', type: 'text' },
-      { name: 'client_secret', label: 'Client Secret', type: 'password' }
-    ],
-    disabled: true
-  },
-  {
-    id: 'microsoft_calendar',
-    name: 'Microsoft Calendar',
-    description: 'Microsoft 365 Calendar integration (Exchange/Outlook).',
-    icon: CalendarDays,
-    fields: [
-      { name: 'client_id', label: 'Client ID', type: 'text' },
-      { name: 'client_secret', label: 'Client Secret', type: 'password' },
-      { name: 'tenant_id', label: 'Tenant ID', type: 'text' }
-    ],
-    disabled: true
-  },
-  {
-    id: 'jira',
-    name: 'JIRA',
-    description: 'Project tracking and issue management integration.',
-    icon: Network,
-    fields: [
-      { name: 'domain', label: 'JIRA Domain', type: 'text' },
-      { name: 'email', label: 'User Email', type: 'email' },
-      { name: 'api_token', label: 'API Token', type: 'password' }
-    ],
-    disabled: true
-  }
-]
+const integrationList = computed(() => {
+  return availableIntegrations.map(integration => ({
+    ...integration,
+    icon: getIcon(integration.type),
+    name: t(`tenant.integrations.types.${integration.type}.title`),
+    description: t(`tenant.integrations.types.${integration.type}.description`),
+  }))
+})
+
+const filteredIntegrationList = computed(() => {
+  return integrationList.value.filter(integration =>
+    integration.name.toLowerCase().includes(search.value.toLowerCase())
+    || integration.description.toLowerCase().includes(search.value.toLowerCase())
+    || integration.id.toLowerCase().includes(search.value.toLowerCase())
+  )
+})
+
+const loadIntegrations = async () => {
+  const data = await tenantIntegrationsService.getIntegrations(tenantStore.tenant?.id ?? '')
+  integrations.value = data
+}
 
 const formValues = ref<Record<string, Record<string, string>>>(
-  integrations.reduce<Record<string, Record<string, string>>>((acc, integration) => {
+  integrations.value.reduce<Record<string, Record<string, string>>>((acc, integration) => {
     acc[integration.id] = integration.fields.reduce<Record<string, string>>((obj, field) => {
       obj[field.name] = ''
       return obj
@@ -126,43 +94,57 @@ function onSubmit(integrationId: string) {
     // Make API call here to save integration config
   }
 }
+
+onMounted(() => {
+  void loadIntegrations()
+})
 </script>
 
 <template>
-  <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-    <Card
-      v-for="integration in integrations"
-      :key="integration.id"
-      class="p-4 space-y-4"
-      :class="{ 'opacity-50 pointer-events-none bg-muted/50': integration.disabled }"
-    >
-      <div class="flex items-center space-x-3">
-        <component :is="integration.icon" class="w-6 h-6 text-primary" />
-        <h2 class="text-lg font-semibold">
-          {{ integration.name }}
-        </h2>
-      </div>
-      <p class="text-sm text-muted-foreground">
-        {{ integration.description }}
-      </p>
+  <div class="p-4 space-y-4">
+    <div>
+      <Input v-model="search" placeholder="Search" />
+    </div>
 
-      <Form :validation-schema="schema" @submit="onSubmit(integration.id)">
-        <div class="space-y-3">
-          <div v-for="field in integration.fields" :key="field.name">
-            <FormField :name="`config.${integration.id}.${field.name}`">
-              <FormItem>
-                <FormLabel>{{ field.label }}</FormLabel>
-                <FormControl>
-                  <Input v-model="formValues[integration.id][field.name]" :type="field.type" />
-                </FormControl>
-              </FormItem>
-            </FormField>
-          </div>
-          <Button type="submit" :disabled="integration.disabled">
-            {{ t('common.save') }}
-          </Button>
-        </div>
-      </Form>
-    </Card>
+    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+      <Card
+        v-for="integration in filteredIntegrationList"
+        :key="integration.id"
+        class="flex flex-col"
+        :class="{ 'opacity-50 pointer-events-none bg-muted/50': integration.disabled }"
+      >
+        <CardHeader class="flex flex-row items-center gap-x-3">
+          <component :is="integration.icon" class="w-6 h-6 text-primary" />
+          <h2 class="text-lg font-semibold">
+            {{ integration.name }}
+          </h2>
+        </CardHeader>
+
+        <CardContent class="flex flex-col h-full">
+          <p class="text-sm text-muted-foreground">
+            {{ integration.description }}
+          </p>
+
+          <Form :validation-schema="schema" class="h-full mt-2 flex flex-col gap-y-2" @submit="onSubmit(integration.id)">
+            <div v-for="field in integration.fields" :key="field.name">
+              <FormField :name="`config.${integration.id}.${field.name}`">
+                <FormItem>
+                  <FormLabel>{{ t(`tenant.integrations.fields.${field.name}`) }}</FormLabel>
+                  <FormControl>
+                    <Input v-model="formValues[integration.id][field.name]" :type="field.type" />
+                  </FormControl>
+                </FormItem>
+              </FormField>
+            </div>
+
+            <div class="mt-auto pt-2 text-end">
+              <Button type="submit" class="mt-auto" :disabled="integration.disabled">
+                {{ t('common.save') }}
+              </Button>
+            </div>
+          </Form>
+        </CardContent>
+      </Card>
+    </div>
   </div>
 </template>

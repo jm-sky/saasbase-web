@@ -12,6 +12,7 @@ export const common = {
   download: 'Pobierz',
   reset: 'Resetuj',
   save: 'Zapisz',
+  submit: 'Zatwierdź',
   yes: 'Tak',
   no: 'Nie',
   next: 'Dalej',
@@ -60,5 +61,13 @@ export const common = {
     title: 'Strona nie znaleziona',
     description: 'Przepraszamy, nie udało się znaleźć strony, której szukasz.',
     goBackHome: 'Wróć do strony głównej'
+  },
+  fieldTypes: {
+    text: 'Tekst',
+    password: 'Hasło',
+    number: 'Liczba',
+    email: 'Email',
+    url: 'URL',
+    date: 'Data',
   }
 }

@@ -52,7 +52,7 @@ export const tenantRoutes: RouteRecordRaw[] = [
         component: () => import('@/pages/tenant/ShowTenantPage/TenantBrandingPage.vue'),
       },
       {
-        path: 'integrations',
+        path: 'integrations/:integrationId?',
         name: 'tenant.show.integrations',
         component: () => import('@/pages/tenant/ShowTenantPage/TenantIntegrationsPage.vue'),
       },

@@ -15,6 +15,7 @@ import { dashboard } from './dashboard'
 import expense from './expense'
 import feed from './feed'
 import { financial } from './financial'
+import { identityConfirmation } from './identityConfirmation'
 import { invitation } from './invitation'
 import invoice from './invoice'
 import { log } from './log'
@@ -47,6 +48,7 @@ export const pl = {
   expense,
   feed,
   financial,
+  identityConfirmation,
   invitation,
   invoice,
   notifications,

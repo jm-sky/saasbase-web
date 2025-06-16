@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { toTypedSchema } from '@vee-validate/zod'
 import { useForm } from 'vee-validate'
+import { useI18n } from 'vue-i18n'
 import * as z from 'zod'
 import FormFieldLabeled from '@/components/Form/FormFieldLabeled.vue'
 import { Button } from '@/components/ui/button'
@@ -10,6 +11,8 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { Separator } from '@/components/ui/separator'
 import { useThemeStore } from '@/stores/theme.store'
 import SettingsHeader from '../partials/SettingsHeader.vue'
+
+const { t } = useI18n()
 
 const theme = useThemeStore()
 
@@ -36,7 +39,7 @@ const onSubmit = handleSubmit((values) => {
 </script>
 
 <template>
-  <SettingsHeader title="Appearance" description="Customize the appearance of the app. Automatically switch between day and night themes." />
+  <SettingsHeader :title="t('settings.preferences.appearance.title')" :description="t('settings.preferences.appearance.description')" />
 
   <Separator />
 

@@ -196,6 +196,65 @@ export const tenant = {
   },
   integrations: {
     title: 'Integrations',
+    types: {
+      azureAi: {
+        title: 'Azure Intelligence Studio',
+        description: 'Powerful OCR and AI services for document processing.',
+      },
+      ksef: {
+        title: 'KSeF',
+        description: 'Krajowy System e-Faktur (KSeF) integration.',
+      },
+      eDelivery: {
+        title: 'e-Delivery',
+        description: 'e-Delivery integration.',
+      },
+      s3: {
+        title: 'S3 Storage',
+        description: 'Object storage integration for backups and files.',
+      },
+      regonApi: {
+        title: 'REGON API',
+        description: 'Business registry integration for company data verification.',
+      },
+      googleCalendar: {
+        title: 'Google Calendar',
+        description: 'Calendar integration for scheduling and events.',
+      },
+      microsoftCalendar: {
+        title: 'Microsoft Calendar',
+        description: 'Microsoft 365 Calendar integration (Exchange/Outlook).',
+      },
+      jira: {
+        title: 'JIRA',
+        description: 'Project tracking and issue management integration.',
+      },
+    },
+    fields: {
+      appId: 'App ID',
+      appSecret: 'App Secret',
+      clientId: 'Client ID',
+      clientSecret: 'Client Secret',
+      domain: 'Domain',
+      email: 'Email',
+      password: 'Password',
+      username: 'Username',
+      apiKey: 'API Key',
+      apiSecret: 'API Secret',
+      apiToken: 'API Token',
+      apiUrl: 'API URL',
+      endpoint: 'Endpoint',
+      accessKey: 'Access Key',
+      secretKey: 'Secret Key',
+      bucket: 'Bucket',
+      tenantId: 'Tenant ID',
+    },
+    configure: 'Configure',
+    save: 'Save',
+    cancel: 'Cancel',
+    delete: 'Delete',
+    deleteConfirm: 'Are you sure you want to delete this integration?',
+    deleteSuccess: 'Integration deleted successfully',
   },
   settings: {
     title: 'Settings',

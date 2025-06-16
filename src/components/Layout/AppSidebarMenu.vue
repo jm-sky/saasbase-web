@@ -102,27 +102,27 @@ const menu = computed<MenuItem[]>(() => {
 
   if (authStore.tenantId) {
     items.push({
-      title: 'Tenant',
+      title: t('tenant.title'),
       icon: Building2,
       url: `/tenants/${authStore.tenantId}/show/overview`,
     })
   }
 
   items.push({
-    title: 'Settings',
+    title: t('common.settings'),
     url: '#',
     icon: Settings2,
     items: [
       {
-        title: 'Profile',
+        title: t('settings.profile.title'),
         url: '/settings/profile',
       },
       {
-        title: 'Account',
+        title: t('settings.account.title'),
         url: '/settings/account',
       },
       {
-        title: 'Appearance',
+        title: t('settings.preferences.appearance.title'),
         url: '/settings/appearance',
       },
     ],
