@@ -17,6 +17,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover'
+import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
 import { cn } from '@/lib/utils'
 import type { IVatRate } from '../types/vatRate.type'
 import { vatRateService } from '../services/vatRate.service'
@@ -36,15 +37,13 @@ defineProps<{
 
 const open = ref(false)
 const loading = ref(false)
-const error = ref<string | null>(null)
 
 const loadVatRates = async () => {
   try {
     loading.value = true
-    error.value = null
     vatRates.value = await vatRateService.index()
   } catch (err) {
-    error.value = 'Failed to load vat rates'
+    handleErrorWithToast(t('shared.vatRate.loadError'), err)
     console.error('[VatRatePicker][loadVatRates] error:', err)
   } finally {
     loading.value = false

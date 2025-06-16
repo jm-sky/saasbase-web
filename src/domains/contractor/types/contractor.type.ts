@@ -2,6 +2,7 @@ import type { IAddress } from '@/domains/shared/types/address.type'
 import type { TDateTime, TUUID } from '@/domains/shared/types/common'
 import type { IMedia } from '@/domains/shared/types/media.type'
 import type { IRegistryConfirmation } from '@/domains/shared/types/registryConfirmation'
+import type { ITagPreview } from '@/domains/tags/types/tag.type'
 import type { ICompanyRegistryConfirmation } from '@/domains/utils/types/companyLookup.type'
 
 export interface IContractorAddress extends IAddress {
@@ -70,7 +71,7 @@ export interface IContractor {
   description?: string
   isSupplier: boolean
   isBuyer: boolean
-  tags: string[]
+  tags: ITagPreview[]
   logoUrl?: string
   logo?: IMedia
   createdAt: TDateTime

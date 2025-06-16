@@ -6,6 +6,7 @@ import ButtonLink from '@/components/ButtonLink.vue'
 import DataListsWrapper from '@/components/DataLists/DataListsWrapper.vue'
 import DataTable from '@/components/DataLists/DataTable.vue'
 import SearchField from '@/components/DataLists/Filters/SearchField.vue'
+import TagList from '@/components/TagList.vue'
 import { Button } from '@/components/ui/button'
 import DeleteProductButton from '@/domains/product/components/DeleteProductButton.vue'
 import EditProductButton from '@/domains/product/components/EditProductButton.vue'
@@ -49,6 +50,10 @@ const columns: ColumnDef<IProduct>[] = [
     accessorKey: 'priceNet',
     header: t('product.fields.price'),
     cell: (info: { row: { original: IProduct } }) => info.row.original.priceNet?.toFixed(2) ?? '-',
+  },
+  {
+    accessorKey: 'tags',
+    header: t('common.tags'),
   },
   {
     accessorKey: 'createdAt',
@@ -114,6 +119,9 @@ watch(filters, () => refresh(), { deep: true })
           <div class="text-ellipsis overflow-hidden whitespace-nowrap max-w-48">
             {{ data.description?.slice(0, 100) ?? '-' }}
           </div>
+        </template>
+        <template #tags="{ data }">
+          <TagList :tags="data.tags" />
         </template>
         <template #actions="{ data }">
           <div class="flex gap-2 justify-end w-full whitespace-nowrap min-w-0">

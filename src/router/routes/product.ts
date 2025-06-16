@@ -31,17 +31,17 @@ export const productRoutes: RouteRecordRaw[] = [
       {
         path: 'overview',
         name: 'showProductOverview',
-        component: () => import('@/pages/product/ShowProductOverviewPage.vue'),
+        component: () => import('@/pages/product/ShowProduct/ShowProductOverviewPage.vue'),
       },
       {
         path: 'comments',
         name: 'showProductComments',
-        component: () => import('@/pages/product/ShowProductCommentsPage.vue'),
+        component: () => import('@/pages/product/ShowProduct/ShowProductCommentsPage.vue'),
       },
       {
         path: 'logs',
         name: 'showProductLogs',
-        component: () => import('@/pages/product/ShowProductLogsPage.vue'),
+        component: () => import('@/pages/product/ShowProduct/ShowProductLogsPage.vue'),
       },
     ],
   },

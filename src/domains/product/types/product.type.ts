@@ -2,6 +2,7 @@ import { type TDateTime } from '@/domains/shared/types/common'
 import type { IMeasurementUnit } from '@/domains/shared/types/measurementUnit.type'
 import type { IMedia } from '@/domains/shared/types/media.type'
 import type { IVatRate } from '@/domains/shared/types/vatRate.type'
+import type { ITagPreview } from '@/domains/tags/types/tag.type'
 
 export type TProductType = 'product' | 'service'
 
@@ -18,7 +19,7 @@ export interface IProduct {
   logo?: IMedia
   unit?: IMeasurementUnit
   vatRate?: IVatRate
-  tags?: string[]
+  tags: ITagPreview[]
   createdAt: TDateTime
   updatedAt: TDateTime
 }

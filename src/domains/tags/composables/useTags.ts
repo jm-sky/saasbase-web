@@ -1,6 +1,7 @@
 import { storeToRefs } from 'pinia'
 import { ref } from 'vue'
 import { useToast } from '@/components/ui/toast'
+import type { TTagColor } from '../types/tag.type'
 import { TagService } from '../services/tag.service'
 import { useTagStore } from '../stores/tag.store'
 
@@ -26,10 +27,10 @@ export const useTags = () => {
     }
   }
 
-  const createTag = async (tag: string) => {
+  const createTag = async (tag: string, color?: TTagColor) => {
     try {
       error.value = null
-      const response = await TagService.create(tag)
+      const response = await TagService.create(tag, color)
       store.addTag(response)
     } catch (e) {
       error.value = 'Failed to create tag'

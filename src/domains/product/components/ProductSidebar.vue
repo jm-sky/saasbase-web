@@ -6,8 +6,10 @@ import TagList from '@/components/TagList.vue'
 import Separator from '@/components/ui/separator/Separator.vue'
 import { config } from '@/config'
 import { productLogoService } from '@/domains/product/services/ProductLogoService'
+import TagsEditable from '@/domains/tags/components/TagsEditable.vue'
 import { money } from '@/lib/money'
 import { toDateTimeString } from '@/lib/toDateTimeString'
+import { productTagsService } from '../services/ProductTagsService'
 import type { IProduct } from '@/domains/product/types/product.type'
 
 const { t, locale } = useI18n()
@@ -47,7 +49,16 @@ const emit = defineEmits<{
     <InfoSection :label="t('product.fields.priceNet')" :value="money(product?.priceNet ?? 0, config.defaults.currency, locale)" />
     <InfoSection :label="t('product.fields.vatRate')" :value="product?.vatRate?.name" />
     <InfoSection :label="t('product.fields.tags')">
-      <TagList :tags="product?.tags ?? []" />
+      <TagList
+        v-if="product && disabled"
+        :tags="product?.tags ?? []"
+      />
+      <TagsEditable
+        v-if="product && !disabled"
+        :model-value="product.tags"
+        :tag-service="productTagsService"
+        :model-id="product.id"
+      />
     </InfoSection>
     <InfoSection v-if="product" :label="t('product.fields.createdAt')" :value="toDateTimeString(product.createdAt)" />
     <InfoSection v-if="product" :label="t('product.fields.updatedAt')" :value="toDateTimeString(product.updatedAt)" />
