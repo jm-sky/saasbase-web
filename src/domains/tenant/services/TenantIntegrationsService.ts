@@ -1,6 +1,6 @@
-import { useToast } from '@/components/ui/toast'
 import api from '@/lib/api'
 import { apiRoutesMap } from '@/lib/api/apiRoutes'
+import type { TDateTime, TUUID } from '@/domains/shared/types/common'
 import type { IResourceCollection } from '@/domains/shared/types/resource.type'
 
 export type TTenantIntegrationType =
@@ -14,15 +14,34 @@ export type TTenantIntegrationType =
   | 'eDelivery'
 
 export interface ITenantIntegration {
-  id: string
+  id?: TUUID
   type: TTenantIntegrationType
+  enabled?: boolean
+  credentials?: Record<string, string>
+  meta?: Record<string, string>
+  lastSyncedAt?: TDateTime
+  createdAt?: TDateTime
+  updatedAt?: TDateTime
+  // Frontend only
   fields: { name: string; type: string }[]
   disabled?: boolean
 }
 
+export interface IStoreTenantIntegrationRequest {
+  type: TTenantIntegrationType
+  enabled: boolean
+  credentials: Record<string, string>
+  meta: Record<string, string>
+}
+
+export interface IUpdateTenantIntegrationRequest {
+  enabled: boolean
+  credentials: Record<string, string>
+  meta: Record<string, string>
+}
+
 export const availableIntegrations: ITenantIntegration[] = [
   {
-    id: 'azureAi',
     type: 'azureAi',
     fields: [
       { name: 'appId', type: 'text' },
@@ -31,14 +50,12 @@ export const availableIntegrations: ITenantIntegration[] = [
     ]
   },
   {
-    id: 'ksef',
     type: 'ksef',
     fields: [
       { name: 'apiToken', type: 'text' }
     ]
   },
   {
-    id: 'eDelivery',
     type: 'eDelivery',
     fields: [
       { name: 'appId', type: 'text' },
@@ -46,7 +63,6 @@ export const availableIntegrations: ITenantIntegration[] = [
     ]
   },
   {
-    id: 's3',
     type: 's3',
     fields: [
       { name: 'accessKey', type: 'text' },
@@ -56,7 +72,6 @@ export const availableIntegrations: ITenantIntegration[] = [
     ]
   },
   {
-    id: 'regon',
     type: 'regonApi',
     fields: [
       { name: 'appId', type: 'text' },
@@ -64,7 +79,6 @@ export const availableIntegrations: ITenantIntegration[] = [
     ]
   },
   {
-    id: 'google_calendar',
     type: 'googleCalendar',
     fields: [
       { name: 'clientId', type: 'text' },
@@ -73,7 +87,6 @@ export const availableIntegrations: ITenantIntegration[] = [
     disabled: true
   },
   {
-    id: 'microsoft_calendar',
     type: 'microsoftCalendar',
     fields: [
       { name: 'clientId', type: 'text' },
@@ -83,7 +96,6 @@ export const availableIntegrations: ITenantIntegration[] = [
     disabled: true
   },
   {
-    id: 'jira',
     type: 'jira',
     fields: [
       { name: 'domain', type: 'text' },
@@ -96,13 +108,20 @@ export const availableIntegrations: ITenantIntegration[] = [
 
 class TenantIntegrationsService {
   async getIntegrations(tenantId: string): Promise<ITenantIntegration[]> {
-    try {
-      const response = await api.get<IResourceCollection<ITenantIntegration>>(`${apiRoutesMap.tenants}/${tenantId}/integrations`)
-      return response.data.data
-    } catch {
-      useToast().toast.info('Using default integrations')
-      return availableIntegrations
-    }
+    const response = await api.get<IResourceCollection<ITenantIntegration>>(`${apiRoutesMap.tenants}/${tenantId}/integrations`)
+    return response.data.data
+  }
+
+  async create(tenantId: TUUID, data: IStoreTenantIntegrationRequest): Promise<void> {
+    await api.post(`${apiRoutesMap.tenants}/${tenantId}/integrations/`, data)
+  }
+
+  async update(tenantId: TUUID, integrationId: TUUID, data: IUpdateTenantIntegrationRequest): Promise<void> {
+    await api.put(`${apiRoutesMap.tenants}/${tenantId}/integrations/${integrationId}`, data)
+  }
+
+  async delete(tenantId: TUUID, integrationId: TUUID): Promise<void> {
+    await api.delete(`${apiRoutesMap.tenants}/${tenantId}/integrations/${integrationId}`)
   }
 }
 
