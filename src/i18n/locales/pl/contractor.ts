@@ -4,6 +4,7 @@ export const contractor = {
   fields: {
     name: 'Nazwa',
     country: 'Kraj',
+    type: 'Typ',
     vatId: 'NIP',
     regon: 'REGON',
     taxId: 'Identyfikator podatkowy',
@@ -17,6 +18,15 @@ export const contractor = {
     isBuyer: 'Jest kupującym?',
     supplier: 'Dostawca',
     buyer: 'Kupujący',
+  },
+  type: {
+    company: 'Firma',
+    individual: 'Osoba fizyczna',
+    organization: 'Organizacja',
+    institution: 'Instytucja',
+    government: 'Urząd',
+    non_profit: 'Organizacja non-profit',
+    other: 'Inne',
   },
   add: {
     title: 'Dodaj kontrahenta',

@@ -12,6 +12,7 @@ import Switch from '@/components/ui/switch/Switch.vue'
 import Textarea from '@/components/ui/textarea/Textarea.vue'
 import { useToast } from '@/components/ui/toast/use-toast'
 import ContractorSidebar from '@/domains/contractor/components/ContractorSidebar.vue'
+import ContractorTypePicker from '@/domains/contractor/components/ContractorTypePicker.vue'
 import { contractorService } from '@/domains/contractor/services/ContractorService'
 import CompanyLookupButton from '@/domains/utils/components/CompanyLookupButton.vue'
 import AuthenticatedLayout from '@/layouts/AuthenticatedLayout.vue'
@@ -38,6 +39,7 @@ const { isSubmitting, handleSubmit, values, setFieldValue, setValues, setErrors,
   initialValues: {
     contractor: {
       name: '',
+      type: 'company',
       country: 'PL',
       vatId: '',
       taxId: '',
@@ -136,7 +138,7 @@ const onBankAccountLookup = (ibanInfo: IIbanInfo) => {
           <form class="flex flex-col gap-y-2 gap-x-8" @submit.prevent="onSubmit">
             <ConfirmationTags :registry-confirmation="values.registryConfirmation ?? emptyRegistryConfirmation" />
 
-            <div class="grid grid-cols-1 md:grid-cols-[10rem_1fr] gap-x-8 gap-y-2">
+            <div class="grid grid-cols-1 md:grid-cols-[10rem_1fr_14rem] gap-x-8 gap-y-2">
               <FormFieldLabeled
                 v-slot="{ componentField }"
                 name="contractor.country"
@@ -153,6 +155,18 @@ const onBankAccountLookup = (ibanInfo: IIbanInfo) => {
                 :disabled="isSubmitting"
               >
                 <Input v-bind="componentField" class="bg-white/50 dark:bg-black/50" />
+              </FormFieldLabeled>
+
+              <FormFieldLabeled
+                name="contractor.type"
+                :label="t('contractor.fields.type')"
+                :disabled="isSubmitting"
+              >
+                <ContractorTypePicker
+                  :model-value="values.contractor.type ?? 'company'"
+                  class="bg-white/50 dark:bg-black/50"
+                  @update:model-value="setFieldValue('contractor.type', $event)"
+                />
               </FormFieldLabeled>
             </div>
 

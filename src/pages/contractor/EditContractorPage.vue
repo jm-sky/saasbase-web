@@ -16,6 +16,7 @@ import Switch from '@/components/ui/switch/Switch.vue'
 import Textarea from '@/components/ui/textarea/Textarea.vue'
 import { useToast } from '@/components/ui/toast'
 import ContractorSidebar from '@/domains/contractor/components/ContractorSidebar.vue'
+import ContractorTypePicker from '@/domains/contractor/components/ContractorTypePicker.vue'
 import { contractorService } from '@/domains/contractor/services/ContractorService'
 import { useContractorStore } from '@/domains/contractor/store/contractor.store'
 import AuthenticatedLayout from '@/layouts/AuthenticatedLayout.vue'
@@ -36,10 +37,11 @@ const error = ref<string | null>(null)
 
 const isMobile = useMediaQuery('(max-width: 767px)')
 
-const { isSubmitting, handleSubmit, setValues, setErrors, resetForm } = useForm<IContractorUpdate>({
+const { isSubmitting, handleSubmit, setValues, setFieldValue, setErrors, resetForm } = useForm<IContractorUpdate>({
   initialValues: {
     contractor: {
       name: contractor.value?.name ?? '',
+      type: contractor.value?.type ?? 'company',
       description: contractor.value?.description ?? '',
       taxId: contractor.value?.taxId ?? '',
       email: contractor.value?.email ?? '',
@@ -127,6 +129,18 @@ onMounted(async () => {
               :disabled="isSubmitting"
             >
               <Input v-bind="componentField" class="bg-white/50 dark:bg-black/50" />
+            </FormFieldLabeled>
+
+            <FormFieldLabeled
+              name="contractor.type"
+              :label="t('contractor.fields.type')"
+              :disabled="isSubmitting"
+            >
+              <ContractorTypePicker
+                :model-value="contractor?.type ?? 'company'"
+                class="bg-white/50 dark:bg-black/50"
+                @update:model-value="setFieldValue('contractor.type', $event)"
+              />
             </FormFieldLabeled>
 
             <FormFieldLabeled

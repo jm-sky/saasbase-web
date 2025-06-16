@@ -4,6 +4,7 @@ export const contractor = {
   fields: {
     name: 'Name',
     country: 'Country',
+    type: 'Type',
     vatId: 'VAT ID',
     regon: 'REGON',
     taxId: 'Tax ID',
@@ -17,6 +18,15 @@ export const contractor = {
     isBuyer: 'Is Buyer?',
     supplier: 'Supplier',
     buyer: 'Buyer',
+  },
+  type: {
+    company: 'Company',
+    individual: 'Individual',
+    organization: 'Organization',
+    institution: 'Institution',
+    government: 'Government',
+    non_profit: 'Non-profit',
+    other: 'Other',
   },
   add: {
     title: 'Add Contractor',

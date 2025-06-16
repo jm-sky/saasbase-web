@@ -57,10 +57,20 @@ export interface IContractorListItem {
   updatedAt: TDateTime
 }
 
+export type TContractorType =
+  | 'company'
+  | 'individual'
+  | 'organization'
+  | 'institution'
+  | 'government'
+  | 'non_profit'
+  | 'other'
+
 export interface IContractor {
   id: TUUID
   tenantId: TUUID
   name: string
+  type: TContractorType
   country?: string
   vatId?: string
   taxId?: string
