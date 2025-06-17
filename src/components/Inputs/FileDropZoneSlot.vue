@@ -49,7 +49,7 @@ const handleDrop = (e: DragEvent) => {
     <Transition name="fade">
       <div
         v-if="isDragging"
-        class="absolute inset-0 z-20 flex items-center justify-center bg-primary/10 outline-4 outline-primary/50 outline-dashed border-primary rounded-lg pointer-events-none"
+        class="absolute inset-0 z-20 flex items-center justify-center bg-primary/10 outline-2 outline-primary/50 outline-dashed border-primary rounded-lg pointer-events-none backdrop-blur-[2px]"
       >
         <span v-if="!hideLabel" class="text-primary text-lg font-semibold">
           {{ t('common.fileUpload.dropHere', 'Drop files to upload') }}
