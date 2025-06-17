@@ -4,15 +4,14 @@ import { storeToRefs } from 'pinia'
 import { onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
-import Badge from '@/components/ui/badge/Badge.vue'
 import Button from '@/components/ui/button/Button.vue'
-import Separator from '@/components/ui/separator/Separator.vue'
 import { expenseService } from '@/domains/expense/services/expenseService'
 import { useExpenseStore } from '@/domains/expense/stores/expense.store'
+import InvoiceStatusBadge from '@/domains/financial/components/InvoiceStatusBadge.vue'
+import InvoiceLines from '@/domains/invoice/components/InvoiceLines.vue'
 import AuthenticatedLayout from '@/layouts/AuthenticatedLayout.vue'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
 import { toDateString } from '@/lib/toDateString'
-import type { BadgeVariants } from '@/components/ui/badge'
 
 const { t } = useI18n()
 const route = useRoute()
@@ -35,15 +34,6 @@ const refresh = async () => {
   } finally {
     loading.value = false
   }
-}
-
-const getStatusBadgeVariant = (status?: string): BadgeVariants['variant'] => {
-  if (status === 'draft') return 'outline'
-  if (status === 'paid') return 'success'
-  if (status === 'partiallyPaid') return 'secondary'
-  if (status === 'overdue') return 'destructive-outline'
-  if (status === 'cancelled') return 'outline'
-  return 'outline'
 }
 
 onMounted(async () => {
@@ -83,7 +73,7 @@ onMounted(async () => {
           <div class="grid grid-cols-2 gap-8">
             <div class="col-span-2 mb-6">
               <h1 class="text-xl font-bold">
-                {{ t(`expense.type.${expense?.type}`) }}
+                {{ t(`financial.invoiceType.${expense?.type}`) }}
               </h1>
               <h2 class="text-2xl font-bold">
                 {{ expense?.number }}
@@ -92,7 +82,7 @@ onMounted(async () => {
 
             <div>
               <div class="text-sm text-muted-foreground">
-                Issue date
+                {{ t('financial.fields.issueDate') }}
               </div>
               <div class="font-semibold">
                 {{ expense?.issueDate ? toDateString(expense?.issueDate) : 'N/A' }}
@@ -100,7 +90,7 @@ onMounted(async () => {
             </div>
             <div>
               <div class="text-sm text-muted-foreground">
-                Due date
+                {{ t('financial.fields.dueDate') }}
               </div>
               <div class="font-semibold">
                 {{ expense?.payment?.dueDate ? toDateString(expense?.payment?.dueDate) : 'N/A' }}
@@ -112,10 +102,10 @@ onMounted(async () => {
                 Issued for
               </div>
               <div class="font-semibold">
-                {{ expense?.buyer?.name }}
+                {{ expense?.buyer?.name ?? '-' }}
               </div>
               <div class="text-sm text-muted-foreground">
-                {{ expense?.buyer?.address }}
+                {{ expense?.buyer?.address ?? '-' }}
               </div>
             </div>
 
@@ -124,108 +114,54 @@ onMounted(async () => {
                 Issued by
               </div>
               <div class="font-semibold">
-                {{ expense?.seller?.name }}
+                {{ expense?.seller?.name ?? '-' }}
               </div>
               <div class="text-sm text-muted-foreground">
-                {{ expense?.seller?.address }}
+                {{ expense?.seller?.address ?? '-' }}
               </div>
             </div>
 
-            <div class="col-span-2">
-              <table class="w-full text-sm">
-                <thead>
-                  <tr>
-                    <th class="text-sm p-2 text-muted-foreground border-b text-left ">
-                      Description
-                    </th>
-                    <th class="text-sm p-2 text-muted-foreground border-b text-end">
-                      Quantity
-                    </th>
-                    <th class="text-sm p-2 text-muted-foreground border-b text-end">
-                      Unit price
-                    </th>
-                    <th class="text-sm p-2 text-muted-foreground border-b text-end">
-                      Total
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr v-for="item in expense?.body.lines" :key="item.id">
-                    <td class="p-2">
-                      {{ item.description }}
-                    </td>
-                    <td class="p-2 text-end">
-                      {{ item.quantity.toFixed(2) }}
-                    </td>
-                    <td class="p-2 text-end">
-                      {{ item.unitPrice.toFixed(2) }}
-                    </td>
-                    <td class="p-2 text-end font-semibold">
-                      {{ item.totalGross.toFixed(2) }}
-                      {{ expense?.currency }}
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-
-              <Separator class="my-2" />
-
-              <div class="ml-auto w-1/2 grid grid-cols-2 items-center gap-3 text-sm text-end pe-2">
-                <div class="text-muted-foreground text-end">
-                  {{ t(`expense.fields.totalNet`) }}:
-                </div>
-                <div class="font-bold">
-                  {{ expense?.totalNet?.toFixed(2) }} {{ expense?.currency }}
-                </div>
-                <div class="text-muted-foreground text-end">
-                  {{ t(`expense.fields.totalTax`) }}:
-                </div>
-                <div class="font-bold">
-                  {{ expense?.totalTax?.toFixed(2) }} {{ expense?.currency }}
-                </div>
-                <div class="text-muted-foreground text-end">
-                  {{ t(`expense.fields.totalGross`) }}:
-                </div>
-                <div class="font-bold">
-                  {{ expense?.totalGross?.toFixed(2) }} {{ expense?.currency }}
-                </div>
-              </div>
-            </div>
+            <InvoiceLines
+              v-if="expense?.body.lines"
+              :lines="expense?.body.lines"
+              :currency="expense?.currency"
+              :total-net="expense?.totalNet"
+              :total-tax="expense?.totalTax"
+              :total-gross="expense?.totalGross"
+            />
           </div>
 
           <!-- Sidebar -->
           <div class="flex flex-col gap-4 border border-dashed rounded-lg p-8">
             <div class="flex flex-row gap-2 mb-2">
-              <Badge :variant="getStatusBadgeVariant(expense?.status)">
-                {{ t(`expense.status.${expense?.status}`) }}
-              </Badge>
+              <InvoiceStatusBadge :status="expense?.status ?? 'draft'" />
             </div>
 
             <div class="uppercase text-sm font-bold text-muted-foreground">
-              Payment
+              {{ t('financial.fields.payment') }}
             </div>
             <div class="flex flex-col gap-4">
               <div>
                 <div class="text-sm text-muted-foreground">
-                  Method
+                  {{ t('financial.payment.fields.method') }}
                 </div>
                 <div class="font-semibold">
-                  {{ expense?.payment?.method }}
+                  {{ t(`financial.payment.method.${expense?.payment?.method}`) }}
                 </div>
               </div>
 
               <div>
                 <div class="text-sm text-muted-foreground">
-                  Status
+                  {{ t('financial.payment.fields.status') }}
                 </div>
                 <div class="font-semibold">
-                  {{ t(`expense.paymentStatus.${expense?.payment?.status}`) }}
+                  {{ t(`financial.payment.status.${expense?.payment?.status}`) }}
                 </div>
               </div>
 
               <div>
                 <div class="text-sm text-muted-foreground">
-                  Due date
+                  {{ t('financial.payment.fields.dueDate') }}
                 </div>
                 <div class="font-semibold">
                   {{ expense?.payment?.dueDate ? toDateString(expense?.payment?.dueDate) : 'N/A' }}

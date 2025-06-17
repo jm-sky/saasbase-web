@@ -4,15 +4,14 @@ import { storeToRefs } from 'pinia'
 import { onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
-import Badge from '@/components/ui/badge/Badge.vue'
 import Button from '@/components/ui/button/Button.vue'
-import Separator from '@/components/ui/separator/Separator.vue'
+import InvoiceStatusBadge from '@/domains/financial/components/InvoiceStatusBadge.vue'
+import InvoiceLines from '@/domains/invoice/components/InvoiceLines.vue'
 import { invoiceService } from '@/domains/invoice/services/invoiceService'
 import { useInvoiceStore } from '@/domains/invoice/stores/invoice.store'
 import AuthenticatedLayout from '@/layouts/AuthenticatedLayout.vue'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
 import { toDateString } from '@/lib/toDateString'
-import type { BadgeVariants } from '@/components/ui/badge'
 
 const { t } = useI18n()
 const route = useRoute()
@@ -35,15 +34,6 @@ const refresh = async () => {
   } finally {
     loading.value = false
   }
-}
-
-const getStatusBadgeVariant = (status?: string): BadgeVariants['variant'] => {
-  if (status === 'draft') return 'outline'
-  if (status === 'paid') return 'success'
-  if (status === 'partiallyPaid') return 'secondary'
-  if (status === 'overdue') return 'destructive-outline'
-  if (status === 'cancelled') return 'outline'
-  return 'outline'
 }
 
 onMounted(async () => {
@@ -131,74 +121,20 @@ onMounted(async () => {
               </div>
             </div>
 
-            <div class="col-span-2">
-              <table class="w-full text-sm">
-                <thead>
-                  <tr>
-                    <th class="text-sm p-2 text-muted-foreground border-b text-left ">
-                      Description
-                    </th>
-                    <th class="text-sm p-2 text-muted-foreground border-b text-end">
-                      Quantity
-                    </th>
-                    <th class="text-sm p-2 text-muted-foreground border-b text-end">
-                      Unit price
-                    </th>
-                    <th class="text-sm p-2 text-muted-foreground border-b text-end">
-                      Total
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr v-for="item in invoice?.body.lines" :key="item.id">
-                    <td class="p-2">
-                      {{ item.description }}
-                    </td>
-                    <td class="p-2 text-end">
-                      {{ item.quantity.toFixed(2) }}
-                    </td>
-                    <td class="p-2 text-end">
-                      {{ item.unitPrice.toFixed(2) }}
-                    </td>
-                    <td class="p-2 text-end font-semibold">
-                      {{ item.totalGross.toFixed(2) }}
-                      {{ invoice?.currency }}
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-
-              <Separator class="my-2" />
-
-              <div class="ml-auto w-1/2 grid grid-cols-2 items-center gap-3 text-sm text-end pe-2">
-                <div class="text-muted-foreground text-end">
-                  {{ t(`invoice.fields.totalNet`) }}:
-                </div>
-                <div class="font-bold">
-                  {{ invoice?.totalNet?.toFixed(2) }} {{ invoice?.currency }}
-                </div>
-                <div class="text-muted-foreground text-end">
-                  {{ t(`invoice.fields.totalTax`) }}:
-                </div>
-                <div class="font-bold">
-                  {{ invoice?.totalTax?.toFixed(2) }} {{ invoice?.currency }}
-                </div>
-                <div class="text-muted-foreground text-end">
-                  {{ t(`invoice.fields.totalGross`) }}:
-                </div>
-                <div class="font-bold">
-                  {{ invoice?.totalGross?.toFixed(2) }} {{ invoice?.currency }}
-                </div>
-              </div>
-            </div>
+            <InvoiceLines
+              v-if="invoice?.body.lines"
+              :lines="invoice?.body.lines"
+              :currency="invoice?.currency"
+              :total-net="invoice?.totalNet"
+              :total-tax="invoice?.totalTax"
+              :total-gross="invoice?.totalGross"
+            />
           </div>
 
           <!-- Sidebar -->
           <div class="flex flex-col gap-4 border border-dashed rounded-lg p-8">
             <div class="flex flex-row gap-2 mb-2">
-              <Badge :variant="getStatusBadgeVariant(invoice?.status)">
-                {{ t(`financial.invoiceStatus.${invoice?.status}`) }}
-              </Badge>
+              <InvoiceStatusBadge :status="invoice?.status ?? 'draft'" />
             </div>
 
             <div class="uppercase text-sm font-bold text-muted-foreground">

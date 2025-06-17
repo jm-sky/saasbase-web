@@ -1,7 +1,17 @@
 import type { TUUID } from '@/domains/shared/types/common'
 import type { TVatRateType } from '@/domains/shared/types/vatRate.type'
 
-export type TInvoiceStatus = 'draft' | 'ocrProcessing' | 'sent' | 'paid' | 'partiallyPaid' | 'overdue' | 'cancelled'
+export type TInvoiceStatus =
+  | 'draft'
+  | 'ocrProcessing'
+  | 'ocrCompleted'
+  | 'ocrFailed'
+  | 'sent'
+  | 'paid'
+  | 'partiallyPaid'
+  | 'overdue'
+  | 'cancelled'
+  | 'pending'
 
 // Enums
 export type TInvoiceType  =

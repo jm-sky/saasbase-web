@@ -1,35 +1,39 @@
 <script setup lang="ts">
-import { Icon } from '@iconify/vue'
+import { AlertCircle, CheckCircle2, Circle, CircleDot, Clock, FileEdit, Send, XCircle } from 'lucide-vue-next'
+import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import type { TInvoiceStatus } from '../types/financial.type'
 
 const { t } = useI18n()
 
-const { status } =defineProps<{
+const { status } = defineProps<{
   status: TInvoiceStatus
 }>()
 
-// status = 'draft' | 'ocrProcessing' | 'sent' | 'paid' | 'partiallyPaid' | 'overdue' | 'cancelled'
-
-const getIcon = () => {
+const iconComponent = computed(() => {
   switch (status) {
     case 'cancelled':
-      return 'mdi:close-circle'
+      return XCircle
     case 'draft':
-      return 'mdi:circle-edit-outline'
+      return FileEdit
+    case 'ocrCompleted':
+      return CheckCircle2
+    case 'ocrFailed':
+      return AlertCircle
     case 'ocrProcessing':
-      return 'mdi:progress-clock'
+      return Clock
     case 'overdue':
-      return 'mdi:alert-circle'
+      return AlertCircle
     case 'paid':
-      return 'mdi:check-circle'
+      return CheckCircle2
     case 'partiallyPaid':
-      return 'mdi:checkbox-intermediate'
+      return CircleDot
     case 'sent':
-      return 'mdi:send'
+      return Send
+    default:
+      return Circle
   }
-  return 'mdi:circle'
-}
+})
 
 const getColor = () => {
   switch (status) {
@@ -37,6 +41,10 @@ const getColor = () => {
       return 'bg-muted/30 border-muted'
     case 'draft':
       return 'bg-muted/30 border-muted'
+    case 'ocrCompleted':
+      return 'text-success bg-success/10 border-success/30'
+    case 'ocrFailed':
+      return 'text-destructive bg-destructive/10 border-destructive/50'
     case 'ocrProcessing':
       return 'text-primary bg-primary/10 border-primary/50'
     case 'overdue':
@@ -54,7 +62,7 @@ const getColor = () => {
 
 <template>
   <div class="inline-flex items-center gap-2 border rounded-md px-2 py-1" :class="getColor()">
-    <Icon :icon="getIcon()" class="size-4" />
+    <component :is="iconComponent" class="size-4" />
     <span class="text-sm">
       {{ t(`financial.invoiceStatus.${status}`, status) }}
     </span>

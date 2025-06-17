@@ -38,4 +38,9 @@ export default {
     success: 'Pliki przesłane pomyślnie',
     error: 'Nie udało się przesłać plików',
   },
+  delete: {
+    confirm: 'Czy na pewno chcesz usunąć ten wydatkę?',
+    success: 'Wydatkę usunięto pomyślnie',
+    error: 'Nie udało się usunąć wydatku',
+  },
 }

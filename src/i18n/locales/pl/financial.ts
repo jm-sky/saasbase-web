@@ -7,6 +7,16 @@ export const financial = {
     totalTax: 'VAT',
     totalGross: 'Brutto',
     payment: 'Płatność',
+    issueDate: 'Data wystawienia',
+    dueDate: 'Termin płatności',
+  },
+  lines: {
+    fields: {
+      description: 'Opis',
+      quantity: 'Ilość',
+      unitPrice: 'Cena jednostkowa',
+      total: 'Suma',
+    },
   },
   payment: {
     fields: {
@@ -28,6 +38,7 @@ export const financial = {
       debitCard: 'Karta debetowa',
       paypal: 'Paypal',
       stripe: 'Stripe',
+      undefined: ''
     },
   },
   invoiceType:{
@@ -51,6 +62,8 @@ export const financial = {
   invoiceStatus: {
     draft: 'Wersja robocza',
     ocrProcessing: 'W trakcie OCR',
+    ocrCompleted: 'OCR zakończony',
+    ocrFailed: 'OCR nieudany',
     sent: 'Wysłana',
     paid: 'Opłacona',
     partiallyPaid: 'Częściowo opłacona',

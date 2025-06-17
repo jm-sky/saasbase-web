@@ -8,6 +8,7 @@ import DataTable from '@/components/DataLists/DataTable.vue'
 import SearchField from '@/components/DataLists/Filters/SearchField.vue'
 import FileDropZoneSlot from '@/components/Inputs/FileDropZoneSlot.vue'
 import { Button } from '@/components/ui/button'
+import DeleteExpenseButton from '@/domains/expense/components/DeleteExpenseButton.vue'
 import ExpenseListDropdown from '@/domains/expense/components/ExpenseListDropdown.vue'
 import UploadForOcrModal from '@/domains/expense/components/UploadForOcrModal.vue'
 import { expenseService, type IExpenseFilters } from '@/domains/expense/services/expenseService'
@@ -106,9 +107,6 @@ watch(filters, () => refresh(), { deep: true })
     <DataListsWrapper :title="t('expense.title', 'Expenses')" :loading :error>
       <template #actions>
         <SearchField v-model="filters.search" />
-        <Button variant="outline" @click="refresh">
-          <RefreshCw class="size-4" />
-        </Button>
 
         <ButtonLink v-tooltip="t('expense.add.description', 'Add a new expense')" variant="default" to="/expenses/add">
           {{ t('expense.add.title', 'Add Expense') }}
@@ -116,6 +114,10 @@ watch(filters, () => refresh(), { deep: true })
 
         <Button variant="outline" @click="isUploadModalOpen = true">
           <Upload class="size-4" />
+        </Button>
+
+        <Button variant="ghost" @click="refresh">
+          <RefreshCw class="size-4" />
         </Button>
 
         <ExpenseListDropdown :filters />
@@ -153,7 +155,7 @@ watch(filters, () => refresh(), { deep: true })
               <ButtonLink :to="`/expenses/${data.id}/edit`" variant="outline">
                 {{ t('common.edit', 'Edit') }}
               </ButtonLink>
-              <!-- Add delete button if needed -->
+              <DeleteExpenseButton :id="data.id" @deleted="refresh" />
             </div>
           </template>
           <template #actions-header>

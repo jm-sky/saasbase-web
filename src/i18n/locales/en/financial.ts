@@ -7,6 +7,16 @@ export const financial = {
     totalTax: 'Total Tax',
     totalGross: 'Total Gross',
     payment: 'Payment',
+    issueDate: 'Issue Date',
+    dueDate: 'Due Date',
+  },
+  lines: {
+    fields: {
+      description: 'Description',
+      quantity: 'Quantity',
+      unitPrice: 'Unit price',
+      total: 'Total',
+    },
   },
   payment: {
     fields: {
@@ -28,6 +38,7 @@ export const financial = {
       debitCard: 'Debit card',
       paypal: 'Paypal',
       stripe: 'Stripe',
+      undefined: ''
     },
   },
   invoiceType:{
@@ -51,6 +62,8 @@ export const financial = {
   invoiceStatus: {
     draft: 'Draft',
     ocrProcessing: 'OCR processing',
+    ocrCompleted: 'OCR completed',
+    ocrFailed: 'OCR failed',
     sent: 'Sent',
     paid: 'Paid',
     partiallyPaid: 'Partially paid',
