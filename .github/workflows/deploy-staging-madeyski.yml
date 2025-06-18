@@ -78,7 +78,7 @@ jobs:
           host: ${{ steps.vars.outputs.host }}
           port: ${{ steps.vars.outputs.port }}
           username: ${{ steps.vars.outputs.username }}
-          key: ${{ secrets.SSH_KEY_STAGING_MADEYSKI }}
+          key_path: id_rsa
           source: 'dist/*'
           target: ${{ steps.vars.outputs.target }}
           strip_components: 1
