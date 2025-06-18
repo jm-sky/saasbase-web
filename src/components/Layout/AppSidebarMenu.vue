@@ -25,6 +25,7 @@ import { config } from '@/config'
 import { useAuthStore } from '@/domains/auth/store/auth.store'
 import TenantBrandInfo from '@/domains/tenant/components/branding/TenantBrandInfo.vue'
 import type { MenuItem } from './menu.type'
+import UIIcon from '../UIIcon.vue'
 import type { SidebarProps } from '@/components/ui/sidebar'
 
 const { t } = useI18n()
@@ -135,9 +136,15 @@ const menu = computed<MenuItem[]>(() => {
 <template>
   <Sidebar v-bind="props">
     <SidebarHeader>
-      <RouterLink to="/" class="h-14 flex flex-row gap-4 justify-center items-center px-2 hover:text-primary transition-colors group-has-data-[collapsible=icon]/sidebar-wrapper:h-10 group-has-data-[collapsible=icon]/sidebar-wrapper:px-0">
-        <i class="fa-solid fa-rocket group-has-data-[state=expanded]/sidebar-wrapper:scale-200" />
-        <div class="font-bold text-lg group-has-data-[collapsible=icon]/sidebar-wrapper:hidden">
+      <RouterLink
+        to="/"
+        class="h-14 flex flex-row gap-2 justify-center items-center px-2 hover:text-primary transition-colors group-has-data-[collapsible=icon]/sidebar-wrapper:h-10 group-has-data-[collapsible=icon]/sidebar-wrapper:px-0"
+      >
+        <UIIcon
+          icon="lucide:rocket"
+          class="text-3xl text-primary"
+        />
+        <div class="font-bold text-lg group-has-data-[collapsible=icon]/sidebar-wrapper:hidden bg-gradient-to-r from-primary-900 to-primary-500 bg-clip-text text-transparent">
           {{ config.appName }}
         </div>
       </RouterLink>

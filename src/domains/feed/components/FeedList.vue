@@ -16,7 +16,6 @@ const { t } = useI18n()
 const feeds = ref<IFeed[]>([])
 const loading = ref(false)
 const createModalOpen = ref(false)
-const showCreateForm = ref(false)
 const editModalOpen = ref(false)
 const editFeed = ref<IFeed>()
 
@@ -70,16 +69,16 @@ const handleDelete = async (feed: IFeed) => {
 
     <Separator class="my-4" />
 
-    <div class="flex flex-col gap-4">
-      <Button variant="outline" @click="showCreateForm = !showCreateForm">
+    <div v-if="!createModalOpen" class="flex flex-col gap-4">
+      <Button variant="outline" @click="createModalOpen = !createModalOpen">
         {{ t('feed.create.title') }}
       </Button>
     </div>
 
     <CreateFeedForm
-      v-if="showCreateForm"
-      v-model:open="createModalOpen"
+      v-if="createModalOpen"
       @create="refresh"
+      @cancel="createModalOpen = false"
     />
   </DataListSection>
 </template>

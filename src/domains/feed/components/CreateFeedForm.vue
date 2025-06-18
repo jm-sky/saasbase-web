@@ -28,6 +28,7 @@ const { handleSubmit, setFieldValue, resetForm } = useForm<IFeedCreate>({
 
 const emit = defineEmits<{
   create: [feed: IFeed]
+  cancel: []
 }>()
 
 const onSubmit = handleSubmit(async (values) => {
@@ -76,14 +77,26 @@ const onSubmit = handleSubmit(async (values) => {
           </FormItem>
         </FormField>
       </div>
-      <Button
-        type="submit"
-        :disabled="loading"
-        class="w-full"
-        variant="primary"
-      >
-        {{ t('feed.create.submit') }}
-      </Button>
+
+      <div class="flex flex-col gap-2">
+        <Button
+          type="submit"
+          :disabled="loading"
+          class="w-full"
+          variant="primary"
+        >
+          {{ t('feed.create.submit') }}
+        </Button>
+
+        <Button
+          type="button"
+          variant="outline"
+          class="w-full"
+          @click="emit('cancel')"
+        >
+          {{ t('common.cancel') }}
+        </Button>
+      </div>
     </form>
   </div>
 </template>
