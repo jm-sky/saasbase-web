@@ -91,4 +91,4 @@ jobs:
           username: ${{ steps.vars.outputs.username }}
           key: ${{ secrets.SSH_KEY_STAGING_OVH }}
           script: |
-            sudo /usr/local/bin/finalize-deploy.sh
+            sudo /usr/local/bin/finalize-saasbase-web.sh

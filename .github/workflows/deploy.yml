@@ -137,6 +137,6 @@ jobs:
           username: ${{ steps.vars.outputs.username }}
           key_path: id_rsa
           script: |
-            sudo /usr/local/bin/finalize-deploy.sh
+            sudo /usr/local/bin/finalize-saasbase-web.sh
 
 
