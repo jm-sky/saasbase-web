@@ -121,7 +121,7 @@ jobs:
 
       - name: Deploy via SCP
         if: github.event_name == 'push' || github.event.inputs.server == matrix.server
-        uses: appleboy/scp-action@v0.1.4
+        uses: appleboy/scp-action@v0.1.5
         with:
           host: ${{ steps.vars.outputs.host }}
           port: ${{ steps.vars.outputs.port }}
@@ -138,7 +138,7 @@ jobs:
           host: ${{ steps.vars.outputs.host }}
           port: ${{ steps.vars.outputs.port }}
           username: ${{ steps.vars.outputs.username }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          key_path: id_rsa
           script: |
             sudo /usr/local/bin/finalize-deploy.sh
 
