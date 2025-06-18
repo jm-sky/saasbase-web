@@ -77,6 +77,12 @@ export const routes: RouteRecordRaw[] = [
       middlewares: [isAuthenticated, isVerified],
     },
   },
+
+  {
+    path: '/build-info',
+    name: 'build-info',
+    component: () => import('@/pages/buildInfo/BuildInfoPage.vue'),
+  },
   {
     path: '/:pathMatch(.*)*',
     name: 'not-found',
