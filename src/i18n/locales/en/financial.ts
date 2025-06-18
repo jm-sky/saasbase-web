@@ -15,6 +15,7 @@ export const financial = {
     payment: 'Payment',
     options: 'Options',
     issueDate: 'Issue Date',
+    dueDate: 'Due Date',
     createdAt: 'Created At',
     updatedAt: 'Updated At',
     numberingTemplate: 'Numbering Template',
