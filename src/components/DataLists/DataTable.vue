@@ -59,6 +59,8 @@ const pageSizeOptions = computed(() => props.pageSizeOptions ?? [10, 20, 30, 40,
 const pageCount = computed(() => Math.max(1, Math.ceil(total.value / pageSize.value)))
 
 const switchSorting = (header: Header<TData, unknown>) => {
+  if (header.column.columnDef.enableSorting === false) return
+
   if (header.column.getIsSorted() === 'desc') {
     header.column.clearSorting()
   } else {
@@ -78,6 +80,7 @@ const switchSorting = (header: Header<TData, unknown>) => {
           <TableHead
             v-for="header in headerGroup.headers"
             :key="header.id"
+            :class="{ 'cursor-pointer': !header.isPlaceholder && header.column.columnDef.enableSorting !== false }"
             @click="switchSorting(header)"
           >
             <div class="flex items-center gap-2">

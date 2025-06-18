@@ -61,19 +61,19 @@ defineProps<{
 
     <div class="ml-auto w-1/2 grid grid-cols-2 items-center gap-3 text-sm text-end pe-2">
       <div class="text-muted-foreground text-end">
-        {{ t(`expense.fields.totalNet`) }}:
+        {{ t(`financial.fields.totalNet`) }}:
       </div>
       <div class="font-bold">
         {{ totalNet?.toFixed(2) }} {{ currency }}
       </div>
       <div class="text-muted-foreground text-end">
-        {{ t(`expense.fields.totalTax`) }}:
+        {{ t(`financial.fields.totalTax`) }}:
       </div>
       <div class="font-bold">
         {{ totalTax?.toFixed(2) }} {{ currency }}
       </div>
       <div class="text-muted-foreground text-end">
-        {{ t(`expense.fields.totalGross`) }}:
+        {{ t(`financial.fields.totalGross`) }}:
       </div>
       <div class="font-bold">
         {{ totalGross?.toFixed(2) }} {{ currency }}

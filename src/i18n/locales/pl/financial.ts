@@ -1,14 +1,24 @@
 export const financial = {
   fields: {
     type: 'Typ',
-    status: 'Status',
+    status: 'Status faktury',
     number: 'Numer',
+    numberingTemplateId: 'Szablon numeracji',
     totalNet: 'Netto',
     totalTax: 'VAT',
     totalGross: 'Brutto',
+    currency: 'Waluta',
+    exchangeRate: 'Kurs wymiany',
+    seller: 'Sprzedawca',
+    buyer: 'Kupujący',
+    data: 'Data',
     payment: 'Płatność',
+    options: 'Opcje',
     issueDate: 'Data wystawienia',
-    dueDate: 'Termin płatności',
+    createdAt: 'Data utworzenia',
+    updatedAt: 'Data aktualizacji',
+    numberingTemplate: 'Szablon numeracji',
+    total: 'Razem',
   },
   lines: {
     fields: {

@@ -160,7 +160,7 @@ const updateBuyer = (contractor: IContractor | undefined) => {
           <FormFieldLabeled
             v-slot="{ componentField }"
             name="issueDate"
-            :label="t('invoice.fields.issueDate', 'issueDate')"
+            :label="t('financial.fields.issueDate', 'issueDate')"
             :disabled="isSubmitting"
           >
             <Input type="date" v-bind="componentField" class="bg-white/50 dark:bg-black/50" />
@@ -168,7 +168,7 @@ const updateBuyer = (contractor: IContractor | undefined) => {
           <FormFieldLabeled
             v-slot="{ componentField }"
             name="type"
-            :label="t('invoice.fields.type', 'Type')"
+            :label="t('financial.fields.type', 'Type')"
             :disabled="isSubmitting"
           >
             <Input v-bind="componentField" class="bg-white/50 dark:bg-black/50" />
@@ -176,7 +176,7 @@ const updateBuyer = (contractor: IContractor | undefined) => {
           <FormFieldLabeled
             v-slot="{ componentField }"
             name="status"
-            :label="t('invoice.fields.status', 'Status')"
+            :label="t('financial.fields.status', 'Status')"
             :disabled="isSubmitting"
           >
             <Input v-bind="componentField" class="bg-white/50 dark:bg-black/50" />
@@ -184,7 +184,7 @@ const updateBuyer = (contractor: IContractor | undefined) => {
           <FormFieldLabeled
             v-slot="{ componentField }"
             name="currency"
-            :label="t('invoice.fields.currency', 'Currency')"
+            :label="t('financial.fields.currency', 'Currency')"
             :disabled="isSubmitting"
           >
             <Input v-bind="componentField" class="bg-white/50 dark:bg-black/50" />

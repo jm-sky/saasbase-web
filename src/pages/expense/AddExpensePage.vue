@@ -132,7 +132,7 @@ const updateBuyer = (contractor: IContractor | undefined) => {
 
         <div class="flex flex-col gap-y-2 items-center justify-center mt-2 mb-6">
           <div class="font-bold text-lg">
-            {{ t(`expense.type.${values.type}`, t('expense.fields.type')) }}
+            {{ t(`expense.type.${values.type}`, t('financial.fields.type')) }}
           </div>
           <div class="font-bold text-xl">
             <FormFieldLabeled
@@ -149,7 +149,7 @@ const updateBuyer = (contractor: IContractor | undefined) => {
           <FormFieldLabeled
             v-slot="{ componentField }"
             name="issueDate"
-            :label="t('expense.fields.issueDate', 'issueDate')"
+            :label="t('financial.fields.issueDate', 'issueDate')"
             :disabled="isSubmitting"
           >
             <Input type="date" v-bind="componentField" class="bg-white/50 dark:bg-black/50" />
@@ -157,7 +157,7 @@ const updateBuyer = (contractor: IContractor | undefined) => {
           <FormFieldLabeled
             v-slot="{ componentField }"
             name="type"
-            :label="t('expense.fields.type', 'Type')"
+            :label="t('financial.fields.type', 'Type')"
             :disabled="isSubmitting"
           >
             <Input v-bind="componentField" class="bg-white/50 dark:bg-black/50" />
@@ -165,7 +165,7 @@ const updateBuyer = (contractor: IContractor | undefined) => {
           <FormFieldLabeled
             v-slot="{ componentField }"
             name="status"
-            :label="t('expense.fields.status', 'Status')"
+            :label="t('financial.fields.status', 'Status')"
             :disabled="isSubmitting"
           >
             <Input v-bind="componentField" class="bg-white/50 dark:bg-black/50" />
@@ -173,7 +173,7 @@ const updateBuyer = (contractor: IContractor | undefined) => {
           <FormFieldLabeled
             v-slot="{ componentField }"
             name="currency"
-            :label="t('expense.fields.currency', 'Currency')"
+            :label="t('financial.fields.currency', 'Currency')"
             :disabled="isSubmitting"
           >
             <Input v-bind="componentField" class="bg-white/50 dark:bg-black/50" />

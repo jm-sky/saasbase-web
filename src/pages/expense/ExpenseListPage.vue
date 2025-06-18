@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { RefreshCw, Upload } from 'lucide-vue-next'
+import { storeToRefs } from 'pinia'
 import { onMounted, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import ButtonLink from '@/components/ButtonLink.vue'
@@ -9,9 +10,11 @@ import SearchField from '@/components/DataLists/Filters/SearchField.vue'
 import FileDropZoneSlot from '@/components/Inputs/FileDropZoneSlot.vue'
 import { Button } from '@/components/ui/button'
 import DeleteExpenseButton from '@/domains/expense/components/DeleteExpenseButton.vue'
+import EditExpenseButton from '@/domains/expense/components/EditExpenseButton.vue'
 import ExpenseListDropdown from '@/domains/expense/components/ExpenseListDropdown.vue'
 import UploadForOcrModal from '@/domains/expense/components/UploadForOcrModal.vue'
 import { expenseService, type IExpenseFilters } from '@/domains/expense/services/expenseService'
+import { useExpenseStore } from '@/domains/expense/stores/expense.store'
 import InvoiceStatusBadge from '@/domains/financial/components/InvoiceStatusBadge.vue'
 import AuthenticatedLayout from '@/layouts/AuthenticatedLayout.vue'
 import { toDateTimeString } from '@/lib/toDateTimeString'
@@ -21,7 +24,9 @@ import type { IResourceMeta } from '@/domains/shared/types/resource.type'
 
 const { t } = useI18n()
 
-const expenses = ref<IExpense[]>([])
+const expenseStore = useExpenseStore()
+const { expenses } = storeToRefs(expenseStore)
+
 const meta = ref<IResourceMeta>({
   currentPage: 1,
   lastPage: 1,
@@ -48,31 +53,38 @@ const filters = ref<IExpenseFilters>({
 
 const columns: ColumnDef<IExpense>[] = [
   {
-    accessorKey: 'number',
-    header: t('expense.fields.number', 'Number'),
+    id: 'seller',
+    accessorKey: 'seller.name',
+    header: t('financial.fields.seller'),
+    enableMultiSort: true,
   },
   {
-    accessorKey: 'type',
-    header: t('expense.fields.type', 'Type'),
+    accessorKey: 'issueDate',
+    header: t('financial.fields.issueDate'),
+    size: 100,
+  },
+  {
+    accessorKey: 'number',
+    header: t('financial.fields.number'),
   },
   {
     accessorKey: 'status',
-    header: t('expense.fields.status', 'Status'),
+    header: t('financial.fields.status'),
   },
   {
     accessorKey: 'totalGross',
-    header: t('expense.fields.totalGross', 'Total Gross'),
-    cell: (info: { row: { original: IExpense } }) => `${info.row.original.totalGross.toFixed(2)} ${info.row.original.currency}`,
+    header: t('financial.fields.total'),
   },
   {
     accessorKey: 'createdAt',
-    header: t('expense.fields.createdAt', 'Created At'),
+    header: t('financial.fields.createdAt', 'Created At'),
     cell: (info: { row: { original: IExpense } }) => info.row.original.createdAt ? toDateTimeString(info.row.original.createdAt) : '-',
   },
   {
     id: 'actions',
     header: t('common.actions'),
     enableColumnFilter: false,
+    enableSorting: false,
     meta: {
       clearFilters: true,
     },
@@ -136,25 +148,48 @@ watch(filters, () => refresh(), { deep: true })
           :show-column-filters="true"
           :loading
         >
+          <template #seller="{ data }">
+            <RouterLink :to="`/expenses/${data.id}/show`" class="text-sm font-medium p-1 text-primary hover:underline">
+              {{ data.seller.name }}
+            </RouterLink>
+            <div class="text-xs text-muted-foreground p-1">
+              {{ data.seller.taxId }}
+            </div>
+          </template>
+
           <template #number="{ data }">
-            <ButtonLink :to="`/expenses/${data.id}/show`">
+            <ButtonLink :to="`/expenses/${data.id}/show`" class="flex-col items-start">
               {{ data.number ? data.number : t('expense.number.empty', 'No number') }}
+              <div class="text-xs text-muted-foreground">
+                {{ t(`financial.invoiceType.${data.type}`, data.type) }}
+              </div>
             </ButtonLink>
           </template>
-          <template #type="{ data }">
-            {{ t(`financial.invoiceType.${data.type}`, data.type) }}
-          </template>
+
           <template #status="{ data }">
             <InvoiceStatusBadge :status="data.status" />
           </template>
+
           <template #totalGross="{ data }">
-            {{ data.totalGross?.toFixed(2) ?? '-' }} {{ data.currency }}
+            <div class="grid grid-cols-2 gap-1">
+              <div class="font-semibold">
+                {{ t('financial.fields.totalGross', 'Total Gross') }}
+              </div>
+              <div class="font-semibold">
+                {{ data.totalGross?.toFixed(2) ?? '-' }} {{ data.currency }}
+              </div>
+              <div>
+                {{ t('financial.fields.totalNet', 'Total Net') }}
+              </div>
+              <div>
+                {{ data.totalNet?.toFixed(2) ?? '-' }} {{ data.currency }}
+              </div>
+            </div>
           </template>
+
           <template #actions="{ data }">
             <div class="flex gap-2 justify-end w-full whitespace-nowrap min-w-0">
-              <ButtonLink :to="`/expenses/${data.id}/edit`" variant="outline">
-                {{ t('common.edit', 'Edit') }}
-              </ButtonLink>
+              <EditExpenseButton :expense="data" />
               <DeleteExpenseButton :id="data.id" @deleted="refresh" />
             </div>
           </template>

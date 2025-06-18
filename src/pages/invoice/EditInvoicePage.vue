@@ -122,7 +122,7 @@ onMounted(async () => {
         <FormFieldLabeled
           v-slot="{ componentField }"
           name="number"
-          :label="t('invoice.fields.number', 'Number')"
+          :label="t('financial.fields.number', 'Number')"
           :disabled="isSubmitting"
         >
           <Input v-bind="componentField" class="bg-white/50 dark:bg-black/50" />
@@ -130,7 +130,7 @@ onMounted(async () => {
         <FormFieldLabeled
           v-slot="{ componentField }"
           name="type"
-          :label="t('invoice.fields.type', 'Type')"
+          :label="t('financial.fields.type', 'Type')"
           :disabled="isSubmitting"
         >
           <Input v-bind="componentField" class="bg-white/50 dark:bg-black/50" />
@@ -138,7 +138,7 @@ onMounted(async () => {
         <FormFieldLabeled
           v-slot="{ componentField }"
           name="status"
-          :label="t('invoice.fields.status', 'Status')"
+          :label="t('financial.fields.status', 'Status')"
           :disabled="isSubmitting"
         >
           <Input v-bind="componentField" class="bg-white/50 dark:bg-black/50" />
@@ -146,7 +146,7 @@ onMounted(async () => {
         <FormFieldLabeled
           v-slot="{ componentField }"
           name="currency"
-          :label="t('invoice.fields.currency', 'Currency')"
+          :label="t('financial.fields.currency', 'Currency')"
           :disabled="isSubmitting"
         >
           <Input v-bind="componentField" class="bg-white/50 dark:bg-black/50" />

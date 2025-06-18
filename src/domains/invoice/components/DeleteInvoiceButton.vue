@@ -6,14 +6,14 @@ import { useI18n } from 'vue-i18n'
 import { Button } from '@/components/ui/button'
 import { useToast } from '@/components/ui/toast/use-toast'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
-import { expenseService } from '../services/expenseService'
-import { useExpenseStore } from '../stores/expense.store'
+import { invoiceService } from '../services/invoiceService'
+import { useInvoiceStore } from '../stores/invoice.store'
 
 const { toast } = useToast()
 const { t } = useI18n()
 
-const expenseStore = useExpenseStore()
-const { expenses } = storeToRefs(expenseStore)
+const invoiceStore = useInvoiceStore()
+const { invoices } = storeToRefs(invoiceStore)
 
 const props = defineProps<{
   id: string
@@ -25,18 +25,18 @@ const emit = defineEmits<{
   deleted: [id: string]
 }>()
 
-const deleteExpense = async () => {
-  if (!confirm(t('expense.delete.confirm', 'Are you sure you want to delete this expense?'))) return
+const deleteInvoice = async () => {
+  if (!confirm(t('invoice.delete.confirm', 'Are you sure you want to delete this invoice?'))) return
   try {
     loading.value = true
-    await expenseService.delete(props.id)
+    await invoiceService.delete(props.id)
     loading.value = false
     emit('deleted', props.id)
-    expenseStore.expenses = expenses.value.filter((expense) => expense.id !== props.id)
-    toast.success(t('expense.delete.success'))
+    toast.success(t('invoice.delete.success'))
+    invoiceStore.invoices = invoices.value.filter((invoice) => invoice.id !== props.id)
   } catch (error) {
     loading.value = false
-    handleErrorWithToast(t('expense.delete.error', 'Failed to delete expense'), error)
+    handleErrorWithToast(t('invoice.delete.error', 'Failed to delete invoice'), error)
   }
 }
 </script>
@@ -48,7 +48,7 @@ const deleteExpense = async () => {
     size="sm"
     :loading="loading"
     :disabled="loading"
-    @click="deleteExpense"
+    @click="deleteInvoice"
   >
     <Trash2 />
   </Button>
