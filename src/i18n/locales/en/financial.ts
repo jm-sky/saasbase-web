@@ -42,13 +42,23 @@ export const financial = {
       undefined: ''
     },
     method: {
-      bankTransfer: 'Bank transfer',
+      bankTransfer: 'Bank Transfer',
       cash: 'Cash',
       creditCard: 'Credit card',
-      debitCard: 'Debit card',
-      paypal: 'Paypal',
-      stripe: 'Stripe',
-      undefined: ''
+      payPal: 'PayPal',
+      voucher: 'Voucher',
+      cheque: 'Cheque',
+      compensation: 'Compensation',
+      credit: 'Credit',
+      electronicPayment: 'Electronic Payment',
+      postSalePayment: 'Post-sale Payment',
+      installmentPayment: 'Installment Payment',
+      prepayment: 'Prepayment',
+      moneyOrder: 'Money Order',
+      expenseSettlement: 'Expense Settlement',
+      cashOnDelivery: 'Cash on Delivery',
+      paidByBankTransfer: 'Paid by Bank Transfer',
+      undefined: '',
     },
   },
   invoiceType:{
