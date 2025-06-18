@@ -21,6 +21,10 @@ const buildDate = __BUILD_DATE__
         <span class="rounded border font-mono px-2 py-1 bg-muted/50">{{ config.api.baseUrl }}</span>
         <span class="font-semibold">Pusher Host</span>
         <span class="rounded border font-mono px-2 py-1 bg-muted/50">{{ config.pusher.wsHost }}</span>
+        <span class="font-semibold">Recaptcha Key</span>
+        <span class="rounded border font-mono px-2 py-1 bg-muted/50">{{ config.api.recaptchaKey }}</span>
+        <span class="font-semibold">Stripe Publishable Key</span>
+        <span class="rounded border font-mono px-2 py-1 bg-muted/50">{{ config.stripe.publishableKey }}</span>
       </div>
     </div>
   </GuestLayout>
