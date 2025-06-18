@@ -10,9 +10,6 @@ on:
         options:
           - 'STAGING_MADEYSKI'
           - 'STAGING_OVH'
-  push:
-    branches:
-      - main
 
 permissions:
   contents: read
@@ -126,7 +123,7 @@ jobs:
           host: ${{ steps.vars.outputs.host }}
           port: ${{ steps.vars.outputs.port }}
           username: ${{ steps.vars.outputs.username }}
-          key_path: id_rsa
+          key: ${{ matrix.server == 'STAGING_MADEYSKI' && secrets.SSH_KEY_STAGING_MADEYSKI || secrets.SSH_KEY_STAGING_OVH }}
           source: 'dist/*'
           target: ${{ steps.vars.outputs.target }}
           strip_components: 1
@@ -138,7 +135,7 @@ jobs:
           host: ${{ steps.vars.outputs.host }}
           port: ${{ steps.vars.outputs.port }}
           username: ${{ steps.vars.outputs.username }}
-          key_path: id_rsa
+          key: ${{ secrets.SSH_KEY_STAGING_OVH }}
           script: |
             sudo /usr/local/bin/finalize-deploy.sh
 

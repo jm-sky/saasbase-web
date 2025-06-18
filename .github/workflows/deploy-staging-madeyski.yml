@@ -1,0 +1,84 @@
+name: Build & Deploy - STAGING_MADEYSKI
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build App
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 9
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Generate version.json
+        run: |
+          COMMIT_HASH=$(git rev-parse --short HEAD)
+          BUILD_DATE=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+          echo "{ \"commit\": \"$COMMIT_HASH\", \"buildDate\": \"$BUILD_DATE\" }" > public/version.json
+
+      - name: Setup environment file
+        run: |
+          cp .env.deploy .env
+          echo "${{ vars.ENV_STAGING_MADEYSKI }}" >> .env
+
+      - name: Build app
+        run: pnpm build
+
+      - name: Upload dist as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist
+
+  deploy:
+    name: Deploy App
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download build artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist
+
+      - name: Set SSH variables & write SSH key
+        id: vars
+        run: |
+          echo "username=${{ secrets.SSH_USER_STAGING_MADEYSKI }}" >> "$GITHUB_OUTPUT"
+          echo "host=${{ vars.SSH_HOST_STAGING_MADEYSKI }}" >> "$GITHUB_OUTPUT"
+          echo "port=${{ vars.SSH_PORT_STAGING_MADEYSKI }}" >> "$GITHUB_OUTPUT"
+          echo "target=${{ secrets.SSH_TARGET_STAGING_MADEYSKI }}" >> "$GITHUB_OUTPUT"
+          echo "${{ secrets.SSH_KEY_STAGING_MADEYSKI }}" > id_rsa
+          chmod 600 id_rsa
+
+      - name: Deploy via SCP
+        uses: appleboy/scp-action@v0.1.5
+        with:
+          host: ${{ steps.vars.outputs.host }}
+          port: ${{ steps.vars.outputs.port }}
+          username: ${{ steps.vars.outputs.username }}
+          key: ${{ secrets.SSH_KEY_STAGING_MADEYSKI }}
+          source: 'dist/*'
+          target: ${{ steps.vars.outputs.target }}
+          strip_components: 1
