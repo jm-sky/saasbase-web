@@ -1,10 +1,12 @@
 <script setup lang="ts">
-import { RefreshCcw } from 'lucide-vue-next'
+import { RefreshCcw, Scan } from 'lucide-vue-next'
 import { storeToRefs } from 'pinia'
 import { onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
 import Button from '@/components/ui/button/Button.vue'
+import { useToast } from '@/components/ui/toast'
+import ExpenseAttachmentsList from '@/domains/expense/components/attachments/ExpenseAttachmentsList.vue'
 import { expenseService } from '@/domains/expense/services/expenseService'
 import { useExpenseStore } from '@/domains/expense/stores/expense.store'
 import InvoiceStatusBadge from '@/domains/financial/components/InvoiceStatusBadge.vue'
@@ -14,6 +16,7 @@ import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
 import { toDateString } from '@/lib/toDateString'
 
 const { t } = useI18n()
+const { toast } = useToast()
 const route = useRoute()
 const expenseId = route.params.id as string
 
@@ -33,6 +36,15 @@ const refresh = async () => {
     error.value = 'Failed to load expense'
   } finally {
     loading.value = false
+  }
+}
+
+const startOcr = async () => {
+  try {
+    await expenseService.startOcr(expenseId)
+    toast.success(t('financial.actions.startOcr.success'))
+  } catch (err) {
+    handleErrorWithToast(t('financial.actions.startOcr.error'), err)
   }
 }
 
@@ -56,6 +68,14 @@ onMounted(async () => {
           </div>
         </div>
         <div class="flex flex-row items-center justify-end gap-2">
+          <Button
+            v-tooltip.bottom.focus="t('financial.actions.startOcr.tooltip')"
+            variant="ghost"
+            :loading
+            @click="startOcr"
+          >
+            <Scan class="size-4" />
+          </Button>
           <Button
             v-tooltip.bottom.focus="t('common.refresh')"
             variant="ghost"
@@ -167,6 +187,10 @@ onMounted(async () => {
                   {{ expense?.payment?.dueDate ? toDateString(expense?.payment?.dueDate) : 'N/A' }}
                 </div>
               </div>
+            </div>
+
+            <div class="border rounded-md p-2">
+              <ExpenseAttachmentsList :expense-id="expenseId" />
             </div>
           </div>
           <!-- End -->

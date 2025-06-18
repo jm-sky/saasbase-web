@@ -36,6 +36,21 @@ class ExpenseService {
     return response.data.data
   }
 
+  async update(id: string, invoice: Partial<IExpense>): Promise<IExpense> {
+    const response = await api.patch<IResource<IExpense>>(`${apiRoutesMap.expenses}/${id}`, invoice)
+    return response.data.data
+  }
+
+  async delete(id: string): Promise<void> {
+    await api.delete(`${apiRoutesMap.expenses}/${id}`)
+  }
+
+  async export(filters?: IExpenseFilters): Promise<Blob> {
+    const params = buildSpatieQuery(filters ?? { filter: {} })
+    const response = await api.get(`${apiRoutesMap.expenses}/export`, { params, responseType: 'blob' })
+    return response.data
+  }
+
   async uploadForOcr(values: IUploadForOcr): Promise<void> {
     const formData = new FormData()
 
@@ -51,19 +66,8 @@ class ExpenseService {
     })
   }
 
-  async update(id: string, invoice: Partial<IExpense>): Promise<IExpense> {
-    const response = await api.patch<IResource<IExpense>>(`${apiRoutesMap.expenses}/${id}`, invoice)
-    return response.data.data
-  }
-
-  async delete(id: string): Promise<void> {
-    await api.delete(`${apiRoutesMap.expenses}/${id}`)
-  }
-
-  async export(filters?: IExpenseFilters): Promise<Blob> {
-    const params = buildSpatieQuery(filters ?? { filter: {} })
-    const response = await api.get(`${apiRoutesMap.expenses}/export`, { params, responseType: 'blob' })
-    return response.data
+  async startOcr(id: string): Promise<void> {
+    await api.post(`${apiRoutesMap.expenses}/${id}/start-ocr`)
   }
 }
 

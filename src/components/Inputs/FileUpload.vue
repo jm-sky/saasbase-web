@@ -1,7 +1,9 @@
 <script setup lang="ts">
+import { Trash } from 'lucide-vue-next'
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { cn } from '@/lib/utils'
+import Button from '../ui/button/Button.vue'
 import type { HTMLAttributes } from 'vue'
 
 const props = defineProps<{
@@ -101,20 +103,21 @@ const formatFileSize = (bytes: number): string => {
       <div
         v-for="(file, index) in files"
         :key="index"
-        class="flex items-center justify-between rounded-md bg-gray-50 p-2"
+        class="flex items-center justify-between gap-1 rounded-md bg-gray-50 p-2 max-w-full"
       >
-        <div class="flex items-center space-x-2">
-          <span class="text-sm">{{ file.name }}</span>
-          <span class="text-xs text-gray-500">({{ formatFileSize(file.size) }})</span>
+        <div class="flex flex-wrap items-center gap-x-2 gap-y-1 max-w-[calc(100%-5rem)]">
+          <span class="text-sm truncate max-w-full">{{ file.name }}</span>
+          <span class="text-xs text-gray-500 text-nowrap">({{ formatFileSize(file.size) }})</span>
         </div>
-        <button
-          type="button"
-          class="text-gray-500 hover:text-destructive disabled:cursor-not-allowed disabled:opacity-50 relative z-20"
+        <Button
+          v-tooltip="t('common.fileUpload.remove')"
+          variant="outline"
+          size="sm"
           :disabled="disabled"
           @click.stop="removeFile(index)"
         >
-          {{ t('common.fileUpload.remove') }}
-        </button>
+          <Trash class="size-4" />
+        </Button>
       </div>
     </div>
   </div>

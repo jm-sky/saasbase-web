@@ -92,4 +92,11 @@ export const financial = {
     cancelled: 'Anulowana',
     undefined: ''
   },
+  actions: {
+    startOcr: {
+      tooltip: 'Rozpocznij OCR',
+      success: 'OCR rozpoczęty',
+      error: 'Błąd rozpoczęcia OCR',
+    }
+  },
 }

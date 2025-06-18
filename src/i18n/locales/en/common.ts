@@ -47,6 +47,7 @@ export const common = {
     pl: 'Polish'
   },
   fileUpload: {
+    upload: 'Upload',
     dragAndDrop: 'Drag and drop files here or click to browse',
     dropHere: 'Drop files to upload',
     allFilesAccepted: 'All files accepted',

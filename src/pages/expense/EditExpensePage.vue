@@ -147,7 +147,7 @@ const updateBuyer = (contractor: IContractor | undefined) => {
 
         <div class="flex flex-col gap-y-2 items-center justify-center mt-2 mb-6">
           <div class="font-bold text-lg">
-            {{ t(`expense.type.${values.type}`, 'Type') }}
+            {{ t(`financial.invoiceType.${values.type}`, 'Type') }}
           </div>
           <div class="font-bold text-xl">
             <FormFieldLabeled

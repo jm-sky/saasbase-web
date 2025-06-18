@@ -96,7 +96,7 @@ onMounted(refresh)
       :disabled="!files.length || uploading"
       @click="handleUpload"
     >
-      Upload
+      {{ t('common.fileUpload.upload') }}
     </Button>
   </DataListSection>
 </template>

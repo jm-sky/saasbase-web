@@ -47,6 +47,7 @@ export const common = {
     pl: 'Polski'
   },
   fileUpload: {
+    upload: 'Wgraj',
     dragAndDrop: 'Przeciągnij i upuść pliki tutaj lub kliknij, aby przeglądać',
     dropHere: 'Przeciągnij tutaj pliki do przetworzenia',
     allFilesAccepted: 'Wszystkie pliki akceptowane',
