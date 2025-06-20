@@ -125,7 +125,7 @@ const updateBuyer = (contractor: IContractor | undefined) => {
       </div>
 
       <form class="flex flex-col gap-y-2 gap-x-8" @submit.prevent="onSubmit">
-        <div class="grid grid-cols-2 gap-x-8 gap-y-2 mb-4">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-x-8 gap-y-2 mb-4">
           <PartySideForTenantCard title="Seller" :values="values.seller" />
           <PartySideForContractorCard title="Buyer" :values="values.buyer" @contractor-selected="updateBuyer" />
         </div>
@@ -145,7 +145,7 @@ const updateBuyer = (contractor: IContractor | undefined) => {
           </div>
         </div>
 
-        <div class="grid grid-cols-2 gap-x-8 gap-y-2">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-x-8 gap-y-2">
           <FormFieldLabeled
             v-slot="{ componentField }"
             name="issueDate"
