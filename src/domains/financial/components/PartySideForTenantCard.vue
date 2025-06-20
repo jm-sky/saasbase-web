@@ -21,13 +21,13 @@ const tenantAddress = ref<ITenantAddress | undefined>(undefined)
     <div class="font-bold">
       {{ title }}
     </div>
-    <div class="grid grid-cols-[4rem_1fr_1fr] gap-2">
+    <div class="grid grid-cols-1 md:grid-cols-[4rem_1fr_1fr] gap-2">
       <Input :model-value="values.country" variant="filled" placeholder="PL" />
       <Input :model-value="values.name" variant="filled" placeholder="Name" />
       <Input :model-value="values.taxId" variant="filled" placeholder="Tax ID" />
 
       <!-- Address -->
-      <div class="flex items-center justify-center">
+      <div class="hidden md:flex items-center justify-center">
         <MapPin class="size-4" />
       </div>
 
@@ -40,7 +40,7 @@ const tenantAddress = ref<ITenantAddress | undefined>(undefined)
       <TenantAddressPicker :model-value="tenantAddress" />
 
       <!-- Contact -->
-      <div class="flex items-center justify-center">
+      <div class="hidden md:flex items-center justify-center">
         <User class="size-4" />
       </div>
 
@@ -48,7 +48,7 @@ const tenantAddress = ref<ITenantAddress | undefined>(undefined)
       <Input :model-value="values.phone" variant="filled" placeholder="Phone" />
 
       <!-- Bank account -->
-      <div class="flex items-center justify-center">
+      <div class="hidden md:flex items-center justify-center">
         <Banknote class="size-4" />
       </div>
       <TenantBankAccountPicker :model-value="tenantBankAccount" />
