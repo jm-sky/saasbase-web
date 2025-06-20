@@ -88,9 +88,9 @@ onMounted(async () => {
       </div>
 
       <div class="p-8 flex flex-col gap-4 border rounded shadow-lg bg-white dark:bg-gray-800">
-        <div class="grid grid-cols-[1fr_29rem] gap-16">
+        <div class="grid grid-cols-1 lg:grid-cols-[1fr_29rem] gap-16">
           <!-- Main content -->
-          <div class="grid grid-cols-2 gap-8">
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
             <div class="col-span-2 mb-6">
               <h1 class="text-xl font-bold">
                 {{ t(`financial.invoiceType.${expense?.type}`) }}
