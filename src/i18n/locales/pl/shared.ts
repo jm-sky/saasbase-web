@@ -14,6 +14,11 @@ export const shared = {
     search: 'Szukaj kontrahenta',
     notFound: 'Nie znaleziono kontrahentów',
   },
+  currency: {
+    select: 'Wybierz walutę',
+    search: 'Szukaj waluty',
+    notFound: 'Nie znaleziono walut',
+  },
   measurementUnit: {
     select: 'Wybierz jednostkę miary',
     search: 'Szukaj jednostki miary',

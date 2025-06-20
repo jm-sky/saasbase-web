@@ -14,6 +14,11 @@ export const shared = {
     search: 'Search contractor',
     notFound: 'No contractors found',
   },
+  currency: {
+    select: 'Select currency',
+    search: 'Search currency',
+    notFound: 'No currencies found',
+  },
   measurementUnit: {
     select: 'Select measurement unit',
     search: 'Search measurement unit',
