@@ -28,6 +28,7 @@ export const common = {
   themeColor: 'Theme color',
   secondsLeft: 'seconds left',
   settings: 'Settings',
+  view: 'View',
   copyToClipboard: {
     copy: 'Copy',
     copied: 'Copied',

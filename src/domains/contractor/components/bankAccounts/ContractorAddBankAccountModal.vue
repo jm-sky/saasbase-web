@@ -26,7 +26,7 @@ const emit = defineEmits<{
   create: [IContractorBankAccountCreate]
 }>()
 
-const { handleSubmit, setValues, setErrors, isSubmitting } = useForm<IContractorBankAccountCreate>({
+const { handleSubmit, values, setValues, setErrors, isSubmitting } = useForm<IContractorBankAccountCreate>({
   initialValues: {
     bankName: '',
     iban: '',
@@ -49,8 +49,9 @@ const onSubmit = handleSubmit(async (values: IContractorBankAccountCreate) => {
 const onBankAccountLookup = (ibanInfo: IIbanInfo) => {
   setValues({
     iban: ibanInfo.iban,
-    swift: ibanInfo.swift ?? '',
+    swift: ibanInfo.swift ?? values.swift ?? '',
     bankName: ibanInfo.bankName,
+    currency: ibanInfo.currency ?? values.currency ?? '',
   })
 }
 </script>

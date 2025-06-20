@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { formatFileSize } from '@/lib/formatFileSize'
 import { cn } from '@/lib/utils'
 import type { HTMLAttributes } from 'vue'
 
@@ -52,14 +53,6 @@ const handleFileInput = (e: Event) => {
 const removeFile = () => {
   if (!file.value) return
   file.value = undefined
-}
-
-const formatFileSize = (bytes: number): string => {
-  if (bytes === 0) return '0 Bytes'
-  const k = 1024
-  const sizes = ['Bytes', 'KB', 'MB', 'GB']
-  const i = Math.floor(Math.log(bytes) / Math.log(k))
-  return `${parseFloat((bytes / Math.pow(k, i)).toFixed(2))} ${sizes[i]}`
 }
 </script>
 

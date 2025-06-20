@@ -1,73 +1,42 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import { templateRef } from '@vueuse/core'
+import { Scan } from 'lucide-vue-next'
+import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useRoute } from 'vue-router'
 import DataListSection from '@/components/DataLists/DataListSection.vue'
-import NoItems from '@/components/DataLists/NoItems.vue'
-import FileUpload from '@/components/Inputs/FileUpload.vue'
 import Button from '@/components/ui/button/Button.vue'
+import { useToast } from '@/components/ui/toast'
+import AttachmentListWrapper from '@/domains/shared/components/AttachmentListWrapper.vue'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
-import { expenseAttachmentsService, type IExpenseAttachment } from '../../services/expenseAttachmentsService'
-import ExpenseAttachmentsListItem from './ExpenseAttachmentsListItem.vue'
+import { expenseAttachmentsService } from '../../services/expenseAttachmentsService'
+import { expenseService } from '../../services/expenseService'
+import type { IAttachment } from '@/domains/shared/types/attachment.type'
 
-const route = useRoute()
+const { toast } = useToast()
 const { t } = useI18n()
 
-const expenseId = route.params.id as string
-const attachments = ref<IExpenseAttachment[]>([])
-const loading = ref(false)
-const uploading = ref(false)
-const files = ref<File[]>([])
+const { expenseId } = defineProps<{
+  expenseId?: string | null
+}>()
+
+const listWrapper = templateRef('listWrapper')
+
+const loading = computed(() => listWrapper.value?.loading ?? false)
 
 const refresh = async () => {
-  try {
-    loading.value = true
-    const res = await expenseAttachmentsService.index(expenseId)
-    attachments.value = res.data
-  } catch (error) {
-    handleErrorWithToast(t('attachments.list.error'), error)
-  } finally {
-    loading.value = false
-  }
+  await listWrapper.value?.refresh()
 }
 
-const handleUpload = async () => {
-  if (!files.value.length) return
+const startOcr = async (attachment: IAttachment) => {
+  if (!expenseId) return
   try {
-    uploading.value = true
-    for (const file of files.value) {
-      await expenseAttachmentsService.upload(expenseId, file)
-    }
-    files.value = []
+    await expenseService.startOcr(expenseId, attachment.id)
+    toast.success(t('financial.actions.startOcr.success'))
     await refresh()
-  } catch (error) {
-    handleErrorWithToast(t('attachments.upload.error'), error)
-  } finally {
-    uploading.value = false
+  } catch (err) {
+    handleErrorWithToast(t('financial.actions.startOcr.error'), err)
   }
 }
-
-const handleDelete = async (attachment: IExpenseAttachment) => {
-  if (!confirm(t('attachments.delete.confirm'))) return
-  try {
-    await expenseAttachmentsService.delete(expenseId, attachment.id)
-    await refresh()
-  } catch (error) {
-    handleErrorWithToast(t('attachments.delete.error'), error)
-  }
-}
-
-const handleDownload = async (attachment: IExpenseAttachment) => {
-  const blob = await expenseAttachmentsService.download(expenseId, attachment.id)
-  const url = window.URL.createObjectURL(blob)
-  const a = document.createElement('a')
-  a.href = url
-  a.download = attachment.fileName
-  a.click()
-  window.URL.revokeObjectURL(url)
-}
-
-onMounted(refresh)
 </script>
 
 <template>
@@ -77,26 +46,33 @@ onMounted(refresh)
     :with-add-button="false"
     @refresh="refresh"
   >
-    <div class="flex flex-col gap-1">
-      <ExpenseAttachmentsListItem
-        v-for="attachment in attachments"
-        :key="attachment.id"
-        :attachment="attachment"
-        :expense-id="expenseId"
-        @download="handleDownload"
-        @delete="handleDelete"
-      />
-      <NoItems v-if="attachments.length === 0" />
-    </div>
-
-    <FileUpload v-model="files" :disabled="uploading" />
-    <Button
-      variant="default"
-      class="mt-2 mx-auto"
-      :disabled="!files.length || uploading"
-      @click="handleUpload"
+    <AttachmentListWrapper
+      ref="listWrapper"
+      :model-id="expenseId"
+      :service="expenseAttachmentsService"
+      multiple
+      downloadable
+      viewable
+      with-icon
     >
-      {{ t('common.fileUpload.upload') }}
-    </Button>
+      <template #meta="{ meta }">
+        <span v-if="meta?.isOcr">
+          ·
+          <span class="text-primary font-semibold">
+            {{ t('attachments.meta.ocr') }}
+          </span>
+        </span>
+      </template>
+      <template #actions="{ attachment }">
+        <Button
+          v-tooltip="t('financial.actions.startOcr.tooltip')"
+          size="icon"
+          variant="ghost"
+          @click="startOcr(attachment)"
+        >
+          <Scan class="size-4" />
+        </Button>
+      </template>
+    </AttachmentListWrapper>
   </DataListSection>
 </template>

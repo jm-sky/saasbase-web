@@ -5,6 +5,7 @@ export interface IIbanInfo {
   iban: string
   bankName: string
   branchName: string
+  currency?: string
   swift?: string
 }
 

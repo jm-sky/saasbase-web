@@ -9,11 +9,11 @@ import { useToast } from '@/components/ui/toast'
 import ExpenseAttachmentsList from '@/domains/expense/components/attachments/ExpenseAttachmentsList.vue'
 import { expenseService } from '@/domains/expense/services/expenseService'
 import { useExpenseStore } from '@/domains/expense/stores/expense.store'
-import InvoiceStatusBadge from '@/domains/financial/components/InvoiceStatusBadge.vue'
 import InvoiceLines from '@/domains/invoice/components/InvoiceLines.vue'
 import AuthenticatedLayout from '@/layouts/AuthenticatedLayout.vue'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
 import { toDateString } from '@/lib/toDateString'
+import ShowExpenseSidebar from './partials/ShowExpenseSidebar.vue'
 
 const { t } = useI18n()
 const { toast } = useToast()
@@ -69,7 +69,7 @@ onMounted(async () => {
         </div>
         <div class="flex flex-row items-center justify-end gap-2">
           <Button
-            v-tooltip.bottom.focus="t('financial.actions.startOcr.tooltip')"
+            v-tooltip="t('financial.actions.startOcr.tooltip')"
             variant="ghost"
             :loading
             @click="startOcr"
@@ -77,7 +77,7 @@ onMounted(async () => {
             <Scan class="size-4" />
           </Button>
           <Button
-            v-tooltip.bottom.focus="t('common.refresh')"
+            v-tooltip="t('common.refresh')"
             variant="ghost"
             :loading
             @click="refresh"
@@ -152,47 +152,14 @@ onMounted(async () => {
           </div>
 
           <!-- Sidebar -->
-          <div class="flex flex-col gap-4 border border-dashed rounded-lg p-8">
-            <div class="flex flex-row gap-2 mb-2">
-              <InvoiceStatusBadge :status="expense?.status ?? 'draft'" />
-            </div>
-
-            <div class="uppercase text-sm font-bold text-muted-foreground">
-              {{ t('financial.fields.payment') }}
-            </div>
-            <div class="flex flex-col gap-4">
-              <div>
-                <div class="text-sm text-muted-foreground">
-                  {{ t('financial.payment.fields.method') }}
-                </div>
-                <div class="font-semibold">
-                  {{ t(`financial.payment.method.${expense?.payment?.method}`) }}
-                </div>
-              </div>
-
-              <div>
-                <div class="text-sm text-muted-foreground">
-                  {{ t('financial.payment.fields.status') }}
-                </div>
-                <div class="font-semibold">
-                  {{ t(`financial.payment.status.${expense?.payment?.status}`) }}
-                </div>
-              </div>
-
-              <div>
-                <div class="text-sm text-muted-foreground">
-                  {{ t('financial.payment.fields.dueDate') }}
-                </div>
-                <div class="font-semibold">
-                  {{ expense?.payment?.dueDate ? toDateString(expense?.payment?.dueDate) : 'N/A' }}
-                </div>
-              </div>
-            </div>
-
-            <div class="border rounded-md p-2">
-              <ExpenseAttachmentsList :expense-id="expenseId" />
-            </div>
+          <div class="flex flex-col gap-4">
+            <ShowExpenseSidebar :expense />
+            <ExpenseAttachmentsList
+              :expense-id="expense?.id"
+              class="border rounded-md py-2 px-4"
+            />
           </div>
+
           <!-- End -->
         </div>
       </div>

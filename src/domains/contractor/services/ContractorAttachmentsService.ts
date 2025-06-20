@@ -1,10 +1,11 @@
 import api from '@/lib/api'
 import { apiRoutesMap } from '@/lib/api/apiRoutes'
-import type { TDateTime } from '@/domains/shared/types/common'
+import type { IAttachment, IAttachmentService } from '@/domains/shared/types/attachment.type'
+import type { TDateTime, TUUID } from '@/domains/shared/types/common'
 import type { IResourceCollection } from '@/domains/shared/types/resource.type'
 
-export interface IContractorAttachment {
-  id: string
+export interface IContractorAttachment extends IAttachment {
+  id: TUUID
   fileName: string
   size: number
   mimeType: string
@@ -14,7 +15,7 @@ export interface IContractorAttachment {
   updatedAt: TDateTime
 }
 
-class ContractorAttachmentsService {
+class ContractorAttachmentsService implements IAttachmentService {
   async index(contractorId: string): Promise<IResourceCollection<IContractorAttachment>> {
     const response = (await api.get<IResourceCollection<IContractorAttachment>>(`${apiRoutesMap.contractors}/${contractorId}/attachments`)).data
     return response

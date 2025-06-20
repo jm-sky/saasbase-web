@@ -2,6 +2,7 @@
 import { Trash } from 'lucide-vue-next'
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { formatFileSize } from '@/lib/formatFileSize'
 import { cn } from '@/lib/utils'
 import Button from '../ui/button/Button.vue'
 import type { HTMLAttributes } from 'vue'
@@ -55,14 +56,6 @@ const handleFileInput = (e: Event) => {
 const removeFile = (index: number) => {
   if (!files.value?.length) return
   files.value = files.value.filter((_, i) => i !== index)
-}
-
-const formatFileSize = (bytes: number): string => {
-  if (bytes === 0) return '0 Bytes'
-  const k = 1024
-  const sizes = ['Bytes', 'KB', 'MB', 'GB']
-  const i = Math.floor(Math.log(bytes) / Math.log(k))
-  return `${parseFloat((bytes / Math.pow(k, i)).toFixed(2))} ${sizes[i]}`
 }
 </script>
 

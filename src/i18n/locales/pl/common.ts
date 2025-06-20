@@ -28,6 +28,7 @@ export const common = {
   themeColor: 'Kolor motywu',
   secondsLeft: 'sekund pozostało',
   settings: 'Ustawienia',
+  view: 'Wyświetl',
   copyToClipboard: {
     copy: 'Kopiuj',
     copied: 'Skopiowano',
