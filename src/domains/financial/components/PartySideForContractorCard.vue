@@ -26,7 +26,7 @@ const emit = defineEmits<{
     <div class="font-bold">
       {{ title }}
     </div>
-    <div class="grid grid-cols-[4rem_1fr_1fr] gap-2">
+    <div class="grid grid-cols-1 md:grid-cols-[4rem_1fr_1fr] gap-2">
       <Input :model-value="values.country" variant="filled" placeholder="PL" />
 
       <ContractorPicker
@@ -38,7 +38,7 @@ const emit = defineEmits<{
       <Input :model-value="values.taxId" variant="filled" placeholder="Tax ID" />
 
       <!-- Address -->
-      <div class="flex items-center justify-center">
+      <div class="hidden md:flex items-center justify-center">
         <MapPin class="size-4" />
       </div>
       <Input
@@ -50,7 +50,7 @@ const emit = defineEmits<{
       <ContractorAddressPicker :model-value="contractorAddress" :contractor-id="values.contractorId" />
 
       <!-- Contact -->
-      <div class="flex items-center justify-center">
+      <div class="hidden md:flex items-center justify-center">
         <User class="size-4" />
       </div>
       <Input :model-value="values.email" variant="filled" placeholder="Email" />
