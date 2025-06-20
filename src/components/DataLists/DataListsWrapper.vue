@@ -28,7 +28,7 @@ const emit = defineEmits<{
       <h1 class="text-2xl font-bold">
         {{ title }}
       </h1>
-      <div class="flex gap-2">
+      <div class="flex gap-2 items-center">
         <slot name="actions">
           <Button variant="outline" @click="emit('refresh')">
             <RefreshCw class="size-4" />

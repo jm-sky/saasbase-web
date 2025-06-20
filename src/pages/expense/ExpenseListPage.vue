@@ -120,16 +120,18 @@ watch(filters, () => refresh(), { deep: true })
       <template #actions>
         <SearchField v-model="filters.search" />
 
+        <Button variant="ghost" @click="refresh">
+          <RefreshCw class="size-4" />
+        </Button>
+
+        <div class="h-6 w-px bg-border mx-2" />
+
         <ButtonLink v-tooltip="t('expense.add.description', 'Add a new expense')" variant="default" to="/expenses/add">
           {{ t('expense.add.title', 'Add Expense') }}
         </ButtonLink>
 
         <Button variant="outline" @click="isUploadModalOpen = true">
           <Upload class="size-4" />
-        </Button>
-
-        <Button variant="ghost" @click="refresh">
-          <RefreshCw class="size-4" />
         </Button>
 
         <ExpenseListDropdown :filters />

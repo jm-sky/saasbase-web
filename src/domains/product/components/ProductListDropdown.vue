@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Cog, Download, MoreHorizontal } from 'lucide-vue-next'
+import { Cog, Download, MoreVertical } from 'lucide-vue-next'
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import Button from '@/components/ui/button/Button.vue'
@@ -39,7 +39,7 @@ const exportToExcel = async () => {
   <DropdownMenu>
     <DropdownMenuTrigger as-child>
       <Button variant="ghost">
-        <MoreHorizontal class="size-4" />
+        <MoreVertical class="size-4" />
       </Button>
     </DropdownMenuTrigger>
     <DropdownMenuContent align="end" class="space-y-1">

@@ -26,7 +26,7 @@ const emit = defineEmits<{
         {{ title }}
       </div>
 
-      <div class="flex flex-row gap-2">
+      <div class="flex flex-row items-center gap-2">
         <slot name="actions">
           <Button
             v-if="withRefreshButton"
@@ -37,6 +37,8 @@ const emit = defineEmits<{
           >
             <RefreshCw class="size-4" />
           </Button>
+
+          <div class="h-6 w-px bg-border mx-2" />
 
           <Button
             v-if="withAddButton"

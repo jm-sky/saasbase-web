@@ -115,9 +115,12 @@ watch(filters, () => refresh(), { deep: true })
     <DataListsWrapper :title="t('invoice.title', 'Invoices')" :loading :error>
       <template #actions>
         <SearchField v-model="filters.search" />
-        <Button variant="outline" @click="refresh">
+        <Button variant="ghost" @click="refresh">
           <RefreshCw class="size-4" />
         </Button>
+
+        <div class="h-6 w-px bg-border mx-2" />
+
         <ButtonLink v-tooltip="t('invoice.add.description', 'Add a new invoice')" variant="default" to="/invoices/add">
           {{ t('invoice.add.title', 'Add Invoice') }}
         </ButtonLink>
