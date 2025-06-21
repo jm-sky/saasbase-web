@@ -4,7 +4,7 @@ import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import DataListSection from '@/components/DataLists/DataListSection.vue'
 import { contractorAttachmentsService } from '@/domains/contractor/services/ContractorAttachmentsService'
-import AttachmentListWrapper from '@/domains/shared/components/AttachmentListWrapper.vue'
+import AttachmentListWrapper from '@/domains/shared/components/attachments/AttachmentListWrapper.vue'
 
 const { t } = useI18n()
 

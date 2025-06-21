@@ -7,7 +7,7 @@ import Button from '@/components/ui/button/Button.vue'
 import { formatFileSize } from '@/lib/formatFileSize'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
 import { toDateTimeString } from '@/lib/toDateTimeString'
-import type { IAttachment, IAttachmentService } from '../types/attachment.type'
+import type { IAttachment, IAttachmentService } from '../../types/attachment.type'
 
 const { t } = useI18n()
 

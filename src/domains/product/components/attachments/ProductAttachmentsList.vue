@@ -3,7 +3,7 @@ import { templateRef } from '@vueuse/core'
 import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
 import DataListSection from '@/components/DataLists/DataListSection.vue'
-import AttachmentListWrapper from '@/domains/shared/components/AttachmentListWrapper.vue'
+import AttachmentListWrapper from '@/domains/shared/components/attachments/AttachmentListWrapper.vue'
 import { productAttachmentsService } from '../../services/ProductAttachmentsService'
 
 const route = useRoute()
