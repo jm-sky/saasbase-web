@@ -45,13 +45,14 @@ export interface IContractorListItem {
   id: TUUID
   tenantId: TUUID
   name: string
+  type: TContractorType
   country?: string
   vatId?: string
   taxId?: string
   regon?: string
   isSupplier: boolean
   isBuyer: boolean
-  tags: string[]
+  tags: ITagPreview[]
   logoUrl?: string
   logo?: IMedia
   createdAt: TDateTime
@@ -98,7 +99,7 @@ export interface IContractor {
   logo?: IMedia
   createdAt: TDateTime
   updatedAt: TDateTime
-  preferences: IContractorPreferences
+  preferences?: IContractorPreferences
   registryConfirmations?: IRegistryConfirmation[]
 }
 

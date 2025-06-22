@@ -63,6 +63,14 @@ export const settings = {
     }
   },
 
+  // Public profile section
+  publicProfile: {
+    title: 'Public Profile',
+    description: 'This is how others will see you on the site.',
+    updateProfile: 'Update Profile',
+    resetForm: 'Reset Form',
+  },
+
   // Account section
   account: {
     title: 'Account',

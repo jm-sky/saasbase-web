@@ -11,10 +11,6 @@ export const settings = {
   error: 'Błąd',
   loading: 'Ładowanie...',
 
-  publicProfile: {
-    title: 'Profil publiczny',
-  },
-
   profile: {
     title: 'Profil',
     description: 'Tak będą Cię widzieć inni na stronie.',
@@ -65,6 +61,13 @@ export const settings = {
       description: 'Zarządzaj swoimi umiejętnościami',
       noSkills: 'Brak umiejętności',
     }
+  },
+
+  publicProfile: {
+    title: 'Profil publiczny',
+    description: 'To jest jak inni Cię zobaczą na stronie.',
+    updateProfile: 'Aktualizuj profil',
+    resetForm: 'Resetuj formularz',
   },
 
   // Account section
