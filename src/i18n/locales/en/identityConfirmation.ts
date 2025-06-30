@@ -10,6 +10,7 @@ export const identityConfirmation = {
     uploadSignedXml: 'Upload signed XML',
     success: 'Statement has been sent',
     error: 'Error sending statement',
+    notVerifiedError: 'Statement is not verified',
   },
   ksefLogin: {
     title: 'Log in to KSeF',

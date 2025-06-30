@@ -10,6 +10,7 @@ export const identityConfirmation = {
     uploadSignedXml: 'Wgraj podpisany XML',
     success: 'Oświadczenie zostało wysłane',
     error: 'Błąd podczas wysyłania oświadczenia',
+    notVerifiedError: 'Oświadczenie nie zostało potwierdzone',
   },
   ksefLogin: {
     title: 'Zaloguj się do KSeF',

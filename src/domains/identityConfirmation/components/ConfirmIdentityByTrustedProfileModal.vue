@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { isAxiosError } from 'axios'
 import { Check } from 'lucide-vue-next'
 import { useForm } from 'vee-validate'
 import { ref } from 'vue'
@@ -7,6 +8,9 @@ import FileDropZoneSlot from '@/components/Inputs/FileDropZoneSlot.vue'
 import FileUploadClickable from '@/components/Inputs/FileUploadClickable.vue'
 import ModalComponent from '@/components/ModalComponent.vue'
 import Button from '@/components/ui/button/Button.vue'
+import { FormField } from '@/components/ui/form'
+import FormItem from '@/components/ui/form/FormItem.vue'
+import FormMessage from '@/components/ui/form/FormMessage.vue'
 import { toast } from '@/components/ui/toast'
 import { downloadBlob } from '@/lib/downloadBlob'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
@@ -45,9 +49,9 @@ const onDone = () => {
   open.value = false
 }
 
-const setError = () => {
+const setError = (message?: string) => {
   setErrors({
-    file: t('identityConfirmation.trustedProfile.error', 'Błąd podczas wysyłania oświadczenia'),
+    file: message ?? t('identityConfirmation.trustedProfile.error'),
   })
 }
 
@@ -59,12 +63,11 @@ const onSubmit = handleSubmit(async (formData) => {
       toast.success(t('identityConfirmation.trustedProfile.success', 'Oświadczenie zostało wysłane'))
       onDone()
     } else {
-      setError()
-      toast.error(t('identityConfirmation.trustedProfile.error', 'Błąd podczas wysyłania oświadczenia'))
+      setError(t('identityConfirmation.trustedProfile.notVerifiedError'))
     }
   } catch (error) {
-    handleErrorWithToast(t('identityConfirmation.trustedProfile.error', 'Błąd podczas wysyłania oświadczenia'), error)
-    setError()
+    handleErrorWithToast(t('identityConfirmation.trustedProfile.error'), error)
+    if (isAxiosError(error)) setError(error.response?.data.message)
   }
 })
 
@@ -95,36 +98,43 @@ const onDownloadXml = async () => {
       </div>
     </div>
 
-    <form class="grid grid-cols-2 items-center gap-4 border rounded-lg px-4 py-3" @submit.prevent="onSubmit">
-      <div>
-        <div class="font-semibold text-sm">
-          {{ t('identityConfirmation.stepTwo', 'Step 2') }}
-        </div>
-        <div class="text-sm text-muted-foreground">
-          {{ t('identityConfirmation.trustedProfile.uploadSignedXml', 'Upload signed XML') }}
-        </div>
-      </div>
+    <form @submit.prevent="onSubmit">
+      <FormField name="file">
+        <FormItem class="grid grid-cols-2 items-center gap-x-4 gap-y-1 border rounded-lg px-4 py-3">
+          <div>
+            <div class="font-semibold text-sm">
+              {{ t('identityConfirmation.stepTwo', 'Step 2') }}
+            </div>
+            <div class="text-sm text-muted-foreground">
+              {{ t('identityConfirmation.trustedProfile.uploadSignedXml', 'Upload signed XML') }}
+            </div>
+          </div>
 
-      <FileDropZoneSlot
-        class="p-4 rounded-lg border border-dashed hover:bg-primary-50/50 hover:border-primary"
-        :class="errors.file ? 'border-destructive' : 'border-gray-200'"
-        :dragged-files="[values.file]"
-        hide-label
-        @update:dragged-files="onUpdateDraggedFiles"
-      >
-        <FileUploadClickable
-          v-model:files="draggedFiles"
-          :error="errors.file"
-          @update:files="setFieldValue('file', $event[0])"
-        >
-          <template v-if="values.file" #icon>
-            <Check class="size-4 text-success" />
-          </template>
-          <template v-if="values.file" #label>
-            {{ values.file?.name }}
-          </template>
-        </FileUploadClickable>
-      </FileDropZoneSlot>
+          <FileDropZoneSlot
+            class="p-4 rounded-lg border border-dashed hover:bg-primary-50/50 hover:border-primary"
+            :class="errors.file ? 'border-destructive' : 'border-gray-200'"
+            :dragged-files="[values.file]"
+            hide-label
+            @update:dragged-files="onUpdateDraggedFiles"
+          >
+            <FileUploadClickable
+              v-model:files="draggedFiles"
+              :error="errors.file"
+              @update:files="setFieldValue('file', $event[0])"
+            >
+              <template v-if="values.file" #icon>
+                <Check class="size-4 text-success" />
+              </template>
+              <template v-if="values.file" #label>
+                {{ values.file?.name }}
+              </template>
+            </FileUploadClickable>
+          </FileDropZoneSlot>
+
+          <FormMessage class="col-span-full" />
+        </FormItem>
+      </FormField>
+
       <Button
         type="submit"
         variant="default"
