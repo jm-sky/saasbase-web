@@ -4,6 +4,7 @@ import { watch } from 'vue'
 import { config } from '@/config'
 import { useAuthStore } from '@/domains/auth/store/auth.store'
 import type { ITenant, ITenantAddress, ITenantBranding, ITenantPublicProfile } from '../types/tenant.type'
+import { tenantService } from '../services/TenantService'
 
 export const useTenantStore = defineStore('tenant', () => {
   const authStore = useAuthStore()
@@ -14,11 +15,13 @@ export const useTenantStore = defineStore('tenant', () => {
   const tenantPublicProfile = useSessionStorage<ITenantPublicProfile | null>(`${config.appId}:tenantPublicProfile`, null, { serializer: StorageSerializers.object })
   const tenantBillingAddress = useSessionStorage<ITenantAddress | null>(`${config.appId}:tenantBillingAddress`, null, { serializer: StorageSerializers.object })
 
-  watch(tenantId, () => {
+  watch(tenantId, async () => {
     if (tenant.value && tenantId.value && tenant.value.id !== tenantId.value) {
       tenant.value = null
       tenantBranding.value = null
       tenantPublicProfile.value = null
+
+      tenant.value = await tenantService.get(tenantId.value)
     }
   }, {
     immediate: true,

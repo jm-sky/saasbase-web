@@ -9,8 +9,8 @@ import Button from '@/components/ui/button/Button.vue'
 import Card from '@/components/ui/card/Card.vue'
 import CardContent from '@/components/ui/card/CardContent.vue'
 import CardHeader from '@/components/ui/card/CardHeader.vue'
+import { useAuthStore } from '@/domains/auth/store/auth.store'
 import ConfirmIdentityByTrustedProfileModal from '@/domains/identityConfirmation/components/ConfirmIdentityByTrustedProfileModal.vue'
-import { useTenantStore } from '@/domains/tenant/store/tenant.store'
 import AuthenticatedLayout from '@/layouts/AuthenticatedLayout.vue'
 import type { TIdentityConfirmationType } from '@/domains/identityConfirmation/types/identityConfirmation.type'
 
@@ -20,7 +20,7 @@ const integrations = {
 }
 
 const { t } = useI18n()
-const tenantStore = useTenantStore()
+const authStore = useAuthStore()
 
 const isTrustedProfileModalOpen = ref(false)
 
@@ -53,7 +53,7 @@ const options = computed<IIdentityConfirmationOption[]>(() => [
     label: t('identityConfirmation.ksefLogin.title'),
     description: t('identityConfirmation.ksefLogin.description'),
     active: integrations.ksef,
-    configRoute: `/tenants/${tenantStore.tenant?.id}/show/integrations/ksef`,
+    configRoute: `/tenants/${authStore.tenantId}/show/integrations/ksef`,
     soon: true,
   },
   {
@@ -63,7 +63,7 @@ const options = computed<IIdentityConfirmationOption[]>(() => [
     label: t('identityConfirmation.eDeliveryLogin.title'),
     description: t('identityConfirmation.eDeliveryLogin.description'),
     active: integrations.eDelivery,
-    configRoute: `/tenants/${tenantStore.tenant?.id}/show/integrations/eDelivery`,
+    configRoute: `/tenants/${authStore.tenantId}/show/integrations/eDelivery`,
     soon: true,
   },
   {
@@ -94,7 +94,7 @@ const options = computed<IIdentityConfirmationOption[]>(() => [
         >
           <CardHeader>
             <component
-              :is="option.active ? RouterLink : 'div'"
+              :is="option.active && option.route ? RouterLink : 'div'"
               :to="option.route"
               class="flex items-center space-x-4"
             >

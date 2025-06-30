@@ -26,8 +26,12 @@ const handleFileInput = (event: Event) => {
 
 <template>
   <div class="flex items-center justify-center gap-2 text-sm text-muted-foreground h-8">
-    <Upload class="size-4 text-gray-500" />
-    {{ t('common.fileUpload.dropHere', 'Drop files to upload') }}
+    <slot name="icon">
+      <Upload class="size-4 text-gray-500" />
+    </slot>
+    <slot name="label">
+      {{ t('common.fileUpload.dropHere', 'Drop files to upload') }}
+    </slot>
     <input
       ref="fileInput"
       type="file"

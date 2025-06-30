@@ -1,8 +1,15 @@
 export const identityConfirmation = {
   title: 'Potwierdź swoją tożsamość',
+  stepOne: 'Krok 1',
+  stepTwo: 'Krok 2',
   trustedProfile: {
     title: 'Podpisz oświadczenie przez Profil Zaufany',
     description: 'Podpisz oświadczenie przez Profil Zaufany to potwierdź swoją tożsamość.',
+    download: 'Pobierz XML',
+    previewXml: 'Podgląd XML',
+    uploadSignedXml: 'Wgraj podpisany XML',
+    success: 'Oświadczenie zostało wysłane',
+    error: 'Błąd podczas wysyłania oświadczenia',
   },
   ksefLogin: {
     title: 'Zaloguj się do KSeF',
