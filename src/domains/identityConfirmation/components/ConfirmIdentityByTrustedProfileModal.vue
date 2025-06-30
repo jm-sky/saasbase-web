@@ -30,10 +30,6 @@ const authStore = useAuthStore()
 
 const open = defineModel<boolean>('open', { required: true })
 
-const emit = defineEmits<{
-  done: []
-}>()
-
 const draggedFiles = ref<File[]>([])
 const response = ref<IIdentityConfirmationResponse | null>(null)
 
@@ -51,11 +47,6 @@ const cancel = () => {
   open.value = false
 }
 
-const onDone = () => {
-  emit('done')
-  open.value = false
-}
-
 const setError = (message?: string) => {
   setErrors({
     file: message ?? t('identityConfirmation.trustedProfile.error'),
@@ -69,7 +60,6 @@ const onSubmit = handleSubmit(async (formData) => {
     response.value = resp
     if (resp.status === 'verified') {
       toast.success(t('identityConfirmation.trustedProfile.success', 'Oświadczenie zostało wysłane'))
-      onDone()
     } else {
       setError(t('identityConfirmation.trustedProfile.notVerifiedError'))
     }
@@ -107,9 +97,9 @@ const onDownloadXml = async () => {
       </div>
     </div>
 
-    <form class="space-y-2" @submit.prevent="onSubmit">
+    <form class="border rounded-lg px-4 py-3 space-y-2" @submit.prevent="onSubmit">
       <FormField name="file">
-        <FormItem class="grid grid-cols-2 items-center gap-x-4 gap-y-1 border rounded-lg px-4 py-3">
+        <FormItem class="grid grid-cols-2 items-center gap-x-4 gap-y-1">
           <div>
             <div class="font-semibold text-sm">
               {{ t('identityConfirmation.stepTwo', 'Step 2') }}
@@ -144,27 +134,6 @@ const onDownloadXml = async () => {
         </FormItem>
       </FormField>
 
-      <div v-if="response" class="border rounded-lg px-4 py-3 grid grid-cols-[1fr_2fr] gap-2 text-sm">
-        <div class="font-semibold">
-          {{ t('identityConfirmation.trustedProfile.fields.status') }}
-        </div>
-
-        <div class="mb-2">
-          {{ t(`identityConfirmation.trustedProfile.status.${response.status}`) }}
-        </div>
-
-        <SignatureInfoSection :label="t('identityConfirmation.trustedProfile.fields.signer')">
-          <SignatureInfoSectionItem :label="t('identityConfirmation.trustedProfile.signatureInfo.name')" :value="response.signatureInfo.signerIdentity?.firstName" />
-          <SignatureInfoSectionItem :label="t('identityConfirmation.trustedProfile.signatureInfo.lastName')" :value="response.signatureInfo.signerIdentity?.lastName" />
-          <SignatureInfoSectionItem :label="t('identityConfirmation.trustedProfile.signatureInfo.pesel')" :value="response.signatureInfo.signerIdentity?.pesel" />
-        </SignatureInfoSection>
-
-        <SignatureInfoSection :label="t('identityConfirmation.trustedProfile.fields.certificate')">
-          <SignatureInfoSectionItem :label="t('identityConfirmation.trustedProfile.signatureInfo.issuer')" :value="response.signatureInfo.certificate?.issuer" />
-          <SignatureInfoSectionItem :label="t('identityConfirmation.trustedProfile.signatureInfo.subject')" :value="response.signatureInfo.certificate?.subject" />
-        </SignatureInfoSection>
-      </div>
-
       <Button
         type="submit"
         variant="default"
@@ -175,6 +144,27 @@ const onDownloadXml = async () => {
         {{ t('common.submit') }}
       </Button>
     </form>
+
+    <div v-if="response && response.signatureInfo" class="border rounded-lg px-4 py-3 grid grid-cols-[1fr_2fr] gap-2 text-sm">
+      <div class="font-semibold">
+        {{ t('identityConfirmation.trustedProfile.fields.status') }}
+      </div>
+
+      <div class="mb-2">
+        {{ t(`identityConfirmation.trustedProfile.status.${response.status}`) }}
+      </div>
+
+      <SignatureInfoSection :label="t('identityConfirmation.trustedProfile.fields.signer')">
+        <SignatureInfoSectionItem :label="t('identityConfirmation.trustedProfile.signatureInfo.name')" :value="response.signatureInfo.signerIdentity?.firstName" />
+        <SignatureInfoSectionItem :label="t('identityConfirmation.trustedProfile.signatureInfo.lastName')" :value="response.signatureInfo.signerIdentity?.lastName" />
+        <SignatureInfoSectionItem :label="t('identityConfirmation.trustedProfile.signatureInfo.pesel')" :value="response.signatureInfo.signerIdentity?.pesel" />
+      </SignatureInfoSection>
+
+      <SignatureInfoSection :label="t('identityConfirmation.trustedProfile.fields.certificate')">
+        <SignatureInfoSectionItem :label="t('identityConfirmation.trustedProfile.signatureInfo.issuer')" :value="response.signatureInfo.certificate?.issuer" />
+        <SignatureInfoSectionItem :label="t('identityConfirmation.trustedProfile.signatureInfo.subject')" :value="response.signatureInfo.certificate?.subject" />
+      </SignatureInfoSection>
+    </div>
 
     <Button variant="outline" class="w-full" @click="cancel">
       {{ t('common.cancel') }}
