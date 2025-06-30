@@ -1,10 +1,9 @@
 <script setup lang="ts">
-import { Send, Square, VenetianMask, X } from 'lucide-vue-next'
+import { Maximize2, Send, Square, VenetianMask, X } from 'lucide-vue-next'
 import { v4 } from 'uuid'
-import { computed, ref } from 'vue'
+import { computed, ref, useTemplateRef } from 'vue'
 import { useI18n } from 'vue-i18n'
 import LoadingIcon from '@/components/Icons/LoadingIcon.vue'
-import Badge from '@/components/ui/badge/Badge.vue'
 import Button from '@/components/ui/button/Button.vue'
 import ChatBubble from '@/components/ui/chat/ChatBubble.vue'
 import ChatBubbleAvatar from '@/components/ui/chat/ChatBubbleAvatar.vue'
@@ -26,6 +25,7 @@ import echo from '@/plugins/echo.js'
 import type { IChatMessage } from '../types/chat.type'
 import type { IAiChatMessage } from '@/domains/chat/types/aiChat.type'
 import type { IUserPreview } from '@/domains/user/types/user.type'
+import Badge from '@/components/ui/badge/Badge.vue'
 
 const STREAMING_DONE_TOKEN = '[DONE]'
 
@@ -46,6 +46,7 @@ const createNewAiMessage = (): IChatMessage => ({
   createdAt: new Date().toISOString(),
 })
 
+const isFullscreen = ref(false)
 const isOpen = ref(false)
 const noHistory = ref(false)
 const message = ref('')
@@ -54,6 +55,7 @@ const isSendingMessage = ref(false)
 const isStreamingAnswer = ref(false)
 
 const currentAiMessage = ref<IChatMessage>(createNewAiMessage())
+const messagesContainer = useTemplateRef<typeof ChatMessageList>('messagesContainer')
 
 const messageList = computed(() => messages.value.map(message => ChatMessage.load(message)))
 
@@ -65,8 +67,16 @@ const startNewResponse = () => {
 const handleResponseMessage = (chatMessage: IAiChatMessage) => {
   if (chatMessage.content === STREAMING_DONE_TOKEN) {
     isStreamingAnswer.value = false
+    // Scroll to bottom when streaming is complete
+    if (messagesContainer.value) {
+      messagesContainer.value.scrollToBottom()
+    }
   } else {
     currentAiMessage.value.content = `${currentAiMessage.value.content}${chatMessage.content}`
+    // Scroll to bottom as content is being streamed
+    if (messagesContainer.value) {
+      messagesContainer.value.scrollToBottom()
+    }
   }
 }
 
@@ -111,6 +121,9 @@ const sendMessage = async () => {
     }
 
     message.value = ''
+    if (messagesContainer.value) {
+      messagesContainer.value.scrollToBottom()
+    }
   } catch (error) {
     handleErrorWithToast('Error sending message', error)
   } finally {
@@ -138,7 +151,7 @@ const onOpened = () => {
   <ExpandableChat
     v-model:is-open="isOpen"
     size="md"
-    position="bottom-right"
+    :position="isFullscreen ? 'fullscreen' : 'bottom-right'"
     hide-close-button
     @opened="onOpened"
   >
@@ -152,9 +165,9 @@ const onOpened = () => {
         {{ t('chat.ai.title') }}
       </h1>
       <div>
-        <Badge v-if="config.chat.streaming" variant="info-outline" class="text-xs">
-          {{ t('chat.live') }}
-        </Badge>
+        <Button variant="ghost" @click="isFullscreen = !isFullscreen">
+          <Maximize2 class="size-4" />
+        </Button>
         <Button variant="ghost" @click="isOpen = false">
           <X class="size-4" />
         </Button>
@@ -162,7 +175,12 @@ const onOpened = () => {
     </ExpandableChatHeader>
 
     <ExpandableChatBody>
-      <ChatMessageList>
+      <ChatMessageList ref="messagesContainer">
+        <div class="flex items-center gap-2 justify-center">
+          <Badge v-if="config.chat.streaming" variant="info-outline" class="text-xs">
+            {{ t('chat.live') }}
+          </Badge>
+        </div>
         <ChatBubble
           v-for="msg in messageList"
           :key="msg.id"
@@ -171,7 +189,7 @@ const onOpened = () => {
           <ChatBubbleAvatar :src="msg.user?.avatarUrl" :fallback="initials(msg.user?.name)" :title="msg.user?.name" />
           <ChatBubbleMessage :variant="msg.getVariant(authStore.user?.id ?? '')" :created-at="msg.createdAt">
             {{ msg.content }}
-            <div v-if="(isSendingMessage && isLastAiMessage(msg)) || (!msg.content && isLastAiMessage(msg))" class="flex items-center gap-2 opacity-50 text-xs">
+            <div v-if="(isSendingMessage && isLastAiMessage(msg)) || !msg.content" class="flex items-center gap-2 opacity-50 text-xs">
               <LoadingIcon class="size-4" />
               {{ t('common.loading') }}
             </div>

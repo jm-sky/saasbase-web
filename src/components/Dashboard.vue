@@ -81,7 +81,7 @@ const endDate = ref(new Date())
         <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
           <Card class="col-span-4 max-w-[calc(100vw-4rem)] overflow-x-auto">
             <CardHeader>
-              <CardTitle>{{ t('Overview') }}</CardTitle>
+              <CardTitle>{{ t('dashboard.tabs.overview') }}</CardTitle>
             </CardHeader>
             <CardContent class="pl-2">
               <Overview />
