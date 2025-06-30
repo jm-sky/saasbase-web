@@ -1,5 +1,5 @@
 import api from '@/lib/api'
-import type { IGenericSignaturesVerificationResult } from '../types/identityConfirmation.type'
+import type { IGenericSignaturesVerificationResult, IIdentityConfirmationResponse } from '../types/identityConfirmation.type'
 
 export interface ISubmitSignedPayload {
   file: File
@@ -17,11 +17,11 @@ class IdentityConfirmationService {
     return response.data
   }
 
-  async submitSigned(payload: ISubmitSignedPayload): Promise<ISubmitSignedResponse> {
+  async submitSigned(payload: ISubmitSignedPayload): Promise<IIdentityConfirmationResponse> {
     const formData = new FormData()
     formData.append('file', payload.file)
 
-    const response = await api.post<ISubmitSignedResponse>('/identity/confirmation/submit', formData, {
+    const response = await api.post<IIdentityConfirmationResponse>('/identity/confirmation/submit', formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },

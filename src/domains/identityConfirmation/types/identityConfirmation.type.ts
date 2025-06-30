@@ -1,5 +1,11 @@
 export type TIdentityConfirmationType = 'trustedProfile' | 'ksef' | 'eDelivery' | 'bank'
 
+export type TIdentityConfirmationStatus =
+  | 'verified'
+  | 'unverified'
+  | 'invalidXml'
+  | 'invalidSignature'
+
 export enum SignatureType {
   ASIC_E = 'asic-e',
   CAdES = 'cades',
@@ -37,4 +43,11 @@ export interface IGenericSignaturesVerificationResult {
   type: SignatureType
   signatures: IGenericSignatureDetails[]
   error?: string | null
+}
+
+export interface IIdentityConfirmationResponse {
+  status: TIdentityConfirmationStatus
+  confirmed: boolean
+  errors?: Record<string, string[]> | null
+  signatureInfo: IGenericSignatureDetails
 }

@@ -11,6 +11,24 @@ export const identityConfirmation = {
     success: 'Statement has been sent',
     error: 'Error sending statement',
     notVerifiedError: 'Statement is not verified',
+    fields: {
+      status: 'Status',
+      signer: 'Signer',
+      certificate: 'Certificate',
+    },
+    status: {
+      verified: 'Verified',
+      unverified: 'Unverified',
+      invalidXml: 'Invalid XML',
+      invalidSignature: 'Invalid signature',
+    },
+    signatureInfo: {
+      name: 'Name',
+      lastName: 'Last Name',
+      pesel: 'PESEL',
+      issuer: 'Issuer',
+      subject: 'Subject',
+    },
   },
   ksefLogin: {
     title: 'Log in to KSeF',

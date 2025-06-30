@@ -12,15 +12,21 @@ import { FormField } from '@/components/ui/form'
 import FormItem from '@/components/ui/form/FormItem.vue'
 import FormMessage from '@/components/ui/form/FormMessage.vue'
 import { toast } from '@/components/ui/toast'
+import { useAuthStore } from '@/domains/auth/store/auth.store'
 import { downloadBlob } from '@/lib/downloadBlob'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
+import { isValidationError } from '@/lib/validation'
+import type { IIdentityConfirmationResponse } from '../types/identityConfirmation.type'
 import { identityConfirmationService } from '../services/identityConfirmation.service'
+import SignatureInfoSection from './SignatureInfoSection.vue'
+import SignatureInfoSectionItem from './SignatureInfoSectionItem.vue'
 
 interface IConfirmIdentityByTrustedProfileForm {
   file: File
 }
 
 const { t } = useI18n()
+const authStore = useAuthStore()
 
 const open = defineModel<boolean>('open', { required: true })
 
@@ -29,6 +35,7 @@ const emit = defineEmits<{
 }>()
 
 const draggedFiles = ref<File[]>([])
+const response = ref<IIdentityConfirmationResponse | null>(null)
 
 const { values, errors, setFieldValue, setErrors, handleSubmit, isSubmitting } = useForm<IConfirmIdentityByTrustedProfileForm>({
   initialValues: {
@@ -58,23 +65,25 @@ const setError = (message?: string) => {
 const onSubmit = handleSubmit(async (formData) => {
   try {
     setErrors({})
-    const response = await identityConfirmationService.submitSigned(formData)
-    if (response.status === 'verified') {
+    const resp = await identityConfirmationService.submitSigned(formData)
+    response.value = resp
+    if (resp.status === 'verified') {
       toast.success(t('identityConfirmation.trustedProfile.success', 'Oświadczenie zostało wysłane'))
       onDone()
     } else {
       setError(t('identityConfirmation.trustedProfile.notVerifiedError'))
     }
   } catch (error) {
+    if (isValidationError(error)) setErrors(error.response.data.errors)
+    if (isAxiosError(error) && error.response) response.value = error.response.data
     handleErrorWithToast(t('identityConfirmation.trustedProfile.error'), error)
-    if (isAxiosError(error)) setError(error.response?.data.message)
   }
 })
 
 const onDownloadXml = async () => {
   const xmlContent = await identityConfirmationService.generateTemplate()
   const blob = new Blob([xmlContent], { type: 'application/xml' })
-  downloadBlob(blob, 'template.xml')
+  downloadBlob(blob, `${authStore.user?.fullName}-identity-confirmation.xml`.replaceAll(' ', '-').toLowerCase())
 }
 </script>
 
@@ -98,7 +107,7 @@ const onDownloadXml = async () => {
       </div>
     </div>
 
-    <form @submit.prevent="onSubmit">
+    <form class="space-y-2" @submit.prevent="onSubmit">
       <FormField name="file">
         <FormItem class="grid grid-cols-2 items-center gap-x-4 gap-y-1 border rounded-lg px-4 py-3">
           <div>
@@ -134,6 +143,27 @@ const onDownloadXml = async () => {
           <FormMessage class="col-span-full" />
         </FormItem>
       </FormField>
+
+      <div v-if="response" class="border rounded-lg px-4 py-3 grid grid-cols-[1fr_2fr] gap-2 text-sm">
+        <div class="font-semibold">
+          {{ t('identityConfirmation.trustedProfile.fields.status') }}
+        </div>
+
+        <div class="mb-2">
+          {{ t(`identityConfirmation.trustedProfile.status.${response.status}`) }}
+        </div>
+
+        <SignatureInfoSection :label="t('identityConfirmation.trustedProfile.fields.signer')">
+          <SignatureInfoSectionItem :label="t('identityConfirmation.trustedProfile.signatureInfo.name')" :value="response.signatureInfo.signerIdentity?.firstName" />
+          <SignatureInfoSectionItem :label="t('identityConfirmation.trustedProfile.signatureInfo.lastName')" :value="response.signatureInfo.signerIdentity?.lastName" />
+          <SignatureInfoSectionItem :label="t('identityConfirmation.trustedProfile.signatureInfo.pesel')" :value="response.signatureInfo.signerIdentity?.pesel" />
+        </SignatureInfoSection>
+
+        <SignatureInfoSection :label="t('identityConfirmation.trustedProfile.fields.certificate')">
+          <SignatureInfoSectionItem :label="t('identityConfirmation.trustedProfile.signatureInfo.issuer')" :value="response.signatureInfo.certificate?.issuer" />
+          <SignatureInfoSectionItem :label="t('identityConfirmation.trustedProfile.signatureInfo.subject')" :value="response.signatureInfo.certificate?.subject" />
+        </SignatureInfoSection>
+      </div>
 
       <Button
         type="submit"

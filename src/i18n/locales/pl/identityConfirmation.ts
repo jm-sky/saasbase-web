@@ -11,6 +11,24 @@ export const identityConfirmation = {
     success: 'Oświadczenie zostało wysłane',
     error: 'Błąd podczas wysyłania oświadczenia',
     notVerifiedError: 'Oświadczenie nie zostało potwierdzone',
+    fields: {
+      status: 'Status',
+      signer: 'Podpisujący',
+      certificate: 'Certyfikat',
+    },
+    status: {
+      verified: 'Potwierdzone',
+      unverified: 'Niepotwierdzone',
+      invalidXml: 'Nieprawidłowy XML',
+      invalidSignature: 'Nieprawidłowy podpis',
+    },
+    signatureInfo: {
+      name: 'Imię',
+      lastName: 'Nazwisko',
+      pesel: 'PESEL',
+      issuer: 'Wystawca',
+      subject: 'Podmiot',
+    },
   },
   ksefLogin: {
     title: 'Zaloguj się do KSeF',
