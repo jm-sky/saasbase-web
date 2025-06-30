@@ -2,6 +2,8 @@
 import { Banknote, MapPin, User } from 'lucide-vue-next'
 import { ref } from 'vue'
 import Input from '@/components/ui/input/Input.vue'
+import { config } from '@/config'
+import CountryPicker from '@/domains/shared/components/CountryPicker.vue'
 import TenantAddressPicker from '@/domains/tenant/components/TenantAddressPicker.vue'
 import TenantBankAccountPicker from '@/domains/tenant/components/TenantBankAccountPicker.vue'
 import type { IInvoiceBuyer, IInvoiceSeller } from '../types/financial.type'
@@ -22,7 +24,7 @@ const tenantAddress = ref<ITenantAddress | undefined>(undefined)
       {{ title }}
     </div>
     <div class="grid grid-cols-1 md:grid-cols-[4rem_1fr_1fr] gap-2">
-      <Input :model-value="values.country" variant="filled" placeholder="PL" />
+      <CountryPicker :id="values.country" variant="filled" :placeholder="config.defaults.country" />
       <Input :model-value="values.name" variant="filled" placeholder="Name" />
       <Input :model-value="values.taxId" variant="filled" placeholder="Tax ID" />
 

@@ -126,8 +126,8 @@ const updateBuyer = (contractor: IContractor | undefined) => {
 
       <form class="flex flex-col gap-y-2 gap-x-8" @submit.prevent="onSubmit">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-x-8 gap-y-2 mb-4">
-          <PartySideForTenantCard title="Seller" :values="values.seller" />
-          <PartySideForContractorCard title="Buyer" :values="values.buyer" @contractor-selected="updateBuyer" />
+          <PartySideForTenantCard :title="t('financial.fields.seller', 'Seller')" :values="values.seller" />
+          <PartySideForContractorCard :title="t('financial.fields.buyer', 'Buyer')" :values="values.buyer" @contractor-selected="updateBuyer" />
         </div>
 
         <div class="flex flex-col gap-y-2 items-center justify-center mt-2 mb-6">

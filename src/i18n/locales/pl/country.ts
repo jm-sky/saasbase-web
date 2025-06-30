@@ -1,4 +1,1 @@
-export const country = {
-  select: 'Wybierz kraj',
-  search: 'Wyszukaj kraj',
-}
+export const country = {}

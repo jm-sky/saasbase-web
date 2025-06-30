@@ -20,6 +20,10 @@ export const financial = {
     updatedAt: 'Data aktualizacji',
     numberingTemplate: 'Szablon numeracji',
     total: 'Razem',
+    exchange: {
+      date: 'Data kursu wymiany',
+      exchangeRate: 'Kurs wymiany',
+    },
   },
   lines: {
     fields: {

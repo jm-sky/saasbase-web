@@ -11,6 +11,7 @@ import type { HTMLAttributes } from 'vue'
 
 const props = defineProps<{
   disabled?: boolean
+  readonly?: boolean
   label?: string
   name: string
   class?: HTMLAttributes['class']
@@ -27,7 +28,7 @@ const props = defineProps<{
           class="text-destructive"
         >*</span>
       </FormLabel>
-      <FormControl :disabled>
+      <FormControl :disabled :readonly>
         <slot :component-field :value :handle-change />
       </FormControl>
       <FormDescription />

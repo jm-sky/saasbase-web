@@ -9,8 +9,6 @@ export default {
     totalGross: 'Total Gross',
     currency: 'Currency',
     exchangeRate: 'Exchange Rate',
-    seller: 'Seller',
-    buyer: 'Buyer',
     data: 'Data',
     payment: 'Payment',
     options: 'Options',

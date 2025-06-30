@@ -14,10 +14,23 @@ export const shared = {
     search: 'Search contractor',
     notFound: 'No contractors found',
   },
+  country: {
+    select: 'Select country',
+    search: 'Search country',
+    notFound: 'No countries found',
+    loadError: 'Failed to load countries',
+  },
   currency: {
     select: 'Select currency',
     search: 'Search currency',
     notFound: 'No currencies found',
+    loadError: 'Failed to load currencies',
+  },
+  exchangeRate: {
+    select: 'Select exchange rate',
+    search: 'Search exchange rate',
+    notFound: 'No exchange rates found',
+    loadError: 'Failed to load exchange rates',
   },
   measurementUnit: {
     select: 'Select measurement unit',

@@ -2,8 +2,10 @@
 import { MapPin, User } from 'lucide-vue-next'
 import { ref } from 'vue'
 import Input from '@/components/ui/input/Input.vue'
+import { config } from '@/config'
 import ContractorAddressPicker from '@/domains/contractor/components/ContractorAddressPicker.vue'
 import ContractorPicker from '@/domains/contractor/components/ContractorPicker.vue'
+import CountryPicker from '@/domains/shared/components/CountryPicker.vue'
 import type { IInvoiceBuyer, IInvoiceSeller } from '../types/financial.type'
 import type { IContractor, IContractorAddress } from '@/domains/contractor/types/contractor.type'
 
@@ -27,7 +29,7 @@ const emit = defineEmits<{
       {{ title }}
     </div>
     <div class="grid grid-cols-1 md:grid-cols-[4rem_1fr_1fr] gap-2">
-      <Input :model-value="values.country" variant="filled" placeholder="PL" />
+      <CountryPicker :model-value="values.country" variant="filled" :placeholder="config.defaults.country" />
 
       <ContractorPicker
         :model-value="contractor"

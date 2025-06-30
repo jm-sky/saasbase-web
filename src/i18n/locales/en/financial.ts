@@ -20,6 +20,10 @@ export const financial = {
     updatedAt: 'Updated At',
     numberingTemplate: 'Numbering Template',
     total: 'Total',
+    exchange: {
+      date: 'Exchange Rate Date',
+      exchangeRate: 'Exchange Rate',
+    },
   },
   lines: {
     fields: {

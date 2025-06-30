@@ -9,8 +9,6 @@ export default {
     totalGross: 'Brutto',
     currency: 'Waluta',
     exchangeRate: 'Kurs wymiany',
-    seller: 'Sprzedawca',
-    buyer: 'Kupujący',
     data: 'Data',
     payment: 'Płatność',
     options: 'Opcje',

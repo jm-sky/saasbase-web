@@ -14,10 +14,23 @@ export const shared = {
     search: 'Szukaj kontrahenta',
     notFound: 'Nie znaleziono kontrahentów',
   },
+  country: {
+    select: 'Wybierz kraj',
+    search: 'Szukaj kraju',
+    notFound: 'Nie znaleziono krajów',
+    loadError: 'Nie udało się załadować krajów',
+  },
   currency: {
     select: 'Wybierz walutę',
     search: 'Szukaj waluty',
     notFound: 'Nie znaleziono walut',
+    loadError: 'Nie udało się załadować walut',
+  },
+  exchangeRate: {
+    select: 'Wybierz kurs wymiany',
+    search: 'Szukaj kursu wymiany',
+    notFound: 'Nie znaleziono kursów wymiany',
+    loadError: 'Nie udało się załadować kursów wymiany',
   },
   measurementUnit: {
     select: 'Wybierz jednostkę miary',

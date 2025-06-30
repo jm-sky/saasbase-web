@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
 import { useForm } from 'vee-validate'
-import { onMounted } from 'vue'
+import { onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
 import FormFieldLabeled from '@/components/Form/FormFieldLabeled.vue'
@@ -13,6 +13,7 @@ import PartySideForContractorCard from '@/domains/financial/components/PartySide
 import PartySideForTenantCard from '@/domains/financial/components/PartySideForTenantCard.vue'
 import NumberingTemplatePicker from '@/domains/invoice/components/NumberingTemplatePicker.vue'
 import { invoiceService } from '@/domains/invoice/services/invoiceService'
+import ExchangeRatePicker from '@/domains/shared/components/ExchangeRatePicker.vue'
 import { tenantService } from '@/domains/tenant/services/TenantService'
 import { useTenantStore } from '@/domains/tenant/store/tenant.store'
 import AuthenticatedLayout from '@/layouts/AuthenticatedLayout.vue'
@@ -20,12 +21,15 @@ import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
 import { isValidationError } from '@/lib/validation'
 import type { IContractor } from '@/domains/contractor/types/contractor.type'
 import type { IInvoiceCreate } from '@/domains/invoice/types/invoice.type'
+import type { TDate } from '@/domains/shared/types/common'
 
 const { t } = useI18n()
 const { toast } = useToast()
 const router = useRouter()
 const tenantStore = useTenantStore()
 const { tenant, tenantBillingAddress } = storeToRefs(tenantStore)
+
+const issueDate = ref<TDate | undefined>(new Date().toISOString().split('T')[0])
 
 const { isSubmitting, handleSubmit, values, setErrors, setFieldValue, resetForm } = useForm<IInvoiceCreate>({
   initialValues: {
@@ -64,7 +68,7 @@ const { isSubmitting, handleSubmit, values, setErrors, setFieldValue, resetForm 
       exchange: {
         currency: 'PLN',
         exchangeRate: 1,
-        date: '',
+        date: issueDate.value,
       },
     },
     payment: {
@@ -83,7 +87,7 @@ const { isSubmitting, handleSubmit, values, setErrors, setFieldValue, resetForm 
       sendEmail: false,
       emailTo: [],
     },
-    issueDate: '2025-01-01',
+    issueDate: issueDate.value,
     numberingTemplate: undefined,
   },
 })
@@ -128,13 +132,13 @@ const updateBuyer = (contractor: IContractor | undefined) => {
 
       <form class="flex flex-col gap-y-2 gap-x-8" @submit.prevent="onSubmit">
         <div class="grid grid-cols-2 gap-x-8 gap-y-2 mb-4">
-          <PartySideForTenantCard title="Seller" :values="values.seller" />
-          <PartySideForContractorCard title="Buyer" :values="values.buyer" @contractor-selected="updateBuyer" />
+          <PartySideForTenantCard :title="t('financial.fields.seller', 'Seller')" :values="values.seller" />
+          <PartySideForContractorCard :title="t('financial.fields.buyer', 'Buyer')" :values="values.buyer" @contractor-selected="updateBuyer" />
         </div>
 
         <div class="flex flex-col gap-y-2 items-center justify-center mt-2 mb-6">
           <div class="font-bold text-lg">
-            {{ t(`invoice.type.${values.type}`, 'Type') }}
+            {{ t(`financial.invoiceType.${values.type}`, 'Type') }}
           </div>
           <div class="font-bold text-xl">
             <FormFieldLabeled name="numberingTemplateId" :disabled="isSubmitting">
@@ -151,44 +155,61 @@ const updateBuyer = (contractor: IContractor | undefined) => {
               name="number"
               :disabled="isSubmitting"
             >
-              <Input v-bind="componentField" class="bg-white/50 dark:bg-black/50" />
+              <Input v-bind="componentField" filled />
             </FormFieldLabeled>
           </div>
         </div>
 
         <div class="grid grid-cols-2 gap-x-8 gap-y-2">
-          <FormFieldLabeled
-            v-slot="{ componentField }"
-            name="issueDate"
-            :label="t('financial.fields.issueDate', 'issueDate')"
-            :disabled="isSubmitting"
-          >
-            <Input type="date" v-bind="componentField" class="bg-white/50 dark:bg-black/50" />
-          </FormFieldLabeled>
-          <FormFieldLabeled
-            v-slot="{ componentField }"
-            name="type"
-            :label="t('financial.fields.type', 'Type')"
-            :disabled="isSubmitting"
-          >
-            <Input v-bind="componentField" class="bg-white/50 dark:bg-black/50" />
-          </FormFieldLabeled>
-          <FormFieldLabeled
-            v-slot="{ componentField }"
-            name="status"
-            :label="t('financial.fields.status', 'Status')"
-            :disabled="isSubmitting"
-          >
-            <Input v-bind="componentField" class="bg-white/50 dark:bg-black/50" />
-          </FormFieldLabeled>
-          <FormFieldLabeled
-            v-slot="{ componentField }"
-            name="currency"
-            :label="t('financial.fields.currency', 'Currency')"
-            :disabled="isSubmitting"
-          >
-            <Input v-bind="componentField" class="bg-white/50 dark:bg-black/50" />
-          </FormFieldLabeled>
+          <div class="grid grid-cols-3 gap-x-8 gap-y-2 border rounded-md p-4 shadow-md">
+            <FormFieldLabeled
+              v-slot="{ componentField }"
+              name="issueDate"
+              :label="t('financial.fields.issueDate', 'issueDate')"
+              :disabled="isSubmitting"
+            >
+              <Input type="date" v-bind="componentField" filled />
+            </FormFieldLabeled>
+            <FormFieldLabeled
+              v-slot="{ componentField }"
+              name="status"
+              :label="t('financial.fields.status', 'Status')"
+              :disabled="isSubmitting"
+              readonly
+            >
+              <Input v-bind="componentField" filled />
+            </FormFieldLabeled>
+          </div>
+          <div class="grid grid-cols-3 gap-x-8 gap-y-2 border rounded-md p-4 shadow-md">
+            <FormFieldLabeled
+              v-slot="{ componentField }"
+              name="currency"
+              :label="t('financial.fields.currency', 'Currency')"
+              :disabled="isSubmitting"
+            >
+              <Input v-bind="componentField" filled />
+            </FormFieldLabeled>
+
+            <FormFieldLabeled
+              v-slot="{ componentField }"
+              name="body.exchange.date"
+              :label="t('financial.fields.exchange.date', 'Exchange Rate Date')"
+              :disabled="isSubmitting"
+            >
+              <Input type="date" v-bind="componentField" filled />
+            </FormFieldLabeled>
+
+            <FormFieldLabeled
+              name="body.exchange.exchangeRate"
+              :label="t('financial.fields.exchangeRate', 'Exchange Rate')"
+              :disabled="isSubmitting"
+            >
+              <ExchangeRatePicker
+                :date="values.body.exchange.date"
+                :rate="values.body.exchange.exchangeRate"
+              />
+            </FormFieldLabeled>
+          </div>
         </div>
 
         <Separator class="my-4" />

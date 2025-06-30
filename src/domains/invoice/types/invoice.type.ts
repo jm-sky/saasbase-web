@@ -43,7 +43,7 @@ export interface IInvoiceCreate {
   body: IInvoiceBody;
   payment: IInvoicePayment;
   options: IInvoiceOptions;
-  issueDate?: TDate | null;
+  issueDate: TDate;
   numberingTemplate?: IInvoiceNumberingTemplate;
 }
 
