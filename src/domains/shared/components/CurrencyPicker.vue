@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Check, ChevronsUpDown } from 'lucide-vue-next'
 import { storeToRefs } from 'pinia'
-import { onMounted, ref } from 'vue'
+import { type HTMLAttributes, onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import Button from '@/components/ui/button/Button.vue'
 import {
@@ -27,10 +27,11 @@ const { t } = useI18n()
 const currencyStore = useCurrencyStore()
 const { currencies } = storeToRefs(currencyStore)
 
-const id = defineModel<string | undefined>('id')
-const modelValue = defineModel<ICurrency | undefined>('modelValue', { required: true })
+const id = defineModel<string | null | undefined>('id')
+const modelValue = defineModel<ICurrency | undefined>('modelValue')
 
-defineProps<{
+const props = defineProps<{
+  class?: HTMLAttributes['class']
   popoverContentClass?: string
   disabled?: boolean
 }>()
@@ -75,6 +76,7 @@ onMounted(() => {
         :aria-expanded="open"
         :disabled="disabled || loading"
         class="w-full justify-between"
+        :class="props.class"
       >
         {{ modelValue?.code ?? t('shared.currency.select') }}
         <ChevronsUpDown class="ml-2 size-4 shrink-0 opacity-50" />

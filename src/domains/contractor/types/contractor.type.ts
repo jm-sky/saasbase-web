@@ -103,6 +103,26 @@ export interface IContractor {
   registryConfirmations?: IRegistryConfirmation[]
 }
 
+export interface IContractorLookup {
+  id: TUUID
+  tenantId: TUUID
+  name: string
+  type: TContractorType
+  country?: string
+  vatId?: string
+  taxId?: string
+  regon?: string
+  email?: string
+  phone?: string
+  description?: string
+  isSupplier: boolean
+  isBuyer: boolean
+  logoUrl?: string
+  logo?: IMedia
+  preferences?: IContractorPreferences
+  defaultAddress?: IContractorAddress
+}
+
 export type IContractorCreate = Omit<IContractor, 'id' | 'tenantId' | 'logo' | 'logoUrl' | 'createdAt' | 'updatedAt'>
 
 export interface IContractorCombinedCreate {

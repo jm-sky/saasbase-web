@@ -39,7 +39,7 @@ const emit = defineEmits<{
       <CopyToClipboard :text="fullAddress(address)" class="ml-1" />
     </div>
 
-    <div class="col-span-full text-sm text-muted-foreground order-3 md:order-2">
+    <div v-if="address.description" class="col-span-full text-sm text-muted-foreground order-3 md:order-2">
       {{ address.description }}
     </div>
 

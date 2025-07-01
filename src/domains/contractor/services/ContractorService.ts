@@ -1,4 +1,4 @@
-import { type IContractor, type IContractorCombinedCreate, type IContractorUpdate } from '@/domains/contractor/types/contractor.type'
+import { type IContractor, type IContractorCombinedCreate, type IContractorLookup, type IContractorUpdate } from '@/domains/contractor/types/contractor.type'
 import { buildSpatieQuery } from '@/domains/shared/helpers/filtering'
 import api from '@/lib/api'
 import { apiRoutesMap } from '@/lib/api/apiRoutes'
@@ -17,6 +17,12 @@ class ContractorService {
   async index(filters?: IContractorFilters): Promise<IResourceCollection<IContractor>> {
     const params = buildSpatieQuery(filters ?? { filter: {} })
     const response = (await api.get<IResourceCollection<IContractor>>(apiRoutesMap.contractors, { params })).data
+    return response
+  }
+
+  async lookup(filters?: IContractorFilters): Promise<IResourceCollection<IContractorLookup>> {
+    const params = buildSpatieQuery(filters ?? { filter: {} })
+    const response = (await api.get<IResourceCollection<IContractorLookup>>(`${apiRoutesMap.contractors}/lookup`, { params })).data
     return response
   }
 

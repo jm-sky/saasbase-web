@@ -193,7 +193,7 @@ const onSubmit = handleSubmit(async (formData) => {
                           :model-value="values.tenant.country"
                           placeholder="-"
                           class="bg-white/50 dark:bg-black/50"
-                          @update:model-value="setFieldValue('tenant.country', $event as string)"
+                          @update:model-value="setFieldValue('tenant.country', $event?.code ?? '')"
                         />
                       </FormControl>
                       <FormMessage />
@@ -315,7 +315,7 @@ const onSubmit = handleSubmit(async (formData) => {
                         :model-value="values.address?.country"
                         placeholder="-"
                         class="bg-white/50 dark:bg-black/50"
-                        @update:model-value="setFieldValue('address.country', $event as string)"
+                        @update:model-value="setFieldValue('address.country', $event?.code ?? '')"
                       />
                     </FormControl>
                     <FormMessage />

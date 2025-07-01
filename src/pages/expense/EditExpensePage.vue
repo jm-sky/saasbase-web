@@ -18,7 +18,7 @@ import { useTenantStore } from '@/domains/tenant/store/tenant.store'
 import AuthenticatedLayout from '@/layouts/AuthenticatedLayout.vue'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
 import { isValidationError } from '@/lib/validation'
-import type { IContractor } from '@/domains/contractor/types/contractor.type'
+import type { IContractorLookup } from '@/domains/contractor/types/contractor.type'
 import type { IExpenseCreate } from '@/domains/expense/types/expense.type'
 
 const { t } = useI18n()
@@ -123,7 +123,7 @@ const onSubmit = handleSubmit(async (values) => {
   }
 })
 
-const updateBuyer = (contractor: IContractor | undefined) => {
+const updateBuyer = (contractor: IContractorLookup | undefined) => {
   if (!contractor) return
   setFieldValue('buyer.contractorId', contractor.id)
   setFieldValue('buyer.contractorType', 'contractor')

@@ -7,7 +7,7 @@ import ContractorAddressPicker from '@/domains/contractor/components/ContractorA
 import ContractorPicker from '@/domains/contractor/components/ContractorPicker.vue'
 import CountryPicker from '@/domains/shared/components/CountryPicker.vue'
 import type { IInvoiceBuyer, IInvoiceSeller } from '../types/financial.type'
-import type { IContractor, IContractorAddress } from '@/domains/contractor/types/contractor.type'
+import type { IContractorAddress, IContractorLookup } from '@/domains/contractor/types/contractor.type'
 
 const { type = 'buyer' } = defineProps<{
   title: string
@@ -15,11 +15,11 @@ const { type = 'buyer' } = defineProps<{
   type?: 'supplier' | 'buyer'
 }>()
 
-const contractor = ref<IContractor | undefined>(undefined)
+const contractor = ref<IContractorLookup | undefined>(undefined)
 const contractorAddress = ref<IContractorAddress | undefined>(undefined)
 
 const emit = defineEmits<{
-  contractorSelected: [IContractor | undefined]
+  contractorSelected: [IContractorLookup | undefined]
 }>()
 </script>
 
@@ -29,7 +29,11 @@ const emit = defineEmits<{
       {{ title }}
     </div>
     <div class="grid grid-cols-1 md:grid-cols-[4rem_1fr_1fr] gap-2">
-      <CountryPicker :model-value="values.country" variant="filled" :placeholder="config.defaults.country" />
+      <CountryPicker
+        :id="values.country"
+        variant="filled"
+        :placeholder="config.defaults.country"
+      />
 
       <ContractorPicker
         :model-value="contractor"

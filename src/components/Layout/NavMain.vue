@@ -77,6 +77,7 @@ const isGroupActive = (item: MenuItem) => {
             <SidebarMenuButton
               :is-active="isExactActive"
               :href
+              as="a"
               :class="{ 'pointer-events-none opacity-50': item.locked }"
               @click="navigate"
             >

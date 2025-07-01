@@ -6,6 +6,7 @@ export const common = {
   add: 'Dodaj',
   back: 'Wstecz',
   edit: 'Edytuj',
+  clearCache: 'Wyczyść pamięć podręczną',
   upload: 'Wgraj',
   remove: 'Usuń',
   delete: 'Usuń',

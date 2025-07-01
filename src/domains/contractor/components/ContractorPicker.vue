@@ -21,16 +21,17 @@ import {
 } from '@/components/ui/popover'
 import { useCache } from '@/lib/cache'
 import { cn } from '@/lib/utils'
-import type { IContractor } from '../types/contractor.type'
+import type { IContractorLookup } from '../types/contractor.type'
 import { contractorService, type IContractorFilters } from '../services/ContractorService'
 import type { FilterDefinition } from '@/domains/shared/types/resource.type'
 
 const { t } = useI18n()
 
 const id = defineModel<string | undefined>('id')
-const modelValue = defineModel<IContractor | undefined>('modelValue', { required: true })
+const modelValue = defineModel<IContractorLookup | undefined>('modelValue', { required: true })
 
-const { popoverContentClass, disabled, type = 'buyer' } = defineProps<{
+const { popoverContentClass, disabled, class: classProp, type = 'buyer' } = defineProps<{
+  class?: string
   popoverContentClass?: string
   disabled?: boolean
   type?: 'supplier' | 'buyer'
@@ -38,7 +39,7 @@ const { popoverContentClass, disabled, type = 'buyer' } = defineProps<{
 
 const open = ref(false)
 const search = ref('')
-const contractors = ref<IContractor[]>([])
+const contractors = ref<IContractorLookup[]>([])
 
 const filters = computed<IContractorFilters>(() => {
   const filterData: Record<string, FilterDefinition> = {}
@@ -59,13 +60,13 @@ const filters = computed<IContractorFilters>(() => {
   }
 })
 
-const showResults = (items: IContractor[]) => {
+const showResults = (items: IContractorLookup[]) => {
   contractors.value = items
 }
 
-const { loading, clearCache, searchWithCache } = useCache<IContractorFilters, IContractor>({
+const { loading, clearCache, searchWithCache } = useCache<IContractorFilters, IContractorLookup>({
   softRefreshInterval: 5 * 60 * 1000, // 5 minut
-  loadItems: (filters) => contractorService.index(filters),
+  loadItems: (filters) => contractorService.lookup(filters),
   showResults,
 })
 
@@ -102,8 +103,11 @@ onMounted(() => {
         :aria-expanded="open"
         :disabled="disabled || loading"
         class="w-full justify-between"
+        :class="classProp"
       >
-        {{ modelValue?.name ?? t('shared.contractor.select') }}
+        <slot name="trigger">
+          {{ modelValue?.name ?? t('shared.contractor.select') }}
+        </slot>
         <ChevronsUpDown class="ml-2 size-4 shrink-0 opacity-50" />
       </Button>
     </PopoverTrigger>

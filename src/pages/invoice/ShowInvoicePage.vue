@@ -66,112 +66,112 @@ onMounted(async () => {
           </Button>
         </div>
       </div>
+    </div>
 
-      <div class="p-8 flex flex-col gap-4 border rounded shadow-lg bg-white dark:bg-gray-800">
-        <div class="grid grid-cols-[1fr_29rem] gap-16">
-          <!-- Main content -->
-          <div class="grid grid-cols-2 gap-8">
-            <div class="col-span-2 mb-6">
-              <h1 class="text-xl font-bold">
-                {{ t(`financial.invoiceType.${invoice?.type}`) }}
-              </h1>
-              <h2 class="text-2xl font-bold">
-                {{ invoice?.number }}
-              </h2>
-            </div>
-
-            <div>
-              <div class="text-sm text-muted-foreground">
-                Issue date
-              </div>
-              <div class="font-semibold">
-                {{ invoice?.issueDate ? toDateString(invoice?.issueDate) : 'N/A' }}
-              </div>
-            </div>
-            <div>
-              <div class="text-sm text-muted-foreground">
-                Due date
-              </div>
-              <div class="font-semibold">
-                {{ invoice?.payment?.dueDate ? toDateString(invoice?.payment?.dueDate) : 'N/A' }}
-              </div>
-            </div>
-
-            <div>
-              <div class="text-sm text-muted-foreground">
-                Issued for
-              </div>
-              <div class="font-semibold">
-                {{ invoice?.buyer?.name }}
-              </div>
-              <div class="text-sm text-muted-foreground">
-                {{ invoice?.buyer?.address }}
-              </div>
-            </div>
-
-            <div>
-              <div class="text-sm text-muted-foreground">
-                Issued by
-              </div>
-              <div class="font-semibold">
-                {{ invoice?.seller?.name }}
-              </div>
-              <div class="text-sm text-muted-foreground">
-                {{ invoice?.seller?.address }}
-              </div>
-            </div>
-
-            <InvoiceLines
-              v-if="invoice?.body.lines"
-              :lines="invoice?.body.lines"
-              :currency="invoice?.currency"
-              :total-net="invoice?.totalNet"
-              :total-tax="invoice?.totalTax"
-              :total-gross="invoice?.totalGross"
-            />
+    <div class="flex flex-row gap-8 m-6">
+      <div class="max-w-7xl mx-auto p-6 md:p-8 border shadow-xl/30">
+        <!-- Main content -->
+        <div class="grid grid-cols-2 gap-8 p-4">
+          <div class="col-span-2 mb-6">
+            <h1 class="text-xl font-bold">
+              {{ t(`financial.invoiceType.${invoice?.type}`) }}
+            </h1>
+            <h2 class="text-2xl font-bold">
+              {{ invoice?.number }}
+            </h2>
           </div>
 
-          <!-- Sidebar -->
-          <div class="flex flex-col gap-4 border border-dashed rounded-lg p-8">
-            <div class="flex flex-row gap-2 mb-2">
-              <InvoiceStatusBadge :status="invoice?.status ?? 'draft'" />
+          <div>
+            <div class="text-sm text-muted-foreground">
+              Issue date
             </div>
-
-            <div class="uppercase text-sm font-bold text-muted-foreground">
-              {{ t('financial.fields.payment') }}
-            </div>
-            <div class="flex flex-col gap-4">
-              <div>
-                <div class="text-sm text-muted-foreground">
-                  {{ t('financial.payment.fields.method') }}
-                </div>
-                <div class="font-semibold">
-                  {{ t(`financial.payment.method.${invoice?.payment?.method}`) }}
-                </div>
-              </div>
-
-              <div>
-                <div class="text-sm text-muted-foreground">
-                  {{ t('financial.payment.fields.status') }}
-                </div>
-                <div class="font-semibold">
-                  {{ t(`financial.payment.status.${invoice?.payment?.status}`) }}
-                </div>
-              </div>
-
-              <div>
-                <div class="text-sm text-muted-foreground">
-                  {{ t('financial.payment.fields.dueDate') }}
-                </div>
-                <div class="font-semibold">
-                  {{ invoice?.payment?.dueDate ? toDateString(invoice?.payment?.dueDate) : 'N/A' }}
-                </div>
-              </div>
+            <div class="font-semibold">
+              {{ invoice?.issueDate ? toDateString(invoice?.issueDate) : 'N/A' }}
             </div>
           </div>
-          <!-- End -->
+          <div>
+            <div class="text-sm text-muted-foreground">
+              Due date
+            </div>
+            <div class="font-semibold">
+              {{ invoice?.payment?.dueDate ? toDateString(invoice?.payment?.dueDate) : 'N/A' }}
+            </div>
+          </div>
+
+          <div>
+            <div class="text-sm text-muted-foreground">
+              Issued for
+            </div>
+            <div class="font-semibold">
+              {{ invoice?.buyer?.name }}
+            </div>
+            <div class="text-sm text-muted-foreground">
+              {{ invoice?.buyer?.address }}
+            </div>
+          </div>
+
+          <div>
+            <div class="text-sm text-muted-foreground">
+              Issued by
+            </div>
+            <div class="font-semibold">
+              {{ invoice?.seller?.name }}
+            </div>
+            <div class="text-sm text-muted-foreground">
+              {{ invoice?.seller?.address }}
+            </div>
+          </div>
+
+          <InvoiceLines
+            v-if="invoice?.body.lines"
+            :lines="invoice?.body.lines"
+            :currency="invoice?.currency"
+            :total-net="invoice?.totalNet"
+            :total-tax="invoice?.totalTax"
+            :total-gross="invoice?.totalGross"
+          />
         </div>
       </div>
+
+      <!-- Sidebar -->
+      <div class="w-xs flex flex-col gap-4 border p-6 shadow-xl/30 bg-white dark:bg-gray-800">
+        <div class="flex flex-row gap-2 mb-2">
+          <InvoiceStatusBadge :status="invoice?.status ?? 'draft'" />
+        </div>
+
+        <div class="uppercase text-sm font-bold text-muted-foreground">
+          {{ t('financial.fields.payment') }}
+        </div>
+        <div class="flex flex-col gap-4">
+          <div>
+            <div class="text-sm text-muted-foreground">
+              {{ t('financial.payment.fields.method') }}
+            </div>
+            <div class="font-semibold">
+              {{ t(`financial.payment.method.${invoice?.payment?.method}`) }}
+            </div>
+          </div>
+
+          <div>
+            <div class="text-sm text-muted-foreground">
+              {{ t('financial.payment.fields.status') }}
+            </div>
+            <div class="font-semibold">
+              {{ t(`financial.payment.status.${invoice?.payment?.status}`) }}
+            </div>
+          </div>
+
+          <div>
+            <div class="text-sm text-muted-foreground">
+              {{ t('financial.payment.fields.dueDate') }}
+            </div>
+            <div class="font-semibold">
+              {{ invoice?.payment?.dueDate ? toDateString(invoice?.payment?.dueDate) : 'N/A' }}
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- End -->
     </div>
   </AuthenticatedLayout>
 </template>

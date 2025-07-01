@@ -128,19 +128,19 @@ onMounted(() => {
           <CommandEmpty>{{ t('shared.exchangeRate.notFound') }}</CommandEmpty>
           <CommandGroup>
             <CommandItem
-              v-for="rate in rates"
-              :key="rate.id"
-              :value="rate.id"
+              v-for="rateItem in rates"
+              :key="rateItem.id"
+              :value="rateItem.id"
               @select="onSelect"
             >
               <Check
                 class="mr-2 size-4"
-                :class="exchangeRateValue?.id === rate.id ? 'opacity-100' : 'opacity-0'"
+                :class="exchangeRateValue?.id === rateItem.id ? 'opacity-100' : 'opacity-0'"
               />
               <div class="flex w-full justify-between items-center">
-                <span class="font-medium">{{ rate.table }}</span>
-                <span class="text-sm text-muted-foreground">{{ rate.rate }}</span>
-                <span class="text-xs text-muted-foreground">{{ rate.date }}</span>
+                <span class="font-medium">{{ rateItem.table }}</span>
+                <span class="text-sm text-muted-foreground">{{ rateItem.rate }}</span>
+                <span class="text-xs text-muted-foreground">{{ rateItem.date }}</span>
               </div>
             </CommandItem>
           </CommandGroup>

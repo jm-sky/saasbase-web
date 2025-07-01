@@ -30,10 +30,12 @@ const { numberingTemplates } = storeToRefs(numberingTemplateStore)
 const id = defineModel<string | undefined>('id')
 const modelValue = defineModel<IInvoiceNumberingTemplate | undefined>('modelValue', { required: true })
 
-const { invoiceType } = defineProps<{
+const { invoiceType, class: classProp, pickFirstTemplate } = defineProps<{
+  class?: string
   popoverContentClass?: string
   disabled?: boolean
   invoiceType?: TInvoiceType
+  pickFirstTemplate?: boolean
 }>()
 
 const open = ref(false)
@@ -67,9 +69,13 @@ const onSelect = (event: any) => {
   open.value = false
 }
 
-onMounted(() => {
+onMounted(async () => {
   if (numberingTemplates.value.length === 0) {
-    void loadTemplates()
+    await loadTemplates()
+  }
+  if (pickFirstTemplate && numberingTemplates.value.length > 0) {
+    modelValue.value = numberingTemplates.value[0]
+    id.value = numberingTemplates.value[0].id
   }
 })
 </script>
@@ -83,6 +89,7 @@ onMounted(() => {
         :aria-expanded="open"
         :disabled="disabled || loading"
         class="w-full justify-between"
+        :class="classProp"
       >
         {{ modelValue?.format ?? t('shared.numberingTemplate.select') }}
         <ChevronsUpDown class="ml-2 size-4 shrink-0 opacity-50" />
