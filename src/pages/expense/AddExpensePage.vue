@@ -1,53 +1,54 @@
 <script setup lang="ts">
-import { storeToRefs } from 'pinia'
+import { CalendarIcon } from 'lucide-vue-next'
+import { v4 } from 'uuid'
 import { useForm } from 'vee-validate'
-import { onMounted } from 'vue'
+import { onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
 import FormFieldLabeled from '@/components/Form/FormFieldLabeled.vue'
 import Button from '@/components/ui/button/Button.vue'
+import Calendar from '@/components/ui/calendar/Calendar.vue'
 import Input from '@/components/ui/input/Input.vue'
+import Popover from '@/components/ui/popover/Popover.vue'
+import PopoverContent from '@/components/ui/popover/PopoverContent.vue'
+import PopoverTrigger from '@/components/ui/popover/PopoverTrigger.vue'
 import Separator from '@/components/ui/separator/Separator.vue'
 import { useToast } from '@/components/ui/toast/use-toast'
 import { expenseService } from '@/domains/expense/services/expenseService'
-import PartySideForContractorCard from '@/domains/financial/components/PartySideForContractorCard.vue'
-import PartySideForTenantCard from '@/domains/financial/components/PartySideForTenantCard.vue'
-import { tenantService } from '@/domains/tenant/services/TenantService'
-import { useTenantStore } from '@/domains/tenant/store/tenant.store'
+import { useTenant } from '@/domains/tenant/composables/useTenant'
 import AuthenticatedLayout from '@/layouts/AuthenticatedLayout.vue'
+import { fullAddress } from '@/lib/fullAddress'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
 import { isValidationError } from '@/lib/validation'
-import type { IContractorLookup } from '@/domains/contractor/types/contractor.type'
+import AddInvoiceSidebar from './partials/AddInvoiceSidebar.vue'
+import InvoiceBuyerBox from './partials/InvoiceBuyerBox.vue'
+import InvoiceInfoTable from './partials/InvoiceInfoTable.vue'
+import InvoiceLinesEditable from './partials/InvoiceLinesEditable.vue'
+import InvoiceSellerBox from './partials/InvoiceSellerBox.vue'
+import type { IContractor, IContractorLookup } from '@/domains/contractor/types/contractor.type'
 import type { IExpenseCreate } from '@/domains/expense/types/expense.type'
+import type { IInvoiceLine } from '@/domains/financial/types/financial.type'
+import type { TDate } from '@/domains/shared/types/common'
 
 const { t } = useI18n()
 const { toast } = useToast()
 const router = useRouter()
-const tenantStore = useTenantStore()
-const { tenant, tenantBillingAddress } = storeToRefs(tenantStore)
+const { tenant, tenantBillingAddress, loadTenant, loadTenantBillingAddress } = useTenant()
+
+const issueDate = ref<TDate | undefined>(new Date().toISOString().split('T')[0])
+const seller = ref<IContractor | undefined>(undefined)
 
 const { isSubmitting, handleSubmit, values, setErrors, setFieldValue, resetForm } = useForm<IExpenseCreate>({
   initialValues: {
     number: 'TEST/0001',
     type: 'basic',
     status: 'draft',
-    numberingTemplateId: '',
     totalNet: 0,
     totalTax: 0,
     totalGross: 0,
     currency: 'PLN',
     exchangeRate: 1,
     seller: {
-      contractorId: undefined,
-      contractorType: 'company',
-      name: 'DEMO BUYER',
-      taxId: '',
-      address: 'Random street 123',
-      country: 'PL',
-      iban: '',
-      email: '',
-    },
-    buyer: {
       contractorId: undefined,
       contractorType: 'company',
       name: tenant.value?.name ?? 'DEMO COMPANY',
@@ -57,13 +58,23 @@ const { isSubmitting, handleSubmit, values, setErrors, setFieldValue, resetForm 
       iban: '',
       email: tenant.value?.email ??'',
     },
+    buyer: {
+      contractorId: undefined,
+      contractorType: 'company',
+      name: 'DEMO BUYER',
+      taxId: '',
+      address: 'Random street 123',
+      country: 'PL',
+      iban: '',
+      email: '',
+    },
     body: {
       lines: [],
       vatSummary: [],
       exchange: {
         currency: 'PLN',
         exchangeRate: 1,
-        date: '',
+        date: issueDate.value,
       },
     },
     payment: {
@@ -82,25 +93,51 @@ const { isSubmitting, handleSubmit, values, setErrors, setFieldValue, resetForm 
       sendEmail: false,
       emailTo: [],
     },
-    issueDate: '2025-01-01',
+    issueDate: issueDate.value,
   },
 })
 
+const createLine = (): IInvoiceLine => {
+  return {
+    id: v4(),
+    description: '',
+    quantity: 0,
+    unitPrice: 0,
+    vatRate: {
+      id: '23%',
+      name: '23%',
+      rate: 0.23,
+      type: 'percentage',
+    },
+    totalNet: 0,
+    totalVat: 0,
+    totalGross: 0,
+    productId: null,
+  }
+}
+
+const addLine = () => {
+  setFieldValue('body.lines', [...values.body.lines, createLine()])
+}
+
 onMounted(async () => {
-  tenant.value ??= await tenantService.get(tenantStore.tenantId ?? '')
+  tenant.value ??= await loadTenant()
+  tenantBillingAddress.value ??= await loadTenantBillingAddress()
   setFieldValue('seller.name', tenant.value.name)
-  setFieldValue('seller.taxId', tenant.value.taxId ?? '')
-  setFieldValue('seller.address', tenantBillingAddress.value?.street ?? 'OUR ADDRESS')
+  setFieldValue('seller.taxId', tenant.value.taxId ?? tenant.value.vatId ?? '')
+  setFieldValue('seller.address', tenantBillingAddress.value?.street ? fullAddress(tenantBillingAddress.value) : 'OUR ADDRESS')
   setFieldValue('seller.country', tenant.value.country ?? 'PL')
   setFieldValue('seller.email', tenant.value.email ?? '')
+  addLine()
 })
 
 const onSubmit = handleSubmit(async (values) => {
   try {
+    values.body.lines = values.body.lines.filter((line) => line.description)
     const expense = await expenseService.create(values)
     toast.success(t('expense.add.success', 'Expense added successfully'))
     resetForm()
-    await router.push(`/expenses/${expense.id}/show/overview`)
+    await router.push(`/expenses/${expense.id}/show`)
   } catch (error: unknown) {
     console.error('[AddExpensePage][onSubmit] error:', error)
     if (isValidationError(error)) setErrors(error.response.data.errors)
@@ -108,86 +145,96 @@ const onSubmit = handleSubmit(async (values) => {
   }
 })
 
-const updateBuyer = (contractor: IContractorLookup | undefined) => {
+const onSellerUpdate = (contractor: IContractorLookup | undefined) => {
   if (!contractor) return
-  setFieldValue('buyer.contractorId', contractor.id)
-  setFieldValue('buyer.contractorType', 'contractor')
-  setFieldValue('buyer.name', contractor.name)
-  setFieldValue('buyer.taxId', contractor.vatId)
+  setFieldValue('seller.contractorId', contractor.id)
+  setFieldValue('seller.name', contractor.name)
+  setFieldValue('seller.taxId', contractor.taxId ?? contractor.vatId ?? '')
+  setFieldValue('seller.address', contractor.defaultAddress?.street ?? '...')
 }
 </script>
 
 <template>
   <AuthenticatedLayout>
-    <div class="m-6 p-6 md:p-8 border rounded-md shadow-lg">
-      <div class="font-bold text-2xl mb-4 text-center">
-        {{ t('expense.add.title', 'Add Expense') }}
+    <div class="px-4 md:px-6 py-4 md:py-6 flex flex-col gap-y-6" data-testid="entity-details-layout">
+      <div class="flex flex-row gap-4 items-center justify-between">
+        <div>
+          <div class="font-bold">
+            {{ t('expense.add.title') }}
+          </div>
+          <div class="text-sm text-muted-foreground">
+            <RouterLink :to="'/expenses'">
+              {{ t('expense.title') }}
+            </RouterLink>
+          </div>
+        </div>
       </div>
+    </div>
 
-      <form class="flex flex-col gap-y-2 gap-x-8" @submit.prevent="onSubmit">
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-x-8 gap-y-2 mb-4">
-          <PartySideForTenantCard :title="t('financial.fields.seller', 'Seller')" :values="values.seller" />
-          <PartySideForContractorCard :title="t('financial.fields.buyer', 'Buyer')" :values="values.buyer" @contractor-selected="updateBuyer" />
-        </div>
+    <div class="flex flex-row gap-8 lg:mx-6">
+      <form class="w-full lg:w-7xl mx-auto p-2 sm:p-4 md:p-8 border shadow-xl/30" @submit.prevent="onSubmit">
+        <div class="grid grid-cols-1 lg:grid-cols-[2fr_1fr]">
+          <div class="border-b border-r p-2 sm:p-4 md:p-6">
+            <div class="text-5xl font-bold py-4 mb-2">
+              {{ t(`financial.invoiceType.${values.type}`) }}
+            </div>
+            <div class="flex flex-col sm:flex-row items-center justify-between gap-4 border-b-6 border-primary px-2 sm:px-4 py-2 font-semibold text-muted-foreground">
+              <div>
+                <FormFieldLabeled v-slot="{ componentField }" name="number" :disabled="isSubmitting">
+                  <Input v-bind="componentField" />
+                </FormFieldLabeled>
+              </div>
+              <Popover>
+                <PopoverTrigger as-child>
+                  <Button variant="outline" class="w-36 justify-start text-left font-normal">
+                    <CalendarIcon class="mr-2 size-4" />
+                    {{ values.issueDate }}
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent class="w-auto p-0">
+                  <Calendar />
+                </PopoverContent>
+              </Popover>
+            </div>
 
-        <div class="flex flex-col gap-y-2 items-center justify-center mt-2 mb-6">
-          <div class="font-bold text-lg">
-            {{ t(`financial.invoiceType.${values.type}`, t('financial.fields.type')) }}
+            <InvoiceInfoTable :values="values" />
           </div>
-          <div class="font-bold text-xl">
-            <FormFieldLabeled
-              v-slot="{ componentField }"
-              name="number"
-              :disabled="isSubmitting"
-            >
-              <Input v-bind="componentField" class="bg-white/50 dark:bg-black/50" />
-            </FormFieldLabeled>
+
+          <InvoiceSellerBox v-model:seller="seller" :values="values" @update:seller="onSellerUpdate" />
+
+          <div class="border-r p-6">
+            <div class="text-muted-foreground text-sm">
+              Terms & Notes
+            </div>
           </div>
+
+          <InvoiceBuyerBox :values="values" />
         </div>
 
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-x-8 gap-y-2">
-          <FormFieldLabeled
-            v-slot="{ componentField }"
-            name="issueDate"
-            :label="t('financial.fields.issueDate', 'issueDate')"
-            :disabled="isSubmitting"
-          >
-            <Input type="date" v-bind="componentField" class="bg-white/50 dark:bg-black/50" />
-          </FormFieldLabeled>
-          <FormFieldLabeled
-            v-slot="{ componentField }"
-            name="type"
-            :label="t('financial.fields.type', 'Type')"
-            :disabled="isSubmitting"
-          >
-            <Input v-bind="componentField" class="bg-white/50 dark:bg-black/50" />
-          </FormFieldLabeled>
-          <FormFieldLabeled
-            v-slot="{ componentField }"
-            name="status"
-            :label="t('financial.fields.status', 'Status')"
-            :disabled="isSubmitting"
-          >
-            <Input v-bind="componentField" class="bg-white/50 dark:bg-black/50" />
-          </FormFieldLabeled>
-          <FormFieldLabeled
-            v-slot="{ componentField }"
-            name="currency"
-            :label="t('financial.fields.currency', 'Currency')"
-            :disabled="isSubmitting"
-          >
-            <Input v-bind="componentField" class="bg-white/50 dark:bg-black/50" />
-          </FormFieldLabeled>
-        </div>
+        <InvoiceLinesEditable
+          :values="values"
+          :add-line="addLine"
+        />
 
-        <Separator class="my-4" />
+        <Separator class="my-8" />
 
-        <div class="col-span-2">
-          <Button type="submit" :disabled="isSubmitting" class="w-full">
-            {{ t('common.add') }}
+        <div class="mr-2 flex justify-end gap-2">
+          <Button variant="outline" @click="resetForm">
+            {{ t('common.cancel', 'Cancel') }}
+          </Button>
+          <Button type="submit" variant="primary" :disabled="isSubmitting">
+            {{ t('expense.add.submit', 'Save Invoice') }}
           </Button>
         </div>
       </form>
+
+      <AddInvoiceSidebar
+        :values="values"
+        :reset-form="resetForm"
+        :is-submitting="isSubmitting"
+        @update-currency="setFieldValue('currency', $event)"
+        @update-exchange-date="setFieldValue('body.exchange.date', $event)"
+      />
     </div>
   </AuthenticatedLayout>
 </template>

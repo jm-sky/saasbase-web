@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import { money } from '@/lib/money'
-import type { IInvoiceCreate } from '@/domains/invoice/types/invoice.type'
+import type { IExpenseCreate } from '@/domains/expense/types/expense.type'
 
 const { locale, t } = useI18n()
 
 defineProps<{
-  values: IInvoiceCreate
+  values: IExpenseCreate
 }>()
 </script>
 

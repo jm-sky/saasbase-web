@@ -173,14 +173,14 @@ const onBuyerUpdate = (contractor: IContractorLookup | undefined) => {
       </div>
     </div>
 
-    <div class="flex flex-row gap-8 m-6">
-      <form class="max-w-7xl mx-auto p-6 md:p-8 border shadow-xl/30" @submit.prevent="onSubmit">
-        <div class="grid grid-cols-[2fr_1fr]">
-          <div class="border-b border-r p-6">
+    <div class="flex flex-row gap-8 lg:mx-6">
+      <form class="w-full lg:w-7xl mx-auto p-2 sm:p-4 md:p-8 border shadow-xl/30" @submit.prevent="onSubmit">
+        <div class="grid grid-cols-1 lg:grid-cols-[2fr_1fr]">
+          <div class="border-b border-r p-2 sm:p-4 md:p-6">
             <div class="text-5xl font-bold py-4 mb-2">
               {{ t(`financial.invoiceType.${values.type}`) }}
             </div>
-            <div class="flex flex-row items-center justify-between gap-4 border-b-6 border-primary px-4 py-2 font-semibold text-muted-foreground">
+            <div class="flex flex-col sm:flex-row items-center justify-between gap-4 border-b-6 border-primary px-2 sm:px-4 py-2 font-semibold text-muted-foreground">
               <div>
                 <FormFieldLabeled name="numberingTemplateId" :disabled="isSubmitting">
                   <div class="flex flex-row items-center gap-4">
