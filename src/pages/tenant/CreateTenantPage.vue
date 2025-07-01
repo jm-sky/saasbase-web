@@ -16,6 +16,7 @@ import FormMessage from '@/components/ui/form/FormMessage.vue'
 import Input from '@/components/ui/input/Input.vue'
 import Textarea from '@/components/ui/textarea/Textarea.vue'
 import { toast } from '@/components/ui/toast'
+import { config } from '@/config'
 import CountryPicker from '@/domains/shared/components/CountryPicker.vue'
 import { tenantService } from '@/domains/tenant/services/TenantService'
 import { tenantCreateSchema } from '@/domains/tenant/validation/tenant.schema'
@@ -184,16 +185,15 @@ const onSubmit = handleSubmit(async (formData) => {
             <AccordionContent>
               <div class="flex flex-col gap-2 py-2">
                 <div class="grid grid-cols-[4rem_1fr] gap-4">
-                  <FormField v-slot="{ componentField }" name="tenant.country">
+                  <FormField name="tenant.country">
                     <FormItem>
                       <FormLabel>{{ t('tenant.fields.country') }}</FormLabel>
                       <FormControl>
                         <CountryPicker
-                          v-bind="componentField"
-                          :model-value="values.tenant.country"
+                          :id="values.tenant.country"
                           placeholder="-"
                           class="bg-white/50 dark:bg-black/50"
-                          @update:model-value="setFieldValue('tenant.country', $event?.code ?? '')"
+                          @update:id="setFieldValue('tenant.country', $event ?? config.defaults.country)"
                         />
                       </FormControl>
                       <FormMessage />
@@ -306,16 +306,15 @@ const onSubmit = handleSubmit(async (formData) => {
             </AccordionTrigger>
             <AccordionContent>
               <div class="space-y-4 py-4">
-                <FormField v-slot="{ componentField }" name="address.country">
+                <FormField name="address.country">
                   <FormItem>
                     <FormLabel>{{ t('address.fields.country') }}</FormLabel>
                     <FormControl>
                       <CountryPicker
-                        v-bind="componentField"
-                        :model-value="values.address?.country"
+                        :id="values.address?.country"
                         placeholder="-"
                         class="bg-white/50 dark:bg-black/50"
-                        @update:model-value="setFieldValue('address.country', $event?.code ?? '')"
+                        @update:id="setFieldValue('address.country', $event ?? config.defaults.country)"
                       />
                     </FormControl>
                     <FormMessage />
@@ -429,7 +428,7 @@ const onSubmit = handleSubmit(async (formData) => {
 
         <div class="pt-6 text-right">
           <Button type="submit" :disabled="isSubmitting">
-            Create & Continue
+            {{ t('common.createAndContinue') }}
           </Button>
         </div>
       </form>

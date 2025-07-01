@@ -5,6 +5,7 @@ export const common = {
   inactive: 'Inactive',
   add: 'Add',
   back: 'Back',
+  createAndContinue: 'Create & Continue',
   clearCache: 'Clear cache',
   edit: 'Edit',
   upload: 'Upload',

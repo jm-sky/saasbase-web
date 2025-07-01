@@ -32,6 +32,7 @@ const props = defineProps<{
   disabled?: boolean
   placeholder?: string
   class?: string
+  showName?: boolean
 }>()
 
 const open = ref(false)
@@ -105,7 +106,12 @@ onMounted(() => {
         :disabled="disabled || loading"
         :class="cn('w-full justify-between', props.class)"
       >
-        {{ modelValue?.name ?? placeholder ?? t('shared.country.select') }}
+        <template v-if="showName">
+          {{ modelValue?.name ?? placeholder ?? t('shared.country.select') }}
+        </template>
+        <template v-else>
+          {{ id ?? placeholder ?? t('shared.country.select') }}
+        </template>
         <ChevronsUpDown class="ml-2 size-4 shrink-0 opacity-50" />
       </Button>
     </PopoverTrigger>
