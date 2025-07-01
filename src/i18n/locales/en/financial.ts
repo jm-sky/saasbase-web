@@ -1,4 +1,7 @@
 export const financial = {
+  logo: {
+    placeholder: 'Place for logo',
+  },
   fields: {
     type: 'Type',
     status: 'Status',

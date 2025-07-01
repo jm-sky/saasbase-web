@@ -1,7 +1,10 @@
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n'
 import FileDropZoneSlot from '@/components/Inputs/FileDropZoneSlot.vue'
 import FileUploadClickable from '@/components/Inputs/FileUploadClickable.vue'
 import type { IInvoiceCreate } from '@/domains/invoice/types/invoice.type'
+
+const { t } = useI18n()
 
 defineProps<{
   values: IInvoiceCreate
@@ -14,7 +17,7 @@ defineProps<{
       <FileDropZoneSlot class="p-4 rounded-lg border border-dashed hover:bg-primary-50/50 hover:border-primary" :dragged-files="[]">
         <FileUploadClickable :files="[]">
           <template #label>
-            Miejsce na logo
+            {{ t('financial.logo.placeholder') }}
           </template>
         </FileUploadClickable>
       </FileDropZoneSlot>

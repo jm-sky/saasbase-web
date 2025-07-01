@@ -39,6 +39,11 @@ const refresh = async () => {
   }
 }
 
+const onCommentCreated = () => {
+  void refresh()
+  showForm.value = false
+}
+
 onMounted(refresh)
 </script>
 
@@ -87,7 +92,7 @@ onMounted(refresh)
       v-if="showForm"
       :commentable-id="contractor.id"
       :service="contractorCommentsService"
-      @create="[refresh, showForm = false]"
+      @create="onCommentCreated"
     />
   </div>
 </template>
