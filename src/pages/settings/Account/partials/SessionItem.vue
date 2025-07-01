@@ -1,58 +1,54 @@
 <script setup lang="ts">
 import { Icon } from '@iconify/vue'
+import { useI18n } from 'vue-i18n'
 import Button from '@/components/ui/button/Button.vue'
-import type { UserSession } from '@/domains/account/services/AccountService'
+import { toDateTimeString } from '@/lib/toDateTimeString'
+import type { IUserSession, TUserSessionType } from '@/domains/account/types/userSession.type'
+
+const { t } = useI18n()
 
 defineProps<{
-  session: UserSession
+  session: IUserSession
 }>()
 
 const emit = defineEmits<{
   terminate: [string]
 }>()
 
-const getDeviceIcon = (deviceType: string) => {
+const getTypeIcon = (sessionType: TUserSessionType) => {
   const icons = {
-    desktop: 'heroicons:computer-desktop',
-    mobile: 'heroicons:device-phone-mobile',
-    tablet: 'heroicons:device-tablet',
+    jwt: 'heroicons:key',
+    cookie: 'heroicons:finger-print',
   }
-  return icons[deviceType as keyof typeof icons] || 'heroicons:question-mark-circle'
-}
-
-const formatDate = (dateString: string) => {
-  return new Date(dateString).toLocaleString()
+  return icons[sessionType as keyof typeof icons] || 'heroicons:question-mark-circle'
 }
 </script>
 
 <template>
-  <div class="flex items-start gap-4 p-4 border rounded-lg">
+  <div class="flex items-start gap-4 p-4 border rounded-lg shadow">
     <div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
       <Icon
-        :icon="getDeviceIcon(session.deviceType)"
+        :icon="getTypeIcon(session.type)"
         class="size-5 text-primary"
       />
     </div>
-    <div class="flex-1 min-w-0">
+    <div class="flex flex-col gap-1 flex-1 min-w-0">
       <div class="flex items-center gap-2">
-        <h3 class="font-medium">
-          {{ session.deviceName }}
+        <h3 class="font-medium text-ellipsis max-w-full w-full overflow-hidden whitespace-nowrap">
+          {{ session.deviceName ??session.userAgent ?? '-' }}
         </h3>
         <span
           v-if="session.isCurrent"
           class="px-2 py-0.5 text-xs rounded-full bg-primary/10 text-primary"
         >
-          Current Session
+          {{ t('settings.account.sessions.currentSession') }}
         </span>
       </div>
-      <p class="text-sm text-muted-foreground">
-        {{ session.deviceType }} • {{ session.location }}
+      <p class="font-semibold text-sm text-muted-foreground">
+        {{ session.ipAddress }}
       </p>
       <p class="text-sm text-muted-foreground">
-        IP: {{ session.ip }}
-      </p>
-      <p class="text-sm text-muted-foreground">
-        Last active: {{ formatDate(session.lastActive) }}
+        {{ t('settings.account.sessions.lastActive') }}: {{ toDateTimeString(session.lastActiveAt) }}
       </p>
     </div>
     <Button
@@ -61,7 +57,7 @@ const formatDate = (dateString: string) => {
       size="sm"
       @click="emit('terminate', session.id)"
     >
-      Terminate
+      {{ t('settings.account.sessions.terminate') }}
     </Button>
   </div>
 </template>

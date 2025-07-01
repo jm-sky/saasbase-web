@@ -21,16 +21,6 @@ export interface SecurityLog {
   status: 'success' | 'failed'
 }
 
-export interface UserSession {
-  id: string
-  deviceName: string
-  deviceType: 'desktop' | 'mobile' | 'tablet'
-  location: string
-  ip: string
-  lastActive: string
-  isCurrent: boolean
-}
-
 export interface BillingHistory {
   id: string
   date: string
@@ -121,36 +111,6 @@ export class AccountService {
         isCurrent: false,
       },
     ]
-  }
-
-  async getSessions(): Promise<UserSession[]> {
-    try {
-      await this.delay()
-      // TODO: Replace with actual API call
-      return [
-        {
-          id: '1',
-          deviceName: 'MacBook Pro',
-          deviceType: 'desktop',
-          location: 'New York, USA',
-          ip: '192.168.1.1',
-          lastActive: new Date().toISOString(),
-          isCurrent: true,
-        },
-        {
-          id: '2',
-          deviceName: 'iPhone 13',
-          deviceType: 'mobile',
-          location: 'New York, USA',
-          ip: '192.168.1.2',
-          lastActive: new Date(Date.now() - 3600000).toISOString(),
-          isCurrent: false,
-        },
-      ]
-    } catch (error) {
-      handleErrorWithToast('Failed to fetch sessions', error)
-      throw error
-    }
   }
 
   async terminateSession(sessionId: string): Promise<void> {
