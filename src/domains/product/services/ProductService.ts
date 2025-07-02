@@ -1,4 +1,4 @@
-import { type IProduct, type IProductCreate, type IProductUpdate } from '@/domains/product/types/product.type'
+import { type IProduct, type IProductCreate, type IProductLookup, type IProductUpdate } from '@/domains/product/types/product.type'
 import { buildSpatieQuery } from '@/domains/shared/helpers/filtering'
 import { type FilterDefinition, type IResource, type IResourceCollection } from '@/domains/shared/types/resource.type'
 import api from '@/lib/api'
@@ -17,6 +17,12 @@ class ProductService {
   async index(filters?: IProductFilters): Promise<IResourceCollection<IProduct>> {
     const params = buildSpatieQuery(filters ?? { filter: {} })
     const response = (await api.get<IResourceCollection<IProduct>>(apiRoutesMap.products, { params })).data
+    return response
+  }
+
+  async lookup(filters?: IProductFilters): Promise<IResourceCollection<IProductLookup>> {
+    const params = buildSpatieQuery(filters ?? { filter: {} })
+    const response = (await api.get<IResourceCollection<IProductLookup>>(apiRoutesMap.products, { params })).data
     return response
   }
 

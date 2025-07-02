@@ -24,6 +24,24 @@ export interface IProduct {
   updatedAt: TDateTime
 }
 
+export interface IProductLookup {
+  id: string
+  tenantId: string
+  name: string
+  type: TProductType
+  description?: string
+  unitId?: string
+  priceNet?: number
+  vatRateId?: string
+  logoUrl?: string
+  logo?: IMedia
+  unit?: IMeasurementUnit
+  vatRate?: IVatRate
+  tags: ITagPreview[]
+  createdAt: TDateTime
+  updatedAt: TDateTime
+}
+
 export interface IProductCreate {
   name: string
   type: TProductType
@@ -47,4 +65,16 @@ export interface IProductUpdate {
   vatRateId?: string
   vatRate?: IVatRate
   logo?: File
+}
+
+export interface IProductLookup {
+  id: string
+  tenantId: string
+  name: string
+  type: TProductType
+  description?: string
+  priceNet?: number
+  unit?: IMeasurementUnit
+  vatRate?: IVatRate
+  tags: ITagPreview[]
 }

@@ -133,4 +133,41 @@ If you have an existing large picker component, you can gradually migrate by:
 2. Extract search logic → `PickerContent`  
 3. Extract list logic → `PickerList`
 4. Extract actions → `PickerActions`
-5. Standardize items → `PickerItem` 
+5. Standardize items → `PickerItem`
+
+## Real-World Examples
+
+### ContractorPicker
+Located in `src/domains/contractor/components/ContractorPicker.vue` - demonstrates:
+- Type filtering (supplier/buyer)
+- Recent selections with localStorage
+- VAT ID display
+- Tag support
+- Infinite scroll with caching
+
+### ProductPicker
+Located in `src/domains/product/components/ProductPicker.vue` - demonstrates:
+- Type filtering (product/service)
+- Price display with units
+- Description support
+- Tag support
+
+```vue
+<script setup lang="ts">
+import { ProductPicker } from '@/domains/product/components'
+
+const selectedProduct = ref<IProductLookup>()
+</script>
+
+<template>
+  <ProductPicker
+    v-model:model-value="selectedProduct"
+    type="product"
+    :show-create-button="true"
+    :show-price="true"
+    @create="createNewProduct"
+  />
+</template>
+```
+
+This composable approach makes creating new pickers fast and consistent! 🎉 

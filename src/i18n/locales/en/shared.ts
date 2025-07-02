@@ -1,5 +1,6 @@
 export const shared = {
   notFound: 'No results found',
+  scrollForMore: 'Przewiń w dół, aby załadować więcej',
   address: {
     select: 'Select address',
     search: 'Search address',
@@ -49,6 +50,11 @@ export const shared = {
     select: 'Select payment method',
     search: 'Search payment method',
     notFound: 'No payment methods found',
+  },
+  product: {
+    select: 'Select product',
+    search: 'Search product',
+    notFound: 'No products found',
   },
   vatRate: {
     select: 'Select vat rate',

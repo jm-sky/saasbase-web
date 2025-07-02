@@ -100,7 +100,7 @@ export interface IInvoiceLine {
   totalNet: number;
   totalVat: number;
   totalGross: number;
-  productId: string | null;
+  productId?: string | null;
 }
 
 export interface IInvoiceVatSummary {

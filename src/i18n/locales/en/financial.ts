@@ -36,11 +36,16 @@ export const financial = {
   },
   lines: {
     fields: {
+      items: 'Items',
       description: 'Description',
       quantity: 'Quantity',
       unitPrice: 'Unit price',
       total: 'Total',
+      tax: 'Tax',
     },
+    actions: {
+      addItem: 'Add Item',
+    }
   },
   payment: {
     fields: {

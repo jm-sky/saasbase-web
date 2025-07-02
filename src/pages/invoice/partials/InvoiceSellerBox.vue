@@ -13,7 +13,7 @@ defineProps<{
 
 <template>
   <div class="flex flex-col items-start justify-center gap-y-2 border-b p-6">
-    <div class="w-full">
+    <div class="w-full mb-4">
       <FileDropZoneSlot class="p-4 rounded-lg border border-dashed hover:bg-primary-50/50 hover:border-primary" :dragged-files="[]">
         <FileUploadClickable :files="[]">
           <template #label>
