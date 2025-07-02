@@ -97,11 +97,11 @@ onMounted(async () => {
           {{ $t('tenant.overview.title') }}
         </RouterLink>
         <RouterLink
-          :to="`/tenants/${tenantId}/show/logs`"
+          :to="`/tenants/${tenantId}/show/organization-units`"
           class="border-b-2 border-transparent hover:border-muted-foreground px-2 py-1"
           exact-active-class="text-primary border-primary!"
         >
-          {{ $t('tenant.logs.title') }}
+          {{ $t('tenant.organizationUnits.title') }}
         </RouterLink>
         <RouterLink
           :to="`/tenants/${tenantId}/show/invitations`"
@@ -144,6 +144,13 @@ onMounted(async () => {
           exact-active-class="text-primary border-primary!"
         >
           {{ $t('tenant.settings.title') }}
+        </RouterLink>
+        <RouterLink
+          :to="`/tenants/${tenantId}/show/logs`"
+          class="border-b-2 border-transparent hover:border-muted-foreground px-2 py-1"
+          exact-active-class="text-primary border-primary!"
+        >
+          {{ $t('tenant.logs.title') }}
         </RouterLink>
       </template>
 

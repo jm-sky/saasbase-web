@@ -77,6 +77,7 @@ export const financial = {
       expenseSettlement: 'Expense Settlement',
       cashOnDelivery: 'Cash on Delivery',
       paidByBankTransfer: 'Paid by Bank Transfer',
+      other: 'Other',
       undefined: '',
     },
   },

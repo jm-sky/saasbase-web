@@ -77,6 +77,7 @@ export const financial = {
       expenseSettlement: 'Rozliczenie kosztów',
       cashOnDelivery: 'Płatność przy odbiorze',
       paidByBankTransfer: 'Zapłacono przelewem bankowym',
+      other: 'Inna',
       undefined: '',
     },
   },

@@ -125,6 +125,27 @@ export const tenant = {
     title: 'Overview',
     description: 'Overview of the tenant',
   },
+  organizationUnits: {
+    title: 'Organization Units',
+    description: 'Organization units of the tenant',
+    fields: {
+      name: 'Name',
+      code: 'Code',
+      description: 'Description',
+      isActive: 'Active',
+    },
+    add: {
+      title: 'Add Organization Unit',
+      description: 'Add a new organization unit to the tenant.',
+      error: 'Failed to add organization unit',
+    },
+    delete: {
+      title: 'Delete Organization Unit',
+      description: 'Delete an existing organization unit of the tenant.',
+      error: 'Failed to delete organization unit',
+      confirm: 'Are you sure you want to delete this organization unit?',
+    },
+  },
   logs: {
     title: 'Logs',
   },

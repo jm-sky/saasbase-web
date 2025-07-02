@@ -33,6 +33,7 @@ export const useTenant = () => {
   })
 
   return {
+    tenantId,
     tenant: tenantProxy,
     tenantBillingAddress,
     loadTenant,

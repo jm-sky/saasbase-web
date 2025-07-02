@@ -130,6 +130,27 @@ export const tenant = {
     title: 'Przegląd',
     description: 'Przegląd zespołu',
   },
+  organizationUnits: {
+    title: 'Jednostki organizacyjne',
+    description: 'Jednostki organizacyjne zespołu',
+    fields: {
+      name: 'Nazwa',
+      code: 'Kod',
+      description: 'Opis',
+      isActive: 'Aktywna',
+    },
+    add: {
+      title: 'Dodaj jednostkę organizacyjną',
+      description: 'Dodaj nową jednostkę organizacyjną do zespołu.',
+      error: 'Nie udało się dodać jednostki organizacyjnej',
+    },
+    delete: {
+      title: 'Usuń jednostkę organizacyjną',
+      description: 'Usuń istniejącą jednostkę organizacyjną z zespołu.',
+      error: 'Nie udało się usunąć jednostki organizacyjnej',
+      confirm: 'Czy na pewno chcesz usunąć tę jednostkę organizacyjną?',
+    },
+  },
   logs: {
     title: 'Logi',
   },

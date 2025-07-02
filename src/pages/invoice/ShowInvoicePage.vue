@@ -69,7 +69,7 @@ onMounted(async () => {
     </div>
 
     <div class="flex flex-row gap-8 m-6">
-      <div class="max-w-7xl mx-auto p-6 md:p-8 border shadow-xl/30">
+      <div class="w-full lg:w-7xl max-w-7xl mx-auto p-6 md:p-8 border shadow-xl/30">
         <!-- Main content -->
         <div class="grid grid-cols-2 gap-8 p-4">
           <div class="col-span-2 mb-6">
