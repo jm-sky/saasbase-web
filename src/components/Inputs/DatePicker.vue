@@ -1,16 +1,31 @@
 <script setup lang="ts">
+import { parseAbsolute } from '@internationalized/date'
+import { format, parseISO } from 'date-fns'
 import { CalendarIcon } from 'lucide-vue-next'
+import { computed, type HTMLAttributes } from 'vue'
 import { Button } from '@/components/ui/button'
 import { Calendar } from '@/components/ui/calendar'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
 import { cn } from '@/lib/utils'
-import type { HTMLAttributes } from 'vue'
+import type { ZonedDateTime } from '@internationalized/date'
+
+const STANDARD_DATE_FORMAT = 'yyyy-MM-dd'
 
 const modelValue = defineModel<string | undefined | null>('modelValue')
 
 const props = defineProps<{
   class?: HTMLAttributes['class']
 }>()
+
+const calendarValue = computed({
+  get(): ZonedDateTime | undefined {
+    const date = parseISO(modelValue.value ?? '')
+    return modelValue.value ? parseAbsolute(date.toISOString(), 'UTC') : undefined
+  },
+  set(value: ZonedDateTime | undefined) {
+    modelValue.value = value ? format(value.toDate(), STANDARD_DATE_FORMAT) : undefined
+  }
+})
 </script>
 
 <template>
@@ -25,7 +40,7 @@ const props = defineProps<{
       </Button>
     </PopoverTrigger>
     <PopoverContent class="w-auto p-0">
-      <Calendar />
+      <Calendar v-model="calendarValue" />
     </PopoverContent>
   </Popover>
 </template>

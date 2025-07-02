@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
+import DatePickerInput from '@/components/Inputs/DatePickerInput.vue'
 import { Button } from '@/components/ui/button'
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
-import { Input } from '@/components/ui/input'
 import { Separator } from '@/components/ui/separator'
 import { Switch } from '@/components/ui/switch'
 import { TagsInput, TagsInputInput, TagsInputItem, TagsInputItemDelete, TagsInputItemText } from '@/components/ui/tags-input'
@@ -55,8 +55,7 @@ const emit = defineEmits<{
             {{ t('financial.fields.exchange.date', 'Exchange Date') }}
           </FormLabel>
           <FormControl>
-            <Input
-              type="date"
+            <DatePickerInput
               :value="values.body.exchange.date"
               class="w-42"
               @update:model-value="emit('updateExchangeDate', ($event ?? values.body.exchange.date) as string)"
