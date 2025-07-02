@@ -1,4 +1,5 @@
 export const shared = {
+  notFound: 'Nie znaleziono wyników',
   address: {
     select: 'Wybierz adres',
     search: 'Szukaj adresu',
@@ -13,6 +14,8 @@ export const shared = {
     select: 'Wybierz kontrahenta',
     search: 'Szukaj kontrahenta',
     notFound: 'Nie znaleziono kontrahentów',
+    recent: 'Ostatni',
+    all: 'Wszyscy',
   },
   country: {
     select: 'Wybierz kraj',

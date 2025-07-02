@@ -1,4 +1,5 @@
 export const shared = {
+  notFound: 'No results found',
   address: {
     select: 'Select address',
     search: 'Search address',
@@ -13,6 +14,8 @@ export const shared = {
     select: 'Select contractor',
     search: 'Search contractor',
     notFound: 'No contractors found',
+    recent: 'Recent',
+    all: 'All',
   },
   country: {
     select: 'Select country',

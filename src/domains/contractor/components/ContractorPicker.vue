@@ -1,26 +1,21 @@
 <script setup lang="ts">
-import { useDebounceFn } from '@vueuse/core'
-import { Check, ChevronsUpDown } from 'lucide-vue-next'
-import { computed, onMounted, ref } from 'vue'
+import { templateRef, useDebounceFn, useInfiniteScroll } from '@vueuse/core'
+import { Plus } from 'lucide-vue-next'
+import { computed, nextTick, onMounted, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import LoadingIcon from '@/components/Icons/LoadingIcon.vue'
+import {
+  PickerActions,
+  PickerContent,
+  PickerItem,
+  PickerList,
+  PickerPopover
+} from '@/components/Pickers'
 import Button from '@/components/ui/button/Button.vue'
-import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-} from '@/components/ui/command'
-import CommandSeparator from '@/components/ui/command/CommandSeparator.vue'
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from '@/components/ui/popover'
+import { CommandEmpty, CommandGroup } from '@/components/ui/command'
+import { config } from '@/config'
+import TagList from '@/domains/tags/components/TagList.vue'
 import { useCache } from '@/lib/cache'
-import { cn } from '@/lib/utils'
 import type { IContractorLookup } from '../types/contractor.type'
 import { contractorService, type IContractorFilters } from '../services/ContractorService'
 import type { FilterDefinition } from '@/domains/shared/types/resource.type'
@@ -30,16 +25,63 @@ const { t } = useI18n()
 const id = defineModel<string | undefined>('id')
 const modelValue = defineModel<IContractorLookup | undefined>('modelValue', { required: true })
 
-const { popoverContentClass, disabled, class: classProp, type = 'buyer' } = defineProps<{
+const {
+  popoverContentClass,
+  disabled,
+  class: classProp,
+  type = 'buyer',
+  showCreateButton = false,
+  showVatId = true,
+  perPage = 20,
+  maxHeight = '300px'
+} = defineProps<{
   class?: string
   popoverContentClass?: string
   disabled?: boolean
   type?: 'supplier' | 'buyer'
+  showCreateButton?: boolean
+  showVatId?: boolean
+  perPage?: number
+  maxHeight?: string
+}>()
+
+const emit = defineEmits<{
+  create: []
+  error: [error: Error]
 }>()
 
 const open = ref(false)
 const search = ref('')
 const contractors = ref<IContractorLookup[]>([])
+const currentPage = ref(1)
+const hasMoreData = ref(true)
+const error = ref<string | null>(null)
+const listRef = templateRef<HTMLElement>('listRef')
+const recentSelections = ref<IContractorLookup[]>([])
+
+// Load recent selections from localStorage
+const loadRecentSelections = () => {
+  try {
+    const stored = localStorage.getItem(`${config.appId}:contractor-recent-${type}`)
+    if (stored) {
+      recentSelections.value = JSON.parse(stored).slice(0, 3) // Keep last 3
+    }
+  } catch {
+    // Ignore localStorage errors
+  }
+}
+
+// Save to recent selections
+const saveToRecent = (contractor: IContractorLookup) => {
+  const filtered = recentSelections.value.filter(c => c.id !== contractor.id)
+  recentSelections.value = [contractor, ...filtered].slice(0, 3)
+
+  try {
+    localStorage.setItem(`${config.appId}:contractor-recent-${type}`, JSON.stringify(recentSelections.value))
+  } catch {
+    // Ignore localStorage errors
+  }
+}
 
 const filters = computed<IContractorFilters>(() => {
   const filterData: Record<string, FilterDefinition> = {}
@@ -55,39 +97,120 @@ const filters = computed<IContractorFilters>(() => {
   return {
     search: search.value,
     filter: filterData,
-    page: 1,
-    perPage: 10,
+    page: currentPage.value,
+    perPage,
   }
 })
 
-const showResults = (items: IContractorLookup[]) => {
-  contractors.value = items
+const showResults = (items: IContractorLookup[], isNewSearch = false) => {
+  if (isNewSearch) {
+    contractors.value = items
+    currentPage.value = 1
+  } else {
+    contractors.value = [...contractors.value, ...items]
+  }
+
+  hasMoreData.value = items.length === perPage
+  error.value = null
 }
 
 const { loading, clearCache, searchWithCache } = useCache<IContractorFilters, IContractorLookup>({
-  softRefreshInterval: 5 * 60 * 1000, // 5 minut
+  softRefreshInterval: 5 * 60 * 1000, // 5 minutes
   loadItems: (filters) => contractorService.lookup(filters),
-  showResults,
+  showResults: (items) => {
+    showResults(items, filters.value.page === 1)
+  },
 })
 
-const filteredContractors = computed(() => {
-  return contractors.value
+const groupedContractors = computed(() => {
+  if (!search.value && recentSelections.value.length > 0) {
+    const recentIds = new Set(recentSelections.value.map(c => c.id))
+    const otherContractors = contractors.value.filter(c => !recentIds.has(c.id))
+
+    return {
+      recent: recentSelections.value,
+      others: otherContractors
+    }
+  }
+
+  return {
+    recent: [],
+    others: contractors.value
+  }
 })
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const onSelect = (event: any) => {
   const selectedId = event.detail.value
-  const selectedContractor = contractors.value.find((contractor) => contractor.id === selectedId)
-  id.value = selectedContractor?.id
-  modelValue.value = selectedContractor
-  open.value = false
+  const selectedContractor = [...contractors.value, ...recentSelections.value]
+    .find((contractor) => contractor.id === selectedId)
+
+  if (selectedContractor) {
+    id.value = selectedContractor.id
+    modelValue.value = selectedContractor
+    saveToRecent(selectedContractor)
+    open.value = false
+  }
 }
 
-const onSearchDebounced = useDebounceFn((value: string) => {
-  void searchWithCache({ ...filters.value, search: value })
+const loadMore = async () => {
+  if (loading.value || !hasMoreData.value) return
+
+  currentPage.value += 1
+  await searchWithCache(filters.value)
+}
+
+// Infinite scroll setup
+useInfiniteScroll(
+  listRef,
+  loadMore,
+  { distance: 10 }
+)
+
+const onSearchDebounced = useDebounceFn(async (value: string) => {
+  currentPage.value = 1
+  hasMoreData.value = true
+  await searchWithCache({ ...filters.value, search: value, page: 1 })
 }, 300)
 
+const resetSearch = () => {
+  search.value = ''
+  currentPage.value = 1
+  contractors.value = []
+  hasMoreData.value = true
+  error.value = null
+}
+
+const cleanCacheAndSearch = () => {
+  clearCache()
+  resetSearch()
+  void searchWithCache(filters.value)
+}
+
+// Watch for search changes
+watch(search, (newValue) => {
+  if (!newValue) {
+    resetSearch()
+    void searchWithCache(filters.value)
+  }
+})
+
+// Watch for open state changes
+watch(open, (isOpen) => {
+  if (isOpen) {
+    void nextTick(() => {
+      if (contractors.value.length === 0) {
+        void searchWithCache(filters.value)
+      }
+    })
+  } else {
+    // Reset search when closing
+    search.value = ''
+  }
+})
+
 onMounted(() => {
+  loadRecentSelections()
   if (contractors.value.length === 0) {
     void searchWithCache(filters.value)
   }
@@ -95,60 +218,122 @@ onMounted(() => {
 </script>
 
 <template>
-  <Popover v-model:open="open">
-    <PopoverTrigger as-child>
-      <Button
-        variant="outline"
-        role="combobox"
-        :aria-expanded="open"
-        :disabled="disabled || loading"
-        class="w-full justify-between"
-        :class="classProp"
-      >
-        <slot name="trigger">
+  <PickerPopover
+    v-model:open="open"
+    :disabled="disabled || loading"
+    :class="classProp"
+    :popover-content-class="popoverContentClass"
+  >
+    <template #trigger>
+      <slot name="trigger">
+        <span class="truncate">
           {{ modelValue?.name ?? t('shared.contractor.select') }}
-        </slot>
-        <ChevronsUpDown class="ml-2 size-4 shrink-0 opacity-50" />
+        </span>
+      </slot>
+    </template>
+
+    <PickerContent
+      v-model:search="search"
+      :search-placeholder="t('shared.contractor.search')"
+      :error="error"
+      @search-input="onSearchDebounced"
+    />
+
+    <PickerList ref="listRef" :max-height="maxHeight">
+      <CommandEmpty>
+        <div class="text-center py-4">
+          <p>{{ t('shared.contractor.notFound') }}</p>
+          <Button
+            v-if="showCreateButton"
+            variant="outline"
+            size="sm"
+            class="mt-2"
+            @click="emit('create')"
+          >
+            <Plus class="mr-2 h-4 w-4" />
+            {{ t('shared.contractor.create') }}
+          </Button>
+        </div>
+      </CommandEmpty>
+
+      <!-- Recent Selections -->
+      <CommandGroup v-if="groupedContractors.recent.length > 0" :heading="t('shared.contractor.recent')">
+        <PickerItem
+          v-for="contractor in groupedContractors.recent"
+          :key="`recent-${contractor.id}`"
+          :value="contractor.id"
+          :selected="modelValue?.id === contractor.id"
+          :disabled="loading"
+          @select="onSelect"
+        >
+          <div class="flex flex-col w-full min-w-0">
+            <div class="text-sm font-medium truncate">
+              {{ contractor.name }}
+            </div>
+            <div v-if="showVatId && contractor.vatId" class="text-xs text-muted-foreground truncate">
+              {{ t('contractor.fields.vatId') }}: {{ contractor.vatId }}
+            </div>
+          </div>
+        </PickerItem>
+      </CommandGroup>
+
+      <!-- All Contractors -->
+      <CommandGroup :heading="groupedContractors.recent.length > 0 ? t('shared.contractor.all') : undefined">
+        <PickerItem
+          v-for="contractor in groupedContractors.others"
+          :key="contractor.id"
+          :value="contractor.id"
+          :selected="modelValue?.id === contractor.id"
+          :disabled="loading"
+          @select="onSelect"
+        >
+          <div class="flex flex-col w-full min-w-0">
+            <div class="text-sm truncate">
+              {{ contractor.name }}
+            </div>
+            <div v-if="showVatId && contractor.vatId" class="text-xs text-muted-foreground truncate">
+              {{ t('contractor.fields.vatId') }}: {{ contractor.vatId }}
+            </div>
+            <div v-if="contractor.tags.length > 0" class="text-xs text-muted-foreground truncate">
+              <TagList :tags="contractor.tags" />
+            </div>
+          </div>
+        </PickerItem>
+
+        <!-- Load More Indicator -->
+        <div v-if="hasMoreData && !loading" class="p-2 text-center">
+          <div class="text-xs text-muted-foreground">
+            {{ t('shared.contractor.scrollForMore') }}
+          </div>
+        </div>
+
+        <!-- Loading Indicator -->
+        <div v-if="loading" class="flex justify-center items-center p-4">
+          <LoadingIcon class="size-4 animate-spin mr-2" />
+          <span class="text-sm text-muted-foreground">
+            {{ t('common.loading') }}
+          </span>
+        </div>
+      </CommandGroup>
+    </PickerList>
+
+    <PickerActions>
+      <Button variant="outline" size="sm" @click="cleanCacheAndSearch()">
+        {{ t('common.clearCache', 'Clear cache') }}
       </Button>
-    </PopoverTrigger>
-    <PopoverContent :class="cn('w-full p-0', popoverContentClass)">
-      <Command>
-        <CommandInput v-model="search" :placeholder="t('shared.contractor.search')" @input="(event) => onSearchDebounced(event.target.value)" />
-        <CommandList>
-          <CommandEmpty>{{ t('shared.contractor.notFound') }}</CommandEmpty>
-          <CommandGroup>
-            <CommandItem
-              v-for="contractor in filteredContractors"
-              :key="contractor.id"
-              :value="contractor.id"
-              :class="loading ? 'opacity-50' : ''"
-              @select="onSelect"
-            >
-              <Check
-                class="mr-2 size-4"
-                :class="modelValue?.id === contractor.id ? 'opacity-100' : 'opacity-0'"
-              />
-              <div class="flex flex-row justify-between items-center w-full gap-x-3">
-                <div class="text-sm">
-                  {{ contractor.name }}
-                </div>
-                <div class="text-sm text-muted-foreground">
-                  {{ t('contractor.fields.vatId') }}: {{ contractor.vatId }}
-                </div>
-              </div>
-            </CommandItem>
-            <div v-if="loading" class="absolute top-0 left-0 w-full h-full flex justify-center items-center p-2">
-              <LoadingIcon class="size-4 animate-spin" />
-            </div>
-            <CommandSeparator />
-            <div class="p-2">
-              <Button variant="outline" @click="clearCache()">
-                {{ t('common.clearCache', 'Clear cache') }}
-              </Button>
-            </div>
-          </CommandGroup>
-        </CommandList>
-      </Command>
-    </PopoverContent>
-  </Popover>
+      <Button
+        v-if="showCreateButton"
+        variant="outline"
+        size="sm"
+        @click="emit('create')"
+      >
+        <Plus class="mr-2 h-4 w-4" />
+        {{ t('shared.contractor.create') }}
+      </Button>
+    </PickerActions>
+  </PickerPopover>
 </template>
+
+<style scoped>
+/* No custom scrollbar styles needed - handled by PickerList */
+</style>

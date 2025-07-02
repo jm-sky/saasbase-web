@@ -117,6 +117,7 @@ export interface IContractorLookup {
   description?: string
   isSupplier: boolean
   isBuyer: boolean
+  tags: ITagPreview[]
   logoUrl?: string
   logo?: IMedia
   preferences?: IContractorPreferences
