@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { tagColor } from '@/domains/tags/utils/tagColor'
+import TagListItem from './TagListItem.vue'
 import type { ITagPreview } from '@/domains/tags/types/tag.type'
 
 const { tags, limit = 3 } = defineProps<{
@@ -19,14 +19,11 @@ const tooltipText = computed(() => tags.map(tag => tag.name).join(', '))
   >
     <span v-if="tags.length === 0">-</span>
 
-    <span
+    <TagListItem
       v-for="(tag, index) in limitedTags"
       :key="index"
-      class="text-xs rounded px-2 py-0.5"
-      :class="tagColor(tag.color ?? 'default')"
-    >
-      {{ tag.name }}
-    </span>
+      :tag="tag"
+    />
 
     <span v-if="tags.length > limit" class="text-xs text-muted-foreground">+{{ tags.length - limit }}</span>
   </div>

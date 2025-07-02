@@ -3,6 +3,8 @@ export const financial = {
     placeholder: 'Place for logo',
   },
   fields: {
+    taxId: 'Tax ID',
+    vatId: 'VAT ID',
     type: 'Type',
     status: 'Status',
     number: 'Number',
@@ -28,6 +30,7 @@ export const financial = {
     numberingTemplate: 'Numbering Template',
     exchange: {
       date: 'Exchange Rate Date',
+      rate: 'Exchange Rate',
       exchangeRate: 'Exchange Rate',
     },
   },

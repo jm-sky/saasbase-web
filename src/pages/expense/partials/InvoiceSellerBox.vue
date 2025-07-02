@@ -18,8 +18,8 @@ const seller = defineModel<IContractorLookup | undefined>('seller')
 
 <template>
   <div class="flex flex-col items-start justify-center gap-y-2 border-b p-6">
-    <div v-if="seller" class="w-full">
-      <Avatar class="size-7">
+    <div v-if="seller" class="w-full flex justify-center mb-1">
+      <Avatar class="size-20">
         <AvatarImage :src="seller.logoUrl ?? ''" :alt="seller.name" />
         <AvatarFallback>{{ seller.name.slice(0, 2) ?? 'X' }}</AvatarFallback>
       </Avatar>

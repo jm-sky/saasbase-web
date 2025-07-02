@@ -3,6 +3,8 @@ export const financial = {
     placeholder: 'Miejsce na logo',
   },
   fields: {
+    taxId: 'NIP',
+    vatId: 'VAT ID',
     type: 'Typ',
     status: 'Status faktury',
     number: 'Numer',
@@ -28,6 +30,7 @@ export const financial = {
     numberingTemplate: 'Szablon numeracji',
     exchange: {
       date: 'Data kursu wymiany',
+      rate: 'Kurs wymiany',
       exchangeRate: 'Kurs wymiany',
     },
   },

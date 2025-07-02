@@ -1,17 +1,13 @@
 <script setup lang="ts">
-import { CalendarIcon } from 'lucide-vue-next'
 import { v4 } from 'uuid'
 import { useForm } from 'vee-validate'
 import { onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
 import FormFieldLabeled from '@/components/Form/FormFieldLabeled.vue'
+import DatePicker from '@/components/Inputs/DatePicker.vue'
 import Button from '@/components/ui/button/Button.vue'
-import Calendar from '@/components/ui/calendar/Calendar.vue'
 import Input from '@/components/ui/input/Input.vue'
-import Popover from '@/components/ui/popover/Popover.vue'
-import PopoverContent from '@/components/ui/popover/PopoverContent.vue'
-import PopoverTrigger from '@/components/ui/popover/PopoverTrigger.vue'
 import Separator from '@/components/ui/separator/Separator.vue'
 import { useToast } from '@/components/ui/toast/use-toast'
 import { expenseService } from '@/domains/expense/services/expenseService'
@@ -123,11 +119,11 @@ const addLine = () => {
 onMounted(async () => {
   tenant.value ??= await loadTenant()
   tenantBillingAddress.value ??= await loadTenantBillingAddress()
-  setFieldValue('seller.name', tenant.value.name)
-  setFieldValue('seller.taxId', tenant.value.taxId ?? tenant.value.vatId ?? '')
-  setFieldValue('seller.address', tenantBillingAddress.value?.street ? fullAddress(tenantBillingAddress.value) : 'OUR ADDRESS')
-  setFieldValue('seller.country', tenant.value.country ?? 'PL')
-  setFieldValue('seller.email', tenant.value.email ?? '')
+  setFieldValue('buyer.name', tenant.value.name)
+  setFieldValue('buyer.taxId', tenant.value.taxId ?? tenant.value.vatId ?? '')
+  setFieldValue('buyer.address', tenantBillingAddress.value?.street ? fullAddress(tenantBillingAddress.value) : 'OUR ADDRESS')
+  setFieldValue('buyer.country', tenant.value.country ?? 'PL')
+  setFieldValue('buyer.email', tenant.value.email ?? '')
   addLine()
 })
 
@@ -184,17 +180,7 @@ const onSellerUpdate = (contractor: IContractorLookup | undefined) => {
                   <Input v-bind="componentField" />
                 </FormFieldLabeled>
               </div>
-              <Popover>
-                <PopoverTrigger as-child>
-                  <Button variant="outline" class="w-36 justify-start text-left font-normal">
-                    <CalendarIcon class="mr-2 size-4" />
-                    {{ values.issueDate }}
-                  </Button>
-                </PopoverTrigger>
-                <PopoverContent class="w-auto p-0">
-                  <Calendar />
-                </PopoverContent>
-              </Popover>
+              <DatePicker :model-value="values.issueDate" @update:model-value="setFieldValue('issueDate', $event)" />
             </div>
 
             <InvoiceInfoTable :values="values" />

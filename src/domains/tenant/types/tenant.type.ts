@@ -95,6 +95,15 @@ export interface ITenantBrandingUpdate {
   emailHeaderImage?: File
 }
 
+export interface ITenantPreferences {
+  currency?: string
+  require2fa: boolean
+  invoiceAutoNumbering: boolean
+  contractorLogoFetching: boolean
+  createdAt: TDateTime
+  updatedAt: TDateTime
+}
+
 export interface ITenant {
   id: TUUID
   tenantId: TUUID
@@ -112,6 +121,7 @@ export interface ITenant {
   logo?: IMedia
   createdAt: TDateTime
   updatedAt: TDateTime
+  prefereces?: ITenantPreferences
 }
 
 export interface ITenantCreate {

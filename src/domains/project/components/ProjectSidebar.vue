@@ -2,9 +2,9 @@
 import { useI18n } from 'vue-i18n'
 import AvatarUploader from '@/components/Inputs/AvatarUploader.vue'
 import InfoSection from '@/components/Sections/InfoSection.vue'
-import TagList from '@/components/TagList.vue'
 import Separator from '@/components/ui/separator/Separator.vue'
 import { productLogoService } from '@/domains/product/services/ProductLogoService'
+import TagList from '@/domains/tags/components/TagList.vue'
 import { toDateTimeString } from '@/lib/toDateTimeString'
 import type { IProject } from '../types/project.type'
 

@@ -1,18 +1,15 @@
 <script setup lang="ts">
-import { CalendarIcon } from 'lucide-vue-next'
 import { v4 } from 'uuid'
 import { useForm } from 'vee-validate'
 import { onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
 import FormFieldLabeled from '@/components/Form/FormFieldLabeled.vue'
+import DatePicker from '@/components/Inputs/DatePicker.vue'
 import Button from '@/components/ui/button/Button.vue'
-import Calendar from '@/components/ui/calendar/Calendar.vue'
-import Popover from '@/components/ui/popover/Popover.vue'
-import PopoverContent from '@/components/ui/popover/PopoverContent.vue'
-import PopoverTrigger from '@/components/ui/popover/PopoverTrigger.vue'
 import Separator from '@/components/ui/separator/Separator.vue'
 import { useToast } from '@/components/ui/toast/use-toast'
+import { config } from '@/config'
 import NumberingTemplatePicker from '@/domains/invoice/components/NumberingTemplatePicker.vue'
 import { invoiceService } from '@/domains/invoice/services/invoiceService'
 import { useTenant } from '@/domains/tenant/composables/useTenant'
@@ -47,7 +44,7 @@ const { isSubmitting, handleSubmit, values, setErrors, setFieldValue, resetForm 
     totalNet: 0,
     totalTax: 0,
     totalGross: 0,
-    currency: 'PLN',
+    currency: tenant.value?.prefereces?.currency ?? config.defaults.currency,
     exchangeRate: 1,
     seller: {
       contractorId: undefined,
@@ -197,17 +194,7 @@ const onBuyerUpdate = (contractor: IContractorLookup | undefined) => {
                   </div>
                 </FormFieldLabeled>
               </div>
-              <Popover>
-                <PopoverTrigger as-child>
-                  <Button variant="outline" class="w-36 justify-start text-left font-normal">
-                    <CalendarIcon class="mr-2 size-4" />
-                    {{ values.issueDate }}
-                  </Button>
-                </PopoverTrigger>
-                <PopoverContent class="w-auto p-0">
-                  <Calendar />
-                </PopoverContent>
-              </Popover>
+              <DatePicker :model-value="values.issueDate" @update:model-value="setFieldValue('issueDate', $event ?? values.issueDate)" />
             </div>
 
             <InvoiceInfoTable :values="values" />

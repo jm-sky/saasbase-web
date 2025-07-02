@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Check, ChevronsUpDown } from 'lucide-vue-next'
 import { storeToRefs } from 'pinia'
-import { computed, onMounted, ref, watch } from 'vue'
+import { computed, type HTMLAttributes, onMounted, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import Button from '@/components/ui/button/Button.vue'
 import {
@@ -33,6 +33,8 @@ const rate = defineModel<number | undefined>('rate')
 const exchangeRateValue = ref<IExchangeRate | undefined>(undefined)
 
 const props = defineProps<{
+  emptyText?: string
+  class?: HTMLAttributes['class']
   date: string | undefined
   popoverContentClass?: string
   disabled?: boolean
@@ -43,7 +45,7 @@ const open = ref(false)
 // Format display text for selected exchange rate
 const selectedText = computed(() => {
   if (!exchangeRateValue.value) {
-    return t('shared.exchangeRate.select')
+    return props.emptyText ?? t('shared.exchangeRate.select')
   }
 
   const rate = exchangeRateValue.value
@@ -116,6 +118,7 @@ onMounted(() => {
         :aria-expanded="open"
         :disabled="disabled || loading || !date"
         class="w-full justify-between"
+        :class="props.class"
       >
         {{ selectedText }}
         <ChevronsUpDown class="ml-2 size-4 shrink-0 opacity-50" />

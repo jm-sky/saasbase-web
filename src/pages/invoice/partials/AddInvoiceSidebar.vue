@@ -32,9 +32,56 @@ const emit = defineEmits<{
       Currency
     </div>
     <div class="flex flex-col gap-1">
-      <CurrencyPicker :id="values.currency" @update:id="emit('updateCurrency', $event ?? values.currency)" />
-      <Input type="date" :value="values.body.exchange.date" @update:model-value="emit('updateExchangeDate', ($event ?? values.body.exchange.date) as string)" />
-      <ExchangeRatePicker :date="values.body.exchange.date" :currency="values.currency" />
+      <FormField name="currency">
+        <FormItem class="space-y-0 flex flex-row items-center justify-between gap-1">
+          <FormLabel>
+            {{ t('financial.fields.currency', 'Currency') }}
+          </FormLabel>
+          <FormControl>
+            <CurrencyPicker
+              :id="values.currency"
+              :model-value="{ code: values.currency, name: values.currency, symbol: values.currency }"
+              class="w-40"
+              @update:id="emit('updateCurrency', $event ?? values.currency)"
+            />
+          </FormControl>
+          <FormMessage />
+        </FormItem>
+      </FormField>
+
+      <FormField name="body.exchange.date">
+        <FormItem class="space-y-0 flex flex-row items-center justify-between gap-1">
+          <FormLabel>
+            {{ t('financial.fields.exchange.date', 'Exchange Date') }}
+          </FormLabel>
+          <FormControl>
+            <Input
+              type="date"
+              :value="values.body.exchange.date"
+              class="w-42"
+              @update:model-value="emit('updateExchangeDate', ($event ?? values.body.exchange.date) as string)"
+            />
+          </FormControl>
+          <FormMessage />
+        </FormItem>
+      </FormField>
+
+      <FormField name="body.exchange.rate">
+        <FormItem class="space-y-0 flex flex-row items-center justify-between gap-1">
+          <FormLabel>
+            {{ t('financial.fields.exchange.rate', 'Exchange Rate') }}
+          </FormLabel>
+          <FormControl>
+            <ExchangeRatePicker
+              empty-text="-"
+              class="w-40"
+              :date="values.body.exchange.date"
+              :currency="values.currency"
+            />
+          </FormControl>
+          <FormMessage />
+        </FormItem>
+      </FormField>
     </div>
 
     <Separator />
