@@ -17,12 +17,13 @@ import { expenseService, type IExpenseFilters } from '@/domains/expense/services
 import { useExpenseStore } from '@/domains/expense/stores/expense.store'
 import InvoiceStatusBadge from '@/domains/financial/components/InvoiceStatusBadge.vue'
 import AuthenticatedLayout from '@/layouts/AuthenticatedLayout.vue'
+import { money } from '@/lib/money'
 import { toDateTimeString } from '@/lib/toDateTimeString'
 import type { ColumnDef } from '@tanstack/vue-table'
 import type { IExpense } from '@/domains/expense/types/expense.type'
 import type { IResourceMeta } from '@/domains/shared/types/resource.type'
 
-const { t } = useI18n()
+const { t, locale } = useI18n()
 
 const expenseStore = useExpenseStore()
 const { expenses } = storeToRefs(expenseStore)
@@ -178,13 +179,13 @@ watch(filters, () => refresh(), { deep: true })
                 {{ t('financial.fields.totalGross', 'Total Gross') }}
               </div>
               <div class="font-semibold">
-                {{ data.totalGross?.toFixed(2) ?? '-' }} {{ data.currency }}
+                {{ money(data.totalGross, data.currency, locale) }}
               </div>
               <div>
                 {{ t('financial.fields.totalNet', 'Total Net') }}
               </div>
               <div>
-                {{ data.totalNet?.toFixed(2) ?? '-' }} {{ data.currency }}
+                {{ money(data.totalNet, data.currency, locale) }}
               </div>
             </div>
           </template>

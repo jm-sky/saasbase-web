@@ -15,12 +15,13 @@ import InvoiceListDropdown from '@/domains/invoice/components/InvoiceListDropdow
 import { type IInvoiceFilters, invoiceService } from '@/domains/invoice/services/invoiceService'
 import { useInvoiceStore } from '@/domains/invoice/stores/invoice.store'
 import AuthenticatedLayout from '@/layouts/AuthenticatedLayout.vue'
+import { money } from '@/lib/money'
 import { toDateTimeString } from '@/lib/toDateTimeString'
 import type { ColumnDef } from '@tanstack/vue-table'
 import type { IInvoice } from '@/domains/invoice/types/invoice.type'
 import type { IResourceMeta } from '@/domains/shared/types/resource.type'
 
-const { t } = useI18n()
+const { t, locale } = useI18n()
 
 const invoiceStore = useInvoiceStore()
 const { invoices } = storeToRefs(invoiceStore)
@@ -167,13 +168,13 @@ watch(filters, () => refresh(), { deep: true })
               {{ t('financial.fields.totalGross', 'Total Gross') }}
             </div>
             <div class="font-semibold">
-              {{ data.totalGross?.toFixed(2) ?? '-' }} {{ data.currency }}
+              {{ money(data.totalGross, data.currency, locale) }}
             </div>
             <div>
               {{ t('financial.fields.totalNet', 'Total Net') }}
             </div>
             <div>
-              {{ data.totalNet?.toFixed(2) ?? '-' }} {{ data.currency }}
+              {{ money(data.totalNet, data.currency, locale) }}
             </div>
           </div>
         </template>
