@@ -17,8 +17,9 @@ const { t } = useI18n()
 
 const open = defineModel<boolean>('open', { required: true })
 
-const { tenantId } = defineProps<{
+const { tenantId, parentUnit } = defineProps<{
   tenantId: string
+  parentUnit: IOrganizationUnit | null
 }>()
 
 const emit = defineEmits<{
@@ -26,12 +27,13 @@ const emit = defineEmits<{
   created: [IOrganizationUnit]
 }>()
 
-const { values, handleSubmit, resetForm, setErrors, isSubmitting } = useForm<IOrganizationUnitCreate>({
+const { values, handleSubmit, resetForm, setFieldValue, setErrors, isSubmitting } = useForm<IOrganizationUnitCreate>({
   initialValues: {
     name: '',
     code: '',
     description: '',
-    isActive: true
+    isActive: true,
+    parentId: parentUnit?.id ?? null,
   }
 })
 
@@ -52,15 +54,19 @@ watch(open, (isOpen) => {
     resetForm()
   }
 })
+
+const generateCode = () => {
+  const slug = values.name.toLowerCase().replace(/ /g, '-')
+  setFieldValue('code', slug)
+}
 </script>
 
 <template>
   <ModalComponent
+    v-model:open="open"
     size="lg"
     :title="t('tenant.organizationUnits.add.title')"
     :description="t('tenant.organizationUnits.add.description')"
-    :open="open"
-    @update:open="open = $event"
   >
     <form
       class="grid grid-cols-1 gap-4"
@@ -68,19 +74,18 @@ watch(open, (isOpen) => {
       @submit.prevent="onSubmit"
     >
       <FormFieldLabeled
-        v-slot="{ componentField }"
-        name="name"
-        :label="t('tenant.organizationUnits.fields.name')"
+        name="parentId"
+        :label="t('tenant.organizationUnits.fields.parent')"
       >
-        <Input v-bind="componentField" />
+        <Input :model-value="parentUnit?.name" :disabled="true" />
       </FormFieldLabeled>
 
       <FormFieldLabeled
         v-slot="{ componentField }"
-        name="code"
-        :label="t('tenant.organizationUnits.fields.code')"
+        name="name"
+        :label="t('tenant.organizationUnits.fields.name')"
       >
-        <Input v-bind="componentField" />
+        <Input v-bind="componentField" @change="generateCode" />
       </FormFieldLabeled>
 
       <FormFieldLabeled
@@ -91,14 +96,24 @@ watch(open, (isOpen) => {
         <Textarea v-bind="componentField" />
       </FormFieldLabeled>
 
-      <FormFieldLabeled
-        v-slot="{ componentField }"
-        name="isActive"
-        :label="t('tenant.organizationUnits.fields.isActive')"
-        class="flex flex-row items-center gap-5"
-      >
-        <Switch v-bind="componentField" :checked="values.isActive" />
-      </FormFieldLabeled>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 items-center gap-4">
+        <FormFieldLabeled
+          v-slot="{ componentField }"
+          name="code"
+          :label="t('tenant.organizationUnits.fields.code')"
+        >
+          <Input v-bind="componentField" />
+        </FormFieldLabeled>
+        <FormFieldLabeled
+          v-slot="{ componentField }"
+          name="isActive"
+          :label="t('tenant.organizationUnits.fields.isActive')"
+          class="flex flex-col items-center gap-1"
+        >
+          <Switch v-bind="componentField" :checked="values.isActive" />
+        </FormFieldLabeled>
+      </div>
 
       <Button
         type="submit"

@@ -1,54 +1,60 @@
 import { type Edge, MarkerType, type Node } from '@vue-flow/core'
-import { computed, type Ref } from 'vue'
+import { ref, type Ref } from 'vue'
 import type { IOrganizationUnit } from '../types/organizationUnit.type'
 
-interface OrganizationNode extends Node<IOrganizationUnit> {
+export interface OrganizationUnitNodeData extends IOrganizationUnit {
   level?: number
-  children?: OrganizationNode[]
+  children?: Node<OrganizationUnitNodeData>[]
+  type: 'root' | 'child'
 }
 
-export function useOrganizationChartLayout(
-  organizationUnits: Ref<IOrganizationUnit[]>,
-  selectedNodeId: Ref<string | null>
-) {
-  const nodesAndEdges = computed(() => {
-    const nodes: OrganizationNode[] = []
-    const edges: Edge[] = []
+export function useOrganizationChartLayout(organizationUnits: Ref<IOrganizationUnit[]>) {
+  const unitMap = new Map<string, IOrganizationUnit>()
+  const rootNodes = ref<Node<OrganizationUnitNodeData>[]>([])
+  const nodeMap = new Map<string, Node<OrganizationUnitNodeData>>()
+  const nodes = ref<Node<OrganizationUnitNodeData>[]>([])
+  const edges = ref<Edge[]>([])
 
-    // Create a map for quick lookup
-    const unitMap = new Map<string, IOrganizationUnit>()
+  const init = () => {
+    unitMap.clear()
+    rootNodes.value = []
+    nodeMap.clear()
+    nodes.value = []
+    edges.value = []
+
     organizationUnits.value.forEach(unit => {
       unitMap.set(unit.id.toString(), unit)
     })
+  }
 
-    // Build hierarchy
-    const rootNodes: OrganizationNode[] = []
-    const nodeMap = new Map<string, OrganizationNode>()
-
-    // First pass: Create all nodes
+  const prepareNodes = () => {
     organizationUnits.value.forEach(unit => {
       const nodeId = unit.id.toString()
-      const isSelected = selectedNodeId.value === nodeId
 
-      const node: OrganizationNode = {
+      const node: Node<OrganizationUnitNodeData> = {
         id: nodeId,
-        type: 'default',
+        type: unit.parentId ? 'child' : 'root',
         label: unit.name,
         position: { x: 0, y: 0 },
-        data: unit,
-        level: 0,
-        children: [],
-        class: [
-          'org-chart-node',
-          isSelected && 'org-chart-node--selected'
-        ].filter(Boolean).join(' '),
+        data: {
+          ...unit,
+          type: unit.parentId ? 'child' : 'root',
+          children: [],
+        },
       }
 
       nodeMap.set(nodeId, node)
-      nodes.push(node)
-    })
+      nodes.value.push(node)
 
-    // Second pass: Build parent-child relationships and create edges
+      const parentNode = unit.parentId ? nodeMap.get(unit.parentId.toString()) : null
+
+      if (parentNode) {
+        parentNode.data?.children?.push(node)
+      }
+    })
+  }
+
+  const prepareEdges = () => {
     organizationUnits.value.forEach(unit => {
       const nodeId = unit.id.toString()
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
@@ -60,10 +66,10 @@ export function useOrganizationChartLayout(
 
         if (parentNode) {
           // Add to parent's children
-          parentNode.children?.push(node)
+          parentNode.data?.children?.push(node)
 
           // Create edge from parent to child
-          edges.push({
+          edges.value.push({
             id: `${parentId}-${nodeId}`,
             source: parentId,
             target: nodeId,
@@ -82,32 +88,37 @@ export function useOrganizationChartLayout(
         }
       } else {
         // This is a root node
-        rootNodes.push(node)
+        rootNodes.value.push(node)
       }
     })
+  }
 
-    // Calculate levels and positions
-    calculateHierarchicalLayout(rootNodes)
-
-    return { nodes, edges }
-  })
+  const prepare = () => {
+    prepareNodes()
+    prepareEdges()
+    calculateHierarchicalLayout(rootNodes.value)
+  }
 
   return {
-    nodes: computed(() => nodesAndEdges.value.nodes),
-    edges: computed(() => nodesAndEdges.value.edges),
+    init,
+    prepare,
+    nodes,
+    edges,
   }
 }
 
-function calculateHierarchicalLayout(rootNodes: OrganizationNode[]) {
+function calculateHierarchicalLayout(rootNodes: Node<OrganizationUnitNodeData>[]) {
   const levelHeight = 150
   const nodeSpacing = 200
 
   // Assign levels to all nodes
-  function assignLevels(nodes: OrganizationNode[], level: number) {
+  function assignLevels(nodes: Node<OrganizationUnitNodeData>[], level: number) {
     nodes.forEach(node => {
-      node.level = level
-      if (node.children && node.children.length > 0) {
-        assignLevels(node.children, level + 1)
+      if (node.data) {
+        node.data.level = level
+      }
+      if (node.data?.children && node.data.children.length > 0) {
+        assignLevels(node.data.children, level + 1)
       }
     })
   }
@@ -115,18 +126,18 @@ function calculateHierarchicalLayout(rootNodes: OrganizationNode[]) {
   rootNodes.forEach(rootNode => { assignLevels([rootNode], 0) })
 
   // Calculate positions level by level
-  const nodesByLevel = new Map<number, OrganizationNode[]>()
+  const nodesByLevel = new Map<number, Node<OrganizationUnitNodeData>[]>()
 
-  function collectNodesByLevel(nodes: OrganizationNode[]) {
+  function collectNodesByLevel(nodes: Node<OrganizationUnitNodeData>[]) {
     nodes.forEach(node => {
-      const level = node.level! // eslint-disable-line @typescript-eslint/no-non-null-assertion
+      const level = node.data?.level ?? 0
       if (!nodesByLevel.has(level)) {
         nodesByLevel.set(level, [])
       }
       nodesByLevel.get(level)?.push(node)
 
-      if (node.children && node.children.length > 0) {
-        collectNodesByLevel(node.children)
+      if (node.data?.children && node.data.children.length > 0) {
+        collectNodesByLevel(node.data.children)
       }
     })
   }
@@ -147,22 +158,22 @@ function calculateHierarchicalLayout(rootNodes: OrganizationNode[]) {
   })
 
   // Adjust positions to center children under their parent
-  function adjustChildPositions(nodes: OrganizationNode[]) {
+  function adjustChildPositions(nodes: Node<OrganizationUnitNodeData>[]) {
     nodes.forEach(node => {
-      if (node.children && node.children.length > 0) {
+      if (node.data?.children && node.data.children.length > 0) {
         // Calculate the center position of children
-        const childrenMinX = Math.min(...node.children.map(child => child.position.x))
-        const childrenMaxX = Math.max(...node.children.map(child => child.position.x))
+        const childrenMinX = Math.min(...node.data.children.map(child => child.position.x))
+        const childrenMaxX = Math.max(...node.data.children.map(child => child.position.x))
         const childrenCenterX = (childrenMinX + childrenMaxX) / 2
 
         // Center children under parent
         const offset = node.position.x - childrenCenterX
-        node.children.forEach(child => {
+        node.data.children.forEach(child => {
           child.position.x += offset
         })
 
         // Recursively adjust grandchildren
-        adjustChildPositions(node.children)
+        adjustChildPositions(node.data.children)
       }
     })
   }

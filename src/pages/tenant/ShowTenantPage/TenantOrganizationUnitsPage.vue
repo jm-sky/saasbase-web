@@ -22,6 +22,8 @@ defineProps<{
 const loading = ref(false)
 const organizationUnits = ref<IOrganizationUnit[]>([])
 const openAddOrganizationUnitModal = ref(false)
+const selectedNodeId = ref<string | null>(null)
+const selectedUnit = ref<IOrganizationUnit | null>(null)
 
 const refresh = async () => {
   try {
@@ -44,17 +46,23 @@ onMounted(async () => {
   <div class="flex flex-col gap-2 border rounded-md p-4 shadow-lg/5">
     <TenantSectionTitle :title="t('tenant.organizationUnits.title')">
       <template #actions>
-        <Button variant="outline" @click="openAddOrganizationUnitModal = true">
+        <Button variant="outline" :disabled="!selectedUnit" @click="openAddOrganizationUnitModal = true">
           {{ t('tenant.organizationUnits.add.title') }}
         </Button>
         <RefreshIconButton :loading @click="refresh" />
       </template>
     </TenantSectionTitle>
 
-    <OrganizationUnitsTree :organization-units />
+    <OrganizationUnitsTree
+      v-model:selected-node-id="selectedNodeId"
+      v-model:selected-unit="selectedUnit"
+      :organization-units
+      @add-child="openAddOrganizationUnitModal = true"
+    />
 
     <AddOrganizationUnitModal
       :tenant-id="tenantId"
+      :parent-unit="selectedUnit"
       :open="openAddOrganizationUnitModal"
       @created="refresh()"
     />

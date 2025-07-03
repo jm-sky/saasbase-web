@@ -133,6 +133,7 @@ export const tenant = {
       code: 'Code',
       description: 'Description',
       isActive: 'Active',
+      parent: 'Parent',
     },
     add: {
       title: 'Add Organization Unit',

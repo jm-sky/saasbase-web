@@ -138,6 +138,7 @@ export const tenant = {
       code: 'Kod',
       description: 'Opis',
       isActive: 'Aktywna',
+      parent: 'Nadrzędna',
     },
     add: {
       title: 'Dodaj jednostkę organizacyjną',

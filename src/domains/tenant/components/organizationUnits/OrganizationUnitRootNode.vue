@@ -1,37 +1,33 @@
 <script setup lang="ts">
-import { Handle, type NodeProps, Position } from '@vue-flow/core'
+import { Handle, Position } from '@vue-flow/core'
 import { NodeToolbar } from '@vue-flow/node-toolbar'
-import { Edit, Plus, Trash } from 'lucide-vue-next'
+import { Edit, Plus } from 'lucide-vue-next'
 import { computed, ref } from 'vue'
 import Button from '@/components/ui/button/Button.vue'
 import { cn } from '@/lib/utils'
 import type { OrganizationUnitNodeData } from '../../composables/useOrganizationChartLayout'
 import type { IOrganizationUnit } from '../../types/organizationUnit.type'
+import type { NodeProps } from '@vue-flow/core'
 
 const props = defineProps<{
   nodeProps: NodeProps<OrganizationUnitNodeData>
   isSelected?: boolean
 }>()
 
-const emit = defineEmits<{
-  'add-child': [unit: IOrganizationUnit]
-  remove: [unit: IOrganizationUnit]
-}>()
-
 const isEditModalOpen = ref(false)
 
-const unit = computed<IOrganizationUnit>(() => props.nodeProps.data)
+const emit = defineEmits<{
+  'add-child': [unit: IOrganizationUnit]
+}>()
 
-const handleAddChild = () => {
-  emit('add-child', unit.value)
-}
+const unit = computed<IOrganizationUnit>(() => props.nodeProps.data)
 
 const handleEdit = () => {
   isEditModalOpen.value = true
 }
 
-const handleRemove = () => {
-  emit('remove', unit.value)
+const handleAddChild = () => {
+  emit('add-child', unit.value)
 }
 </script>
 
@@ -43,14 +39,6 @@ const handleRemove = () => {
       </Button>
       <Button variant="ghost" size="icon" @click="handleEdit">
         <Edit class="size-4" />
-      </Button>
-      <Button
-        variant="ghost"
-        size="icon"
-        class="hover:text-destructive"
-        @click="handleRemove"
-      >
-        <Trash class="size-4" />
       </Button>
     </NodeToolbar>
 
@@ -78,7 +66,6 @@ const handleRemove = () => {
         Code: {{ unit.code }}
       </div>
 
-      <Handle type="target" :position="Position.Top" class="size-2.5 bg-white border-2 border-primary/50" />
       <Handle
         v-if="nodeProps.data?.children?.length"
         type="source"

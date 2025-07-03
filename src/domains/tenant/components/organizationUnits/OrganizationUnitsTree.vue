@@ -1,9 +1,13 @@
 <script setup lang="ts">
+import { Background } from '@vue-flow/background'
+import { Controls } from '@vue-flow/controls'
 import { type GraphNode, type NodeMouseEvent, VueFlow } from '@vue-flow/core'
-import { ref, toRef, watch } from 'vue'
+import { toRef, watch } from 'vue'
 import type { IOrganizationUnit } from '../../types/organizationUnit.type'
 import { useOrganizationChartLayout } from '../../composables/useOrganizationChartLayout'
 import OrganizationUnitNode from './OrganizationUnitNode.vue'
+import OrganizationUnitRelation from './OrganizationUnitRelation.vue'
+import OrganizationUnitRootNode from './OrganizationUnitRootNode.vue'
 
 const props = defineProps<{
   organizationUnits: IOrganizationUnit[]
@@ -12,19 +16,19 @@ const props = defineProps<{
 const emit = defineEmits<{
   'unit-click': [unit: IOrganizationUnit]
   'unit-select': [unit: IOrganizationUnit | null]
+  'add-child': [unit: IOrganizationUnit]
+  'remove': [unit: IOrganizationUnit]
 }>()
 
-const selectedNodeId = ref<string | null>(null)
+const selectedNodeId = defineModel<string | null>('selectedNodeId', { default: null })
+const selectedUnit = defineModel<IOrganizationUnit | null>('selectedUnit', { default: null })
 
-// Use the layout composable
-const { nodes, edges } = useOrganizationChartLayout(
-  toRef(props, 'organizationUnits'),
-  selectedNodeId
-)
+const { nodes, edges, init, prepare } = useOrganizationChartLayout(toRef(props, 'organizationUnits'))
 
 const onNodeClick = (event: NodeMouseEvent) => {
   const clickedNode = event.node as GraphNode<IOrganizationUnit>
   selectedNodeId.value = selectedNodeId.value === clickedNode.id ? null : clickedNode.id
+  selectedUnit.value = selectedUnit.value === clickedNode.data ? null : clickedNode.data
 
   emit('unit-click', clickedNode.data)
   emit('unit-select', selectedNodeId.value ? clickedNode.data : null)
@@ -38,7 +42,10 @@ const onPaneClick = () => {
 // Reset selection when organization units change
 watch(() => props.organizationUnits, () => {
   selectedNodeId.value = null
-}, { deep: true })
+  selectedUnit.value = null
+  init()
+  prepare()
+}, { deep: true, immediate: true })
 </script>
 
 <template>
@@ -53,16 +60,32 @@ watch(() => props.organizationUnits, () => {
       :nodes-draggable="false"
       :nodes-connectable="false"
       :elements-selectable="false"
-      class="bg-gray-50"
+      class="bg-gray-50 rounded-lg"
       @node-click="onNodeClick"
       @pane-click="onPaneClick"
     >
-      <template #node-default="{ data }">
-        <OrganizationUnitNode
-          :data="data"
-          :is-root="nodes.findIndex(n => n.id === data.id.toString()) === 0"
-          :is-selected="selectedNodeId === data.id.toString()"
+      <Background pattern-color="#006493" :gap="40" class="rounded-3xl" />
+      <Controls />
+
+      <template #node-root="nodeProps">
+        <OrganizationUnitRootNode
+          :node-props="nodeProps"
+          :is-selected="selectedNodeId === nodeProps.data.id.toString()"
+          @add-child="emit('add-child', nodeProps.data)"
         />
+      </template>
+
+      <template #node-child="nodeProps">
+        <OrganizationUnitNode
+          :node-props="nodeProps"
+          :is-selected="selectedNodeId === nodeProps.data.id.toString()"
+          @add-child="emit('add-child', nodeProps.data)"
+          @remove="emit('remove', nodeProps.data)"
+        />
+      </template>
+
+      <template #edge-custom="edgeProps">
+        <OrganizationUnitRelation v-bind="edgeProps" />
       </template>
     </VueFlow>
   </div>

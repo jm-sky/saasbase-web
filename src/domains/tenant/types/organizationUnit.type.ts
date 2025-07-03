@@ -17,6 +17,6 @@ export interface IOrganizationUnitCreate {
   name: string
   code: string
   description: string
-  parentId?: TUUID
+  parentId?: TUUID | null
   isActive: boolean
 }
