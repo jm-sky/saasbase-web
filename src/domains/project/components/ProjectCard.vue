@@ -9,6 +9,7 @@ import CardHeader from '@/components/ui/card/CardHeader.vue'
 import CardTitle from '@/components/ui/card/CardTitle.vue'
 import DeleteProjectButton from '@/domains/project/components/DeleteProjectButton.vue'
 import EditProjectButton from '@/domains/project/components/EditProjectButton.vue'
+import UserAvatarsList from '@/domains/user/components/UserAvatarsList.vue'
 import { useProjectStore } from '../stores/project.store'
 import type { IProject } from '@/domains/project/types/project.type'
 
@@ -44,23 +45,7 @@ defineProps<{
         </div>
       </CardContent>
       <CardFooter class="mt-auto flex justify-between gap-2">
-        <div class="flex flex-row">
-          <RouterLink
-            v-for="user in project.users.slice(0, 5)"
-            :key="user.id"
-            v-tooltip="user.name"
-            :to="`/users/${user.id}`"
-            class="-ml-2 hover:z-10 hover:scale-105 transition-all duration-300"
-            @click.stop
-          >
-            <Avatar class="size-10 hover:outline-primary/50 hover:outline-2 transition-all">
-              <AvatarImage :src="user.avatarUrl ?? ''" />
-              <AvatarFallback>
-                {{ user.name.slice(0, 2) }}
-              </AvatarFallback>
-            </Avatar>
-          </RouterLink>
-        </div>
+        <UserAvatarsList :users="project.users" />
         <div class="flex justify-end gap-2">
           <EditProjectButton :id="project.id" @click.stop="projectStore.setProject(project)" />
           <DeleteProjectButton :id="project.id" @click.stop />

@@ -4,6 +4,7 @@ import { NodeToolbar } from '@vue-flow/node-toolbar'
 import { Edit, Plus } from 'lucide-vue-next'
 import { computed, ref } from 'vue'
 import Button from '@/components/ui/button/Button.vue'
+import UserAvatarsList from '@/domains/user/components/UserAvatarsList.vue'
 import { cn } from '@/lib/utils'
 import type { OrganizationUnitNodeData } from '../../composables/useOrganizationChartLayout'
 import type { IOrganizationUnit } from '../../types/organizationUnit.type'
@@ -65,6 +66,8 @@ const handleAddChild = () => {
       <div v-if="unit.code" class="text-xs px-2 py-1 rounded inline-block text-gray-400 bg-gray-50">
         Code: {{ unit.code }}
       </div>
+
+      <UserAvatarsList :users="unit.users.slice(0, 4)" class="mt-1" editable />
 
       <Handle
         v-if="nodeProps.data?.children?.length"

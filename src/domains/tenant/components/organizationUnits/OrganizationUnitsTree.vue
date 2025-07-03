@@ -49,7 +49,7 @@ watch(() => props.organizationUnits, () => {
 </script>
 
 <template>
-  <div class="min-h-96 max-h-[600px] w-full bg-gray-50 rounded-lg border border-gray-200">
+  <div class="min-h-[550px] max-h-[800px] w-full bg-gray-50 rounded-lg border border-gray-200">
     <VueFlow
       v-model:nodes="nodes"
       v-model:edges="edges"
