@@ -26,8 +26,9 @@ const getIcon = (type: TNotificationType) => {
 <template>
   <div class="flex gap-2.5 px-5 py-2.5">
     <div class="size-8">
-      <div class="size-8 rounded-full bg-muted flex items-center justify-center">
+      <div class="size-8 rounded-full bg-muted flex items-center justify-center relative">
         <UIIcon :icon="getIcon(notification.data.type)" class="size-4" />
+        <div v-if="!notification.readAt" class="size-2 bg-destructive rounded-full absolute top-0 right-0" />
       </div>
       <div class="kt-avatar-indicator -end-2 -bottom-2">
         <div class="kt-avatar-status kt-avatar-status-online size-2.5" />

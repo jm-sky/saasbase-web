@@ -11,4 +11,22 @@ export const dashboard = {
     title: 'Recent Users',
     description: 'There are {count} users in the system.',
   },
+  widgets: {
+    balance: {
+      title: 'Total Balance',
+    },
+    revenue: {
+      title: 'Total Revenue',
+    },
+    expenses: {
+      title: 'Total Expenses',
+    },
+    overview: {
+      title: 'Overview',
+      total: 'Total',
+      revenue: 'Revenue',
+      expenses: 'Expenses',
+      balance: 'Balance',
+    },
+  },
 }

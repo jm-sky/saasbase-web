@@ -1,4 +1,5 @@
 export const financial = {
+  title: 'Financial',
   logo: {
     placeholder: 'Place for logo',
   },
@@ -56,6 +57,7 @@ export const financial = {
     status: {
       pending: 'Pending',
       paid: 'Paid',
+      partiallyPaid: 'Partially paid',
       overdue: 'Overdue',
       cancelled: 'Cancelled',
       undefined: ''
@@ -101,13 +103,9 @@ export const financial = {
   },
   invoiceStatus: {
     draft: 'Draft',
-    ocrProcessing: 'OCR processing',
-    ocrCompleted: 'OCR completed',
-    ocrFailed: 'OCR failed',
-    sent: 'Sent',
-    paid: 'Paid',
-    partiallyPaid: 'Partially paid',
-    overdue: 'Overdue',
+    processing: 'Processing',
+    issued: 'Issued',
+    completed: 'Completed',
     cancelled: 'Cancelled',
     undefined: ''
   },

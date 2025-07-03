@@ -2,11 +2,11 @@
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import ActiveNowCard from '@/components/Dashboard/Cards/ActiveNowCard.vue'
+import BalanceCard from '@/components/Dashboard/Cards/BalanceCard.vue'
+import Overview from '@/components/Dashboard/Cards/OverviewCard.vue'
+import RevenueCard from '@/components/Dashboard/Cards/RevenueCard.vue'
 import SalesCard from '@/components/Dashboard/Cards/SalesCard.vue'
-import SubscriptionsCard from '@/components/Dashboard/Cards/SubscriptionsCard.vue'
-import TotalRevenueCard from '@/components/Dashboard/Cards/TotalRevenueCard.vue'
 import DateRangePicker from '@/components/Dashboard/DateRangePicker.vue'
-import Overview from '@/components/Dashboard/Overview.vue'
 import RecentUsers from '@/components/Dashboard/RecentUsers.vue'
 import {
   Card,
@@ -73,8 +73,8 @@ const endDate = ref(new Date())
         class="space-y-4"
       >
         <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-          <TotalRevenueCard />
-          <SubscriptionsCard />
+          <BalanceCard />
+          <RevenueCard />
           <SalesCard />
           <ActiveNowCard />
         </div>

@@ -127,6 +127,9 @@ onMounted(async () => {
               <div class="text-sm text-muted-foreground">
                 {{ expense?.buyer?.address ?? '-' }}
               </div>
+              <div class="text-sm text-muted-foreground">
+                {{ t('financial.fields.taxId') }}: {{ expense?.buyer?.taxId ?? '-' }}
+              </div>
             </div>
 
             <div>
@@ -138,6 +141,9 @@ onMounted(async () => {
               </div>
               <div class="text-sm text-muted-foreground">
                 {{ expense?.seller?.address ?? '-' }}
+              </div>
+              <div class="text-sm text-muted-foreground">
+                {{ t('financial.fields.taxId') }}: {{ expense?.seller?.taxId ?? '-' }}
               </div>
             </div>
 

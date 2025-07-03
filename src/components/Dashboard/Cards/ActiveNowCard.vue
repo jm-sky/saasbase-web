@@ -8,7 +8,7 @@ import {
 </script>
 
 <template>
-  <Card>
+  <Card class="opacity-50">
     <CardHeader class="flex flex-row items-center justify-between space-y-0 pb-2">
       <CardTitle class="text-sm font-medium">
         Active Now
@@ -26,7 +26,7 @@ import {
         <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
       </svg>
     </CardHeader>
-    <CardContent>
+    <CardContent class="space-y-1">
       <div class="text-2xl font-bold">
         +573
       </div>

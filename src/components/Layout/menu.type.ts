@@ -8,4 +8,12 @@ export interface MenuItem {
   items?: MenuItem[]
   locked?: boolean
   soon?: boolean
+  isCategory?: false
 }
+
+export interface MenuCategory {
+  title: string
+  isCategory: true
+}
+
+export type MenuItemOrMenuCategory = MenuItem | MenuCategory

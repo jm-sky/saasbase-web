@@ -1,4 +1,5 @@
 export const financial = {
+  title: 'Finanse',
   logo: {
     placeholder: 'Miejsce na logo',
   },
@@ -56,6 +57,7 @@ export const financial = {
     status: {
       pending: 'Oczekuje',
       paid: 'Opłacona',
+      partiallyPaid: 'Częściowo opłacona',
       overdue: 'Zaległa',
       cancelled: 'Anulowana',
       undefined: ''
@@ -101,13 +103,9 @@ export const financial = {
   },
   invoiceStatus: {
     draft: 'Wersja robocza',
-    ocrProcessing: 'W trakcie OCR',
-    ocrCompleted: 'OCR zakończony',
-    ocrFailed: 'OCR nieudany',
-    sent: 'Wysłana',
-    paid: 'Opłacona',
-    partiallyPaid: 'Częściowo opłacona',
-    overdue: 'Zaległa',
+    processing: 'W trakcie',
+    issued: 'Wystawiona',
+    completed: 'Zakończona',
     cancelled: 'Anulowana',
     undefined: ''
   },

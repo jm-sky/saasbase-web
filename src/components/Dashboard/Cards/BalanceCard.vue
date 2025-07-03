@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { FileTextIcon } from 'lucide-vue-next'
+import { ArrowUpDownIcon } from 'lucide-vue-next'
 import { onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import LoadingIcon from '@/components/Icons/LoadingIcon.vue'
@@ -9,32 +9,31 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
-import { config } from '@/config'
-import { expenseWidgetService } from '@/domains/expense/services/expenseWidgetService'
+import { balanceWidgetService } from '@/domains/financial/services/balanceWidget.service'
 import { money } from '@/lib/money'
-import type { IExpenseWidget } from '@/domains/expense/types/expenseWidget.type'
+import type { IBalanceWidget } from '@/domains/financial/types/financialWidget.type'
 
 const { t, locale } = useI18n()
 
-const data = ref<IExpenseWidget | null>(null)
+const data = ref<IBalanceWidget | null>(null)
 const loading = ref(true)
 const error = ref<string | null>(null)
 
-const fetchExpenses = async () => {
+const fetchBalance = async () => {
   try {
     loading.value = true
     error.value = null
-    data.value = await expenseWidgetService.getTotalExpenses()
+    data.value = await balanceWidgetService.getTotalBalance()
   } catch (err) {
-    error.value = 'Failed to load expenses data'
-    console.error('ExpensesCard error:', err)
+    error.value = 'Failed to load balance data'
+    console.error('BalanceCard error:', err)
   } finally {
     loading.value = false
   }
 }
 
 onMounted(() => {
-  void fetchExpenses()
+  void fetchBalance()
 })
 
 const formatPercentage = (percentage: number) => {
@@ -47,13 +46,13 @@ const formatPercentage = (percentage: number) => {
   <Card>
     <CardHeader class="flex flex-row items-center justify-between space-y-0 pb-2">
       <CardTitle class="text-sm font-medium">
-        {{ t('dashboard.widgets.expenses.title', 'Total Expenses') }}
+        {{ t('dashboard.widgets.balance.title', 'Total Balance') }}
       </CardTitle>
       <template v-if="loading">
         <LoadingIcon class="size-4 text-muted-foreground" />
       </template>
       <template v-else>
-        <FileTextIcon class="size-4 text-muted-foreground" @click="fetchExpenses" />
+        <ArrowUpDownIcon class="size-4 text-muted-foreground" @click="fetchBalance" />
       </template>
     </CardHeader>
     <CardContent class="space-y-1">
@@ -64,7 +63,7 @@ const formatPercentage = (percentage: number) => {
         {{ t('common.error', 'Error') }}
       </div>
       <div v-else class="text-2xl font-bold">
-        {{ money(data?.month.current ?? 0, config.defaults.currency, locale) }}
+        {{ money(data?.month.current ?? 0, 'PLN', locale) }}
       </div>
       <p v-if="!loading && !error && data" class="text-xs text-muted-foreground">
         {{ formatPercentage(data.month.changePercent) }} from last month

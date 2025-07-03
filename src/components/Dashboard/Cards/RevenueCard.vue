@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { FileTextIcon } from 'lucide-vue-next'
+import { DollarSignIcon } from 'lucide-vue-next'
 import { onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import LoadingIcon from '@/components/Icons/LoadingIcon.vue'
@@ -10,31 +10,31 @@ import {
   CardTitle,
 } from '@/components/ui/card'
 import { config } from '@/config'
-import { expenseWidgetService } from '@/domains/expense/services/expenseWidgetService'
+import { invoiceWidgetService } from '@/domains/invoice/services/invoiceWidgetService'
 import { money } from '@/lib/money'
-import type { IExpenseWidget } from '@/domains/expense/types/expenseWidget.type'
+import type { IRevenueWidget } from '@/domains/invoice/types/invoiceWidget.type'
 
 const { t, locale } = useI18n()
 
-const data = ref<IExpenseWidget | null>(null)
+const data = ref<IRevenueWidget | null>(null)
 const loading = ref(true)
 const error = ref<string | null>(null)
 
-const fetchExpenses = async () => {
+const fetchRevenue = async () => {
   try {
     loading.value = true
     error.value = null
-    data.value = await expenseWidgetService.getTotalExpenses()
+    data.value = await invoiceWidgetService.getTotalRevenue()
   } catch (err) {
-    error.value = 'Failed to load expenses data'
-    console.error('ExpensesCard error:', err)
+    error.value = 'Failed to load revenue data'
+    console.error('RevenueCard error:', err)
   } finally {
     loading.value = false
   }
 }
 
 onMounted(() => {
-  void fetchExpenses()
+  void fetchRevenue()
 })
 
 const formatPercentage = (percentage: number) => {
@@ -47,13 +47,13 @@ const formatPercentage = (percentage: number) => {
   <Card>
     <CardHeader class="flex flex-row items-center justify-between space-y-0 pb-2">
       <CardTitle class="text-sm font-medium">
-        {{ t('dashboard.widgets.expenses.title', 'Total Expenses') }}
+        {{ t('dashboard.widgets.revenue.title', 'Total Revenue') }}
       </CardTitle>
       <template v-if="loading">
         <LoadingIcon class="size-4 text-muted-foreground" />
       </template>
       <template v-else>
-        <FileTextIcon class="size-4 text-muted-foreground" @click="fetchExpenses" />
+        <DollarSignIcon class="size-4 text-muted-foreground" @click="fetchRevenue" />
       </template>
     </CardHeader>
     <CardContent class="space-y-1">

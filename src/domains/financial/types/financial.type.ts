@@ -3,15 +3,10 @@ import type { TVatRateType } from '@/domains/shared/types/vatRate.type'
 
 export type TInvoiceStatus =
   | 'draft'
-  | 'ocrProcessing'
-  | 'ocrCompleted'
-  | 'ocrFailed'
-  | 'sent'
-  | 'paid'
-  | 'partiallyPaid'
-  | 'overdue'
+  | 'processing'
+  | 'issued'
+  | 'completed'
   | 'cancelled'
-  | 'pending'
 
 // Enums
 export type TInvoiceType  =
@@ -35,8 +30,22 @@ export type TPaymentStatus =
   | 'cancelled'
   | 'overdue'
   | 'paid'
+  | 'partiallyPaid'
   | 'pending'
 
+export type TApprovalStatus =
+  | 'notRequired'
+  | 'pending'
+  | 'approved'
+  | 'rejected'
+  | 'cancelled'
+
+export type TDeliveryStatus =
+  | 'notSent'
+  | 'pending'
+  | 'sent'
+  | 'delivered'
+  | 'failed'
 
 export type TPaymentMethod =
   | 'bankTransfer'

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { formatISO } from 'date-fns'
 import { computed, onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import NoItems from '@/components/DataLists/NoItems.vue'
@@ -23,6 +24,7 @@ const { t } = useI18n()
 const authStore = useAuthStore()
 
 const loading = ref(false)
+const markingRead = ref(false)
 const notifications = ref<INotification[]>([])
 
 const unreadNotifications = computed(() => notifications.value.filter(notification => !notification.readAt))
@@ -49,6 +51,19 @@ const startListen = () => {
   channel.error((error: unknown) => {
     console.error('[NotificationsDrawer] Error joining room', error)
   })
+}
+
+const markAllAsRead = async () => {
+  try {
+    markingRead.value = true
+    const ids = unreadNotifications.value.map(notification => notification.id)
+    await notificationsService.markAsRead(ids)
+    unreadNotifications.value.forEach(notification => notification.readAt = formatISO(new Date()))
+  } catch (error: unknown) {
+    handleErrorWithToast('Could not mark notifications as read', error)
+  } finally {
+    markingRead.value = false
+  }
 }
 
 onMounted(async () => {
@@ -89,7 +104,13 @@ onMounted(async () => {
         </template>
       </div>
       <SheetFooter class="absolute bottom-0 right-0 w-full grid grid-cols-2 gap-2.5 p-5 border-t">
-        <Button variant="outline" size="sm">
+        <Button
+          variant="outline"
+          size="sm"
+          :disabled="unreadTotal === 0"
+          :loading="markingRead"
+          @click="markAllAsRead"
+        >
           Mark all as read
         </Button>
         <Button variant="outline" size="sm">

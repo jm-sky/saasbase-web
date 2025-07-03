@@ -73,5 +73,12 @@ export const common = {
     email: 'Email',
     url: 'URL',
     date: 'Date',
+  },
+  menu: {
+    menu: 'Menu',
+    financial: 'Financial',
+    communication: 'Communication',
+    configurations: 'Configurations',
+    other: 'Other',
   }
 }

@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import Separator from '@/components/ui/separator/Separator.vue'
+import { money } from '@/lib/money'
 import type { IInvoiceLine } from '@/domains/financial/types/financial.type'
 
-const { t } = useI18n()
+const { t, locale } = useI18n()
 
 defineProps<{
   lines: IInvoiceLine[]
@@ -47,17 +48,16 @@ defineProps<{
             {{ item.quantity.toFixed(2) }}
           </td>
           <td class="p-2 text-end">
-            {{ item.unitPrice.toFixed(2) }}
+            {{ money(item.unitPrice, null, locale) }}
           </td>
           <td class="p-2 text-end font-semibold">
-            {{ item.totalGross.toFixed(2) }}
-            {{ currency }}
+            {{ money(item.totalGross, currency, locale) }}
           </td>
         </tr>
       </tbody>
     </table>
 
-    <Separator class="my-2" />
+    <Separator class="mb-2" />
 
     <div class="ml-auto w-1/2 grid grid-cols-2 items-center gap-3 text-sm text-end pe-2">
       <div class="text-muted-foreground text-end">

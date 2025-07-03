@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { AlertCircle, CheckCircle2, Circle, CircleDot, Clock, FileEdit, Send, XCircle } from 'lucide-vue-next'
+import { CheckCircle2, Circle, Clock, FileEdit, XCircle } from 'lucide-vue-next'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import type { TInvoiceStatus } from '../types/financial.type'
@@ -14,22 +14,14 @@ const iconComponent = computed(() => {
   switch (status) {
     case 'cancelled':
       return XCircle
+    case 'completed':
+      return CheckCircle2
     case 'draft':
       return FileEdit
-    case 'ocrCompleted':
+    case 'issued':
       return CheckCircle2
-    case 'ocrFailed':
-      return AlertCircle
-    case 'ocrProcessing':
+    case 'processing':
       return Clock
-    case 'overdue':
-      return AlertCircle
-    case 'paid':
-      return CheckCircle2
-    case 'partiallyPaid':
-      return CircleDot
-    case 'sent':
-      return Send
     default:
       return Circle
   }
@@ -39,21 +31,13 @@ const getColor = () => {
   switch (status) {
     case 'cancelled':
       return 'bg-muted/30 border-muted'
+    case 'completed':
+      return 'text-success bg-success/10 border-success/30'
     case 'draft':
       return 'bg-muted/30 border-muted'
-    case 'ocrCompleted':
+    case 'issued':
       return 'text-success bg-success/10 border-success/30'
-    case 'ocrFailed':
-      return 'text-destructive bg-destructive/10 border-destructive/50'
-    case 'ocrProcessing':
-      return 'text-primary bg-primary/10 border-primary/50'
-    case 'overdue':
-      return 'text-destructive bg-destructive/10 border-destructive/50'
-    case 'paid':
-      return 'text-success bg-success/10 border-success/30'
-    case 'partiallyPaid':
-      return 'text-primary bg-primary/10 border-primary/50'
-    case 'sent':
+    case 'processing':
       return 'text-primary bg-primary/10 border-primary/30'
   }
   return 'bg-muted/30 border-muted'

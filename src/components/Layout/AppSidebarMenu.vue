@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import {
   Building2,
+  DollarSign,
   FileText,
   Mail,
   MailCheck,
@@ -24,7 +25,7 @@ import {
 import { config } from '@/config'
 import { useAuthStore } from '@/domains/auth/store/auth.store'
 import TenantBrandInfo from '@/domains/tenant/components/branding/TenantBrandInfo.vue'
-import type { MenuItem } from './menu.type'
+import type { MenuItemOrMenuCategory } from './menu.type'
 import UIIcon from '../UIIcon.vue'
 import type { SidebarProps } from '@/components/ui/sidebar'
 
@@ -35,8 +36,8 @@ const props = withDefaults(defineProps<SidebarProps>(), {
   collapsible: 'icon',
 })
 
-const menu = computed<MenuItem[]>(() => {
-  const items: MenuItem[] = [
+const menu = computed<MenuItemOrMenuCategory[]>(() => {
+  const items: MenuItemOrMenuCategory[] = [
     {
       title: t('dashboard.title'),
       url: '/',
@@ -46,6 +47,10 @@ const menu = computed<MenuItem[]>(() => {
       title: t('feed.title'),
       url: '/feeds',
       icon: Newspaper,
+    },
+    {
+      title: t('common.menu.financial'),
+      isCategory: true,
     },
     {
       title: t('contractor.title'),
@@ -65,7 +70,11 @@ const menu = computed<MenuItem[]>(() => {
     {
       title: t('invoice.title'),
       url: '/invoices',
-      icon: FileText,
+      icon: DollarSign,
+    },
+    {
+      title: t('common.menu.other'),
+      isCategory: true,
     },
     {
       title: t('project.title'),
@@ -83,6 +92,10 @@ const menu = computed<MenuItem[]>(() => {
       ],
     },
     {
+      title: t('common.menu.communication'),
+      isCategory: true,
+    },
+    {
       title: 'Mailbox',
       url: '/mailbox/inbox',
       icon: Mail,
@@ -98,6 +111,10 @@ const menu = computed<MenuItem[]>(() => {
       title: 'Chat',
       url: '/chat',
       icon: Mail,
+    },
+    {
+      title: t('common.menu.configurations'),
+      isCategory: true,
     },
   ]
 

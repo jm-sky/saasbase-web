@@ -11,4 +11,22 @@ export const dashboard = {
     title: 'Ostatni użytkownicy',
     description: 'W systemie jest {count} użytkowników.',
   },
+  widgets: {
+    balance: {
+      title: 'Saldo',
+    },
+    revenue: {
+      title: 'Przychody',
+    },
+    expenses: {
+      title: 'Wydatki',
+    },
+    overview: {
+      title: 'Przegląd',
+      total: 'Suma',
+      revenue: 'Przychody',
+      expenses: 'Wydatki',
+      balance: 'Saldo',
+    },
+  },
 }
