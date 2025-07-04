@@ -37,7 +37,6 @@ const variants = {
     <DialogContent
       :class="variants.size[size]"
       :close-button="!disableClose"
-      :trap-focus="disableClose"
       :disable-outside-pointer-events="disableClose"
     >
       <DialogHeader>

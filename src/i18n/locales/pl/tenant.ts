@@ -133,23 +133,40 @@ export const tenant = {
   organizationUnits: {
     title: 'Jednostki organizacyjne',
     description: 'Jednostki organizacyjne zespołu',
+    technical: {
+      unassigned: 'Nieprzypisani',
+      'former-employees': 'Byli pracownicy',
+    },
     fields: {
       name: 'Nazwa',
       code: 'Kod',
       description: 'Opis',
       isActive: 'Aktywna',
       parent: 'Nadrzędna',
+      user: 'Użytkownik',
+      position: 'Stanowisko',
+      role: 'Rola',
     },
     add: {
       title: 'Dodaj jednostkę organizacyjną',
       description: 'Dodaj nową jednostkę organizacyjną do zespołu.',
       error: 'Nie udało się dodać jednostki organizacyjnej',
     },
+    edit: {
+      title: 'Edytuj jednostkę organizacyjną',
+      description: 'Edytuj istniejącą jednostkę organizacyjną zespołu.',
+      error: 'Nie udało się edytować jednostki organizacyjnej',
+    },
     delete: {
       title: 'Usuń jednostkę organizacyjną',
       description: 'Usuń istniejącą jednostkę organizacyjną z zespołu.',
       error: 'Nie udało się usunąć jednostki organizacyjnej',
       confirm: 'Czy na pewno chcesz usunąć tę jednostkę organizacyjną?',
+    },
+    assignUser: {
+      title: 'Przypisz użytkownika do jednostki organizacyjnej',
+      description: 'Przypisz użytkownika do jednostki organizacyjnej zespołu.',
+      error: 'Nie udało się przypisać użytkownika do jednostki organizacyjnej',
     },
   },
   logs: {

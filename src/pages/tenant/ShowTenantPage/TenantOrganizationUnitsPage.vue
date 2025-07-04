@@ -3,7 +3,7 @@ import { onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import RefreshIconButton from '@/components/Buttons/RefreshIconButton.vue'
 import Button from '@/components/ui/button/Button.vue'
-import AddOrganizationUnitModal from '@/domains/tenant/components/organizationUnits/AddOrganizationUnitModal.vue'
+import AddOrganizationUnitModal from '@/domains/tenant/components/organizationUnits/modals/AddOrganizationUnitModal.vue'
 import OrganizationUnitsTree from '@/domains/tenant/components/organizationUnits/OrganizationUnitsTree.vue'
 import TenantSectionTitle from '@/domains/tenant/components/TenantSectionTitle.vue'
 import { useTenant } from '@/domains/tenant/composables/useTenant'
@@ -58,12 +58,13 @@ onMounted(async () => {
       v-model:selected-unit="selectedUnit"
       :organization-units
       @add-child="openAddOrganizationUnitModal = true"
+      @remove="refresh()"
     />
 
     <AddOrganizationUnitModal
-      :tenant-id="tenantId"
+      v-model:open="openAddOrganizationUnitModal"
+      :tenant-id
       :parent-unit="selectedUnit"
-      :open="openAddOrganizationUnitModal"
       @created="refresh()"
     />
   </div>

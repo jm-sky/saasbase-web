@@ -2,12 +2,14 @@
 import { Background } from '@vue-flow/background'
 import { Controls } from '@vue-flow/controls'
 import { type GraphNode, type NodeMouseEvent, VueFlow } from '@vue-flow/core'
+import { MiniMap } from '@vue-flow/minimap'
 import { toRef, watch } from 'vue'
 import type { IOrganizationUnit } from '../../types/organizationUnit.type'
 import { useOrganizationChartLayout } from '../../composables/useOrganizationChartLayout'
-import OrganizationUnitNode from './OrganizationUnitNode.vue'
+import OrganizationUnitNode from './nodes/OrganizationUnitNode.vue'
+import OrganizationUnitRootNode from './nodes/OrganizationUnitRootNode.vue'
+import OrganizationUnitTechnicalNode from './nodes/OrganizationUnitTechnicalNode.vue'
 import OrganizationUnitRelation from './OrganizationUnitRelation.vue'
-import OrganizationUnitRootNode from './OrganizationUnitRootNode.vue'
 
 const props = defineProps<{
   organizationUnits: IOrganizationUnit[]
@@ -64,8 +66,11 @@ watch(() => props.organizationUnits, () => {
       @node-click="onNodeClick"
       @pane-click="onPaneClick"
     >
-      <Background pattern-color="#006493" :gap="40" class="rounded-3xl" />
-      <Controls />
+      <Background pattern-color="#006493" :gap="20" class="rounded-3xl" />
+
+      <Controls position="top-left" />
+
+      <MiniMap />
 
       <template #node-root="nodeProps">
         <OrganizationUnitRootNode
@@ -81,6 +86,13 @@ watch(() => props.organizationUnits, () => {
           :is-selected="selectedNodeId === nodeProps.data.id.toString()"
           @add-child="emit('add-child', nodeProps.data)"
           @remove="emit('remove', nodeProps.data)"
+        />
+      </template>
+
+      <template #node-technical="nodeProps">
+        <OrganizationUnitTechnicalNode
+          :node-props="nodeProps"
+          :is-selected="selectedNodeId === nodeProps.data.id.toString()"
         />
       </template>
 
@@ -114,14 +126,26 @@ watch(() => props.organizationUnits, () => {
 }
 
 :deep(.vue-flow__controls) {
-  @apply bg-white border border-gray-200 rounded-md;
+  @apply flex flex-wrap justify-center bg-white border border-gray-200 rounded-md overflow-hidden;
 }
 
 :deep(.vue-flow__controls button) {
-  @apply bg-white border-0 text-gray-700;
+  @apply size-8 p-2 bg-white text-gray-700;
+}
+
+:deep(.vue-flow__controls button[disabled]) {
+  @apply opacity-50 cursor-not-allowed;
 }
 
 :deep(.vue-flow__controls button:hover) {
-  @apply bg-gray-50;
+  @apply bg-gray-100;
+}
+
+:deep(.vue-flow__controls-button svg) {
+  @apply size-full;
+}
+
+.vue-flow__minimap {
+  @apply scale-75 origin-bottom-right;
 }
 </style>

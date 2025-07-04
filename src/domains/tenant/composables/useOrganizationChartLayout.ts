@@ -1,14 +1,26 @@
-import { type Edge, MarkerType, type Node } from '@vue-flow/core'
+import { type Edge, MarkerType, type Node, useVueFlow } from '@vue-flow/core'
 import { ref, type Ref } from 'vue'
 import type { IOrganizationUnit } from '../types/organizationUnit.type'
 
 export interface OrganizationUnitNodeData extends IOrganizationUnit {
   level?: number
   children?: Node<OrganizationUnitNodeData>[]
-  type: 'root' | 'child'
+}
+
+const getNodeType = (unit: IOrganizationUnit): 'root' | 'child' | 'technical' => {
+  if (unit.isTechnical) {
+    return 'technical'
+  }
+  return unit.parentId ? 'child' : 'root'
 }
 
 export function useOrganizationChartLayout(organizationUnits: Ref<IOrganizationUnit[]>) {
+  const { onInit } = useVueFlow()
+
+  onInit((vueFlowInstance) => {
+    void vueFlowInstance.fitView()
+  })
+
   const unitMap = new Map<string, IOrganizationUnit>()
   const rootNodes = ref<Node<OrganizationUnitNodeData>[]>([])
   const nodeMap = new Map<string, Node<OrganizationUnitNodeData>>()
@@ -33,12 +45,11 @@ export function useOrganizationChartLayout(organizationUnits: Ref<IOrganizationU
 
       const node: Node<OrganizationUnitNodeData> = {
         id: nodeId,
-        type: unit.parentId ? 'child' : 'root',
+        type: getNodeType(unit),
         label: unit.name,
         position: { x: 0, y: 0 },
         data: {
           ...unit,
-          type: unit.parentId ? 'child' : 'root',
           children: [],
         },
       }
@@ -64,7 +75,7 @@ export function useOrganizationChartLayout(organizationUnits: Ref<IOrganizationU
         const parentId = unit.parentId.toString()
         const parentNode = nodeMap.get(parentId)
 
-        if (parentNode) {
+        if (parentNode && !unit.isTechnical) {
           // Add to parent's children
           parentNode.data?.children?.push(node)
 
@@ -108,14 +119,14 @@ export function useOrganizationChartLayout(organizationUnits: Ref<IOrganizationU
 }
 
 function calculateHierarchicalLayout(rootNodes: Node<OrganizationUnitNodeData>[]) {
-  const levelHeight = 150
+  const levelHeight = 250
   const nodeSpacing = 200
 
   // Assign levels to all nodes
   function assignLevels(nodes: Node<OrganizationUnitNodeData>[], level: number) {
     nodes.forEach(node => {
       if (node.data) {
-        node.data.level = level
+        node.data.level = node.data.isTechnical ? -1 : level
       }
       if (node.data?.children && node.data.children.length > 0) {
         assignLevels(node.data.children, level + 1)

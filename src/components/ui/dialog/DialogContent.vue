@@ -17,6 +17,7 @@ const props = defineProps<DialogContentProps & {
   class?: HTMLAttributes['class']
   closeButton?: boolean
 }>()
+
 const emits = defineEmits<DialogContentEmits>()
 
 const delegatedProps = reactiveOmit(props, 'class', 'closeButton')

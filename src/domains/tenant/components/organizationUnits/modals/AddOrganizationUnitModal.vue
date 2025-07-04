@@ -10,8 +10,8 @@ import Switch from '@/components/ui/switch/Switch.vue'
 import Textarea from '@/components/ui/textarea/Textarea.vue'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
 import { isValidationError } from '@/lib/validation'
-import type { IOrganizationUnit, IOrganizationUnitCreate } from '../../types/organizationUnit.type'
-import { tenantOrganizationUnitService } from '../../services/TenantOrganizationUnit.service'
+import type { IOrganizationUnit, IOrganizationUnitCreate } from '../../../types/organizationUnit.type'
+import { tenantOrganizationUnitService } from '../../../services/TenantOrganizationUnit.service'
 
 const { t } = useI18n()
 
@@ -51,7 +51,15 @@ const onSubmit = handleSubmit(async (values: IOrganizationUnitCreate) => {
 
 watch(open, (isOpen) => {
   if (isOpen) {
-    resetForm()
+    resetForm({
+      values: {
+        name: '',
+        code: '',
+        description: '',
+        isActive: true,
+        parentId: parentUnit?.id ?? null,
+      }
+    })
   }
 })
 

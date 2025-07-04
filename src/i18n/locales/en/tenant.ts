@@ -128,23 +128,40 @@ export const tenant = {
   organizationUnits: {
     title: 'Organization Units',
     description: 'Organization units of the tenant',
+    technical: {
+      unassigned: 'Unassigned',
+      'former-employees': 'Former Employees',
+    },
     fields: {
       name: 'Name',
       code: 'Code',
       description: 'Description',
       isActive: 'Active',
       parent: 'Parent',
+      user: 'User',
+      position: 'Position',
+      role: 'Role',
     },
     add: {
       title: 'Add Organization Unit',
       description: 'Add a new organization unit to the tenant.',
       error: 'Failed to add organization unit',
     },
+    edit: {
+      title: 'Edit Organization Unit',
+      description: 'Edit an existing organization unit of the tenant.',
+      error: 'Failed to edit organization unit',
+    },
     delete: {
       title: 'Delete Organization Unit',
       description: 'Delete an existing organization unit of the tenant.',
       error: 'Failed to delete organization unit',
       confirm: 'Are you sure you want to delete this organization unit?',
+    },
+    assignUser: {
+      title: 'Assign User to Organization Unit',
+      description: 'Assign a user to an organization unit of the tenant.',
+      error: 'Failed to assign user to organization unit',
     },
   },
   logs: {
