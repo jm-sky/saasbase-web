@@ -39,17 +39,22 @@ export const projectRoutes: RouteRecordRaw[] = [
       {
         path: 'overview',
         name: 'showProjectOverview',
-        component: () => import('@/pages/project/ShowProjectOverviewPage.vue'),
+        component: () => import('@/pages/project/ShowProject/ShowProjectOverviewPage.vue'),
+      },
+      {
+        path: 'tasks',
+        name: 'showProjectTasks',
+        component: () => import('@/pages/project/ShowProject/ShowProjectTasksPage.vue'),
       },
       {
         path: 'comments',
         name: 'showProjectComments',
-        component: () => import('@/pages/project/ShowProjectCommentsPage.vue'),
+        component: () => import('@/pages/project/ShowProject/ShowProjectCommentsPage.vue'),
       },
       {
         path: 'logs',
         name: 'showProjectLogs',
-        component: () => import('@/pages/project/ShowProjectLogsPage.vue'),
+        component: () => import('@/pages/project/ShowProject/ShowProjectLogsPage.vue'),
       },
     ],
   },

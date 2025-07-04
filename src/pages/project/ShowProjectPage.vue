@@ -24,6 +24,10 @@ const tabs = [
     label: t('project.overview.title'),
   },
   {
+    to: `/projects/${projectId}/show/tasks`,
+    label: t('project.tasks.title'),
+  },
+  {
     to: `/projects/${projectId}/show/comments`,
     label: t('project.comments.title'),
   },

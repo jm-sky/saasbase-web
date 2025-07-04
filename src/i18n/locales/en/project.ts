@@ -41,6 +41,9 @@ export const project = {
   overview: {
     title: 'Overview',
   },
+  tasks: {
+    title: 'Tasks',
+  },
   comments: {
     title: 'Comments',
   },
