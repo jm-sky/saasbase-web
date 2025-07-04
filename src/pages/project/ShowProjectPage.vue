@@ -3,6 +3,7 @@ import { onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
 import EntityDetailsLayout from '@/components/layouts/EntityDetailsLayout.vue'
+import TabLink from '@/components/ui/tabs/TabLink.vue'
 import ProjectSidebar from '@/domains/project/components/ProjectSidebar.vue'
 import { projectService } from '@/domains/project/services/ProjectService'
 import AuthenticatedLayout from '@/layouts/AuthenticatedLayout.vue'
@@ -16,6 +17,21 @@ const projectId = route.params.id as string
 const project = ref<IProject>()
 const loading = ref(false)
 const error = ref<string | null>(null)
+
+const tabs = [
+  {
+    to: `/projects/${projectId}/show/overview`,
+    label: t('project.overview.title'),
+  },
+  {
+    to: `/projects/${projectId}/show/comments`,
+    label: t('project.comments.title'),
+  },
+  {
+    to: `/projects/${projectId}/show/logs`,
+    label: t('project.logs.title'),
+  },
+]
 
 const refresh = async () => {
   try {
@@ -56,27 +72,12 @@ onMounted(async () => {
       </template>
 
       <template #tabs>
-        <RouterLink
-          :to="`/projects/${projectId}/show/overview`"
-          class="border-b-2 border-transparent hover:border-muted-foreground px-2 py-1"
-          exact-active-class="text-primary border-primary!"
-        >
-          {{ t('project.overview.title') }}
-        </RouterLink>
-        <RouterLink
-          :to="`/projects/${projectId}/show/comments`"
-          class="border-b-2 border-transparent hover:border-muted-foreground px-2 py-1"
-          exact-active-class="text-primary border-primary!"
-        >
-          {{ t('project.comments.title') }}
-        </RouterLink>
-        <RouterLink
-          :to="`/projects/${projectId}/show/logs`"
-          class="border-b-2 border-transparent hover:border-muted-foreground px-2 py-1"
-          exact-active-class="text-primary border-primary!"
-        >
-          {{ t('project.logs.title') }}
-        </RouterLink>
+        <TabLink
+          v-for="tab in tabs"
+          :key="tab.to"
+          :to="tab.to"
+          :label="tab.label"
+        />
       </template>
 
       <template #content>

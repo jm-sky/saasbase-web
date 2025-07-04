@@ -7,6 +7,7 @@ import AvatarUploader from '@/components/Inputs/AvatarUploader.vue'
 import EntityDetailsLayout from '@/components/layouts/EntityDetailsLayout.vue'
 import InfoSection from '@/components/Sections/InfoSection.vue'
 import Separator from '@/components/ui/separator/Separator.vue'
+import TabLink from '@/components/ui/tabs/TabLink.vue'
 import { tenantLogoService } from '@/domains/tenant/services/TenantLogoService'
 import { tenantService } from '@/domains/tenant/services/TenantService'
 import { useTenantStore } from '@/domains/tenant/store/tenant.store'
@@ -23,6 +24,45 @@ const { tenant } = storeToRefs(tenantStore)
 
 const loading = ref(false)
 const error = ref<string | null>(null)
+
+const tabs = [
+  {
+    to: `/tenants/${tenantId}/show/overview`,
+    label: t('tenant.overview.title'),
+  },
+  {
+    to: `/tenants/${tenantId}/show/organization-units`,
+    label: t('tenant.organizationUnits.title'),
+  },
+  {
+    to: `/tenants/${tenantId}/show/invitations`,
+    label: t('tenant.invitations.title'),
+  },
+  {
+    to: `/tenants/${tenantId}/show/branding`,
+    label: t('tenant.branding.title'),
+  },
+  {
+    to: `/tenants/${tenantId}/show/public-profile`,
+    label: t('tenant.publicProfile.title'),
+  },
+  {
+    to: `/tenants/${tenantId}/show/billing`,
+    label: t('tenant.billing.title'),
+  },
+  {
+    to: `/tenants/${tenantId}/show/integrations`,
+    label: t('tenant.integrations.title'),
+  },
+  {
+    to: `/tenants/${tenantId}/show/settings`,
+    label: t('tenant.settings.title'),
+  },
+  {
+    to: `/tenants/${tenantId}/show/logs`,
+    label: t('tenant.logs.title'),
+  },
+]
 
 const refresh = async () => {
   try {
@@ -89,69 +129,12 @@ onMounted(async () => {
       </template>
 
       <template #tabs>
-        <RouterLink
-          :to="`/tenants/${tenantId}/show/overview`"
-          class="border-b-2 border-transparent hover:border-muted-foreground px-2 py-1"
-          exact-active-class="text-primary border-primary!"
-        >
-          {{ $t('tenant.overview.title') }}
-        </RouterLink>
-        <RouterLink
-          :to="`/tenants/${tenantId}/show/organization-units`"
-          class="border-b-2 border-transparent hover:border-muted-foreground px-2 py-1"
-          exact-active-class="text-primary border-primary!"
-        >
-          {{ $t('tenant.organizationUnits.title') }}
-        </RouterLink>
-        <RouterLink
-          :to="`/tenants/${tenantId}/show/invitations`"
-          class="border-b-2 border-transparent hover:border-muted-foreground px-2 py-1"
-          exact-active-class="text-primary border-primary!"
-        >
-          {{ $t('tenant.invitations.title') }}
-        </RouterLink>
-        <RouterLink
-          :to="`/tenants/${tenantId}/show/branding`"
-          class="border-b-2 border-transparent hover:border-muted-foreground px-2 py-1"
-          exact-active-class="text-primary border-primary!"
-        >
-          {{ $t('tenant.branding.title') }}
-        </RouterLink>
-        <RouterLink
-          :to="`/tenants/${tenantId}/show/public-profile`"
-          class="border-b-2 border-transparent hover:border-muted-foreground px-2 py-1"
-          exact-active-class="text-primary border-primary!"
-        >
-          {{ $t('tenant.publicProfile.title') }}
-        </RouterLink>
-        <RouterLink
-          :to="`/tenants/${tenantId}/show/billing`"
-          class="border-b-2 border-transparent hover:border-muted-foreground px-2 py-1"
-          active-class="text-primary border-primary!"
-        >
-          {{ $t('tenant.billing.title') }}
-        </RouterLink>
-        <RouterLink
-          :to="`/tenants/${tenantId}/show/integrations`"
-          class="border-b-2 border-transparent hover:border-muted-foreground px-2 py-1"
-          exact-active-class="text-primary border-primary!"
-        >
-          {{ $t('tenant.integrations.title') }}
-        </RouterLink>
-        <RouterLink
-          :to="`/tenants/${tenantId}/show/settings`"
-          class="border-b-2 border-transparent hover:border-muted-foreground px-2 py-1"
-          exact-active-class="text-primary border-primary!"
-        >
-          {{ $t('tenant.settings.title') }}
-        </RouterLink>
-        <RouterLink
-          :to="`/tenants/${tenantId}/show/logs`"
-          class="border-b-2 border-transparent hover:border-muted-foreground px-2 py-1"
-          exact-active-class="text-primary border-primary!"
-        >
-          {{ $t('tenant.logs.title') }}
-        </RouterLink>
+        <TabLink
+          v-for="tab in tabs"
+          :key="tab.to"
+          :to="tab.to"
+          :label="tab.label"
+        />
       </template>
 
       <template #content>
