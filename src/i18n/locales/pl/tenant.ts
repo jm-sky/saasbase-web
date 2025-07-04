@@ -168,6 +168,46 @@ export const tenant = {
       description: 'Przypisz użytkownika do jednostki organizacyjnej zespołu.',
       error: 'Nie udało się przypisać użytkownika do jednostki organizacyjnej',
     },
+    show: {
+      title: 'Szczegóły jednostki organizacyjnej',
+      description: 'Szczegóły jednostki organizacyjnej zespołu',
+      error: 'Nie udało się załadować jednostki organizacyjnej',
+      users: {
+        title: 'Użytkownicy',
+        empty: 'Brak użytkowników',
+        columns: {
+          name: 'Nazwa',
+          email: 'Email',
+          position: 'Stanowisko',
+          role: 'Rola',
+          assignedAt: 'Data przypisania',
+        },
+      },
+      positions: {
+        title: 'Stanowiska',
+        empty: 'Brak stanowisk',
+        addPosition: 'Dodaj stanowisko',
+      },
+      actions: {
+        assignUser: 'Przypisz użytkownika',
+        addPosition: 'Dodaj stanowisko',
+        edit: 'Edytuj jednostkę',
+        back: 'Powrót do diagramu',
+      },
+    },
+    addPosition: {
+      title: 'Dodaj stanowisko',
+      description: 'Dodaj nowe stanowisko do jednostki organizacyjnej.',
+      error: 'Nie udało się dodać stanowiska',
+      fields: {
+        name: 'Nazwa stanowiska',
+        description: 'Opis stanowiska',
+        category: 'Kategoria',
+        isDirector: 'Stanowisko dyrektora',
+        isLearning: 'Stanowisko nauczania',
+        isActive: 'Aktywne',
+      },
+    },
   },
   logs: {
     title: 'Logi',

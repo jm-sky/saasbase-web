@@ -42,6 +42,14 @@ export const tenantRoutes: RouteRecordRaw[] = [
         component: () => import('@/pages/tenant/ShowTenantPage/TenantOverviewPage.vue'),
       },
       {
+        path: 'organization-units/:unitId',
+        name: 'tenant.show.organization-unit',
+        component: () => import('@/pages/tenant/ShowOrganizationUnitPage.vue'),
+        meta: {
+          title: 'tenant.organizationUnits.show.title',
+        },
+      },
+      {
         path: 'organization-units',
         name: 'tenant.show.organization-units',
         component: () => import('@/pages/tenant/ShowTenantPage/TenantOrganizationUnitsPage.vue'),

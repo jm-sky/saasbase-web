@@ -1,6 +1,6 @@
 import api from '@/lib/api'
 import { apiRoutesMap } from '@/lib/api/apiRoutes'
-import type { IOrganizationUnit, IOrganizationUnitAssignUser, IOrganizationUnitCreate } from '../types/organizationUnit.type'
+import type { IOrganizationUnit, IOrganizationUnitAssignUser, IOrganizationUnitCreate, IOrganizationUnitPositionCreate } from '../types/organizationUnit.type'
 import type { TUUID } from '@/domains/shared/types/common'
 import type { IResourceCollection } from '@/domains/shared/types/resource.type'
 
@@ -8,6 +8,11 @@ class TenantOrganizationUnitService {
   async index(tenantId: TUUID) {
     const response = (await api.get<IResourceCollection<IOrganizationUnit>>(`${apiRoutesMap.tenants}/${tenantId}/organization-units`)).data
     return response
+  }
+
+  async show(tenantId: TUUID, id: TUUID) {
+    const response = (await api.get<{ data: IOrganizationUnit }>(`${apiRoutesMap.tenants}/${tenantId}/organization-units/${id}`)).data
+    return response.data
   }
 
   async create(tenantId: TUUID, data: IOrganizationUnitCreate) {
@@ -27,6 +32,11 @@ class TenantOrganizationUnitService {
 
   async assignUser(tenantId: TUUID, data: IOrganizationUnitAssignUser) {
     const response = (await api.post<{ data: IOrganizationUnit }>(`${apiRoutesMap.tenants}/${tenantId}/organization-units/${data.unitId}/users`, data)).data
+    return response.data
+  }
+
+  async addPosition(tenantId: TUUID, data: IOrganizationUnitPositionCreate) {
+    const response = (await api.post<{ data: IOrganizationUnit }>(`${apiRoutesMap.tenants}/${tenantId}/organization-units/${data.unitId}/positions`, data)).data
     return response.data
   }
 }

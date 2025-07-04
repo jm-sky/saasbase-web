@@ -53,3 +53,13 @@ export interface IOrganizationUnitAssignUser {
   userId: TUUID
   positionId: TUUID
 }
+
+export interface IOrganizationUnitPositionCreate {
+  unitId: TUUID
+  name: string
+  description: string
+  category: string
+  isDirector: boolean
+  isLearning: boolean
+  isActive: boolean
+}

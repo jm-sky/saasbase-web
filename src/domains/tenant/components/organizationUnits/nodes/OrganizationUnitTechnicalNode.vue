@@ -38,7 +38,7 @@ const unit = computed<IOrganizationUnit>(() => props.nodeProps.data)
         {{ unit.description }}
       </div>
 
-      <div v-if="unit.users?.length" class="text-xs font-medium mb-1 text-gray-300">
+      <div class="text-xs font-medium mb-1 text-gray-300">
         {{ unit.users.length }} user{{ unit.users.length !== 1 ? 's' : '' }}
       </div>
 

@@ -163,6 +163,46 @@ export const tenant = {
       description: 'Assign a user to an organization unit of the tenant.',
       error: 'Failed to assign user to organization unit',
     },
+    show: {
+      title: 'Organization Unit Details',
+      description: 'View organization unit details',
+      error: 'Failed to load organization unit',
+      users: {
+        title: 'Users',
+        empty: 'No users assigned',
+        columns: {
+          name: 'Name',
+          email: 'Email',
+          position: 'Position',
+          role: 'Role',
+          assignedAt: 'Assigned At',
+        },
+      },
+      positions: {
+        title: 'Positions',
+        empty: 'No positions defined',
+        addPosition: 'Add Position',
+      },
+      actions: {
+        assignUser: 'Assign User',
+        addPosition: 'Add Position',
+        edit: 'Edit Unit',
+        back: 'Back to Chart',
+      },
+    },
+    addPosition: {
+      title: 'Add Position',
+      description: 'Add a new position to the organization unit.',
+      error: 'Failed to add position',
+      fields: {
+        name: 'Position Name',
+        description: 'Description',
+        category: 'Category',
+        isDirector: 'Director Position',
+        isLearning: 'Learning Position',
+        isActive: 'Active',
+      },
+    },
   },
   logs: {
     title: 'Logs',

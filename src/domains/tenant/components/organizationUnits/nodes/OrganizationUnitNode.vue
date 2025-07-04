@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { Handle, type NodeProps, Position } from '@vue-flow/core'
+import { ArrowRight } from 'lucide-vue-next'
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { tenantOrganizationUnitService } from '@/domains/tenant/services/TenantOrganizationUnit.service'
@@ -70,8 +71,16 @@ const handleRemove = async () => {
       class="min-w-40 p-3 rounded-lg border shadow-sm transition-all duration-200 cursor-pointer bg-card border-border hover:border-border"
       :class="cn('hover:border-border', isSelected && 'hover:border-primary border-primary/50 shadow-primary/10', isRemoving && 'opacity-80 blur-xs')"
     >
-      <div class="font-semibold text-sm leading-tight mb-1">
-        {{ unit.name }}
+      <div class="font-semibold text-sm leading-tight mb-1 flex items-center justify-between">
+        <span>{{ unit.name }}</span>
+        <RouterLink
+          v-if="!unit.isTechnical"
+          :to="{ name: 'tenant.show.organization-unit', params: { id: unit.tenantId, unitId: unit.id } }"
+          class="text-primary hover:text-primary/80 transition-colors"
+          title="View Details"
+        >
+          <ArrowRight class="h-3 w-3" />
+        </RouterLink>
       </div>
 
       <div class="text-xs mb-1 px-2 py-1 font-mono rounded inline-block text-gray-400 bg-gray-50">
