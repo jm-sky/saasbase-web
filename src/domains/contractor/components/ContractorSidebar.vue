@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ShieldCheck, X } from 'lucide-vue-next'
+import { Hourglass, ShieldCheck, TriangleAlertIcon } from 'lucide-vue-next'
 import { useI18n } from 'vue-i18n'
 import AvatarUploader from '@/components/Inputs/AvatarUploader.vue'
 import InfoSection from '@/components/Sections/InfoSection.vue'
@@ -11,10 +11,12 @@ import { toDateTimeString } from '@/lib/toDateTimeString'
 import type { IContractor } from '../types/contractor.type'
 import { contractorLogoService } from '../services/ContractorLogoService'
 import { contractorTagsService } from '../services/ContractorTagsService'
+import type { BadgeVariants } from '@/components/ui/badge'
+import type { IRegistryConfirmation } from '@/domains/shared/types/registryConfirmation'
 
 const { t } = useI18n()
 
-defineProps<{
+const { contractor } = defineProps<{
   contractorId?: string
   contractor?: IContractor | null
   disabled?: boolean
@@ -23,6 +25,18 @@ defineProps<{
 const emit = defineEmits<{
   refresh: []
 }>()
+
+const getConfirmationIcon = (confirmation: IRegistryConfirmation) => {
+  if (confirmation.status === 'success') return ShieldCheck
+  if (confirmation.status === 'pending') return Hourglass
+  return TriangleAlertIcon
+}
+
+const getConfirmationBadgeVariant = (confirmation: IRegistryConfirmation): BadgeVariants['variant'] => {
+  if (confirmation.status === 'success') return 'success-outline'
+  if (confirmation.status === 'pending') return 'draft-outline'
+  return 'destructive-outline'
+}
 </script>
 
 <template>
@@ -53,10 +67,9 @@ const emit = defineEmits<{
         v-for="confirmation in contractor.registryConfirmations"
         :key="confirmation.id"
         v-tooltip="t(`company.sources.tooltip.${confirmation.type}`)"
-        :variant="confirmation.success ? 'success-outline' : 'standout-outline'"
+        :variant="getConfirmationBadgeVariant(confirmation)"
       >
-        <ShieldCheck v-if="confirmation.success" class="size-4 mr-2" />
-        <X v-else class="size-4 mr-1" />
+        <component :is="getConfirmationIcon(confirmation)" class="size-4 mr-1" />
         {{ confirmation.type.toUpperCase() }}
       </Badge>
     </div>

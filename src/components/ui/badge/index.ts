@@ -19,6 +19,7 @@ export const badgeVariants = cva(
         'destructive-outline': 'border-destructive/50 text-destructive bg-destructive/10',
         'info-outline': 'border-info/50 text-info bg-info/10',
         'standout-outline': 'border-standout/50 text-standout bg-standout/10',
+        'draft-outline': 'border-dashed text-muted-foreground/50',
       },
     },
     defaultVariants: {
