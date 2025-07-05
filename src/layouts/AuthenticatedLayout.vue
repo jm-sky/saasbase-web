@@ -31,9 +31,9 @@ const authStore = useAuthStore()
 </script>
 
 <template>
-  <SidebarProvider>
+  <SidebarProvider class="bg-sidebar">
     <AppSidebarMenu />
-    <SidebarInset class="bg-sidebar">
+    <SidebarInset>
       <header class="px-4 flex h-16 shrink-0 items-center gap-2 bg-sidebar transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12">
         <SidebarTrigger class="-ml-1" />
         <Separator
@@ -63,7 +63,7 @@ const authStore = useAuthStore()
         </Breadcrumb>
       </nav>
 
-      <ScrollArea class="flex flex-col h-full max-w-[100vw] md:h-[var(--content-height)] pr-1 md:mr-4 md:mb-2 bg-background border rounded-xl grow">
+      <ScrollArea class="bg-background flex flex-col h-full max-w-[100vw] md:h-[var(--content-height)] pr-1 md:mr-4 md:mb-2 border rounded-xl grow shadow-lg/50">
         <slot />
       </ScrollArea>
     </SidebarInset>

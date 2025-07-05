@@ -10,8 +10,8 @@ defineProps<{
 </script>
 
 <template>
-  <div class="grid grid-cols-1 md:grid-cols-4 gap-2 font-semibold mt-2 mb-2 border rounded-md p-4 bg-gray-50">
-    <div class="col-span-full text-sm text-muted-foreground">
+  <div class="grid grid-cols-1 md:grid-cols-4 gap-2 mt-2 mb-2 border rounded-md p-4 bg-gray-50">
+    <div class="col-span-full text-sm text-muted-foreground font-semibold">
       {{ t('address.title') }}
     </div>
     <FormFieldLabeled
