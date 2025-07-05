@@ -63,7 +63,7 @@ const authStore = useAuthStore()
         </Breadcrumb>
       </nav>
 
-      <ScrollArea class="bg-background flex flex-col h-full max-w-[100vw] md:h-[var(--content-height)] pr-1 md:mr-4 md:mb-2 border rounded-xl grow shadow-lg/50">
+      <ScrollArea class="bg-background flex flex-col h-full max-w-[100vw] md:h-[var(--content-height)] pr-1 md:mr-4 md:mb-2 border rounded-xl grow shadow-lg">
         <slot />
       </ScrollArea>
     </SidebarInset>
