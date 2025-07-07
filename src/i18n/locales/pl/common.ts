@@ -5,6 +5,7 @@ export const common = {
   inactive: 'Nieaktywny',
   add: 'Dodaj',
   back: 'Wstecz',
+  clear: 'Wyczyść',
   createAndContinue: 'Utwórz i kontynuuj',
   edit: 'Edytuj',
   clearCache: 'Wyczyść pamięć podręczną',

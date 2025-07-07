@@ -30,7 +30,8 @@ const { paymentMethods } = storeToRefs(paymentMethodStore)
 const id = defineModel<string | undefined>('id')
 const modelValue = defineModel<IPaymentMethod | undefined>('modelValue', { required: true })
 
-defineProps<{
+const props = defineProps<{
+  class?: string
   popoverContentClass?: string
   disabled?: boolean
 }>()
@@ -75,6 +76,7 @@ onMounted(() => {
         :aria-expanded="open"
         :disabled="disabled || loading"
         class="w-full justify-between"
+        :class="props.class"
       >
         {{ modelValue?.name ?? t('shared.paymentMethod.select') }}
         <ChevronsUpDown class="ml-2 size-4 shrink-0 opacity-50" />

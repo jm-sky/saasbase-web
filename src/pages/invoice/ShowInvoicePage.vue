@@ -5,13 +5,14 @@ import { onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
 import Button from '@/components/ui/button/Button.vue'
-import InvoiceStatusBadge from '@/domains/financial/components/InvoiceStatusBadge.vue'
+import GeneratePdfAction from '@/domains/invoice/components/actions/GeneratePdfAction.vue'
 import InvoiceLines from '@/domains/invoice/components/InvoiceLines.vue'
 import { invoiceService } from '@/domains/invoice/services/invoiceService'
 import { useInvoiceStore } from '@/domains/invoice/stores/invoice.store'
 import AuthenticatedLayout from '@/layouts/AuthenticatedLayout.vue'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
 import { toDateString } from '@/lib/toDateString'
+import ShowInvoiceSidebar from './partials/ShowInvoiceSidebar.vue'
 
 const { t } = useI18n()
 const route = useRoute()
@@ -56,6 +57,11 @@ onMounted(async () => {
           </div>
         </div>
         <div class="flex flex-row items-center justify-end gap-2">
+          <GeneratePdfAction
+            :invoice="invoice"
+            variant="button"
+          />
+
           <Button
             v-tooltip.bottom.focus="t('common.refresh')"
             variant="ghost"
@@ -140,43 +146,7 @@ onMounted(async () => {
       </div>
 
       <!-- Sidebar -->
-      <div class="w-xs flex flex-col gap-4 border p-6 shadow-xl/30 bg-white dark:bg-gray-800">
-        <div class="flex flex-row gap-2 mb-2">
-          <InvoiceStatusBadge :status="invoice?.status ?? 'draft'" />
-        </div>
-
-        <div class="uppercase text-sm font-bold text-muted-foreground">
-          {{ t('financial.fields.payment') }}
-        </div>
-        <div class="flex flex-col gap-4">
-          <div>
-            <div class="text-sm text-muted-foreground">
-              {{ t('financial.payment.fields.method') }}
-            </div>
-            <div class="font-semibold">
-              {{ t(`financial.payment.method.${invoice?.payment?.method}`) }}
-            </div>
-          </div>
-
-          <div>
-            <div class="text-sm text-muted-foreground">
-              {{ t('financial.payment.fields.status') }}
-            </div>
-            <div class="font-semibold">
-              {{ t(`financial.payment.status.${invoice?.payment?.status}`) }}
-            </div>
-          </div>
-
-          <div>
-            <div class="text-sm text-muted-foreground">
-              {{ t('financial.payment.fields.dueDate') }}
-            </div>
-            <div class="font-semibold">
-              {{ invoice?.payment?.dueDate ? toDateString(invoice?.payment?.dueDate) : 'N/A' }}
-            </div>
-          </div>
-        </div>
-      </div>
+      <ShowInvoiceSidebar :invoice="invoice" />
       <!-- End -->
     </div>
   </AuthenticatedLayout>

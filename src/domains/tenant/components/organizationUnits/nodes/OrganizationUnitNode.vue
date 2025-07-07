@@ -71,7 +71,7 @@ const handleRemove = async () => {
       class="min-w-40 p-3 rounded-lg border shadow-sm transition-all duration-200 cursor-pointer bg-card border-border hover:border-border"
       :class="cn('hover:border-border', isSelected && 'hover:border-primary border-primary/50 shadow-primary/10', isRemoving && 'opacity-80 blur-xs')"
     >
-      <div class="font-semibold text-sm leading-tight mb-1 flex items-center justify-between">
+      <div class="font-semibold text-sm leading-tight mb-1 flex items-center justify-between gap-2">
         <span>{{ unit.name }}</span>
         <RouterLink
           v-if="!unit.isTechnical"

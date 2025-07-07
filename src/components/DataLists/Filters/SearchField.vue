@@ -6,7 +6,7 @@ const modelValue = defineModel<string | undefined>('modelValue', { required: tru
 </script>
 
 <template>
-  <div class="flex items-center gap-2 relative w-30 focus-within:w-50 transition-all duration-300">
+  <div class="flex items-center gap-2 relative w-36 focus-within:w-50 transition-all duration-300">
     <Input v-model="modelValue" placeholder="Search..." />
     <X v-if="modelValue" class="cursor-pointer absolute right-2 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" @click="modelValue = ''" />
   </div>

@@ -3,10 +3,14 @@ import { DropdownMenuItem, type DropdownMenuItemProps, useForwardProps } from 'r
 import { computed, type HTMLAttributes } from 'vue'
 import { cn } from '@/lib/utils'
 
-const props = defineProps<DropdownMenuItemProps & { class?: HTMLAttributes['class'], inset?: boolean }>()
+const props = defineProps<DropdownMenuItemProps & {
+  class?: HTMLAttributes['class'],
+  inset?: boolean,
+  hoverable?: boolean
+}>()
 
 const delegatedProps = computed(() => {
-  const { class: _, ...delegated } = props // eslint-disable-line @typescript-eslint/no-unused-vars
+  const { class: _, hoverable: __, ...delegated } = props // eslint-disable-line @typescript-eslint/no-unused-vars
 
   return delegated
 })
@@ -20,6 +24,7 @@ const forwardedProps = useForwardProps(delegatedProps)
     :class="cn(
       'relative flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-hidden transition-colors focus:bg-accent focus:text-accent-foreground data-disabled:pointer-events-none data-disabled:opacity-50',
       inset && 'pl-8',
+      hoverable && 'cursor-pointer hover:bg-muted/50',
       props.class,
     )"
   >

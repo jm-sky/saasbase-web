@@ -40,6 +40,15 @@ class InvoiceService {
     await api.delete(`${apiRoutesMap.invoices}/${id}`)
   }
 
+  async generatePdf(invoiceId: string, params?: {
+    template_id: unknown
+    collection: unknown
+    action: 'download' | 'stream' | 'attach' | 'preview'
+  }): Promise<Blob> {
+    const response = await api.post(`${apiRoutesMap.invoices}/${invoiceId}/pdf`, { params })
+    return response.data
+  }
+
   async export(filters?: IInvoiceFilters): Promise<Blob> {
     const params = buildSpatieQuery(filters ?? { filter: {} })
     const response = await api.get(`${apiRoutesMap.invoices}/export`, { params, responseType: 'blob' })

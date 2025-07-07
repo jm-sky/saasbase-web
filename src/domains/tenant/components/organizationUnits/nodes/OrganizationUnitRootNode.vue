@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { Handle, Position } from '@vue-flow/core'
+import { ArrowRight } from 'lucide-vue-next'
 import { computed, ref } from 'vue'
 import { cn } from '@/lib/utils'
 import type { OrganizationUnitNodeData } from '../../../composables/useOrganizationChartLayout'
@@ -45,8 +46,16 @@ const handleAddChild = () => {
       class="min-w-40 p-5 rounded-lg border shadow-sm transition-all duration-200 cursor-pointer bg-card border-border hover:border-border"
       :class="cn('hover:border-border', isSelected && 'hover:border-primary border-primary/50 shadow-primary/10')"
     >
-      <div class="font-semibold text-sm leading-tight mb-4">
-        {{ unit.name }}
+      <div class="font-semibold text-sm leading-tight mb-1 flex items-center justify-between gap-2">
+        <span>{{ unit.name }}</span>
+        <RouterLink
+          v-if="!unit.isTechnical"
+          :to="{ name: 'tenant.show.organization-unit', params: { id: unit.tenantId, unitId: unit.id } }"
+          class="text-primary hover:text-primary/80 transition-colors"
+          title="View Details"
+        >
+          <ArrowRight class="size-3" />
+        </RouterLink>
       </div>
 
       <div v-if="unit.description" class="text-xs mb-1.5 leading-snug text-gray-300">
