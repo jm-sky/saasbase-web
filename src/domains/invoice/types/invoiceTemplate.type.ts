@@ -13,6 +13,7 @@ export interface IInvoiceTemplatePreview {
   settings: Record<string, unknown>
   isActive: boolean
   isDefault: boolean
+  isSystem: boolean
 }
 
 export interface IInvoiceTemplate {
@@ -23,10 +24,11 @@ export interface IInvoiceTemplate {
   description?: string
   content: string
   category: TemplateCategory
-  previewData: string[]
-  settings: Record<string, unknown>
+  previewData?: Record<string, unknown>
+  settings?: Record<string, unknown>
   isActive: boolean
   isDefault: boolean
+  isSystem: boolean
   createdAt?: string
   updatedAt?: string
 }

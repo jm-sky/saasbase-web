@@ -43,6 +43,10 @@ const tabs = [
     label: t('tenant.branding.title'),
   },
   {
+    to: `/tenants/${tenantId}/show/invoice-templates`,
+    label: t('tenant.invoiceTemplates.title'),
+  },
+  {
     to: `/tenants/${tenantId}/show/public-profile`,
     label: t('tenant.publicProfile.title'),
   },
