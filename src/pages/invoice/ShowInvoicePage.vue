@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { templateRef } from '@vueuse/core'
 import { RefreshCcw } from 'lucide-vue-next'
 import { storeToRefs } from 'pinia'
 import { onMounted, ref } from 'vue'
@@ -23,6 +24,8 @@ const { invoice } = storeToRefs(invoiceStore)
 
 const loading = ref(false)
 const error = ref<string | null>(null)
+
+const sidebar = templateRef<typeof ShowInvoiceSidebar>('sidebar')
 
 const refresh = async () => {
   try {
@@ -60,6 +63,7 @@ onMounted(async () => {
           <GeneratePdfAction
             :invoice="invoice"
             variant="button"
+            @done="sidebar?.attachments?.refresh()"
           />
 
           <Button
@@ -146,7 +150,7 @@ onMounted(async () => {
       </div>
 
       <!-- Sidebar -->
-      <ShowInvoiceSidebar :invoice="invoice" />
+      <ShowInvoiceSidebar ref="sidebar" :invoice="invoice" />
       <!-- End -->
     </div>
   </AuthenticatedLayout>

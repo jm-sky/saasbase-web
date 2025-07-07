@@ -36,8 +36,13 @@ export default {
     },
     generatePdf: {
       title: 'Generate PDF',
+      description: 'Generate a PDF for the invoice',
       original: 'Original PDF',
       duplicate: 'Duplicate PDF',
+      more: 'More options',
+      fields: {
+        template: 'Template',
+      },
     },
     sendEmail: {
       title: 'Send Email',

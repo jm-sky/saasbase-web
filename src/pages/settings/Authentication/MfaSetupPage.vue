@@ -149,7 +149,6 @@ onMounted(() => void setup2FA())
             <PinInput
               v-model="code"
               :disabled="isLoading"
-              type="number"
               length="6"
               class="flex justify-center gap-2"
             >

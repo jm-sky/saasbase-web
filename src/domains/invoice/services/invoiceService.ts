@@ -4,6 +4,7 @@ import api from '@/lib/api'
 import { apiRoutesMap } from '@/lib/api/apiRoutes'
 import type { SortingState } from '@tanstack/vue-table'
 import type { IInvoice, IInvoiceCreate } from '@/domains/invoice/types/invoice.type'
+import type { TUUID } from '@/domains/shared/types/common'
 import type { FilterDefinition, IResource, IResourceCollection } from '@/domains/shared/types/resource.type'
 
 export interface IInvoiceFilters {
@@ -12,6 +13,12 @@ export interface IInvoiceFilters {
   perPage?: number
   filter?: Record<string, FilterDefinition>
   sort?: SortingState
+}
+
+export interface IGeneratePdfParams {
+  templateId?: TUUID
+  collection?: 'attachments' | 'invoices' | 'drafts'
+  action?: 'download' | 'stream' | 'attach' | 'preview'
 }
 
 class InvoiceService {
@@ -40,11 +47,7 @@ class InvoiceService {
     await api.delete(`${apiRoutesMap.invoices}/${id}`)
   }
 
-  async generatePdf(invoiceId: string, params?: {
-    template_id: unknown
-    collection: unknown
-    action: 'download' | 'stream' | 'attach' | 'preview'
-  }): Promise<Blob> {
+  async generatePdf(invoiceId: string, params?: IGeneratePdfParams): Promise<Blob> {
     const response = await api.post(`${apiRoutesMap.invoices}/${invoiceId}/pdf`, { params })
     return response.data
   }

@@ -36,8 +36,13 @@ export default {
     },
     generatePdf: {
       title: 'Generuj PDF',
+      description: 'Generuj PDF dla faktury',
       original: 'PDF oryginalny',
       duplicate: 'PDF duplikat',
+      more: 'Więcej opcji',
+      fields: {
+        template: 'Szablon',
+      },
     },
     sendEmail: {
       title: 'Wyślij e-mail',

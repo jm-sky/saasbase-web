@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { templateRef } from '@vueuse/core'
 import { useI18n } from 'vue-i18n'
 import Separator from '@/components/ui/separator/Separator.vue'
 import InvoiceStatusBadge from '@/domains/financial/components/InvoiceStatusBadge.vue'
@@ -12,6 +13,12 @@ const { t } = useI18n()
 defineProps<{
   invoice?: IInvoice | null
 }>()
+
+const attachments = templateRef<typeof AttachmentListWrapper>('attachments')
+
+defineExpose({
+  attachments,
+})
 </script>
 
 <template>
@@ -55,6 +62,7 @@ defineProps<{
     <Separator class="my-8" />
 
     <AttachmentListWrapper
+      ref="attachments"
       :model-id="invoice?.id"
       :service="invoiceeAttachmentsService"
       downloadable

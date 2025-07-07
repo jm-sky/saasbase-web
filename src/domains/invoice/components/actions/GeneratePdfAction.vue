@@ -12,26 +12,42 @@ import {
 } from '@/components/ui/dropdown-menu'
 import Separator from '@/components/ui/separator/Separator.vue'
 import { useToast } from '@/components/ui/toast'
+import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
 import type { IInvoice } from '../../types/invoice.type'
+import { invoiceService } from '../../services/invoiceService'
+import GenerateInvoicePdfModal from '../modals/GenerateInvoicePdfModal.vue'
 
 const { t } = useI18n()
 const { toast } = useToast()
 
-defineProps<{
-  invoice?: IInvoice
+const props = defineProps<{
+  invoice?: IInvoice | null
   invoices?: IInvoice[]
   variant?: 'button' | 'menu-item'
 }>()
 
+const emit = defineEmits<{
+  done: [type: 'original' | 'duplicate']
+}>()
+
 const loading = ref(false)
+const open = ref(false)
+
+const invoiceOptions = {
+  templateId: undefined,
+  collection: undefined,
+  action: undefined,
+}
 
 const generatePdf = async (type: 'original' | 'duplicate') => {
+  if (!props.invoice?.id) return
   loading.value = true
   try {
-    // TODO: Implement service integration
-    await new Promise(resolve => setTimeout(resolve, 1000))
+    await invoiceService.generatePdf(props.invoice.id, invoiceOptions)
     toast.success(t(`invoice.actions.generatePdf.${type}.success`, `${type} PDF generated successfully`))
+    emit('done', type)
   } catch (error) {
+    handleErrorWithToast(t('invoice.actions.generatePdf.error', 'Failed to generate PDF'), error)
     console.error(`Failed to generate ${type} PDF:`, error)
     toast.error(t(`invoice.actions.generatePdf.${type}.error`, `Failed to generate ${type} PDF`))
   } finally {
@@ -47,6 +63,7 @@ const generatePdf = async (type: 'original' | 'duplicate') => {
         <Button
           variant="ghost"
           size="sm"
+          type="button"
           class="rounded-r-none border-r-1"
           :disabled="loading || (!invoice && !invoices?.length)"
           @click.stop.capture="generatePdf('original')"
@@ -83,9 +100,14 @@ const generatePdf = async (type: 'original' | 'duplicate') => {
 
       <Separator class="my-2" />
 
-      <DropdownMenuItem class="cursor-pointer" disabled>
+      <DropdownMenuItem class="cursor-pointer" @click="open = true">
         {{ t('invoice.actions.generatePdf.more', 'More options') }}
       </DropdownMenuItem>
     </DropdownMenuContent>
+
+    <GenerateInvoicePdfModal
+      v-model:open="open"
+      :invoice="invoice"
+    />
   </DropdownMenu>
 </template>

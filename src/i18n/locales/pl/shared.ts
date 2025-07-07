@@ -36,6 +36,11 @@ export const shared = {
     notFound: 'Nie znaleziono kursów wymiany',
     loadError: 'Nie udało się załadować kursów wymiany',
   },
+  invoiceTemplate: {
+    select: 'Wybierz szablon faktury',
+    search: 'Szukaj szablonu faktury',
+    notFound: 'Nie znaleziono szablonów faktury',
+  },
   measurementUnit: {
     select: 'Wybierz jednostkę miary',
     search: 'Szukaj jednostki miary',

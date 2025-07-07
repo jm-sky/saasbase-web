@@ -36,6 +36,11 @@ export const shared = {
     notFound: 'No exchange rates found',
     loadError: 'Failed to load exchange rates',
   },
+  invoiceTemplate: {
+    select: 'Select invoice template',
+    search: 'Search invoice template',
+    notFound: 'No invoice templates found',
+  },
   measurementUnit: {
     select: 'Select measurement unit',
     search: 'Search measurement unit',
