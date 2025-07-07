@@ -386,6 +386,7 @@ export const tenant = {
     systemTemplates: 'System Templates',
     tenantTemplates: 'Tenant Templates',
     noTemplates: 'No templates found',
+    loadError: 'Failed to load templates',
     fields: {
       name: 'Name',
       description: 'Description',

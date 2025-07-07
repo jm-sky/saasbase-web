@@ -391,6 +391,7 @@ export const tenant = {
     systemTemplates: 'Szablony systemowe',
     tenantTemplates: 'Szablony zespołu',
     noTemplates: 'Nie znaleziono szablonów',
+    loadError: 'Nie udało się załadować szablonów',
     fields: {
       name: 'Nazwa',
       description: 'Opis',
