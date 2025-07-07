@@ -86,88 +86,84 @@ onMounted(async () => {
           </Button>
         </div>
       </div>
+    </div>
 
-      <div class="p-8 flex flex-col gap-4 border rounded shadow-lg bg-white dark:bg-gray-800">
-        <div class="grid grid-cols-1 lg:grid-cols-[1fr_29rem] gap-16">
-          <!-- Main content -->
-          <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            <div class="col-span-2 mb-6">
-              <h1 class="text-xl font-bold">
-                {{ t(`financial.invoiceType.${expense?.type}`) }}
-              </h1>
-              <h2 class="text-2xl font-bold">
-                {{ expense?.number }}
-              </h2>
-            </div>
-
-            <div>
-              <div class="text-sm text-muted-foreground">
-                {{ t('financial.fields.issueDate') }}
-              </div>
-              <div class="font-semibold">
-                {{ expense?.issueDate ? toDateString(expense?.issueDate) : 'N/A' }}
-              </div>
-            </div>
-            <div>
-              <div class="text-sm text-muted-foreground">
-                {{ t('financial.fields.dueDate') }}
-              </div>
-              <div class="font-semibold">
-                {{ expense?.payment?.dueDate ? toDateString(expense?.payment?.dueDate) : 'N/A' }}
-              </div>
-            </div>
-
-            <div>
-              <div class="text-sm text-muted-foreground">
-                Issued for
-              </div>
-              <div class="font-semibold">
-                {{ expense?.buyer?.name ?? '-' }}
-              </div>
-              <div class="text-sm text-muted-foreground">
-                {{ expense?.buyer?.address ?? '-' }}
-              </div>
-              <div class="text-sm text-muted-foreground">
-                {{ t('financial.fields.taxId') }}: {{ expense?.buyer?.taxId ?? '-' }}
-              </div>
-            </div>
-
-            <div>
-              <div class="text-sm text-muted-foreground">
-                Issued by
-              </div>
-              <div class="font-semibold">
-                {{ expense?.seller?.name ?? '-' }}
-              </div>
-              <div class="text-sm text-muted-foreground">
-                {{ expense?.seller?.address ?? '-' }}
-              </div>
-              <div class="text-sm text-muted-foreground">
-                {{ t('financial.fields.taxId') }}: {{ expense?.seller?.taxId ?? '-' }}
-              </div>
-            </div>
-
-            <InvoiceLines
-              v-if="expense?.body.lines"
-              :lines="expense?.body.lines"
-              :currency="expense?.currency"
-              :total-net="expense?.totalNet"
-              :total-tax="expense?.totalTax"
-              :total-gross="expense?.totalGross"
-            />
+    <div class="flex flex-row gap-8 m-6">
+      <div class="w-full lg:w-7xl max-w-7xl mx-auto p-6 md:p-8 border shadow-xl/30">
+        <!-- Main content -->
+        <div class="grid grid-cols-2 gap-8 p-4">
+          <div class="col-span-2 mb-6">
+            <h1 class="text-xl font-bold">
+              {{ t(`financial.invoiceType.${expense?.type}`) }}
+            </h1>
+            <h2 class="text-2xl font-bold">
+              {{ expense?.number }}
+            </h2>
           </div>
 
-          <!-- Sidebar -->
-          <div class="flex flex-col gap-4">
-            <ShowExpenseSidebar :expense />
-            <ExpenseAttachmentsList
-              :expense-id="expense?.id"
-              class="border rounded-md py-2 px-4"
-            />
+          <div>
+            <div class="text-sm text-muted-foreground">
+              {{ t('financial.fields.issueDate') }}
+            </div>
+            <div class="font-semibold">
+              {{ expense?.issueDate ? toDateString(expense?.issueDate) : 'N/A' }}
+            </div>
+          </div>
+          <div>
+            <div class="text-sm text-muted-foreground">
+              {{ t('financial.fields.dueDate') }}
+            </div>
+            <div class="font-semibold">
+              {{ expense?.payment?.dueDate ? toDateString(expense?.payment?.dueDate) : 'N/A' }}
+            </div>
           </div>
 
-          <!-- End -->
+          <div>
+            <div class="text-sm text-muted-foreground">
+              Issued for
+            </div>
+            <div class="font-semibold">
+              {{ expense?.buyer?.name ?? '-' }}
+            </div>
+            <div class="text-sm text-muted-foreground">
+              {{ expense?.buyer?.address ?? '-' }}
+            </div>
+            <div class="text-sm text-muted-foreground">
+              {{ t('financial.fields.taxId') }}: {{ expense?.buyer?.taxId ?? '-' }}
+            </div>
+          </div>
+
+          <div>
+            <div class="text-sm text-muted-foreground">
+              Issued by
+            </div>
+            <div class="font-semibold">
+              {{ expense?.seller?.name ?? '-' }}
+            </div>
+            <div class="text-sm text-muted-foreground">
+              {{ expense?.seller?.address ?? '-' }}
+            </div>
+            <div class="text-sm text-muted-foreground">
+              {{ t('financial.fields.taxId') }}: {{ expense?.seller?.taxId ?? '-' }}
+            </div>
+          </div>
+
+          <InvoiceLines
+            v-if="expense?.body.lines"
+            :lines="expense?.body.lines"
+            :currency="expense?.currency"
+            :total-net="expense?.totalNet"
+            :total-tax="expense?.totalTax"
+            :total-gross="expense?.totalGross"
+          />
         </div>
+        <!-- End -->
+      </div>
+
+      <!-- Sidebar -->
+      <div class="w-xs flex flex-col gap-4 border p-6 shadow-xl/30 bg-white dark:bg-gray-800">
+        <ShowExpenseSidebar :expense />
+        <ExpenseAttachmentsList :expense-id="expense?.id" />
       </div>
     </div>
   </AuthenticatedLayout>

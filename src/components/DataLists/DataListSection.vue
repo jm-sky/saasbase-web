@@ -38,7 +38,7 @@ const emit = defineEmits<{
             <RefreshCw class="size-4" />
           </Button>
 
-          <div class="h-6 w-px bg-border mx-2" />
+          <div v-if="withAddButton" class="h-6 w-px bg-border mx-2" />
 
           <Button
             v-if="withAddButton"

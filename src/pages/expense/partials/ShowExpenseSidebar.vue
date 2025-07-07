@@ -12,7 +12,7 @@ defineProps<{
 </script>
 
 <template>
-  <div class="flex flex-col gap-4 border border-dashed rounded-lg p-8">
+  <div class="flex flex-col gap-4">
     <div class="flex flex-row gap-2 mb-2">
       <InvoiceStatusBadge :status="expense?.status ?? 'draft'" />
     </div>
