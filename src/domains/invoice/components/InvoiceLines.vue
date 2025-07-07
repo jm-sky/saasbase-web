@@ -64,19 +64,19 @@ defineProps<{
         {{ t(`financial.fields.totalNet`) }}:
       </div>
       <div class="font-bold">
-        {{ totalNet?.toFixed(2) }} {{ currency }}
+        {{ totalNet ? money(totalNet, currency, locale) : 0 }}
       </div>
       <div class="text-muted-foreground text-end">
         {{ t(`financial.fields.totalTax`) }}:
       </div>
       <div class="font-bold">
-        {{ totalTax?.toFixed(2) }} {{ currency }}
+        {{ totalTax ? money(totalTax, currency, locale) : 0 }}
       </div>
       <div class="text-muted-foreground text-end">
         {{ t(`financial.fields.totalGross`) }}:
       </div>
       <div class="font-bold">
-        {{ totalGross?.toFixed(2) }} {{ currency }}
+        {{ totalGross ? money(totalGross, currency, locale) : 0 }}
       </div>
     </div>
   </div>
