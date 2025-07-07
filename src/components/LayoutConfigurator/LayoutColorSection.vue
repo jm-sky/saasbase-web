@@ -1,11 +1,13 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
 import { computed } from 'vue'
+import { useI18n } from 'vue-i18n'
 import Button from '@/components/ui/button/Button.vue'
 import Label from '@/components/ui/label/Label.vue'
 import { useThemeStore } from '@/stores/theme.store'
 
 const themeStore = useThemeStore()
+const { t } = useI18n()
 
 const { themeColor } = storeToRefs(themeStore)
 
@@ -17,7 +19,7 @@ const colors = computed(() => themeStore.allowedColors.map(name => ({
 
 <template>
   <div class="space-y-2">
-    <Label class="font-bold">{{ $t('common.themeColor') }}</Label>
+    <Label class="font-bold">{{ t('common.themeColor') }}</Label>
     <div class="grid grid-cols-3 gap-2">
       <Button
         v-for="color in colors"

@@ -3,9 +3,12 @@ import { Pencil, Plus, Star, Trash, Zap } from 'lucide-vue-next'
 import { computed, onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import LoadingIcon from '@/components/Icons/LoadingIcon.vue'
+import Button from '@/components/ui/button/Button.vue'
 import { useToast } from '@/components/ui/toast'
+import UIIcon from '@/components/UIIcon.vue'
 import InvoiceTemplateEditor from '@/domains/invoice/components/InvoiceTemplateEditor.vue'
 import { invoiceTemplateService } from '@/domains/invoice/services/InvoiceTemplate.service'
+import TenantSectionTitle from '@/domains/tenant/components/TenantSectionTitle.vue'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
 import type { IInvoiceTemplate } from '@/domains/invoice/types/invoiceTemplate.type'
 import type { ITenant } from '@/domains/tenant/types/tenant.type'
@@ -150,56 +153,52 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="tenant-invoice-templates-page">
-    <div class="flex flex-col gap-6">
-      <!-- Header -->
-      <div class="flex justify-between items-center">
-        <h2 class="text-2xl font-bold text-gray-900">
-          {{ $t('tenant.invoiceTemplates.title') }}
-        </h2>
-        <div class="flex space-x-4">
-          <button
-            class="bg-blue-500 hover:bg-blue-600 disabled:bg-blue-300 text-white px-4 py-2 rounded flex items-center space-x-2"
-            @click="createNewTemplate"
-          >
-            <Plus class="w-4 h-4" />
-            <span>{{ $t('tenant.invoiceTemplates.createTemplate') }}</span>
-          </button>
-        </div>
-      </div>
+  <div class="flex flex-col gap-2 border rounded-md p-4 shadow-lg/5">
+    <TenantSectionTitle :title="t('tenant.invoiceTemplates.title')">
+      <template #actions>
+        <Button variant="primary" @click="createNewTemplate">
+          <Plus class="size-4" />
+          {{ t('tenant.invoiceTemplates.createTemplate') }}
+        </Button>
+      </template>
+    </TenantSectionTitle>
 
+    <div class="flex flex-col gap-6">
       <!-- Template List -->
-      <div v-if="!isEditing" class="bg-white rounded-lg shadow-lg p-6">
+      <div v-if="!isEditing" class="p-6">
         <div class="mb-6">
           <div class="flex space-x-4 mb-4">
-            <button
-              :class="['px-4 py-2 rounded', activeFilter === 'all' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-700']"
+            <Button
+              :variant="activeFilter === 'all' ? 'primary' : 'outline'"
               @click="activeFilter = 'all'"
             >
-              {{ $t('tenant.invoiceTemplates.allTemplates') }}
-            </button>
-            <button
-              :class="['px-4 py-2 rounded', activeFilter === 'system' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-700']"
+              <UIIcon :icon="activeFilter === 'all' ? 'lucide:circle-check' : 'lucide:circle'" class="size-4" />
+              {{ t('tenant.invoiceTemplates.allTemplates') }}
+            </Button>
+            <Button
+              :variant="activeFilter === 'system' ? 'primary' : 'outline'"
               @click="activeFilter = 'system'"
             >
-              {{ $t('tenant.invoiceTemplates.systemTemplates') }}
-            </button>
-            <button
-              :class="['px-4 py-2 rounded', activeFilter === 'tenant' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-700']"
+              <UIIcon :icon="activeFilter === 'system' ? 'lucide:circle-check' : 'lucide:circle'" class="size-4" />
+              {{ t('tenant.invoiceTemplates.systemTemplates') }}
+            </Button>
+            <Button
+              :variant="activeFilter === 'tenant' ? 'primary' : 'outline'"
               @click="activeFilter = 'tenant'"
             >
-              {{ $t('tenant.invoiceTemplates.tenantTemplates') }}
-            </button>
+              <UIIcon :icon="activeFilter === 'tenant' ? 'lucide:circle-check' : 'lucide:circle'" class="size-4" />
+              {{ t('tenant.invoiceTemplates.tenantTemplates') }}
+            </Button>
           </div>
         </div>
 
         <div v-if="isLoading" class="text-center py-8">
           <LoadingIcon class="mx-auto mb-2" />
-          {{ $t('common.loading') }}
+          {{ t('common.loading') }}
         </div>
 
         <div v-else-if="filteredTemplates.length === 0" class="text-center py-8 text-gray-500">
-          {{ $t('tenant.invoiceTemplates.noTemplates') }}
+          {{ t('tenant.invoiceTemplates.noTemplates') }}
         </div>
 
         <div v-else class="grid gap-4">
@@ -218,13 +217,13 @@ onMounted(() => {
                     v-if="template.isDefault"
                     class="px-2 py-1 text-xs bg-green-100 text-green-800 rounded-full"
                   >
-                    {{ $t('tenant.invoiceTemplates.default') }}
+                    {{ t('tenant.invoiceTemplates.default') }}
                   </span>
                   <span
                     v-if="template.isSystem"
                     class="px-2 py-1 text-xs bg-blue-100 text-blue-800 rounded-full"
                   >
-                    {{ $t('tenant.invoiceTemplates.system') }}
+                    {{ t('tenant.invoiceTemplates.system') }}
                   </span>
                   <span
                     :class="[
@@ -239,7 +238,7 @@ onMounted(() => {
                   {{ template.description }}
                 </p>
                 <div class="text-sm text-gray-500">
-                  {{ $t('tenant.invoiceTemplates.category') }}: {{ template.category }}
+                  {{ t('tenant.invoiceTemplates.category') }}: {{ template.category }}
                 </div>
               </div>
               <div class="flex space-x-2 ml-4">
@@ -253,7 +252,7 @@ onMounted(() => {
                 <button
                   :disabled="template.isDefault || template.isSystem"
                   class="text-green-600 hover:text-green-800 disabled:text-gray-400 disabled:cursor-not-allowed"
-                  :title="$t('tenant.invoiceTemplates.setAsDefault')"
+                  :title="t('tenant.invoiceTemplates.setAsDefault')"
                   @click="toggleDefault(template)"
                 >
                   <Star class="w-4 h-4" />
@@ -280,7 +279,7 @@ onMounted(() => {
       </div>
 
       <!-- Template Editor -->
-      <div v-if="isEditing" class="bg-white rounded-lg shadow-lg">
+      <div v-if="isEditing">
         <InvoiceTemplateEditor
           :template="editingTemplate"
           :system-templates="systemTemplates"
@@ -293,9 +292,3 @@ onMounted(() => {
   </div>
 </template>
 
-<style scoped>
-.tenant-invoice-templates-page {
-  min-height: 100vh;
-  background-color: #f9fafb;
-}
-</style>

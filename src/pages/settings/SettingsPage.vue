@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n'
 import ButtonLink from '@/components/ButtonLink.vue'
 import { Separator } from '@/components/ui/separator'
 import { useAuthStore } from '@/domains/auth/store/auth.store'
@@ -6,6 +7,7 @@ import AuthenticatedLayout from '@/layouts/AuthenticatedLayout.vue'
 import { routeTo } from '@/router/routeMap'
 import SettingsSidebarMenu from './partials/SettingsSidebarMenu.vue'
 
+const { t } = useI18n()
 const { user } = useAuthStore()
 </script>
 
@@ -15,18 +17,18 @@ const { user } = useAuthStore()
       <div class="flex justify-between items-center gap-2">
         <div class="space-y-0.5">
           <h2 class="text-2xl font-bold tracking-tight">
-            {{ $t('settings.title') }}
+            {{ t('settings.title') }}
           </h2>
           <p class="text-muted-foreground">
-            {{ $t('settings.description') }}
+            {{ t('settings.description') }}
           </p>
         </div>
         <div class="flex flex-row gap-2">
           <ButtonLink :to="routeTo.identityConfirmation()" variant="outline">
-            {{ $t('identityConfirmation.title') }}
+            {{ t('identityConfirmation.title') }}
           </ButtonLink>
           <ButtonLink :to="routeTo.userPublicProfile(user?.id ?? '')" variant="primary">
-            {{ $t('settings.publicProfile.title') }}
+            {{ t('settings.publicProfile.title') }}
           </ButtonLink>
         </div>
       </div>

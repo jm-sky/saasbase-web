@@ -377,4 +377,18 @@ export const tenant = {
       error: 'Failed to load public profile'
     }
   },
+  invoiceTemplates: {
+    title: 'Invoice Templates',
+    save: 'Save',
+    template: 'Template',
+    createTemplate: 'Create Template',
+    allTemplates: 'All Templates',
+    systemTemplates: 'System Templates',
+    tenantTemplates: 'Tenant Templates',
+    noTemplates: 'No templates found',
+    fields: {
+      name: 'Name',
+      description: 'Description',
+    }
+  }
 }

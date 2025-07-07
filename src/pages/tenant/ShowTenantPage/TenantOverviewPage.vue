@@ -1,8 +1,11 @@
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n'
 import TenantAddressesList from '@/domains/tenant/components/addresses/TenantAddressesList.vue'
 import TenantAttachmentsList from '@/domains/tenant/components/attachments/TenantAttachmentsList.vue'
 import TenantBankAccountsList from '@/domains/tenant/components/bankAccounts/TenantBankAccountsList.vue'
 import type { ITenant } from '@/domains/tenant/types/tenant.type'
+
+const { t } = useI18n()
 
 defineProps<{
   tenant?: ITenant
@@ -12,7 +15,7 @@ defineProps<{
 <template>
   <div class="flex flex-col gap-2 border rounded-md p-4 shadow-lg/5">
     <div class="font-bold">
-      {{ $t('tenant.fields.description') }}
+      {{ t('tenant.fields.description') }}
     </div>
     <div class="text-muted-foreground">
       {{ tenant?.description ?? '-' }}

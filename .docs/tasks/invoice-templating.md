@@ -5,7 +5,7 @@
       <div class="max-w-7xl mx-auto">
         <!-- Header -->
         <div class="flex justify-between items-center mb-8">
-          <h1 class="text-3xl font-bold text-gray-900">{{ $t('invoices.template_editor') }}</h1>
+          <h1 class="text-3xl font-bold text-gray-900">{{ t('invoices.template_editor') }}</h1>
           <div class="flex space-x-4">
             <button
               @click="previewTemplate"
@@ -13,7 +13,7 @@
               class="bg-blue-500 hover:bg-blue-600 disabled:bg-blue-300 text-white px-4 py-2 rounded flex items-center space-x-2"
             >
               <EyeIcon class="w-4 h-4" />
-              <span>{{ $t('common.preview') }}</span>
+              <span>{{ t('common.preview') }}</span>
             </button>
             <button
               @click="saveTemplate"
@@ -21,7 +21,7 @@
               class="bg-green-500 hover:bg-green-600 disabled:bg-green-300 text-white px-4 py-2 rounded flex items-center space-x-2"
             >
               <SaveIcon class="w-4 h-4" />
-              <span>{{ $t('common.save') }}</span>
+              <span>{{ t('common.save') }}</span>
             </button>
           </div>
         </div>
@@ -32,7 +32,7 @@
             <div class="space-y-4 mb-6">
               <div>
                 <label class="block text-sm font-medium text-gray-700 mb-2">
-                  {{ $t('invoices.template_name') }}
+                  {{ t('invoices.template_name') }}
                 </label>
                 <input
                   v-model="template.name"
@@ -44,7 +44,7 @@
 
               <div>
                 <label class="block text-sm font-medium text-gray-700 mb-2">
-                  {{ $t('common.description') }}
+                  {{ t('common.description') }}
                 </label>
                 <textarea
                   v-model="template.description"
@@ -56,14 +56,14 @@
 
               <div>
                 <label class="block text-sm font-medium text-gray-700 mb-2">
-                  {{ $t('invoices.load_template') }}
+                  {{ t('invoices.load_template') }}
                 </label>
                 <select
                   v-model="selectedTemplateId"
                   @change="loadTemplate"
                   class="w-full border border-gray-300 rounded-md px-3 py-2"
                 >
-                  <option value="">{{ $t('invoices.select_template') }}</option>
+                  <option value="">{{ t('invoices.select_template') }}</option>
                   <optgroup :label="$t('invoices.system_templates')">
                     <option
                       v-for="tmpl in systemTemplates"
@@ -88,7 +88,7 @@
 
             <div class="mb-4">
               <label class="block text-sm font-medium text-gray-700 mb-2">
-                {{ $t('invoices.template_content') }}
+                {{ t('invoices.template_content') }}
               </label>
               <div class="border border-gray-300 rounded-md">
                 <textarea
@@ -106,13 +106,13 @@
           <!-- Preview Panel -->
           <div class="bg-white rounded-lg shadow-lg p-6">
             <div class="mb-4 flex justify-between items-center">
-              <h2 class="text-xl font-semibold text-gray-900">{{ $t('common.preview') }}</h2>
+              <h2 class="text-xl font-semibold text-gray-900">{{ t('common.preview') }}</h2>
               <div class="flex space-x-2">
                 <button
                   @click="showPreviewOptions = !showPreviewOptions"
                   class="text-sm bg-gray-100 hover:bg-gray-200 px-3 py-1 rounded"
                 >
-                  {{ $t('invoices.preview_options') }}
+                  {{ t('invoices.preview_options') }}
                 </button>
               </div>
             </div>
@@ -139,13 +139,13 @@
                 class="text-center text-gray-500 py-8"
               >
                 <LoadingSpinner class="mx-auto mb-2" />
-                {{ $t('common.loading') }}
+                {{ t('common.loading') }}
               </div>
               <div
                 v-else
                 class="text-center text-gray-500 py-8"
               >
-                {{ $t('invoices.click_preview') }}
+                {{ t('invoices.click_preview') }}
               </div>
             </div>
 
@@ -571,12 +571,12 @@ textarea.font-mono {
 <!-- PreviewOptions.vue -->
 <template>
   <div class="preview-options bg-gray-50 p-4 rounded-lg border">
-    <h3 class="text-sm font-medium text-gray-900 mb-3">{{ $t('invoices.preview_options') }}</h3>
+    <h3 class="text-sm font-medium text-gray-900 mb-3">{{ t('invoices.preview_options') }}</h3>
     
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
       <div>
         <label class="block text-xs font-medium text-gray-700 mb-1">
-          {{ $t('invoices.language') }}
+          {{ t('invoices.language') }}
         </label>
         <select
           v-model="localOptions.language"
@@ -591,7 +591,7 @@ textarea.font-mono {
       
       <div>
         <label class="block text-xs font-medium text-gray-700 mb-1">
-          {{ $t('invoices.currency') }}
+          {{ t('invoices.currency') }}
         </label>
         <select
           v-model="localOptions.currency"
@@ -607,7 +607,7 @@ textarea.font-mono {
       
       <div>
         <label class="block text-xs font-medium text-gray-700 mb-1">
-          {{ $t('invoices.date_format') }}
+          {{ t('invoices.date_format') }}
         </label>
         <select
           v-model="localOptions.dateFormat"
@@ -625,7 +625,7 @@ textarea.font-mono {
     <div class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
       <div>
         <label class="block text-xs font-medium text-gray-700 mb-1">
-          {{ $t('invoices.accent_color') }}
+          {{ t('invoices.accent_color') }}
         </label>
         <div class="flex space-x-2">
           <input
@@ -643,7 +643,7 @@ textarea.font-mono {
       
       <div>
         <label class="block text-xs font-medium text-gray-700 mb-1">
-          {{ $t('invoices.secondary_color') }}
+          {{ t('invoices.secondary_color') }}
         </label>
         <div class="flex space-x-2">
           <input
@@ -661,7 +661,7 @@ textarea.font-mono {
     </div>
     
     <div class="mt-4">
-      <h4 class="text-xs font-medium text-gray-700 mb-2">{{ $t('invoices.color_schemes') }}</h4>
+      <h4 class="text-xs font-medium text-gray-700 mb-2">{{ t('invoices.color_schemes') }}</h4>
       <div class="flex flex-wrap gap-2">
         <button
           v-for="scheme in colorSchemes"
@@ -685,7 +685,7 @@ textarea.font-mono {
           type="checkbox"
           class="mr-2"
         />
-        {{ $t('invoices.include_logo') }}
+        {{ t('invoices.include_logo') }}
       </label>
       
       <label class="flex items-center text-sm">
@@ -694,7 +694,7 @@ textarea.font-mono {
           type="checkbox"
           class="mr-2"
         />
-        {{ $t('invoices.include_signatures') }}
+        {{ t('invoices.include_signatures') }}
       </label>
     </div>
   </div>
@@ -744,33 +744,33 @@ watch(() => props.modelValue, (newValue) => {
 <!-- TemplateHelperReference.vue -->
 <template>
   <div class="template-helper-reference bg-gray-50 p-4 rounded-md">
-    <h3 class="font-medium text-gray-900 mb-2">{{ $t('invoices.available_helpers') }}</h3>
+    <h3 class="font-medium text-gray-900 mb-2">{{ t('invoices.available_helpers') }}</h3>
     <div class="text-sm text-gray-600 space-y-1">
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
-          <h4 class="font-medium text-gray-800 mb-1">{{ $t('invoices.translations') }}</h4>
-          <p><code>{{'{{'}}t "invoices.invoice"{{'}}'}}</code> - {{ $t('invoices.translatable_text') }}</p>
-          <p><code>{{'{{'}}t "invoices.from"{{'}}'}}</code> - {{ $t('invoices.from_label') }}</p>
-          <p><code>{{'{{'}}t "invoices.total"{{'}}'}}</code> - {{ $t('invoices.total_label') }}</p>
+          <h4 class="font-medium text-gray-800 mb-1">{{ t('invoices.translations') }}</h4>
+          <p><code>{{'{{'}}t "invoices.invoice"{{'}}'}}</code> - {{ t('invoices.translatable_text') }}</p>
+          <p><code>{{'{{'}}t "invoices.from"{{'}}'}}</code> - {{ t('invoices.from_label') }}</p>
+          <p><code>{{'{{'}}t "invoices.total"{{'}}'}}</code> - {{ t('invoices.total_label') }}</p>
         </div>
         
         <div>
-          <h4 class="font-medium text-gray-800 mb-1">{{ $t('invoices.invoice_data') }}</h4>
-          <p><code>{{'{{invoice.number}}'}}</code> - {{ $t('invoices.invoice_number') }}</p>
-          <p><code>{{'{{invoice.seller.name}}'}}</code> - {{ $t('invoices.seller_name') }}</p>
-          <p><code>{{'{{invoice.formattedTotalGross}}'}}</code> - {{ $t('invoices.formatted_total') }}</p>
+          <h4 class="font-medium text-gray-800 mb-1">{{ t('invoices.invoice_data') }}</h4>
+          <p><code>{{'{{invoice.number}}'}}</code> - {{ t('invoices.invoice_number') }}</p>
+          <p><code>{{'{{invoice.seller.name}}'}}</code> - {{ t('invoices.seller_name') }}</p>
+          <p><code>{{'{{invoice.formattedTotalGross}}'}}</code> - {{ t('invoices.formatted_total') }}</p>
         </div>
         
         <div>
-          <h4 class="font-medium text-gray-800 mb-1">{{ $t('invoices.conditionals') }}</h4>
-          <p><code>{{'{{'}}#if invoice.payment{{'}}'}}</code> - {{ $t('invoices.conditional_blocks') }}</p>
-          <p><code>{{'{{'}}#each invoice.lines{{'}}'}}</code> - {{ $t('invoices.loop_arrays') }}</p>
+          <h4 class="font-medium text-gray-800 mb-1">{{ t('invoices.conditionals') }}</h4>
+          <p><code>{{'{{'}}#if invoice.payment{{'}}'}}</code> - {{ t('invoices.conditional_blocks') }}</p>
+          <p><code>{{'{{'}}#each invoice.lines{{'}}'}}</code> - {{ t('invoices.loop_arrays') }}</p>
         </div>
         
         <div>
-          <h4 class="font-medium text-gray-800 mb-1">{{ $t('invoices.images') }}</h4>
-          <p><code>{{'{{{logoUrl invoice.seller.logoUrl}}}'}}</code> - {{ $t('invoices.display_logo') }}</p>
-          <p><code>{{'{{{signatureUrl signature}}}'}}</code> - {{ $t('invoices.display_signature') }}</p>
+          <h4 class="font-medium text-gray-800 mb-1">{{ t('invoices.images') }}</h4>
+          <p><code>{{'{{{logoUrl invoice.seller.logoUrl}}}'}}</code> - {{ t('invoices.display_logo') }}</p>
+          <p><code>{{'{{{signatureUrl signature}}}'}}</code> - {{ t('invoices.display_signature') }}</p>
         </div>
       </div>
     </div>
@@ -786,74 +786,74 @@ const { t } = useI18n()
 <!-- AdvancedFeaturesReference.vue -->
 <template>
   <div class="advanced-features bg-white rounded-lg shadow-lg p-6">
-    <h2 class="text-xl font-semibold text-gray-900 mb-4">{{ $t('invoices.advanced_features') }}</h2>
+    <h2 class="text-xl font-semibold text-gray-900 mb-4">{{ t('invoices.advanced_features') }}</h2>
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 text-sm">
       <div>
-        <h3 class="font-medium text-gray-900 mb-2">{{ $t('invoices.multilingual') }}</h3>
+        <h3 class="font-medium text-gray-900 mb-2">{{ t('invoices.multilingual') }}</h3>
         <div class="space-y-1 text-gray-600">
-          <p><code>{{'{{'}}t "invoices.invoice"{{'}}'}}</code> - {{ $t('invoices.translatable_text') }}</p>
-          <p><code>{{'{{'}}t "invoices.from"{{'}}'}}</code> - {{ $t('invoices.from_label') }}</p>
-          <p><code>{{'{{'}}t "invoices.to"{{'}}'}}</code> - {{ $t('invoices.to_label') }}</p>
-          <p><code>{{'{{'}}t "invoices.total"{{'}}'}}</code> - {{ $t('invoices.total_label') }}</p>
+          <p><code>{{'{{'}}t "invoices.invoice"{{'}}'}}</code> - {{ t('invoices.translatable_text') }}</p>
+          <p><code>{{'{{'}}t "invoices.from"{{'}}'}}</code> - {{ t('invoices.from_label') }}</p>
+          <p><code>{{'{{'}}t "invoices.to"{{'}}'}}</code> - {{ t('invoices.to_label') }}</p>
+          <p><code>{{'{{'}}t "invoices.total"{{'}}'}}</code> - {{ t('invoices.total_label') }}</p>
         </div>
       </div>
       
       <div>
-        <h3 class="font-medium text-gray-900 mb-2">{{ $t('invoices.images_media') }}</h3>
+        <h3 class="font-medium text-gray-900 mb-2">{{ t('invoices.images_media') }}</h3>
         <div class="space-y-1 text-gray-600">
-          <p><code>{{'{{'}}#if invoice.seller.logoUrl{{'}}'}}</code> - {{ $t('invoices.check_logo_exists') }}</p>
-          <p><code>{{'{{{logoUrl invoice.seller.logoUrl width="180px"}}}'}}</code> - {{ $t('invoices.display_logo') }}</p>
-          <p><code>{{'{{{signatureUrl signature}}}'}}</code> - {{ $t('invoices.display_signature') }}</p>
+          <p><code>{{'{{'}}#if invoice.seller.logoUrl{{'}}'}}</code> - {{ t('invoices.check_logo_exists') }}</p>
+          <p><code>{{'{{{logoUrl invoice.seller.logoUrl width="180px"}}}'}}</code> - {{ t('invoices.display_logo') }}</p>
+          <p><code>{{'{{{signatureUrl signature}}}'}}</code> - {{ t('invoices.display_signature') }}</p>
         </div>
       </div>
       
       <div>
-        <h3 class="font-medium text-gray-900 mb-2">{{ $t('invoices.custom_colors') }}</h3>
+        <h3 class="font-medium text-gray-900 mb-2">{{ t('invoices.custom_colors') }}</h3>
         <div class="space-y-1 text-gray-600">
-          <p><code>accent-bg</code> - {{ $t('invoices.accent_background') }}</p>
-          <p><code>accent-text</code> - {{ $t('invoices.accent_text_color') }}</p>
-          <p><code>accent-border</code> - {{ $t('invoices.accent_border') }}</p>
-          <p><code>secondary-text</code> - {{ $t('invoices.secondary_text') }}</p>
+          <p><code>accent-bg</code> - {{ t('invoices.accent_background') }}</p>
+          <p><code>accent-text</code> - {{ t('invoices.accent_text_color') }}</p>
+          <p><code>accent-border</code> - {{ t('invoices.accent_border') }}</p>
+          <p><code>secondary-text</code> - {{ t('invoices.secondary_text') }}</p>
         </div>
       </div>
       
       <div>
-        <h3 class="font-medium text-gray-900 mb-2">{{ $t('invoices.invoice_structure') }}</h3>
+        <h3 class="font-medium text-gray-900 mb-2">{{ t('invoices.invoice_structure') }}</h3>
         <div class="space-y-1 text-gray-600">
-          <p><code>{{'{{invoice.number}}'}}</code> - {{ $t('invoices.invoice_number') }}</p>
-          <p><code>{{'{{invoice.seller.name}}'}}</code> - {{ $t('invoices.seller_name') }}</p>
-          <p><code>{{'{{invoice.buyer.name}}'}}</code> - {{ $t('invoices.buyer_name') }}</p>
-          <p><code>{{'{{invoice.formattedTotalGross}}'}}</code> - {{ $t('invoices.formatted_total') }}</p>
+          <p><code>{{'{{invoice.number}}'}}</code> - {{ t('invoices.invoice_number') }}</p>
+          <p><code>{{'{{invoice.seller.name}}'}}</code> - {{ t('invoices.seller_name') }}</p>
+          <p><code>{{'{{invoice.buyer.name}}'}}</code> - {{ t('invoices.buyer_name') }}</p>
+          <p><code>{{'{{invoice.formattedTotalGross}}'}}</code> - {{ t('invoices.formatted_total') }}</p>
         </div>
       </div>
       
       <div>
-        <h3 class="font-medium text-gray-900 mb-2">{{ $t('invoices.line_items') }}</h3>
+        <h3 class="font-medium text-gray-900 mb-2">{{ t('invoices.line_items') }}</h3>
         <div class="space-y-1 text-gray-600">
-          <p><code>{{'{{'}}#each invoice.lines{{'}}'}}</code> - {{ $t('invoices.loop_line_items') }}</p>
-          <p><code>{{'{{description}}'}}</code> - {{ $t('invoices.item_description') }}</p>
-          <p><code>{{'{{formattedTotalNet}}'}}</code> - {{ $t('invoices.formatted_net_total') }}</p>
-          <p><code>{{'{{'}}#each invoice.vatSummary{{'}}'}}</code> - {{ $t('invoices.vat_summary_loop') }}</p>
+          <p><code>{{'{{'}}#each invoice.lines{{'}}'}}</code> - {{ t('invoices.loop_line_items') }}</p>
+          <p><code>{{'{{description}}'}}</code> - {{ t('invoices.item_description') }}</p>
+          <p><code>{{'{{formattedTotalNet}}'}}</code> - {{ t('invoices.formatted_net_total') }}</p>
+          <p><code>{{'{{'}}#each invoice.vatSummary{{'}}'}}</code> - {{ t('invoices.vat_summary_loop') }}</p>
         </div>
       </div>
       
       <div>
-        <h3 class="font-medium text-gray-900 mb-2">{{ $t('invoices.signatures_section') }}</h3>
+        <h3 class="font-medium text-gray-900 mb-2">{{ t('invoices.signatures_section') }}</h3>
         <div class="space-y-1 text-gray-600">
-          <p><code>{{'{{'}}#if options.includeSignatures{{'}}'}}</code> - {{ $t('invoices.signature_check') }}</p>
-          <p><code>{{'{{options.issuerSignature.name}}'}}</code> - {{ $t('invoices.issuer_name') }}</p>
-          <p><code>{{'{{options.receiverSignature.name}}'}}</code> - {{ $t('invoices.receiver_name') }}</p>
+          <p><code>{{'{{'}}#if options.includeSignatures{{'}}'}}</code> - {{ t('invoices.signature_check') }}</p>
+          <p><code>{{'{{options.issuerSignature.name}}'}}</code> - {{ t('invoices.issuer_name') }}</p>
+          <p><code>{{'{{options.receiverSignature.name}}'}}</code> - {{ t('invoices.receiver_name') }}</p>
         </div>
       </div>
     </div>
     
     <div class="mt-6 p-4 bg-blue-50 rounded-lg border border-blue-200">
-      <h4 class="font-medium text-blue-900 mb-2">{{ $t('invoices.important_notes') }}</h4>
+      <h4 class="font-medium text-blue-900 mb-2">{{ t('invoices.important_notes') }}</h4>
       <ul class="text-sm text-blue-800 space-y-1">
-        <li>• {{ $t('invoices.note_calculations') }}</li>
-        <li>• {{ $t('invoices.note_media_urls') }}</li>
-        <li>• {{ $t('invoices.note_tenant_isolation') }}</li>
-        <li>• {{ $t('invoices.note_page_numbering') }}</li>
+        <li>• {{ t('invoices.note_calculations') }}</li>
+        <li>• {{ t('invoices.note_media_urls') }}</li>
+        <li>• {{ t('invoices.note_tenant_isolation') }}</li>
+        <li>• {{ t('invoices.note_page_numbering') }}</li>
       </ul>
     </div>
   </div>

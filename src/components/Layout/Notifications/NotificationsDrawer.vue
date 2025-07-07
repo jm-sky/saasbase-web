@@ -87,7 +87,7 @@ onMounted(async () => {
     </SheetTrigger>
     <SheetContent>
       <SheetHeader class="border-b border-border">
-        <SheetTitle>{{ $t('notifications.title') }}</SheetTitle>
+        <SheetTitle>{{ t('notifications.title') }}</SheetTitle>
       </SheetHeader>
       <div class="grow flex flex-col gap-4 pb-4 border-border">
         <div v-if="loading" class="flex items-center justify-center h-full">

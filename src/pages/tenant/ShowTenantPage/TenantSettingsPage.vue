@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useForm } from 'vee-validate'
+import { useI18n } from 'vue-i18n'
 import Button from '@/components/ui/button/Button.vue'
 import { FormField } from '@/components/ui/form'
 import FormControl from '@/components/ui/form/FormControl.vue'
@@ -12,6 +13,8 @@ import { toast } from '@/components/ui/toast'
 import CurrencyPicker from '@/domains/shared/components/CurrencyPicker.vue'
 import TenantSectionTitle from '@/domains/tenant/components/TenantSectionTitle.vue'
 import type { ITenant } from '@/domains/tenant/types/tenant.type'
+
+const { t } = useI18n()
 
 defineProps<{
   tenant?: ITenant
@@ -48,7 +51,7 @@ const submit = handleSubmit((values) => {
       <FormField name="currency">
         <FormItem class="flex flex-row items-center gap-1">
           <FormLabel class="w-lg">
-            {{ $t('tenant.settings.fields.currency') }}
+            {{ t('tenant.settings.fields.currency') }}
           </FormLabel>
           <FormControl>
             <CurrencyPicker :id="values.currency" class="w-40" @update:id="setFieldValue('currency', $event)" />
@@ -61,7 +64,7 @@ const submit = handleSubmit((values) => {
       <FormField v-slot="{ componentField }" name="require2fa">
         <FormItem class="flex flex-row items-center gap-1">
           <FormLabel class="w-lg">
-            {{ $t('tenant.settings.fields.require2fa') }}
+            {{ t('tenant.settings.fields.require2fa') }}
           </FormLabel>
           <FormControl>
             <Switch v-bind="componentField" :checked="values?.require2fa" />
@@ -74,7 +77,7 @@ const submit = handleSubmit((values) => {
       <FormField v-slot="{ componentField }" name="contractors.fetchLogo">
         <FormItem class="flex flex-row items-center gap-1">
           <FormLabel class="w-lg">
-            {{ $t('tenant.settings.fields.contractors.fetchLogo') }}
+            {{ t('tenant.settings.fields.contractors.fetchLogo') }}
           </FormLabel>
           <FormControl>
             <Switch v-bind="componentField" />
@@ -86,7 +89,7 @@ const submit = handleSubmit((values) => {
 
       <div class="col-span-full">
         <Button type="submit" class="w-full">
-          {{ $t('tenant.settings.save') }}
+          {{ t('tenant.settings.save') }}
         </Button>
       </div>
     </form>

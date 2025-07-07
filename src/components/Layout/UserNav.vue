@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useDark, useToggle } from '@vueuse/core'
 import { storeToRefs } from 'pinia'
+import { useI18n } from 'vue-i18n'
 import {
   Avatar,
   AvatarFallback,
@@ -23,6 +24,7 @@ import { routeTo } from '@/router/routeMap'
 import Switch from '../ui/switch/Switch.vue'
 
 const authStore = useAuthStore()
+const { t } = useI18n()
 
 const { logout } = useLogout()
 const isDark = useDark()
@@ -85,7 +87,7 @@ const { user } = storeToRefs(authStore)
           size="sm"
           @click="logout()"
         >
-          {{ $t('auth.signOut') }}
+          {{ t('auth.signOut') }}
         </Button>
       </DropdownMenuItem>
     </DropdownMenuContent>

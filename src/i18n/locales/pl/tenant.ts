@@ -382,4 +382,18 @@ export const tenant = {
       error: 'Nie udało się załadować profilu publicznego'
     }
   },
+  invoiceTemplates: {
+    title: 'Szablony faktur',
+    template: 'Szablon',
+    save: 'Zapisz',
+    createTemplate: 'Utwórz szablon',
+    allTemplates: 'Wszystkie szablony',
+    systemTemplates: 'Szablony systemowe',
+    tenantTemplates: 'Szablony zespołu',
+    noTemplates: 'Nie znaleziono szablonów',
+    fields: {
+      name: 'Nazwa',
+      description: 'Opis',
+    }
+  }
 }

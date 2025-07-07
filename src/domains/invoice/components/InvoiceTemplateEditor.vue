@@ -380,7 +380,7 @@ onUnmounted(() => {
         <!-- Header -->
         <div class="flex justify-between items-center mb-8">
           <h1 class="text-3xl font-bold text-gray-900">
-            {{ $t('invoices.template_editor') }}
+            {{ t('invoices.template_editor') }}
           </h1>
           <div class="flex space-x-4">
             <button
@@ -389,7 +389,7 @@ onUnmounted(() => {
               @click="previewTemplate"
             >
               <Eye class="w-4 h-4" />
-              <span>{{ $t('common.preview') }}</span>
+              <span>{{ t('common.preview') }}</span>
             </button>
             <button
               :disabled="isLoading || !canSave"
@@ -397,14 +397,14 @@ onUnmounted(() => {
               @click="saveTemplate"
             >
               <Save class="w-4 h-4" />
-              <span>{{ $t('common.save') }}</span>
+              <span>{{ t('common.save') }}</span>
             </button>
             <button
               class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded flex items-center space-x-2"
               @click="cancelEditing"
             >
               <X class="w-4 h-4" />
-              <span>{{ $t('common.cancel') }}</span>
+              <span>{{ t('common.cancel') }}</span>
             </button>
           </div>
         </div>
@@ -415,7 +415,7 @@ onUnmounted(() => {
             <div class="space-y-4 mb-6">
               <div>
                 <label class="block text-sm font-medium text-gray-700 mb-2">
-                  {{ $t('invoices.template_name') }}
+                  {{ t('invoices.template_name') }}
                 </label>
                 <input
                   v-model="editableTemplate.name"
@@ -427,7 +427,7 @@ onUnmounted(() => {
 
               <div>
                 <label class="block text-sm font-medium text-gray-700 mb-2">
-                  {{ $t('common.description') }}
+                  {{ t('common.description') }}
                 </label>
                 <textarea
                   v-model="editableTemplate.description"
@@ -439,7 +439,7 @@ onUnmounted(() => {
 
               <div>
                 <label class="block text-sm font-medium text-gray-700 mb-2">
-                  {{ $t('invoices.load_template') }}
+                  {{ t('invoices.load_template') }}
                 </label>
                 <select
                   v-model="selectedTemplateId"
@@ -447,7 +447,7 @@ onUnmounted(() => {
                   @change="loadTemplate"
                 >
                   <option value="">
-                    {{ $t('invoices.select_template') }}
+                    {{ t('invoices.select_template') }}
                   </option>
                   <optgroup :label="$t('invoices.system_templates')">
                     <option
@@ -473,7 +473,7 @@ onUnmounted(() => {
 
             <div class="mb-4">
               <label class="block text-sm font-medium text-gray-700 mb-2">
-                {{ $t('invoices.template_content') }}
+                {{ t('invoices.template_content') }}
               </label>
               <div class="border border-gray-300 rounded-md">
                 <textarea
@@ -492,14 +492,14 @@ onUnmounted(() => {
           <div class="bg-white rounded-lg shadow-lg p-6">
             <div class="mb-4 flex justify-between items-center">
               <h2 class="text-xl font-semibold text-gray-900">
-                {{ $t('common.preview') }}
+                {{ t('common.preview') }}
               </h2>
               <div class="flex space-x-2">
                 <button
                   class="text-sm bg-gray-100 hover:bg-gray-200 px-3 py-1 rounded"
                   @click="showPreviewOptions = !showPreviewOptions"
                 >
-                  {{ $t('invoices.preview_options') }}
+                  {{ t('invoices.preview_options') }}
                 </button>
               </div>
             </div>
@@ -523,13 +523,13 @@ onUnmounted(() => {
                 class="text-center text-gray-500 py-8"
               >
                 <LoadingIcon class="mx-auto mb-2" />
-                {{ $t('common.loading') }}
+                {{ t('common.loading') }}
               </div>
               <div
                 v-else
                 class="text-center text-gray-500 py-8"
               >
-                {{ $t('invoices.click_preview') }}
+                {{ t('invoices.click_preview') }}
               </div>
             </div>
 
