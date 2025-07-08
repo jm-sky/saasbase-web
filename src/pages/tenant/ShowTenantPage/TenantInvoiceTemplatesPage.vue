@@ -80,10 +80,10 @@ const cancelEditing = () => {
 const onTemplateSaved = async () => {
   try {
     await loadTemplates()
-    toast.success(t('tenant.invoiceTemplates.saveSuccess'))
+    toast.success(t('tenant.invoiceTemplates.editor.saveSuccess'))
     cancelEditing()
   } catch (error) {
-    handleErrorWithToast(t('tenant.invoiceTemplates.saveError'), error)
+    handleErrorWithToast(t('tenant.invoiceTemplates.editor.saveError'), error)
   }
 }
 

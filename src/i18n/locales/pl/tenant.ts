@@ -395,7 +395,7 @@ export const tenant = {
     loadError: 'Nie udało się załadować szablonów',
     setAsDefault: 'Ustaw jako domyślny',
     delete: 'Usuń',
-    deleteConfirm: 'Czy na pewno chcesz usunąć ten szablon?',
+    confirmDelete: 'Czy na pewno chcesz usunąć ten szablon?',
     deleteSuccess: 'Szablon usunięty pomyślnie',
     deleteError: 'Nie udało się usunąć szablonu',
     toggleActive: 'Aktywuj/Deaktywuj',

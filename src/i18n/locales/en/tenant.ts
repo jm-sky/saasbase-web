@@ -389,7 +389,7 @@ export const tenant = {
     loadError: 'Failed to load templates',
     setAsDefault: 'Set as default',
     delete: 'Delete',
-    deleteConfirm: 'Are you sure you want to delete this template?',
+    confirmDelete: 'Are you sure you want to delete this template?',
     deleteSuccess: 'Template deleted successfully',
     deleteError: 'Failed to delete template',
     toggleActive: 'Toggle Active',
