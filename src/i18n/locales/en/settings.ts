@@ -55,6 +55,7 @@ export const settings = {
       failedToUpload: 'Failed to upload image',
       failedToRemove: 'Failed to remove image',
       success: 'Profile image updated successfully',
+      successRemoved: 'Profile image removed successfully',
     },
     skills: {
       title: 'Skills',

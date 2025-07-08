@@ -55,6 +55,7 @@ export const settings = {
       failedToUpload: 'Nie udało się przesłać zdjęcia',
       failedToRemove: 'Nie udało się usunąć zdjęcia',
       success: 'Zdjęcie profilowe zaktualizowane pomyślnie',
+      successRemoved: 'Zdjęcie profilowe usunięte pomyślnie',
     },
     skills: {
       title: 'Umiejętności',

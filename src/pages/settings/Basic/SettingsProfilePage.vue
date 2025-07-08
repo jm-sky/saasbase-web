@@ -51,12 +51,14 @@ const { handleSubmit, setValues, resetForm } = useForm<IUserProfile>({
   },
 })
 
-const onAvatarUploaded = () => {
-  toast.success(t('settings.profile.profileImage.success'))
+const onAvatarUploaded = async () => {
+    await authStore.refresh()
+    toast.success(t('settings.profile.profileImage.success'))
 }
 
-const onAvatarRemoved = () => {
-  toast.success('Profile image removed successfully')
+const onAvatarRemoved = async () => {
+  await authStore.refresh()
+  toast.success(t('settings.profile.profileImage.successRemoved'))
 }
 
 const onSubmit = handleSubmit(async (values) => {
