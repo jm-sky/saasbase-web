@@ -18,9 +18,9 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover'
 import { cn } from '@/lib/utils'
-import type { IInvoiceNumberingTemplate } from '../types/numberingTemplate.type'
-import { numberingTemplateService } from '../services/NumberingTemplate.service'
-import { useNumberingTemplateStore } from '../stores/numberingTemplate.store'
+import type { IInvoiceNumberingTemplate } from '../../types/numberingTemplate.type'
+import { numberingTemplateService } from '../../services/NumberingTemplate.service'
+import { useNumberingTemplateStore } from '../../stores/numberingTemplate.store'
 import type { TInvoiceType } from '@/domains/financial/types/financial.type'
 
 const { t } = useI18n()

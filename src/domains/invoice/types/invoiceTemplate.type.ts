@@ -10,7 +10,7 @@ export interface IInvoiceTemplatePreview {
   name: string
   description?: string
   category: TemplateCategory
-  settings: Record<string, unknown>
+  settings?: Record<string, unknown>
   isActive: boolean
   isDefault: boolean
   isSystem: boolean

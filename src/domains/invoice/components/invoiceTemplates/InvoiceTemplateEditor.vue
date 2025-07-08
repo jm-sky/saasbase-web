@@ -4,11 +4,14 @@ import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import LoadingIcon from '@/components/Icons/LoadingIcon.vue'
 import Button from '@/components/ui/button/Button.vue'
+import Input from '@/components/ui/input/Input.vue'
+import Textarea from '@/components/ui/textarea/Textarea.vue'
 import { useToast } from '@/components/ui/toast'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
-import type { IInvoiceTemplate } from '../types/invoiceTemplate.type'
-import { invoiceTemplateService, type ITemplatePreviewOptions } from '../services/InvoiceTemplate.service'
+import type { IInvoiceTemplate } from '../../types/invoiceTemplate.type'
+import { invoiceTemplateService, type ITemplatePreviewOptions } from '../../services/InvoiceTemplate.service'
 import AdvancedFeaturesReference from './AdvancedFeaturesReference.vue'
+import InvoiceTemplateGroupedPicker from './InvoiceTemplateGroupedPicker.vue'
 import PreviewOptions from './PreviewOptions.vue'
 import TemplateHelperReference from './TemplateHelperReference.vue'
 
@@ -25,10 +28,8 @@ const emit = defineEmits<{
   cancel: []
 }>()
 
-const systemTemplates = computed(() => props.invoiceTemplates.filter(template => template.isSystem))
-const userTemplates = computed(() => props.invoiceTemplates.filter(template => !template.isSystem))
-
 // Reactive data
+const draftId = ref('')
 const editableTemplate = ref<IInvoiceTemplate>({
   id: '',
   name: '',
@@ -66,12 +67,12 @@ const canSave = computed(() => {
 })
 
 // Methods
-const loadTemplate = async () => {
-  if (!selectedTemplateId.value) return
+const loadTemplate = async (template: IInvoiceTemplate | undefined) => {
+  if (!template) return
 
   try {
     isLoading.value = true
-    const templateData = await invoiceTemplateService.get(selectedTemplateId.value)
+    const templateData = await invoiceTemplateService.get(template.id)
 
     editableTemplate.value = {
       id: templateData.id,
@@ -148,6 +149,7 @@ const saveTemplate = async () => {
 }
 
 const cancelEditing = () => {
+  clearDraft()
   emit('cancel')
 }
 
@@ -265,8 +267,7 @@ const formatCurrency = (amount: number, currency: string) => {
 const saveDraft = () => {
   if (!editableTemplate.value.content.trim()) return
 
-  const draftKey = `template_draft_${Date.now()}`
-  localStorage.setItem(draftKey, JSON.stringify({
+  localStorage.setItem(draftId.value, JSON.stringify({
     ...editableTemplate.value,
     savedAt: new Date().toISOString()
   }))
@@ -297,6 +298,10 @@ const loadDraft = () => {
   return null
 }
 
+const clearDraft = () => {
+  localStorage.removeItem(draftId.value)
+}
+
 // Keyboard shortcuts
 const handleKeydown = (event: KeyboardEvent) => {
   if (event.ctrlKey || event.metaKey) {
@@ -319,9 +324,7 @@ watch([() => editableTemplate.value.content, () => editableTemplate.value.name],
     clearTimeout(draftTimeout.value)
   }
 
-  draftTimeout.value = setTimeout(() => {
-    saveDraft()
-  }, 2000)
+  draftTimeout.value = setTimeout(() => { saveDraft() }, 2000)
 }, { deep: true })
 
 // Watch for preview option changes to auto-update preview
@@ -331,8 +334,31 @@ watch(previewOptions, () => {
   }
 }, { deep: true })
 
+const checkForUnsavedDraft = () => {
+  const draft = loadDraft()
+  if (!draft?.content.trim()) return
+
+  const shouldLoad = confirm(t('tenant.invoiceTemplates.editor.loadUnsavedDraft'))
+  if (!shouldLoad) return
+
+  editableTemplate.value = {
+    id: '',
+    name: draft.name ?? '',
+    description: draft.description ?? '',
+    content: draft.content,
+    category: draft.category ?? 'invoice',
+    previewData: draft.previewData ?? {},
+    settings: draft.settings ?? {},
+    isActive: true,
+    isDefault: false,
+    isSystem: false
+  }
+}
+
 // Lifecycle
 onMounted(() => {
+  draftId.value = `template_draft_${Date.now()}`
+
   // Load template data if provided
   if (props.template) {
     editableTemplate.value = { ...props.template }
@@ -344,24 +370,7 @@ onMounted(() => {
 
   // Check for unsaved drafts only for new templates
   if (!props.template?.id) {
-    const draft = loadDraft()
-    if (draft?.content.trim()) {
-      const shouldLoad = confirm(t('tenant.invoiceTemplates.editor.loadUnsavedDraft'))
-      if (shouldLoad) {
-        editableTemplate.value = {
-          id: '',
-          name: draft.name ?? '',
-          description: draft.description ?? '',
-          content: draft.content,
-          category: draft.category ?? 'invoice',
-          previewData: draft.previewData ?? {},
-          settings: draft.settings ?? {},
-          isActive: true,
-          isDefault: false,
-          isSystem: false
-        }
-      }
-    }
+    checkForUnsavedDraft()
   }
 
   // Add keyboard shortcuts
@@ -370,6 +379,7 @@ onMounted(() => {
 
 onUnmounted(() => {
   document.removeEventListener('keydown', handleKeydown)
+
   if (draftTimeout.value) {
     clearTimeout(draftTimeout.value)
   }
@@ -377,12 +387,12 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div class="invoice-template-editor">
+  <div class="min-h-screen bg-muted/30 rounded-lg border">
     <div class="container mx-auto px-4 py-8">
       <div class="max-w-7xl mx-auto">
         <!-- Header -->
         <div class="flex justify-between items-center mb-8">
-          <h1 class="text-3xl font-bold text-gray-900">
+          <h1 class="text-3xl font-bold text-foreground">
             {{ t('tenant.invoiceTemplates.editor.title') }}
           </h1>
           <div class="flex space-x-4">
@@ -403,28 +413,22 @@ onUnmounted(() => {
 
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
           <!-- Template Editor Panel -->
-          <div class="bg-white rounded-lg shadow-lg p-6">
+          <div class="bg-background border border-border rounded-lg shadow-lg p-6">
             <div class="space-y-4 mb-6">
               <div>
                 <label class="block text-sm font-medium text-gray-700 mb-2">
                   {{ t('tenant.invoiceTemplates.fields.name') }}
                 </label>
-                <input
-                  v-model="editableTemplate.name"
-                  type="text"
-                  class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  :placeholder="$t('tenant.invoiceTemplates.fields.name')"
-                >
+                <Input v-model="editableTemplate.name" :placeholder="$t('tenant.invoiceTemplates.fields.name')" />
               </div>
 
               <div>
                 <label class="block text-sm font-medium text-gray-700 mb-2">
                   {{ t('tenant.invoiceTemplates.fields.description') }}
                 </label>
-                <textarea
+                <Textarea
                   v-model="editableTemplate.description"
                   rows="2"
-                  class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                   :placeholder="$t('tenant.invoiceTemplates.fields.description')"
                 />
               </div>
@@ -433,33 +437,11 @@ onUnmounted(() => {
                 <label class="block text-sm font-medium text-gray-700 mb-2">
                   {{ t('tenant.invoiceTemplates.editor.loadTemplate') }}
                 </label>
-                <select
+                <InvoiceTemplateGroupedPicker
                   v-model="selectedTemplateId"
-                  class="w-full border border-gray-300 rounded-md px-3 py-2"
+                  :invoice-templates="invoiceTemplates"
                   @change="loadTemplate"
-                >
-                  <option value="">
-                    {{ t('tenant.invoiceTemplates.editor.selectTemplate') }}
-                  </option>
-                  <optgroup :label="$t('tenant.invoiceTemplates.filters.system')">
-                    <option
-                      v-for="tmpl in systemTemplates"
-                      :key="tmpl.id"
-                      :value="tmpl.id"
-                    >
-                      {{ tmpl.name }}
-                    </option>
-                  </optgroup>
-                  <optgroup v-if="userTemplates.length" :label="$t('tenant.invoiceTemplates.filters.tenant')">
-                    <option
-                      v-for="tmpl in userTemplates"
-                      :key="tmpl.id"
-                      :value="tmpl.id"
-                    >
-                      {{ tmpl.name }}
-                    </option>
-                  </optgroup>
-                </select>
+                />
               </div>
             </div>
 
@@ -467,13 +449,11 @@ onUnmounted(() => {
               <label class="block text-sm font-medium text-gray-700 mb-2">
                 {{ t('tenant.invoiceTemplates.fields.content') }}
               </label>
-              <div class="border border-gray-300 rounded-md">
-                <textarea
-                  v-model="editableTemplate.content"
-                  class="w-full h-96 font-mono text-sm p-4 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
-                  :placeholder="$t('tenant.invoiceTemplates.fields.content')"
-                />
-              </div>
+              <Textarea
+                v-model="editableTemplate.content"
+                class="w-full h-96 font-mono resize-none"
+                :placeholder="$t('tenant.invoiceTemplates.fields.content')"
+              />
             </div>
 
             <!-- Helper Functions Reference -->
@@ -481,9 +461,9 @@ onUnmounted(() => {
           </div>
 
           <!-- Preview Panel -->
-          <div class="bg-white rounded-lg shadow-lg p-6">
+          <div class="bg-background border border-border rounded-lg shadow-lg p-6">
             <div class="mb-4 flex justify-between items-center">
-              <h2 class="text-xl font-semibold text-gray-900">
+              <h2 class="text-xl font-semibold text-foreground">
                 {{ t('tenant.invoiceTemplates.editor.preview') }}
               </h2>
               <div class="flex space-x-2">
@@ -502,7 +482,7 @@ onUnmounted(() => {
 
             <!-- Preview Content -->
             <div
-              class="border border-gray-300 rounded-md p-4 bg-gray-50 overflow-auto"
+              class="border border-border rounded-md p-4 bg-muted overflow-auto"
               style="height: 600px;"
             >
               <!-- eslint-disable-next-line vue/no-v-html vue/html-indent -->
@@ -545,11 +525,6 @@ onUnmounted(() => {
 </template>
 
 <style scoped>
-.invoice-template-editor {
-  min-height: 100vh;
-  background-color: #f9fafb;
-}
-
 /* Custom scrollbar for preview */
 .overflow-auto::-webkit-scrollbar {
   width: 8px;

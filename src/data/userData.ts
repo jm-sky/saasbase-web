@@ -9,4 +9,5 @@ export const userData: IUser = {
   updatedAt: new Date().toISOString(),
   isEmailVerified: true,
   isTwoFactorEnabled: false,
+  roles: [],
 }

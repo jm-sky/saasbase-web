@@ -6,7 +6,7 @@ import LoadingIcon from '@/components/Icons/LoadingIcon.vue'
 import Button from '@/components/ui/button/Button.vue'
 import { useToast } from '@/components/ui/toast'
 import UIIcon from '@/components/UIIcon.vue'
-import InvoiceTemplateEditor from '@/domains/invoice/components/InvoiceTemplateEditor.vue'
+import InvoiceTemplateEditor from '@/domains/invoice/components/invoiceTemplates/InvoiceTemplateEditor.vue'
 import InvoiceTemplateListItem from '@/domains/invoice/components/invoiceTemplates/InvoiceTemplateListItem.vue'
 import { invoiceTemplateService } from '@/domains/invoice/services/InvoiceTemplate.service'
 import TenantSectionTitle from '@/domains/tenant/components/TenantSectionTitle.vue'
@@ -41,7 +41,7 @@ const loadTemplates = async () => {
     isLoading.value = true
     invoiceTemplates.value = (await invoiceTemplateService.index()).data
   } catch (error) {
-    handleErrorWithToast(t('tenant.invoiceTemplates.loadError'), error)
+    handleErrorWithToast(t('tenant.invoiceTemplates.list.loadError'), error)
   } finally {
     isLoading.value = false
   }
@@ -97,7 +97,7 @@ onMounted(() => {
   <div class="flex flex-col gap-2 border rounded-md p-4 shadow-lg/5">
     <TenantSectionTitle :title="t('tenant.invoiceTemplates.title')">
       <template #actions>
-        <Button variant="primary" @click="createNewTemplate">
+        <Button variant="primary" :disabled="isEditing" @click="createNewTemplate">
           <Plus class="size-4" />
           {{ t('tenant.invoiceTemplates.createTemplate') }}
         </Button>
@@ -139,7 +139,7 @@ onMounted(() => {
         </div>
 
         <div v-else-if="filteredTemplates.length === 0" class="text-center py-8 text-gray-500">
-          {{ t('tenant.invoiceTemplates.noTemplates') }}
+          {{ t('tenant.invoiceTemplates.list.noTemplates') }}
         </div>
 
         <div v-else class="grid gap-4">

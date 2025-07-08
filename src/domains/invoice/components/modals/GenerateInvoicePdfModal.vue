@@ -10,18 +10,18 @@ import { isValidationError } from '@/lib/validation'
 import type { IInvoice } from '../../types/invoice.type'
 import type { IInvoiceTemplatePreview } from '../../types/invoiceTemplate.type'
 import { type IGeneratePdfParams, invoiceService } from '../../services/invoiceService'
-import InvoiceTemplatePicker from '../InvoiceTemplatePicker.vue'
+import InvoiceTemplatePicker from '../pickers/InvoiceTemplatePicker.vue'
 
 const { t } = useI18n()
 
 const open = defineModel<boolean>('open', { required: true })
 const selectedTemplate = ref<IInvoiceTemplatePreview | undefined>({
   id: '1',
-  name: 'Original',
+  name: 'Default',
   category: 'invoice',
-  settings: {},
   isActive: true,
   isDefault: false,
+  isSystem: false,
 })
 
 const { invoice } = defineProps<{

@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
-import type { ITemplatePreviewOptions } from '../services/InvoiceTemplate.service'
+import Input from '@/components/ui/input/Input.vue'
+import type { ITemplatePreviewOptions } from '../../services/InvoiceTemplate.service'
 
 const { t } = useI18n()
 
@@ -40,19 +41,19 @@ watch(() => props.modelValue, (newValue) => {
 </script>
 
 <template>
-  <div class="preview-options bg-gray-50 p-4 rounded-lg border">
-    <h3 class="text-sm font-medium text-gray-900 mb-3">
-      {{ t('invoice.preview_options') }}
+  <div class="preview-options bg-muted/30 p-4 rounded-lg border">
+    <h3 class="text-sm font-medium text-foreground mb-3">
+      {{ t('tenant.invoiceTemplates.previewOptions.previewOptions') }}
     </h3>
 
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
       <div>
-        <label class="block text-xs font-medium text-gray-700 mb-1">
-          {{ t('invoice.language') }}
+        <label class="block text-xs font-medium text-muted-foreground mb-1">
+          {{ t('tenant.invoiceTemplates.previewOptions.language') }}
         </label>
         <select
           v-model="localOptions.language"
-          class="w-full text-sm border border-gray-300 rounded px-2 py-1"
+          class="w-full text-sm border border-border rounded px-2 py-1"
         >
           <option value="en">
             English
@@ -70,12 +71,12 @@ watch(() => props.modelValue, (newValue) => {
       </div>
 
       <div>
-        <label class="block text-xs font-medium text-gray-700 mb-1">
-          {{ t('invoice.currency') }}
+        <label class="block text-xs font-medium text-muted-foreground mb-1">
+          {{ t('tenant.invoiceTemplates.previewOptions.currency') }}
         </label>
         <select
           v-model="localOptions.currency"
-          class="w-full text-sm border border-gray-300 rounded px-2 py-1"
+          class="w-full text-sm border border-border rounded px-2 py-1"
         >
           <option value="PLN">
             PLN (zł)
@@ -96,12 +97,12 @@ watch(() => props.modelValue, (newValue) => {
       </div>
 
       <div>
-        <label class="block text-xs font-medium text-gray-700 mb-1">
-          {{ t('invoice.date_format') }}
+        <label class="block text-xs font-medium text-muted-foreground mb-1">
+          {{ t('tenant.invoiceTemplates.previewOptions.dateFormat') }}
         </label>
         <select
           v-model="localOptions.dateFormat"
-          class="w-full text-sm border border-gray-300 rounded px-2 py-1"
+          class="w-full text-sm border border-border rounded px-2 py-1"
         >
           <option value="Y-m-d">
             2024-07-06
@@ -124,51 +125,43 @@ watch(() => props.modelValue, (newValue) => {
 
     <div class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
       <div>
-        <label class="block text-xs font-medium text-gray-700 mb-1">
-          {{ t('invoice.accent_color') }}
+        <label class="block text-xs font-medium text-muted-foreground mb-1">
+          {{ t('tenant.invoiceTemplates.previewOptions.accentColor') }}
         </label>
         <div class="flex space-x-2">
-          <input
+          <Input
             v-model="localOptions.accentColor"
             type="color"
-            class="w-8 h-8 border border-gray-300 rounded cursor-pointer"
-          >
-          <input
-            v-model="localOptions.accentColor"
-            type="text"
-            class="flex-1 text-sm border border-gray-300 rounded px-2 py-1"
-          >
+            class="w-11 p-0.5"
+          />
+          <Input v-model="localOptions.accentColor" type="text" />
         </div>
       </div>
 
       <div>
-        <label class="block text-xs font-medium text-gray-700 mb-1">
-          {{ t('invoice.secondary_color') }}
+        <label class="block text-xs font-medium text-muted-foreground mb-1">
+          {{ t('tenant.invoiceTemplates.previewOptions.secondaryColor') }}
         </label>
         <div class="flex space-x-2">
-          <input
+          <Input
             v-model="localOptions.secondaryColor"
             type="color"
-            class="w-8 h-8 border border-gray-300 rounded cursor-pointer"
-          >
-          <input
-            v-model="localOptions.secondaryColor"
-            type="text"
-            class="flex-1 text-sm border border-gray-300 rounded px-2 py-1"
-          >
+            class="w-11 p-0.5"
+          />
+          <Input v-model="localOptions.secondaryColor" type="text" />
         </div>
       </div>
     </div>
 
     <div class="mt-4">
-      <h4 class="text-xs font-medium text-gray-700 mb-2">
-        {{ t('invoice.color_schemes') }}
+      <h4 class="text-xs font-medium text-muted-foreground mb-2">
+        {{ t('tenant.invoiceTemplates.previewOptions.colorSchemes') }}
       </h4>
       <div class="flex flex-wrap gap-2">
         <button
           v-for="scheme in colorSchemes"
           :key="scheme.name"
-          class="flex items-center space-x-2 px-3 py-1 border border-gray-300 rounded text-xs hover:bg-gray-50"
+          class="flex items-center space-x-2 px-3 py-1 border border-border rounded text-xs hover:bg-muted"
           @click="applyColorScheme(scheme)"
         >
           <div
@@ -187,7 +180,7 @@ watch(() => props.modelValue, (newValue) => {
           type="checkbox"
           class="mr-2"
         >
-        {{ t('invoice.include_logo') }}
+        {{ t('tenant.invoiceTemplates.previewOptions.includeLogo') }}
       </label>
 
       <label class="flex items-center text-sm">
@@ -196,7 +189,7 @@ watch(() => props.modelValue, (newValue) => {
           type="checkbox"
           class="mr-2"
         >
-        {{ t('invoice.include_signatures') }}
+        {{ t('tenant.invoiceTemplates.previewOptions.includeSignatures') }}
       </label>
     </div>
   </div>

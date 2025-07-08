@@ -18,9 +18,9 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover'
 import { cn } from '@/lib/utils'
-import type { IInvoiceTemplatePreview } from '../types/invoiceTemplate.type'
-import { invoiceTemplateService } from '../services/InvoiceTemplate.service'
-import { useInvoiceTemplateStore } from '../stores/invoiceTemplate.store'
+import type { IInvoiceTemplatePreview } from '../../types/invoiceTemplate.type'
+import { invoiceTemplateService } from '../../services/InvoiceTemplate.service'
+import { useInvoiceTemplateStore } from '../../stores/invoiceTemplate.store'
 
 const { t } = useI18n()
 const invoiceTemplateStore = useInvoiceTemplateStore()
@@ -56,9 +56,9 @@ const loadTemplates = async () => {
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const onSelect = (event: any) => {
   const selectedId = event.detail.value
-  const selectedVatRate = invoiceTemplates.value.find((template) => template.id === selectedId)
-  id.value = selectedVatRate?.id
-  modelValue.value = selectedVatRate
+  const selectedTemplate = invoiceTemplates.value.find((template) => template.id === selectedId)
+  id.value = selectedTemplate?.id
+  modelValue.value = selectedTemplate
   open.value = false
 }
 

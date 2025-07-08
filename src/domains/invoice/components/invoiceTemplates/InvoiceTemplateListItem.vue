@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Pencil, Star, Trash, Zap } from 'lucide-vue-next'
+import { LockIcon, LockOpenIcon, Pencil, Star, Trash, Zap } from 'lucide-vue-next'
 import { useI18n } from 'vue-i18n'
 import Badge from '@/components/ui/badge/Badge.vue'
 import Button from '@/components/ui/button/Button.vue'
@@ -27,10 +27,10 @@ const toggleDefault = async (template: IInvoiceTemplate) => {
 
   try {
     await invoiceTemplateService.setDefault(template.id)
-    toast.success(t('tenant.invoiceTemplates.defaultSetSuccess'))
+    toast.success(t('tenant.invoiceTemplates.setDefault.success'))
     emit('changed-default-status', template)
   } catch (error) {
-    handleErrorWithToast(t('tenant.invoiceTemplates.defaultSetError'), error)
+    handleErrorWithToast(t('tenant.invoiceTemplates.setDefault.error'), error)
   }
 }
 
@@ -40,30 +40,30 @@ const toggleActive = async (template: IInvoiceTemplate) => {
   try {
     if (template.isActive) {
       await invoiceTemplateService.deactivate(template.id)
-      toast.success(t('tenant.invoiceTemplates.deactivateSuccess'))
+      toast.success(t('tenant.invoiceTemplates.activate.success'))
     } else {
       await invoiceTemplateService.activate(template.id)
-      toast.success(t('tenant.invoiceTemplates.activateSuccess'))
+      toast.success(t('tenant.invoiceTemplates.activate.success'))
     }
     emit('changed-active-state', template)
   } catch (error) {
-    handleErrorWithToast(t('tenant.invoiceTemplates.toggleActiveError'), error)
+    handleErrorWithToast(t('tenant.invoiceTemplates.activate.error'), error)
   }
 }
 
 const deleteTemplate = async (template: IInvoiceTemplate) => {
   if (template.isSystem || template.isDefault) return
 
-  if (!confirm(t('tenant.invoiceTemplates.confirmDelete', { name: template.name }))) {
+  if (!confirm(t('tenant.invoiceTemplates.delete.confirm', { name: template.name }))) {
     return
   }
 
   try {
     await invoiceTemplateService.delete(template.id)
-    toast.success(t('tenant.invoiceTemplates.deleteSuccess'))
+    toast.success(t('tenant.invoiceTemplates.delete.success'))
     emit('deleted', template)
   } catch (error) {
-    handleErrorWithToast(t('tenant.invoiceTemplates.deleteError'), error)
+    handleErrorWithToast(t('tenant.invoiceTemplates.delete.error'), error)
   }
 }
 </script>
@@ -73,14 +73,16 @@ const deleteTemplate = async (template: IInvoiceTemplate) => {
     <div class="flex justify-between items-start">
       <div class="flex-1">
         <div class="flex items-center space-x-2 mb-2">
-          <h3 class="text-lg font-semibold">
+          <h3 class="text-lg font-semibold flex items-center gap-2">
+            <LockIcon v-if="template.isSystem" class="size-4 opacity-50" />
+            <LockOpenIcon v-else class="size-4 opacity-50" />
             {{ template.name }}
           </h3>
-          <Badge v-if="template.isDefault" variant="success-outline">
-            {{ t('tenant.invoiceTemplates.default') }}
-          </Badge>
           <Badge v-if="template.isSystem" variant="info-outline">
             {{ t('tenant.invoiceTemplates.system') }}
+          </Badge>
+          <Badge v-if="template.isDefault" variant="success-outline">
+            {{ t('tenant.invoiceTemplates.default') }}
           </Badge>
           <Badge :variant="template.isActive ? 'success-outline' : 'destructive-outline'">
             {{ template.isActive ? $t('common.active') : $t('common.inactive') }}
@@ -104,7 +106,7 @@ const deleteTemplate = async (template: IInvoiceTemplate) => {
           <Pencil class="size-4" />
         </Button>
         <Button
-          v-tooltip="t('tenant.invoiceTemplates.setAsDefault')"
+          v-tooltip="t('tenant.invoiceTemplates.setDefault.setAsDefault')"
           :disabled="template.isDefault || template.isSystem"
           variant="ghost"
           size="icon"
