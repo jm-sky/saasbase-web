@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useForm } from 'vee-validate'
+import { useI18n } from 'vue-i18n'
 import Button from '@/components/ui/button/Button.vue'
 import { FormField } from '@/components/ui/form'
 import FormControl from '@/components/ui/form/FormControl.vue'
@@ -7,20 +8,28 @@ import FormDescription from '@/components/ui/form/FormDescription.vue'
 import FormItem from '@/components/ui/form/FormItem.vue'
 import FormLabel from '@/components/ui/form/FormLabel.vue'
 import FormMessage from '@/components/ui/form/FormMessage.vue'
-import Input from '@/components/ui/input/Input.vue'
 import Switch from '@/components/ui/switch/Switch.vue'
 import { toast } from '@/components/ui/toast'
+import CurrencyPicker from '@/domains/shared/components/CurrencyPicker.vue'
 import TenantSectionTitle from '@/domains/tenant/components/TenantSectionTitle.vue'
 import type { ITenant } from '@/domains/tenant/types/tenant.type'
+
+const { t } = useI18n()
 
 defineProps<{
   tenant?: ITenant
 }>()
 
-const { handleSubmit, values } = useForm({
+const { handleSubmit, values, setFieldValue } = useForm<{
+  currency?: string | null
+  require2fa: boolean
+  contractors: {
+    fetchLogo: boolean
+  }
+}>({
   initialValues: {
     require2fa: false,
-    currency: '',
+    currency: null,
     contractors: {
       fetchLogo: false,
     },
@@ -39,13 +48,13 @@ const submit = handleSubmit((values) => {
     <TenantSectionTitle :title="$t('tenant.settings.title')" />
 
     <form class="grid grid-cols-1 gap-4 mt-4" @submit.prevent="submit">
-      <FormField v-slot="{ componentField }" name="currency">
-        <FormItem class="flex flex-row items-start gap-1">
+      <FormField name="currency">
+        <FormItem class="flex flex-row items-center gap-1">
           <FormLabel class="w-lg">
-            {{ $t('tenant.settings.fields.currency') }}
+            {{ t('tenant.settings.fields.currency') }}
           </FormLabel>
           <FormControl>
-            <Input v-bind="componentField" class="w-20" />
+            <CurrencyPicker :id="values.currency" class="w-40" @update:id="setFieldValue('currency', $event)" />
           </FormControl>
           <FormDescription />
           <FormMessage />
@@ -53,9 +62,9 @@ const submit = handleSubmit((values) => {
       </FormField>
 
       <FormField v-slot="{ componentField }" name="require2fa">
-        <FormItem class="flex flex-row items-start gap-1">
+        <FormItem class="flex flex-row items-center gap-1">
           <FormLabel class="w-lg">
-            {{ $t('tenant.settings.fields.require2fa') }}
+            {{ t('tenant.settings.fields.require2fa') }}
           </FormLabel>
           <FormControl>
             <Switch v-bind="componentField" :checked="values?.require2fa" />
@@ -66,9 +75,9 @@ const submit = handleSubmit((values) => {
       </FormField>
 
       <FormField v-slot="{ componentField }" name="contractors.fetchLogo">
-        <FormItem class="flex flex-row items-start gap-1">
+        <FormItem class="flex flex-row items-center gap-1">
           <FormLabel class="w-lg">
-            {{ $t('tenant.settings.fields.contractors.fetchLogo') }}
+            {{ t('tenant.settings.fields.contractors.fetchLogo') }}
           </FormLabel>
           <FormControl>
             <Switch v-bind="componentField" />
@@ -80,7 +89,7 @@ const submit = handleSubmit((values) => {
 
       <div class="col-span-full">
         <Button type="submit" class="w-full">
-          {{ $t('tenant.settings.save') }}
+          {{ t('tenant.settings.save') }}
         </Button>
       </div>
     </form>

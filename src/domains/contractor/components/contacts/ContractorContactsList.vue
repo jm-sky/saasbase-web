@@ -42,7 +42,7 @@ const handleEdit = (contact: IContractorContact) => {
 
 const handleDelete = async (contact: IContractorContact) => {
   try {
-    if (!confirm(t('contacts.deleteConfirmation'))) return
+    if (!confirm(t('contacts.delete.confirmation'))) return
     await contractorContactsService.delete(contractorId, contact.id)
     await refresh()
   } catch (error) {

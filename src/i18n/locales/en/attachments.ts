@@ -11,4 +11,7 @@ export const attachments = {
     error: 'Error deleting attachment',
     confirm: 'Are you sure you want to delete this attachment?',
   },
+  meta: {
+    ocr: 'OCR',
+  },
 }

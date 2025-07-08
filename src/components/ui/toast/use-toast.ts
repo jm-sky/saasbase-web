@@ -178,6 +178,12 @@ toast.success = (title: string, props?: Toast) => openToast({
   variant: 'success',
 })
 
+toast.warning = (title: string, props?: Toast) => openToast({
+  ...props,
+  title,
+  variant: 'warning',
+})
+
 toast.error = (title: string, props?: Toast) => openToast({
   ...props,
   title,

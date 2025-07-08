@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { toTypedSchema } from '@vee-validate/zod'
 import { useForm } from 'vee-validate'
+import { useI18n } from 'vue-i18n'
 import * as z from 'zod'
 import FormFieldLabeled from '@/components/Form/FormFieldLabeled.vue'
 import { Button } from '@/components/ui/button'
@@ -10,6 +11,8 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { Separator } from '@/components/ui/separator'
 import { useThemeStore } from '@/stores/theme.store'
 import SettingsHeader from '../partials/SettingsHeader.vue'
+
+const { t } = useI18n()
 
 const theme = useThemeStore()
 
@@ -36,7 +39,7 @@ const onSubmit = handleSubmit((values) => {
 </script>
 
 <template>
-  <SettingsHeader title="Appearance" description="Customize the appearance of the app. Automatically switch between day and night themes." />
+  <SettingsHeader :title="t('settings.preferences.appearance.title')" :description="t('settings.preferences.appearance.description')" />
 
   <Separator />
 
@@ -84,11 +87,11 @@ const onSubmit = handleSubmit((values) => {
                     <div class="h-2 w-[100px] rounded-lg bg-[#ecedef]" />
                   </div>
                   <div class="flex items-center space-x-2 rounded-md bg-white p-2 shadow-sm">
-                    <div class="h-4 w-4 rounded-full bg-[#ecedef]" />
+                    <div class="size-4 rounded-full bg-[#ecedef]" />
                     <div class="h-2 w-[100px] rounded-lg bg-[#ecedef]" />
                   </div>
                   <div class="flex items-center space-x-2 rounded-md bg-white p-2 shadow-sm">
-                    <div class="h-4 w-4 rounded-full bg-[#ecedef]" />
+                    <div class="size-4 rounded-full bg-[#ecedef]" />
                     <div class="h-2 w-[100px] rounded-lg bg-[#ecedef]" />
                   </div>
                 </div>
@@ -113,11 +116,11 @@ const onSubmit = handleSubmit((values) => {
                     <div class="h-2 w-[100px] rounded-lg bg-slate-400" />
                   </div>
                   <div class="flex items-center space-x-2 rounded-md bg-slate-800 p-2 shadow-sm">
-                    <div class="h-4 w-4 rounded-full bg-slate-400" />
+                    <div class="size-4 rounded-full bg-slate-400" />
                     <div class="h-2 w-[100px] rounded-lg bg-slate-400" />
                   </div>
                   <div class="flex items-center space-x-2 rounded-md bg-slate-800 p-2 shadow-sm">
-                    <div class="h-4 w-4 rounded-full bg-slate-400" />
+                    <div class="size-4 rounded-full bg-slate-400" />
                     <div class="h-2 w-[100px] rounded-lg bg-slate-400" />
                   </div>
                 </div>

@@ -1,37 +1,48 @@
-import { Task } from '@/domains/task/models/task.model'
+import { buildSpatieQuery } from '@/domains/shared/helpers/filtering'
 import api from '@/lib/api'
 import { apiRoutesMap } from '@/lib/api/apiRoutes'
+import type { SortingState } from '@tanstack/vue-table'
+import type { FilterDefinition, IResource, IResourceCollection } from '@/domains/shared/types/resource.type'
 import type { ITask } from '@/domains/task/types/task.type'
-import type { TTaskPriority, TTaskStatus } from '@/domains/task/types/task.type'
 
-export interface ITaskGetParams {
-  projectId?: string
-  status?: TTaskStatus
-  priority?: TTaskPriority
-  assignedToId?: string
-  limit?: number
-  offset?: number
+export interface ITaskFilters {
+  search?: string
+  page?: number
+  perPage?: number
+  filter?: {
+    projectId?: FilterDefinition
+    statusId?: FilterDefinition
+    assigneeId?: FilterDefinition
+    priority?: FilterDefinition
+    title?: FilterDefinition
+    description?: FilterDefinition
+    dueDate?: FilterDefinition
+    createdAt?: FilterDefinition
+    updatedAt?: FilterDefinition
+  }
+  sort?: SortingState
 }
 
 class TaskService {
-  async index(params?: ITaskGetParams): Promise<Task[]> {
-    const response = await api.get<{ data: ITask[] }>(apiRoutesMap.tasks, { params })
-    return response.data.data.map(data => Task.load(data))
+  async index(filters?: ITaskFilters): Promise<IResourceCollection<ITask>> {
+    const params = buildSpatieQuery(filters ?? { filter: {} })
+    const response = (await api.get<IResourceCollection<ITask>>(apiRoutesMap.tasks, { params })).data
+    return response
   }
 
-  async get(id: string): Promise<Task> {
-    const response = await api.get<{ data: ITask }>(`${apiRoutesMap.tasks}/${id}`)
-    return Task.load(response.data.data)
+  async get(id: string): Promise<ITask> {
+    const response = (await api.get<IResource<ITask>>(`${apiRoutesMap.tasks}/${id}`)).data
+    return response.data
   }
 
-  async create(task: Omit<ITask, 'id' | 'createdAt' | 'updatedAt'>): Promise<Task> {
-    const response = await api.post<{ data: ITask }>(apiRoutesMap.tasks, task)
-    return Task.load(response.data.data)
+  async create(task: Omit<ITask, 'id' | 'createdAt' | 'updatedAt'>): Promise<ITask> {
+    const response = (await api.post<IResource<ITask>>(apiRoutesMap.tasks, task)).data
+    return response.data
   }
 
-  async update(id: string, task: Partial<ITask>): Promise<Task> {
-    const response = await api.patch<{ data: ITask }>(`${apiRoutesMap.tasks}/${id}`, task)
-    return Task.load(response.data.data)
+  async update(id: string, task: Partial<ITask>): Promise<ITask> {
+    const response = (await api.patch<IResource<ITask>>(`${apiRoutesMap.tasks}/${id}`, task)).data
+    return response.data
   }
 
   async delete(id: string): Promise<void> {

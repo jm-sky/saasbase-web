@@ -11,3 +11,5 @@ export interface IBankAccount {
   createdAt?: TDateTime
   updatedAt?: TDateTime
 }
+
+export type IBankAccountCreate = Omit<IBankAccount, 'id' | 'createdAt' | 'updatedAt'>

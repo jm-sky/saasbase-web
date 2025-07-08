@@ -26,7 +26,7 @@ export class NotificationsService {
   }
 
   async markAsRead(ids: TUUID[]): Promise<void> {
-    await api.post('/notifications/mark-as-read', { ids })
+    await api.post('/notifications/mark-read', { ids })
   }
 
   async archive(ids: TUUID[]): Promise<void> {

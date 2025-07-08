@@ -1,15 +1,19 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
 import LoadingIcon from '@/components/Icons/LoadingIcon.vue'
 import { Button } from '@/components/ui/button'
 import Separator from '@/components/ui/separator/Separator.vue'
-import { accountService, type UserSession } from '@/domains/account/services/AccountService'
+import { userSessionsService } from '@/domains/account/services/UserSessions.service'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
 import SettingsHeader from '../partials/SettingsHeader.vue'
 import SessionItem from './partials/SessionItem.vue'
+import type { IUserSession } from '@/domains/account/types/userSession.type'
+
+const { t } = useI18n()
 
 const loading = ref(false)
-const sessions = ref<UserSession[]>([])
+const sessions = ref<IUserSession[]>([])
 
 onMounted(async () => {
   await fetchSessions()
@@ -18,7 +22,7 @@ onMounted(async () => {
 const fetchSessions = async () => {
   loading.value = true
   try {
-    sessions.value = await accountService.getSessions()
+    sessions.value = (await userSessionsService.index()).data
   } catch (error: unknown) {
     handleErrorWithToast('Failed to fetch sessions', error)
   } finally {
@@ -28,7 +32,7 @@ const fetchSessions = async () => {
 
 const terminateSession = async (sessionId: string) => {
   try {
-    await accountService.terminateSession(sessionId)
+    await userSessionsService.terminateSession(sessionId)
     sessions.value = sessions.value.filter(session => session.id !== sessionId)
   } catch (error: unknown) {
     handleErrorWithToast('Failed to terminate session', error)
@@ -37,8 +41,8 @@ const terminateSession = async (sessionId: string) => {
 
 const terminateAllSessions = async () => {
   try {
-    await accountService.terminateAllSessions()
-    sessions.value = sessions.value.filter(session => session.isCurrent)
+    await userSessionsService.terminateAllSessions()
+    sessions.value = sessions.value.filter((session) => session.isCurrent)
   } catch (error: unknown) {
     handleErrorWithToast('Failed to terminate all sessions', error)
   }
@@ -47,11 +51,10 @@ const terminateAllSessions = async () => {
 
 <template>
   <SettingsHeader
-    title="Active Sessions"
-    description="Manage your active sessions."
+    :title="t('settings.account.sessions.title')"
+    :description="t('settings.account.sessions.description')"
     :loading
     refresh
-    work-in-progress
     @refresh="fetchSessions"
   >
     <template #right>
@@ -61,7 +64,7 @@ const terminateAllSessions = async () => {
         :disabled="loading || sessions.length <= 1"
         @click="terminateAllSessions"
       >
-        Terminate All Other Sessions
+        {{ t('settings.account.sessions.terminateAll') }}
       </Button>
     </template>
   </SettingsHeader>

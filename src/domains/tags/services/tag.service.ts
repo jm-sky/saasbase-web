@@ -1,11 +1,6 @@
 import api from '@/lib/api'
+import type { ITag, TTagColor } from '../types/tag.type'
 import type { IResource, IResourceCollection } from '@/domains/shared/types/resource.type'
-
-export interface ITag {
-  id: string
-  name: string
-  slug: string
-}
 
 export class TagService {
   static async index() {
@@ -13,8 +8,8 @@ export class TagService {
     return response.data.data
   }
 
-  static async create(tag: string) {
-    const response = await api.post<IResource<ITag>>('/tags', { name: tag })
+  static async create(tag: string, color?: TTagColor) {
+    const response = await api.post<IResource<ITag>>('/tags', { name: tag, color })
     return response.data.data
   }
 

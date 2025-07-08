@@ -59,11 +59,11 @@ const handleDelete = async () => {
       <CopyToClipboard :text="formatIBAN(bankAccount.iban)" class="ml-1" />
     </div>
 
-    <div class="text-sm text-muted-foreground order-2">
+    <div class="flex flex-row items-center gap-1 text-sm text-muted-foreground order-2">
       <span v-if="bankAccount.currency" class="bg-muted-foreground/10 px-2 rounded">{{ bankAccount.currency }}</span>
     </div>
 
-    <div class="flex flex-row gap-1 justify-end order-4 md:order-3">
+    <div class="flex flex-row justify-end gap-1 order-4 md:order-3">
       <Button
         v-tooltip="t('bankAccounts.setDefault')"
         variant="ghost"

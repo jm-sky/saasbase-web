@@ -1,31 +1,67 @@
 import { address } from './address'
+import { apiKeys } from './apiKeys'
 import { attachments } from './attachments'
 import { auth } from './auth'
 import { bankAccounts } from './bankAccounts'
+import { billing } from './billing'
+import { chat } from './chat'
 import { comments } from './comments'
 import { common } from './common'
+import { components } from './components'
 import { contacts } from './contacts'
 import { contractor } from './contractor'
+import { country } from './country'
+import { dashboard } from './dashboard'
+import expense from './expense'
+import feed from './feed'
+import { financial } from './financial'
+import { identityConfirmation } from './identityConfirmation'
 import { invitation } from './invitation'
+import invoice from './invoice'
+import { landing } from './landing'
 import { log } from './log'
+import { notifications } from './notifications'
 import { product } from './product'
+import { project } from './project'
 import { settings } from './settings'
+import { shared } from './shared'
+import { skills } from './skills'
+import { subscription } from './subscription'
 import { tenant } from './tenant'
 import { user } from './user'
+import { utils } from './utils'
 
 export const pl = {
   address,
-  auth,
+  apiKeys,
   attachments,
+  auth,
   bankAccounts,
+  billing,
+  chat,
   contractor,
   common,
   comments,
+  components,
   contacts,
-  notifications: 'Powiadomienia',
+  country,
+  dashboard,
+  expense,
+  feed,
+  financial,
+  identityConfirmation,
   invitation,
-  companyLookup: {
-    tooltip: 'Wyszukaj firmę po kraju i numerze VAT',
+  invoice,
+  landing,
+  notifications,
+  company: {
+    sources: {
+      tooltip: {
+        regon: 'REGON to rejestr podmiotów gospodarczych w Polsce.',
+        vies: 'VIES to rejestr podmiotów gospodarczych w Unii Europejskiej.',
+        mf: 'MF to rejestr podmiotów gospodarczych w Polsce.',
+      },
+    },
   },
   layout: {
     darkMode: 'Tryb ciemny',
@@ -36,10 +72,15 @@ export const pl = {
   errors: {
     uploadFailed: 'Wystąpił błąd podczas przesyłania pliku',
   },
-  settings,
   product,
+  project,
+  shared,
+  settings,
+  skills,
+  subscription,
   tenant,
   user,
+  utils,
   role: {
     select: 'Wybierz rolę',
     search: 'Szukaj roli',

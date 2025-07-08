@@ -1,17 +1,18 @@
 <script setup lang="ts">
-import { Calendar, Globe, Mail, Phone, RefreshCcw } from 'lucide-vue-next'
+import { RefreshCcw } from 'lucide-vue-next'
 import { onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
 import Avatar from '@/components/ui/avatar/Avatar.vue'
 import AvatarFallback from '@/components/ui/avatar/AvatarFallback.vue'
 import AvatarImage from '@/components/ui/avatar/AvatarImage.vue'
+import Badge from '@/components/ui/badge/Badge.vue'
 import Button from '@/components/ui/button/Button.vue'
 import UIIcon from '@/components/UIIcon.vue'
 import { userService } from '@/domains/user/services/userService'
 import AuthenticatedLayout from '@/layouts/AuthenticatedLayout.vue'
 import { initials } from '@/lib/initials'
-import { toDateTimeString } from '@/lib/toDateTimeString'
+import UserProfileSidebar from './UserProfile/UserProfileSidebar.vue'
 import type { IUserProfileLegacy } from '@/domains/user/types/user.type'
 
 const { t } = useI18n()
@@ -38,19 +39,28 @@ onMounted(() => refresh())
     <div class="m-4 md:m-8 grid grid-cols-1 md:grid-cols-[20rem_2fr] gap-6">
       <div class="col-span-full border rounded-lg shadow-lg p-4 flex flex-row items-center justify-between gap-4">
         <div class="flex flex-row items-center gap-2">
-          <Avatar class="size-12">
+          <Avatar class="size-24">
             <AvatarImage
               :src="user?.avatarUrl ?? ''"
               :alt="user?.name.slice(0, 2)"
             />
             <AvatarFallback>{{ initials(user?.name) }}</AvatarFallback>
           </Avatar>
-          <div class="flex flex-col gap-1 ml-3">
+          <div class="flex flex-col gap-1.5 ml-3">
             <div class="font-bold text-lg">
               {{ user?.name ?? '-' }}
             </div>
             <div class="text-sm text-muted-foreground">
               {{ user?.position ?? '-' }}
+            </div>
+            <div class="flex flex-row items-center gap-2">
+              <Badge
+                v-for="skill in user?.skills"
+                :key="skill.id"
+                variant="info-outline"
+              >
+                {{ skill.name }}
+              </Badge>
             </div>
           </div>
         </div>
@@ -71,53 +81,14 @@ onMounted(() => refresh())
         </div>
       </div>
 
-      <div class="col-span-full md:col-span-1 border rounded-lg shadow-lg p-5 flex flex-col gap-4 items-start">
-        <div class="flex flex-row items-center gap-4">
-          <Mail class="w-4 mr-2" />
-          <a v-if="user?.email" :href="`mailto:${user?.email}`" class="hover:text-primary">
-            {{ user?.email }}
-          </a>
-          <span v-else class="text-muted-foreground">-</span>
-        </div>
-        <div class="flex flex-row items-center gap-4">
-          <Phone class="w-4 mr-2" />
-          <a v-if="user?.phone" :href="`tel:${user?.phone}`" class="hover:text-primary">{{ user?.phone }}</a>
-          <span v-else class="text-muted-foreground">-</span>
-        </div>
-        <div class="flex flex-row items-center gap-4">
-          <Globe class="w-4 mr-2" />
-          <a v-if="user?.website" :href="`${user?.website}`" class="hover:text-primary">{{ user?.website }}</a>
-          <span v-else class="text-muted-foreground">-</span>
-        </div>
-        <div
-          v-if="user?.location"
-          class="flex flex-row items-center gap-4"
-        >
-          <UIIcon
-            icon="fa-solid:map-pin"
-            class="w-4"
-          />
-          <a
-            :href="`http://maps.google.com?q=${user?.location}`"
-            target="_blank"
-            class="hover:text-primary"
-            rel="noopener noreferrer"
-          >
-            {{ user?.location }}
-          </a>
-        </div>
-        <div class="flex flex-row items-center gap-4">
-          <Calendar class="w-4 mr-2" />
-          {{ user?.createdAt ? toDateTimeString(user?.createdAt) : '-' }}
-        </div>
-      </div>
+      <UserProfileSidebar :user />
 
       <div class="col-span-full md:col-span-1 border rounded-lg shadow-lg p-5">
         <div class="font-bold text-lg">
           {{ t('user.profile.description') }}
         </div>
         <div class="text-muted-foreground">
-          {{ user?.description ?? '-' }}
+          {{ user?.bio ?? '-' }}
         </div>
       </div>
     </div>

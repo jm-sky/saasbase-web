@@ -1,4 +1,6 @@
-import type { TDateTime, TUUID } from '@/domains/shared/types/common'
+import type { TDate, TDateTime, TUUID } from '@/domains/shared/types/common'
+import type { ITagPreview } from '@/domains/tags/types/tag.type'
+import type { IUserPreview } from '@/domains/user/types/user.type'
 
 export type TProjectStatus = 'active' | 'completed' | 'archived'
 
@@ -9,6 +11,14 @@ export interface IProject {
   description?: string
   status: TProjectStatus
   ownerId: TUUID
+  statusId: TUUID
+  startDate: TDate
+  endDate?: TDate
+  owner: IUserPreview
+  users: IUserPreview[]
+  requiredSkills: IProjectRequiredSkill[]
+  tags: ITagPreview[]
+  logoUrl?: string
   createdAt: TDateTime | Date
   updatedAt: TDateTime | Date
 }

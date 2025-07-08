@@ -16,6 +16,7 @@ export const apiRoutesMap = {
   tenants: '/tenants',
   tenantsPreview: '/tenants/preview',
   contractors: '/contractors',
+  expenses: '/expenses',
   invoices: '/invoices',
   products: '/products',
   tags: '/tags',
@@ -23,6 +24,7 @@ export const apiRoutesMap = {
   contractorAddresses: '/contractors/:contractorId/addresses',
   contractorContacts: '/contractors/:contractorId/contacts',
   contractorBankAccounts: '/contractors/:contractorId/bank-accounts',
+  feeds: '/feeds',
 }
 
 export const apiRoutes = {
@@ -38,4 +40,5 @@ export const apiRoutes = {
   products: () => apiRoutesMap.products,
   tags: () => apiRoutesMap.tags,
   skills: () => apiRoutesMap.skills,
+  feeds: () => apiRoutesMap.feeds,
 }

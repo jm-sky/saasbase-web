@@ -9,7 +9,7 @@ import type { IContractor } from '@/domains/contractor/types/contractor.type'
 const { t } = useI18n()
 
 defineProps<{
-  contractor?: IContractor | null
+  contractor?: IContractor
 }>()
 </script>
 
@@ -27,17 +27,15 @@ defineProps<{
     <ContractorAddressesList />
   </div>
 
-  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-    <div class="border rounded-md p-2 shadow-lg/5">
-      <ContractorBankAccountsList />
-    </div>
-
-    <div class="border rounded-md p-2 shadow-lg/5">
-      <ContractorContactsList />
-    </div>
+  <div class="border rounded-md p-2 shadow-lg/5">
+    <ContractorBankAccountsList :contractor />
   </div>
 
   <div class="border rounded-md p-2 shadow-lg/5">
-    <ContractorAttachmentsList />
+    <ContractorContactsList />
+  </div>
+
+  <div class="border rounded-md p-2 shadow-lg/5">
+    <ContractorAttachmentsList :contractor-id="contractor?.id" />
   </div>
 </template>

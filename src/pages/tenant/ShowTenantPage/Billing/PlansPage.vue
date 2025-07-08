@@ -1,29 +1,41 @@
 <script setup lang="ts">
-import { Icon } from '@iconify/vue'
-import { Info } from 'lucide-vue-next'
-import { onMounted, ref } from 'vue'
+import { Info, RefreshCcw } from 'lucide-vue-next'
+import { computed, onMounted, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
 import Alert from '@/components/ui/alert/Alert.vue'
 import AlertTitle from '@/components/ui/alert/AlertTitle.vue'
 import { Button } from '@/components/ui/button'
-import Card from '@/components/ui/card/Card.vue'
-import CardContent from '@/components/ui/card/CardContent.vue'
 import Switch from '@/components/ui/switch/Switch.vue'
-import { accountService, type BillingPlan } from '@/domains/account/services/AccountService'
+import BuySubscriptionPlanModal from '@/domains/subscription/components/BuySubscriptionPlanModal.vue'
+import PlanCard from '@/domains/subscription/components/PlanCard.vue'
+import { subscriptionService } from '@/domains/subscription/services/SubscriptionService'
 import TenantSectionTitle from '@/domains/tenant/components/TenantSectionTitle.vue'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
+import type { IBillingPrice, ISubscriptionPlan, ISubscriptionPlanDiscount, TBillingInterval } from '@/domains/subscription/types/subscription.type'
+
+const { t } = useI18n()
+
+const showBuySubscriptionPlanModal = ref(false)
+const selectedPlan = ref<ISubscriptionPlan | null>(null)
+
+const discount: ISubscriptionPlanDiscount = {
+  amount: 20,
+  interval: 'yearly',
+}
 
 const loading = ref(false)
-const plans = ref<BillingPlan[]>([])
-const selectedInterval = ref<'month' | 'year'>('month')
+const plans = ref<ISubscriptionPlan[]>([])
+const selectedInterval = ref<TBillingInterval>('monthly')
 
-onMounted(async () => {
-  await fetchPlans()
+const selectedPrice = computed<IBillingPrice | null>(() => {
+  if (!selectedPlan.value) return null
+  return selectedPlan.value.prices.find(p => p.billingPeriod === selectedInterval.value) ?? null
 })
 
 const fetchPlans = async () => {
   loading.value = true
   try {
-    plans.value = await accountService.getBillingPlans()
+    plans.value = await subscriptionService.index()
   } catch (error: unknown) {
     handleErrorWithToast('Failed to fetch plans', error)
   } finally {
@@ -31,30 +43,14 @@ const fetchPlans = async () => {
   }
 }
 
-const formatPrice = (plan: BillingPlan) => {
-  const price = selectedInterval.value === 'year' ? plan.price * 10 : plan.price
-  return new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: plan.currency,
-  }).format(price)
+const handlePlanSelect = (plan: ISubscriptionPlan) => {
+  selectedPlan.value = plan
+  showBuySubscriptionPlanModal.value = true
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const getIntervalLabel = (plan: BillingPlan) => {
-  return selectedInterval.value === 'year' ? 'per year' : 'per month'
-}
-
-const handlePlanSelect = async (plan: BillingPlan) => {
-  if (plan.isCurrent) return
-
-  try {
-    // TODO: Implement plan change
-    console.log('Changing to plan:', plan.id)
-    await fetchPlans()
-  } catch (error: unknown) {
-    handleErrorWithToast('Failed to change plan', error)
-  }
-}
+onMounted(async () => {
+  await fetchPlans()
+})
 </script>
 
 <template>
@@ -64,11 +60,11 @@ const handlePlanSelect = async (plan: BillingPlan) => {
 
       <div class="flex items-center gap-2">
         <Button
-          variant="outline"
+          variant="ghost"
           :disabled="loading"
           @click="fetchPlans"
         >
-          Refresh
+          <RefreshCcw class="size-4" />
         </Button>
       </div>
     </div>
@@ -84,76 +80,40 @@ const handlePlanSelect = async (plan: BillingPlan) => {
     <div class="flex items-center justify-center gap-4 py-2 mb-8">
       <span
         class="text-sm font-medium cursor-pointer"
-        :class="selectedInterval === 'month' ? 'text-primary' : 'text-muted-foreground'"
-        @click="selectedInterval = 'month'"
+        :class="selectedInterval === 'monthly' ? 'text-primary' : 'text-muted-foreground'"
+        @click="selectedInterval = 'monthly'"
       >
-        Monthly
+        {{ t('subscription.billingInterval.monthly') }}
       </span>
-      <Switch :checked="selectedInterval === 'year'" @update:checked="selectedInterval = selectedInterval === 'year' ? 'month' : 'year'" />
-      <span class="text-sm font-medium cursor-pointer" :class="selectedInterval === 'year' ? 'text-primary' : 'text-muted-foreground'" @click="selectedInterval = 'year'">
-        Yearly
-        <span class="ml-1 text-xs text-success">Save 20%</span>
+      <Switch :checked="selectedInterval === 'yearly'" @update:checked="selectedInterval = selectedInterval === 'yearly' ? 'monthly' : 'yearly'" />
+      <span class="text-sm font-medium cursor-pointer" :class="selectedInterval === 'yearly' ? 'text-primary' : 'text-muted-foreground'" @click="selectedInterval = 'yearly'">
+        {{ t('subscription.billingInterval.yearly') }}
+        <span class="ml-1 text-xs text-success">
+          {{ t('subscription.plans.save', { amount: discount.amount }) }}
+        </span>
       </span>
     </div>
 
     <!-- Plans Grid -->
     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-      <Card
+      <PlanCard
         v-for="plan in plans"
         :key="plan.id"
-        class="card relative shadow-md"
-        :class="{ 'border-primary': plan.isCurrent }"
-      >
-        <CardContent class="p-5 flex flex-col h-full">
-          <!-- Popular Badge -->
-          <div v-if="plan.isPopular" class="absolute -top-3 left-1/2 -translate-x-1/2">
-            <span class="px-3 py-1 text-xs font-medium rounded-full bg-primary text-primary-foreground">
-              Most Popular
-            </span>
-          </div>
-
-          <!-- Plan Header -->
-          <div class="text-center mb-6">
-            <h3 class="text-lg font-semibold">
-              {{ plan.name }}
-            </h3>
-            <p class="text-sm text-muted-foreground mb-4">
-              {{ plan.description }}
-            </p>
-            <div class="text-3xl font-bold">
-              {{ formatPrice(plan) }}
-              <span class="text-sm font-normal text-muted-foreground">
-                {{ getIntervalLabel(plan) }}
-              </span>
-            </div>
-          </div>
-
-          <!-- Features List -->
-          <ul class="space-y-3 mb-6">
-            <li
-              v-for="feature in plan.features"
-              :key="feature"
-              class="flex items-center gap-2 text-sm"
-            >
-              <Icon
-                icon="heroicons:check"
-                class="size-5 text-success flex-shrink-0"
-              />
-              {{ feature }}
-            </li>
-          </ul>
-
-          <!-- Action Button -->
-          <Button
-            class="w-full mt-auto mb-0"
-            :variant="plan.isCurrent ? 'outline' : 'default'"
-            :disabled="plan.isCurrent || loading"
-            @click="handlePlanSelect(plan)"
-          >
-            {{ plan.isCurrent ? 'Current Plan' : 'Select Plan' }}
-          </Button>
-        </CardContent>
-      </Card>
+        :plan="plan"
+        :price="selectedPrice"
+        :selected-interval="selectedInterval"
+        :discount
+        :loading
+        @select="handlePlanSelect"
+      />
     </div>
+
+    <BuySubscriptionPlanModal
+      v-if="selectedPlan && selectedPrice"
+      v-model:open="showBuySubscriptionPlanModal"
+      :billing-interval="selectedInterval"
+      :plan="selectedPlan"
+      :price="selectedPrice"
+    />
   </div>
 </template>

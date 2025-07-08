@@ -3,11 +3,16 @@ import type { Spacing } from '@unovis/ts'
 
 type KeyOf<T extends Record<string, any>> = Extract<keyof T, string>
 
+export interface ChartCategory<T extends Record<string, any>> {
+  key: KeyOf<T>
+  label: string
+}
+
 export interface BaseChartProps<T extends Record<string, any>> {
   /**
    * Select the categories from your data. Used to populate the legend and toolip.
    */
-  categories: KeyOf<T>[]
+  categories: KeyOf<T>[] | ChartCategory<T>[]
   /**
    * Change the default colors.
    */

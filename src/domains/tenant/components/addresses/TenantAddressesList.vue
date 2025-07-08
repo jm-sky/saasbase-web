@@ -51,7 +51,7 @@ const handleSetDefault = async (address: ITenantAddress) => {
 
 const handleDelete = async (address: ITenantAddress) => {
   try {
-    if (!confirm(t('address.deleteConfirmation'))) return
+    if (!confirm(t('address.delete.confirmation'))) return
     await tenantAddressesService.delete(tenantId, address.id)
     await refresh()
   } catch (error) {

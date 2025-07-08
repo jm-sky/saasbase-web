@@ -3,6 +3,7 @@ import { useDark } from '@vueuse/core'
 import DarkModeButton from '@/components/DarkModeButton.vue'
 import LayoutConfigurator from '@/components/LayoutConfigurator/LayoutConfigurator.vue'
 import UIIcon from '@/components/UIIcon.vue'
+import { config } from '@/config'
 
 const isDark = useDark()
 </script>
@@ -40,7 +41,7 @@ const isDark = useDark()
           class="text-6xl text-primary"
         />
         <div class="text-4xl font-bold">
-          YOUR app
+          {{ config.appName }}
         </div>
         <p class="text-white/85">
           You should login before accessing the full content of our app...

@@ -1,5 +1,8 @@
 export const address = {
   title: 'Addresses',
+  select: 'Select type',
+  search: 'Search type',
+  notFound: 'Type not found',
   fields: {
     type: 'Type',
     country: 'Country',
@@ -12,6 +15,7 @@ export const address = {
   },
   type: {
     residence: 'Residence',
+    domicile: 'Domicile',
     billing: 'Billing',
     registeredOffice: 'Registered Office',
     correspondence: 'Correspondence',

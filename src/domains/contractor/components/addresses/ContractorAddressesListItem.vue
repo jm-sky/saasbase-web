@@ -26,7 +26,10 @@ const emit = defineEmits<{
 </script>
 
 <template>
-  <div class="border rounded-md px-3 py-2 grid grid-cols-[1fr_auto] md:grid-cols-[1fr_1fr_1fr_auto] items-center gap-x-3 gap-y-1" :class="{ 'border-primary/50': address.isDefault }">
+  <div
+    class="border rounded-md px-3 py-2 grid grid-cols-[1fr_auto] md:grid-cols-[1fr_1fr_1fr_auto] items-center gap-x-3 gap-y-1"
+    :class="{ 'border-primary/50 ring-1 ring-primary/30': address.isDefault }"
+  >
     <div class="flex flex-row gap-2 items-center max-w-full overflow-hidden order-0">
       <Icon icon="lucide:map-pin" :class="address.isDefault ? 'text-primary' : 'text-muted-foreground'" />
       <span class="truncate">

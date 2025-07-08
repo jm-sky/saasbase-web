@@ -4,6 +4,7 @@ import { onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
 import EntityDetailsLayout from '@/components/layouts/EntityDetailsLayout.vue'
+import TabLink from '@/components/ui/tabs/TabLink.vue'
 import ContractorSidebar from '@/domains/contractor/components/ContractorSidebar.vue'
 import { contractorService } from '@/domains/contractor/services/ContractorService'
 import { useContractorStore } from '@/domains/contractor/store/contractor.store'
@@ -18,6 +19,21 @@ const { contractor } = storeToRefs(useContractorStore())
 
 const loading = ref(false)
 const error = ref<string | null>(null)
+
+const tabs = [
+  {
+    to: `/contractors/${contractorId}/show/overview`,
+    label: t('contractor.overview.title'),
+  },
+  {
+    to: `/contractors/${contractorId}/show/comments`,
+    label: t('contractor.comments.title'),
+  },
+  {
+    to: `/contractors/${contractorId}/show/logs`,
+    label: t('contractor.logs.title'),
+  },
+]
 
 const refresh = async () => {
   try {
@@ -58,27 +74,12 @@ onMounted(async () => {
       </template>
 
       <template #tabs>
-        <RouterLink
-          :to="`/contractors/${contractorId}/show/overview`"
-          class="border-b-2 border-transparent hover:border-muted-foreground px-2 py-1"
-          exact-active-class="text-primary border-primary!"
-        >
-          {{ t('contractor.overview.title') }}
-        </RouterLink>
-        <RouterLink
-          :to="`/contractors/${contractorId}/show/comments`"
-          class="border-b-2 border-transparent hover:border-muted-foreground px-2 py-1"
-          exact-active-class="text-primary border-primary!"
-        >
-          {{ t('contractor.comments.title') }}
-        </RouterLink>
-        <RouterLink
-          :to="`/contractors/${contractorId}/show/logs`"
-          class="border-b-2 border-transparent hover:border-muted-foreground px-2 py-1"
-          exact-active-class="text-primary border-primary!"
-        >
-          {{ t('contractor.logs.title') }}
-        </RouterLink>
+        <TabLink
+          v-for="tab in tabs"
+          :key="tab.to"
+          :to="tab.to"
+          :label="tab.label"
+        />
       </template>
 
       <template #content>

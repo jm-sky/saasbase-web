@@ -1,9 +1,11 @@
 import type { RouteLocationRaw } from 'vue-router'
+import type { TIdentityConfirmationType } from '@/domains/identityConfirmation/types/identityConfirmation.type'
 
 export const routeMap = {
   auth: {
     login: 'login',
     passwordForgot: 'passwordForgot',
+    resetPassword: 'resetPassword',
     register: 'register',
     verifyEmail: 'verifyEmail',
     mfaVerify: 'mfaVerify',
@@ -25,11 +27,16 @@ export const routeMap = {
     mfaSetup: 'mfaSetup',
   },
   userProfile: 'userProfile',
+  userPublicProfile: 'userPublicProfile',
+  identityConfirmation: {
+    index: 'identityConfirmation',
+  },
 }
 
 export const routeTo = {
   login: (): RouteLocationRaw => ({ name: routeMap.auth.login }),
   passwordForgot: (): RouteLocationRaw => ({ name: routeMap.auth.passwordForgot }),
+  resetPassword: (): RouteLocationRaw => ({ name: routeMap.auth.resetPassword }),
   register: (): RouteLocationRaw => ({ name: routeMap.auth.register }),
   selectTenant: (): RouteLocationRaw => ({ name: routeMap.auth.selectTenant }),
   userProfile: (): RouteLocationRaw => ({ name: routeMap.userProfile }),
@@ -41,4 +48,6 @@ export const routeTo = {
   settingsAccount: (): RouteLocationRaw => ({ name: routeMap.settings.account }),
   settingsAppearance: (): RouteLocationRaw => ({ name: routeMap.settings.appearance }),
   settingsNotifications: (): RouteLocationRaw => ({ name: routeMap.settings.notifications }),
+  userPublicProfile: (id: string): RouteLocationRaw => ({ name: routeMap.userPublicProfile, params: { id } }),
+  identityConfirmation: (type?: TIdentityConfirmationType): RouteLocationRaw => ({ name: routeMap.identityConfirmation.index, params: { type } }),
 }

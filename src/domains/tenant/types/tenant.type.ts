@@ -81,7 +81,7 @@ export interface ITenantBranding {
   emailHeaderImage?: IMedia
 }
 
-export interface ITenantBrandingCreate {
+export interface ITenantBrandingUpdate {
   colorPrimary?: string
   colorSecondary?: string
   shortName?: string
@@ -93,6 +93,15 @@ export interface ITenantBrandingCreate {
   customFont?: File
   pdfLogo?: File
   emailHeaderImage?: File
+}
+
+export interface ITenantPreferences {
+  currency?: string
+  require2fa: boolean
+  invoiceAutoNumbering: boolean
+  contractorLogoFetching: boolean
+  createdAt: TDateTime
+  updatedAt: TDateTime
 }
 
 export interface ITenant {
@@ -112,6 +121,30 @@ export interface ITenant {
   logo?: IMedia
   createdAt: TDateTime
   updatedAt: TDateTime
+  prefereces?: ITenantPreferences
 }
 
-export type ITenantCreate = Omit<ITenant, 'id' | 'slug' | 'tenantId' | 'logo' | 'logoUrl' | 'createdAt' | 'updatedAt'>
+export interface ITenantCreate {
+  country: string
+  vatId: string
+  name: string
+  slug: string
+  regon: string
+  taxId: string
+  email: string
+  phone: string
+  website: string
+  description: string
+  address: {
+    street: string
+    postalCode: string
+    city: string
+    region: string
+    country: string
+  }
+  bankAccount: {
+    iban: string
+    bankName: string
+    swift: string
+  }
+}

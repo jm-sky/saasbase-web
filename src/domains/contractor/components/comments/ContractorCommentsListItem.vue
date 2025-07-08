@@ -4,7 +4,7 @@ import { useI18n } from 'vue-i18n'
 import CommentItem from '@/domains/comment/components/CommentItem.vue'
 import { contractorCommentsService } from '@/domains/contractor/services/ContractorCommentsService'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
-import type { IComment } from '@/domains/comment/models/comment.model'
+import type { IComment } from '@/domains/comment/types/comment.type'
 import type { IContractor } from '@/domains/contractor/types/contractor.type'
 
 const { t } = useI18n()

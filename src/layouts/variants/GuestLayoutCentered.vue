@@ -5,8 +5,13 @@ import ApplicationLogo from '@/components/ApplicationLogo.vue'
 import DarkModeButton from '@/components/DarkModeButton.vue'
 import LanguageSwitchDropdown from '@/components/LanguageSwitchDropdown.vue'
 import LayoutConfigurator from '@/components/LayoutConfigurator/LayoutConfigurator.vue'
+import { cn } from '@/lib/utils'
 
 const isDark = useDark()
+
+const props = defineProps<{
+  contentClass?: string
+}>()
 </script>
 
 <template>
@@ -46,7 +51,7 @@ const isDark = useDark()
     </div>
 
     <div
-      class="w-full sm:max-w-md mt-6 px-6 py-4 bg-white/65 dark:bg-black/65 backdrop-blur-lg shadow-md overflow-hidden sm:rounded-lg transition-colors duration-1000"
+      :class="cn('w-full sm:max-w-md mt-6 px-6 py-4 bg-white/65 dark:bg-black/65 backdrop-blur-lg shadow-md overflow-hidden sm:rounded-lg transition-colors duration-1000', props.contentClass)"
     >
       <slot />
     </div>

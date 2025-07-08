@@ -1,4 +1,5 @@
 export const comments = {
+  title: 'Komentarze',
   add: {
     label: 'Dodaj komentarz',
     placeholder: 'Dodaj komentarz',
@@ -14,5 +15,6 @@ export const comments = {
   },
   list: {
     error: 'Błąd pobierania komentarzy',
+    empty: 'Brak komentarzy',
   },
 }

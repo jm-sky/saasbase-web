@@ -10,9 +10,9 @@ defineProps<{
 </script>
 
 <template>
-  <div class="grid grid-cols-1 md:grid-cols-4 gap-2 font-semibold mt-2 mb-2 border rounded-md p-4 bg-gray-50">
-    <div class="col-span-full text-sm text-muted-foreground mb-4">
-      Adres
+  <div class="grid grid-cols-1 md:grid-cols-4 gap-2 mt-2 mb-2 border rounded-md p-4 bg-gray-50">
+    <div class="col-span-full text-sm text-muted-foreground font-semibold">
+      {{ t('address.title') }}
     </div>
     <FormFieldLabeled
       v-slot="{ componentField }"
@@ -46,6 +46,7 @@ defineProps<{
       name="address.building"
       :label="t('address.fields.building')"
       :disabled="isSubmitting"
+      class="col-span-2 md:col-span-1"
     >
       <Input v-bind="componentField" class="bg-white/50 dark:bg-black/50" />
     </FormFieldLabeled>
@@ -54,6 +55,7 @@ defineProps<{
       name="address.flat"
       :label="t('address.fields.flat')"
       :disabled="isSubmitting"
+      class="col-span-2 md:col-span-1"
     >
       <Input v-bind="componentField" class="bg-white/50 dark:bg-black/50" />
     </FormFieldLabeled>

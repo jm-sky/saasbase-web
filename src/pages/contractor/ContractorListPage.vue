@@ -1,13 +1,12 @@
 <script setup lang="ts">
-import { RefreshCw } from 'lucide-vue-next'
+import { Plus, RefreshCw } from 'lucide-vue-next'
 import { storeToRefs } from 'pinia'
 import { onMounted, ref, type Ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import ButtonLink from '@/components/ButtonLink.vue'
 import DataListsWrapper from '@/components/DataLists/DataListsWrapper.vue'
+import DataTable from '@/components/DataLists/DataTable.vue'
 import SearchField from '@/components/DataLists/Filters/SearchField.vue'
-import DataTable from '@/components/DataTable.vue'
-import TagList from '@/components/TagList.vue'
 import Avatar from '@/components/ui/avatar/Avatar.vue'
 import AvatarFallback from '@/components/ui/avatar/AvatarFallback.vue'
 import AvatarImage from '@/components/ui/avatar/AvatarImage.vue'
@@ -17,8 +16,10 @@ import DeleteContractorButton from '@/domains/contractor/components/actions/Dele
 import EditContractorButton from '@/domains/contractor/components/actions/EditContractorButton.vue'
 import { contractorService, type IContractorFilters } from '@/domains/contractor/services/ContractorService'
 import { useContractorStore } from '@/domains/contractor/store/contractor.store'
+import TagList from '@/domains/tags/components/TagList.vue'
 import AuthenticatedLayout from '@/layouts/AuthenticatedLayout.vue'
-import { toDateString } from '@/lib/toDateString'
+import { toDateTimeString } from '@/lib/toDateTimeString'
+import ContractorListDropdown from '../../domains/contractor/components/ContractorListDropdown.vue'
 import type { ColumnDef } from '@tanstack/vue-table'
 import type { IContractor } from '@/domains/contractor/types/contractor.type'
 import type { IResourceMeta } from '@/domains/shared/types/resource.type'
@@ -66,7 +67,7 @@ const columns: ColumnDef<IContractor>[] = [
   {
     accessorKey: 'createdAt',
     header: t('common.createdAt'),
-    cell: (info: { row: { original: IContractor } }) => toDateString(info.row.original.createdAt),
+    cell: (info: { row: { original: IContractor } }) => toDateTimeString(info.row.original.createdAt),
   },
   {
     accessorKey: 'tags',
@@ -75,6 +76,7 @@ const columns: ColumnDef<IContractor>[] = [
   {
     id: 'actions',
     header: t('common.actions'),
+    enableColumnFilter: false,
   },
 ]
 
@@ -110,12 +112,19 @@ watch(filters, () => refresh(), { deep: true })
     <DataListsWrapper :title="t('contractor.title')" :loading :error>
       <template #actions>
         <SearchField v-model="filters.search" />
-        <Button variant="outline" @click="refresh">
-          <RefreshCw class="h-4 w-4" />
+        <Button variant="ghost" @click="refresh">
+          <RefreshCw class="size-4" />
         </Button>
+
+        <div class="h-6 w-px bg-border mx-2" />
+
         <ButtonLink v-tooltip="t('contractor.add.description')" variant="default" to="/contractors/add">
-          {{ t('contractor.add.title') }}
+          <Plus class="size-4 md:hidden" />
+          <span class="hidden md:block">
+            {{ t('contractor.add.title') }}
+          </span>
         </ButtonLink>
+        <ContractorListDropdown :filters />
       </template>
 
       <DataTable

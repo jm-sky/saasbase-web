@@ -1,6 +1,6 @@
 import { toTypedSchema } from '@vee-validate/zod'
 import { z, ZodSchema } from 'zod'
-import type { IComment, ICommentCreate } from '@/domains/comment/models/comment.model'
+import type { IComment, ICommentCreate } from '@/domains/comment/types/comment.type'
 
 const baseCommentSchema = z.object({
   id: z.string().uuid(),

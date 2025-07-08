@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { Icon } from '@iconify/vue'
+import { RefreshCw } from 'lucide-vue-next'
 import { useI18n } from 'vue-i18n'
 import Button from '@/components/ui/button/Button.vue'
 
@@ -19,23 +20,25 @@ const emit = defineEmits<{
 </script>
 
 <template>
-  <div class="px-2 relative pb-1">
+  <div class="@container/datalist-section px-2 relative pb-1">
     <div class="flex justify-between items-center mb-2">
       <div class="font-bold">
         {{ title }}
       </div>
 
-      <div class="flex flex-row gap-2">
+      <div class="flex flex-row items-center gap-2">
         <slot name="actions">
           <Button
             v-if="withRefreshButton"
             v-tooltip="t('common.refresh')"
-            size="sm"
-            variant="outline"
+            size="icon"
+            variant="ghost"
             @click="emit('refresh')"
           >
-            <Icon icon="lucide:refresh-cw" />
+            <RefreshCw class="size-4" />
           </Button>
+
+          <div v-if="withAddButton" class="h-6 w-px bg-border mx-2" />
 
           <Button
             v-if="withAddButton"
@@ -45,7 +48,7 @@ const emit = defineEmits<{
             @click="emit('add')"
           >
             <Icon icon="lucide:plus" />
-            <span class="hidden md:block">
+            <span class="hidden @md/datalist-section:block">
               {{ t('common.add') }}
             </span>
           </Button>

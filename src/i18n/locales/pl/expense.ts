@@ -1,0 +1,44 @@
+export default {
+  title: 'Wydatki',
+  fields: {
+    type: 'Typ',
+    status: 'Status faktury',
+    number: 'Numer',
+    totalNet: 'Netto',
+    totalTax: 'VAT',
+    totalGross: 'Brutto',
+    currency: 'Waluta',
+    exchangeRate: 'Kurs wymiany',
+    data: 'Data',
+    payment: 'Płatność',
+    options: 'Opcje',
+    issueDate: 'Data wystawienia',
+    createdAt: 'Data utworzenia',
+    updatedAt: 'Data aktualizacji',
+  },
+  number: {
+    empty: 'Brak numeru',
+  },
+  add: {
+    title: 'Dodawanie wydatku',
+    description: 'Dodaj nowy wydatku do systemu',
+    success: 'Wydatku dodana pomyślnie',
+    error: 'Nie udało się dodać wydatku',
+  },
+  show: {
+    title: 'Wydatek',
+  },
+  uploadForOcr: {
+    title: 'Prześlij do OCR',
+    description: 'Prześlij pliki, które chcesz przetworzyć za pomocą OCR.',
+    noFiles: 'Nie ma plików do przesłania',
+    upload: 'Prześlij',
+    success: 'Pliki przesłane pomyślnie',
+    error: 'Nie udało się przesłać plików',
+  },
+  delete: {
+    confirm: 'Czy na pewno chcesz usunąć ten wydatkę?',
+    success: 'Wydatkę usunięto pomyślnie',
+    error: 'Nie udało się usunąć wydatku',
+  },
+}

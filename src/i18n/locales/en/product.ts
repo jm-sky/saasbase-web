@@ -3,6 +3,7 @@ export const product = {
   productDetails: 'Products details',
   fields: {
     name: 'Name',
+    type: 'Type',
     description: 'Description',
     price: 'Price',
     unit: 'Unit',
@@ -12,6 +13,10 @@ export const product = {
     actions: 'Actions',
     createdAt: 'Created At',
     updatedAt: 'Updated At',
+  },
+  type: {
+    product: 'Product',
+    service: 'Service',
   },
   show: {
     title: 'Product',
@@ -25,5 +30,14 @@ export const product = {
     success: 'Product deleted successfully',
     error: 'Failed to delete product',
     confirm: 'Are you sure you want to delete this product?'
+  },
+  overview: {
+    title: 'Overview',
+  },
+  comments: {
+    title: 'Comments',
+  },
+  logs: {
+    title: 'Logs',
   },
 }

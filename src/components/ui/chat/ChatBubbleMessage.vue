@@ -13,7 +13,7 @@ const props = defineProps<{
 }>()
 
 const messageClass = computed(() => {
-  let base = 'p-4'
+  let base = 'p-4 flex flex-col gap-2'
   if (props.variant === 'received') base += ' bg-secondary text-secondary-foreground rounded-r-lg rounded-tl-lg'
   if (props.variant === 'sent') base += ' bg-primary text-primary-foreground rounded-l-lg rounded-tr-lg'
   if (props.layout === 'ai') base += ' border-t w-full rounded-none bg-transparent'

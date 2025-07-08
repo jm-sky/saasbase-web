@@ -9,7 +9,7 @@ const props = defineProps<{
   class?: HTMLAttributes['class']
 }>()
 
-const { toggleSidebar } = useSidebar()
+const { open, toggleSidebar } = useSidebar()
 </script>
 
 <template>
@@ -18,7 +18,7 @@ const { toggleSidebar } = useSidebar()
     data-slot="sidebar-trigger"
     variant="ghost"
     size="icon"
-    :class="cn('h-7 w-7', props.class)"
+    :class="cn('size-7 hover:text-primary', { 'rotate-180': open }, props.class)"
     @click="toggleSidebar"
   >
     <PanelLeft />

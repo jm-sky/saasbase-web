@@ -1,14 +1,16 @@
 <script setup lang="ts">
+import { RefreshCcw } from 'lucide-vue-next'
 import { onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
 import ActivityLogList from '@/components/activity-log/ActivityLogList.vue'
+import Button from '@/components/ui/button/Button.vue'
 import { ContractorActivityLogService } from '@/domains/contractor/services/ContractorActivityLogService'
 import { type ContractorActivityLog, ContractorActivityType } from '@/domains/contractor/types/activity-log'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
 import type { IContractor } from '@/domains/contractor/types/contractor.type'
 
-defineProps<{
+const props = defineProps<{
   contractor?: IContractor | null
 }>()
 
@@ -123,9 +125,9 @@ const getColor = (log: ContractorActivityLog) => {
   }
 }
 
-onMounted(async () => {
+const refresh = async () => {
   try {
-    const contractorId = String(route.params.id)
+    const contractorId = String(props.contractor?.id ??route.params.id)
     logs.value = await ContractorActivityLogService.getLogs(contractorId)
   } catch (error) {
     handleErrorWithToast('Failed to load activity logs', error)
@@ -133,14 +135,23 @@ onMounted(async () => {
   } finally {
     loading.value = false
   }
+}
+
+onMounted(() => {
+  void refresh()
 })
 </script>
 
 <template>
   <div class="flex flex-col gap-2 border rounded-md p-4 shadow-lg/5">
-    <h2 class="font-bold">
-      {{ t('contractor.logs.title') }}
-    </h2>
+    <div class="flex flex-row items-center justify-between">
+      <h2 class="font-bold">
+        {{ t('contractor.logs.title') }}
+      </h2>
+      <Button variant="ghost" :loading @click="refresh">
+        <RefreshCcw class="size-4" />
+      </Button>
+    </div>
 
     <ActivityLogList
       v-if="!loading"

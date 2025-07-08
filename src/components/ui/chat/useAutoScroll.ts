@@ -1,4 +1,4 @@
-import { nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
+import { nextTick, ref, watch, watchEffect } from 'vue'
 
 interface UseAutoScrollOptions {
   offset?: number
@@ -46,35 +46,71 @@ export default function useAutoScroll(options: UseAutoScrollOptions = {}) {
     }
   }
 
-  onMounted(() => {
+  // Watch for scroll element to become available and attach listeners
+  watchEffect((onInvalidate) => {
     if (!scrollRef.value) return
-    scrollRef.value.addEventListener('scroll', handleScroll, { passive: true })
+
+    const element = scrollRef.value
+    element.addEventListener('scroll', handleScroll, { passive: true })
+
+    onInvalidate(() => {
+      element.removeEventListener('scroll', handleScroll)
+    })
   })
 
-  onBeforeUnmount(() => {
+  // Create a MutationObserver to watch for content changes
+  watchEffect((onInvalidate) => {
     if (!scrollRef.value) return
-    scrollRef.value.removeEventListener('scroll', handleScroll)
-  })
 
-  watch(
-    () => content,
-    () => {
+    const observer = new MutationObserver(() => {
       const scrollElement = scrollRef.value
       if (!scrollElement) return
+
       const currentHeight = scrollElement.scrollHeight
       const hasNewContent = currentHeight !== lastContentHeight.value
-      if (hasNewContent) {
-        if (autoScrollEnabled.value) {
-          // eslint-disable-next-line @typescript-eslint/no-floating-promises
-          nextTick(() => {
-            scrollToBottom(lastContentHeight.value === 0)
-          })
+
+              if (hasNewContent) {
+          if (autoScrollEnabled.value) {
+            void nextTick(() => {
+              scrollToBottom(lastContentHeight.value === 0)
+            })
+          }
+          lastContentHeight.value = currentHeight
         }
-        lastContentHeight.value = currentHeight
-      }
-    },
-    { immediate: true }
-  )
+    })
+
+    observer.observe(scrollRef.value, {
+      childList: true,
+      subtree: true,
+      characterData: true,
+    })
+
+    onInvalidate(() => {
+      observer.disconnect()
+    })
+  })
+
+  // Also watch for explicit content changes if provided
+  if (content !== undefined) {
+    watch(
+      () => content,
+      () => {
+        const scrollElement = scrollRef.value
+        if (!scrollElement) return
+        const currentHeight = scrollElement.scrollHeight
+        const hasNewContent = currentHeight !== lastContentHeight.value
+                 if (hasNewContent) {
+           if (autoScrollEnabled.value) {
+             void nextTick(() => {
+               scrollToBottom(lastContentHeight.value === 0)
+             })
+           }
+           lastContentHeight.value = currentHeight
+         }
+      },
+      { immediate: true }
+    )
+  }
 
   function disableAutoScroll() {
     const atBottom = scrollRef.value ? checkIsAtBottom(scrollRef.value) : false

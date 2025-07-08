@@ -1,5 +1,8 @@
 export const address = {
   title: 'Adresy',
+  select: 'Wybierz typ',
+  search: 'Wyszukaj typ',
+  notFound: 'Nie znaleziono typu',
   fields: {
     type: 'Typ',
     country: 'Kraj',
@@ -12,6 +15,7 @@ export const address = {
   },
   type: {
     residence: 'Miejsce zamieszkania',
+    domicile: 'Miejsce zamieszkania',
     billing: 'Miejsce rozliczenia',
     registeredOffice: 'Miejsce rejestracji',
     correspondence: 'Miejsce korespondencji',

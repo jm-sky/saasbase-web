@@ -51,7 +51,7 @@ const handleSetDefault = async (address: IContractorAddress) => {
 
 const handleDelete = async (address: IContractorAddress) => {
   try {
-    if (!confirm(t('address.deleteConfirmation'))) return
+    if (!confirm(t('address.delete.confirmation'))) return
     await contractorAddressesService.delete(contractorId, address.id)
     await refresh()
   } catch (error) {

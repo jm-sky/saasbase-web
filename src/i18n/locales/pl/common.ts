@@ -1,14 +1,28 @@
 export const common = {
   actions: 'Akcje',
+  active: 'Aktywny',
+  deactivate: 'Deaktywuj',
+  activate: 'Aktywuj',
+  cancel: 'Anuluj',
+  inactive: 'Nieaktywny',
   add: 'Dodaj',
   back: 'Wstecz',
+  clear: 'Wyczyść',
+  createAndContinue: 'Utwórz i kontynuuj',
   edit: 'Edytuj',
+  clearCache: 'Wyczyść pamięć podręczną',
   upload: 'Wgraj',
   remove: 'Usuń',
   delete: 'Usuń',
   download: 'Pobierz',
   reset: 'Resetuj',
   save: 'Zapisz',
+  submit: 'Zatwierdź',
+  yes: 'Tak',
+  no: 'Nie',
+  next: 'Dalej',
+  previous: 'Wstecz',
+  options: 'Opcje',
   loading: 'Ładowanie...',
   refresh: 'Odśwież',
   or: 'lub',
@@ -17,10 +31,17 @@ export const common = {
   createdAt: 'Utworzono',
   tags: 'Tagi',
   themeColor: 'Kolor motywu',
+  secondsLeft: 'sekund pozostało',
+  settings: 'Ustawienia',
+  view: 'Wyświetl',
   copyToClipboard: {
     copy: 'Kopiuj',
     copied: 'Skopiowano',
     success: 'Skopiowano do schowka'
+  },
+  export: {
+    excel: 'Eksportuj do Excel',
+    error: 'Błąd podczas eksportowania danych'
   },
   fields: {
     id: 'ID',
@@ -32,9 +53,35 @@ export const common = {
     pl: 'Polski'
   },
   fileUpload: {
+    upload: 'Wgraj',
     dragAndDrop: 'Przeciągnij i upuść pliki tutaj lub kliknij, aby przeglądać',
+    dropHere: 'Przeciągnij tutaj pliki do przetworzenia',
     allFilesAccepted: 'Wszystkie pliki akceptowane',
     acceptedFormats: 'Akceptowane formaty: {formats}',
     remove: 'Usuń'
   },
+  feature: {
+    locked: 'Funkcja zablokowana',
+    commingSoon: 'Funkcja wkrótce'
+  },
+  error404: {
+    title: 'Strona nie znaleziona',
+    description: 'Przepraszamy, nie udało się znaleźć strony, której szukasz.',
+    goBackHome: 'Wróć do strony głównej'
+  },
+  fieldTypes: {
+    text: 'Tekst',
+    password: 'Hasło',
+    number: 'Liczba',
+    email: 'Email',
+    url: 'URL',
+    date: 'Data',
+  },
+  menu: {
+    menu: 'Menu',
+    financial: 'Finanse',
+    communication: 'Komunikacja',
+    configurations: 'Konfiguracje',
+    other: 'Inne',
+  }
 }

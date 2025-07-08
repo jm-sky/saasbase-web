@@ -1,6 +1,6 @@
 import { toTypedSchema } from '@vee-validate/zod'
 import { z } from 'zod'
-import type { IProductCreate } from '@/domains/product/models/product.model'
+import type { IProductCreate } from '@/domains/product/types/product.type'
 
 export const createProductSchema = toTypedSchema(
   z.object({

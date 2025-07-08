@@ -1,44 +1,73 @@
 <script setup lang="ts">
+import { FileTextIcon } from 'lucide-vue-next'
+import { onMounted, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
+import LoadingIcon from '@/components/Icons/LoadingIcon.vue'
 import {
   Card,
   CardContent,
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
+import { config } from '@/config'
+import { expenseWidgetService } from '@/domains/expense/services/expenseWidgetService'
+import { money } from '@/lib/money'
+import type { IExpenseWidget } from '@/domains/expense/types/expenseWidget.type'
+
+const { t, locale } = useI18n()
+
+const data = ref<IExpenseWidget | null>(null)
+const loading = ref(true)
+const error = ref<string | null>(null)
+
+const fetchExpenses = async () => {
+  try {
+    loading.value = true
+    error.value = null
+    data.value = await expenseWidgetService.getTotalExpenses()
+  } catch (err) {
+    error.value = 'Failed to load expenses data'
+    console.error('ExpensesCard error:', err)
+  } finally {
+    loading.value = false
+  }
+}
+
+onMounted(() => {
+  void fetchExpenses()
+})
+
+const formatPercentage = (percentage: number) => {
+  const sign = percentage >= 0 ? '+' : ''
+  return `${sign}${percentage.toFixed(1)}%`
+}
 </script>
 
 <template>
   <Card>
     <CardHeader class="flex flex-row items-center justify-between space-y-0 pb-2">
       <CardTitle class="text-sm font-medium">
-        Sales
+        {{ t('dashboard.widgets.expenses.title', 'Total Expenses') }}
       </CardTitle>
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth="2"
-        class="size-4 text-muted-foreground"
-      >
-        <rect
-          width="20"
-          height="14"
-          x="2"
-          y="5"
-          rx="2"
-        />
-        <path d="M2 10h20" />
-      </svg>
+      <template v-if="loading">
+        <LoadingIcon class="size-4 text-muted-foreground" />
+      </template>
+      <template v-else>
+        <FileTextIcon class="size-4 text-muted-foreground" @click="fetchExpenses" />
+      </template>
     </CardHeader>
-    <CardContent>
-      <div class="text-2xl font-bold">
-        +12,234
+    <CardContent class="space-y-1">
+      <div v-if="loading" class="text-2xl font-bold text-muted-foreground">
+        {{ t('common.loading', 'Loading...') }}
       </div>
-      <p class="text-xs text-muted-foreground">
-        +19% from last month
+      <div v-else-if="error" class="text-2xl font-bold text-destructive">
+        {{ t('common.error', 'Error') }}
+      </div>
+      <div v-else class="text-2xl font-bold">
+        {{ money(data?.month.current ?? 0, config.defaults.currency, locale) }}
+      </div>
+      <p v-if="!loading && !error && data" class="text-xs text-muted-foreground">
+        {{ formatPercentage(data.month.changePercent) }} from last month
       </p>
     </CardContent>
   </Card>

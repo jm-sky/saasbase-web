@@ -30,6 +30,7 @@ export interface IUser {
   avatarUrl?: string
   isEmailVerified: boolean
   isTwoFactorEnabled: boolean
+  roles: string[]
   createdAt: TDateTime
   updatedAt: TDateTime
 }
@@ -42,17 +43,25 @@ export interface IUserPreview {
   createdAt: TDateTime
 }
 
+export interface IUserSkill {
+  id: TUUID
+  name: string
+  level: number
+  acquiredAt?: TDate
+}
+
 export interface IUserProfileLegacy {
   id: TUUID
   name: string
   email?: string
   phone?: string
-  description?: string
+  bio?: string
   location?: string
   position?: string
   website?: string
   socialLinks?: Record<string, string>
   avatarUrl?: string
+  skills?: IUserSkill[]
   createdAt: TDateTime
 }
 

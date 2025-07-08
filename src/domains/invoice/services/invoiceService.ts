@@ -1,40 +1,61 @@
-import { type IInvoice, Invoice } from '@/domains/invoice/models/invoice.model'
+
+import { buildSpatieQuery } from '@/domains/shared/helpers/filtering'
 import api from '@/lib/api'
 import { apiRoutesMap } from '@/lib/api/apiRoutes'
-import type { TInvoiceStatus } from '@/domains/invoice/types/invoice.type'
+import type { SortingState } from '@tanstack/vue-table'
+import type { IInvoice, IInvoiceCreate } from '@/domains/invoice/types/invoice.type'
+import type { TUUID } from '@/domains/shared/types/common'
+import type { FilterDefinition, IResource, IResourceCollection } from '@/domains/shared/types/resource.type'
 
-export interface IInvoiceGetParams {
-  contractorId?: string
-  status?: TInvoiceStatus
-  startDate?: string
-  endDate?: string
-  limit?: number
-  offset?: number
+export interface IInvoiceFilters {
+  search?: string
+  page?: number
+  perPage?: number
+  filter?: Record<string, FilterDefinition>
+  sort?: SortingState
+}
+
+export interface IGeneratePdfParams {
+  templateId?: TUUID
+  collection?: 'attachments' | 'invoices' | 'drafts'
+  action?: 'download' | 'stream' | 'attach' | 'preview'
 }
 
 class InvoiceService {
-  async index(params?: IInvoiceGetParams): Promise<Invoice[]> {
-    const response = await api.get<{ data: IInvoice[] }>(apiRoutesMap.invoices, { params })
-    return response.data.data.map(data => Invoice.load(data))
+  async index(filters?: IInvoiceFilters): Promise<IResourceCollection<IInvoice>> {
+    const params = buildSpatieQuery(filters ?? { filter: {} })
+    const response = await api.get<IResourceCollection<IInvoice>>(apiRoutesMap.invoices, { params })
+    return response.data
   }
 
-  async get(id: string): Promise<Invoice> {
-    const response = await api.get<{ data: IInvoice }>(`${apiRoutesMap.invoices}/${id}`)
-    return Invoice.load(response.data.data)
+  async get(id: string): Promise<IInvoice> {
+    const response = await api.get<IResource<IInvoice>>(`${apiRoutesMap.invoices}/${id}`)
+    return response.data.data
   }
 
-  async create(invoice: Omit<IInvoice, 'id' | 'createdAt' | 'updatedAt'>): Promise<Invoice> {
-    const response = await api.post<{ data: IInvoice }>(apiRoutesMap.invoices, invoice)
-    return Invoice.load(response.data.data)
+  async create(invoice: IInvoiceCreate): Promise<IInvoice> {
+    const response = await api.post<IResource<IInvoice>>(apiRoutesMap.invoices, invoice)
+    return response.data.data
   }
 
-  async update(id: string, invoice: Partial<IInvoice>): Promise<Invoice> {
-    const response = await api.patch<{ data: IInvoice }>(`${apiRoutesMap.invoices}/${id}`, invoice)
-    return Invoice.load(response.data.data)
+  async update(id: string, invoice: Partial<IInvoice>): Promise<IInvoice> {
+    const response = await api.patch<IResource<IInvoice>>(`${apiRoutesMap.invoices}/${id}`, invoice)
+    return response.data.data
   }
 
   async delete(id: string): Promise<void> {
     await api.delete(`${apiRoutesMap.invoices}/${id}`)
+  }
+
+  async generatePdf(invoiceId: string, params?: IGeneratePdfParams): Promise<Blob> {
+    const response = await api.post(`${apiRoutesMap.invoices}/${invoiceId}/pdf`, { params })
+    return response.data
+  }
+
+  async export(filters?: IInvoiceFilters): Promise<Blob> {
+    const params = buildSpatieQuery(filters ?? { filter: {} })
+    const response = await api.get(`${apiRoutesMap.invoices}/export`, { params, responseType: 'blob' })
+    return response.data
   }
 }
 

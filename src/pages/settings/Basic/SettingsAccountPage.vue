@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { toTypedSchema } from '@vee-validate/zod'
 import { h, nextTick, onMounted, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
 import * as z from 'zod'
 import { Button } from '@/components/ui/button'
@@ -14,6 +15,8 @@ import { useAuthStore } from '@/domains/auth/store/auth.store'
 import { routeMap } from '@/router/routeMap'
 import SettingsHeader from '../partials/SettingsHeader.vue'
 import SocialSignInItem from './partials/SocialSignInItem.vue'
+
+const { t } = useI18n()
 
 const router = useRouter()
 const authStore = useAuthStore()
@@ -69,7 +72,7 @@ onMounted(async () => {
 </script>
 
 <template>
-  <SettingsHeader title="Account" description="Update your account settings. Set your preferred language and timezone." />
+  <SettingsHeader :title="t('settings.account.title')" :description="t('settings.account.description')" />
 
   <Separator />
 

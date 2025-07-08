@@ -11,4 +11,7 @@ export const attachments = {
     error: 'Błąd podczas usuwania załącznika',
     confirm: 'Czy na pewno chcesz usunąć ten załącznik?',
   },
+  meta: {
+    ocr: 'OCR',
+  },
 }

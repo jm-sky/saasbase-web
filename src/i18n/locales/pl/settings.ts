@@ -1,6 +1,8 @@
 export const settings = {
   // Common settings translations
   pageTitle: 'Ustawienia',
+  title: 'Ustawienia',
+  description: 'Zarządzaj swoimi ustawieniami konta i preferencjami e-mail.',
   save: 'Zapisz',
   cancel: 'Anuluj',
   delete: 'Usuń',
@@ -53,12 +55,26 @@ export const settings = {
       failedToUpload: 'Nie udało się przesłać zdjęcia',
       failedToRemove: 'Nie udało się usunąć zdjęcia',
       success: 'Zdjęcie profilowe zaktualizowane pomyślnie',
+      successRemoved: 'Zdjęcie profilowe usunięte pomyślnie',
+    },
+    skills: {
+      title: 'Umiejętności',
+      description: 'Zarządzaj swoimi umiejętnościami',
+      noSkills: 'Brak umiejętności',
     }
+  },
+
+  publicProfile: {
+    title: 'Profil publiczny',
+    description: 'To jest jak inni Cię zobaczą na stronie.',
+    updateProfile: 'Aktualizuj profil',
+    resetForm: 'Resetuj formularz',
   },
 
   // Account section
   account: {
     title: 'Konto',
+    description: 'Aktualizuj swoje ustawienia konta. Ustaw swój preferowany język i strefę czasową.',
     sessions: {
       title: 'Aktywne Sesje',
       description: 'Zarządzaj aktywnymi sesjami na różnych urządzeniach',

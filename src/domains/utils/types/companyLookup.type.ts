@@ -7,15 +7,22 @@ export interface ICompanyPerson {
   pesel?: string
 }
 
+export interface ICompanyRegistryConfirmation {
+  regon: boolean
+  vies: boolean
+  mf: boolean
+}
+
 export interface ICompanyLookupResponse {
   name: string
+  shortName?: string | null
   country: string
   vatId?: string | null
   regon?: string | null
-  shortName?: string | null
   phoneNumber?: string | null
   email?: string | null
   website?: string | null
   address?: IAddress | null
   bankAccount?: IBankAccount | null
+  sources?: ICompanyRegistryConfirmation | null
 }

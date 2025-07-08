@@ -4,11 +4,17 @@ import { isInTenant } from '@/router/middleware/isInTenant'
 import { isVerified } from '@/router/middleware/isVerified'
 import { authRoutes } from '@/router/routes/auth'
 import { contractorRoutes } from '@/router/routes/contractor'
+import { feedRoutes } from '@/router/routes/feeds'
 import { productRoutes } from '@/router/routes/product'
 import { publicRoutes } from '@/router/routes/public'
 import { settingsRoutes } from '@/router/routes/settings'
 import { tenantRoutes } from '@/router/routes/tenant'
 import { routeMap } from './routeMap'
+import { billingRoutes } from './routes/billing'
+import { confirmIdentityRoutes } from './routes/confirmIdentity'
+import { expenseRoutes } from './routes/expense'
+import { invoiceRoutes } from './routes/invoice'
+import { projectRoutes } from './routes/project'
 import type { RouteRecordRaw } from 'vue-router'
 
 export const routes: RouteRecordRaw[] = [
@@ -38,7 +44,13 @@ export const routes: RouteRecordRaw[] = [
   ...settingsRoutes,
   ...contractorRoutes,
   ...productRoutes,
+  ...invoiceRoutes,
+  ...expenseRoutes,
+  ...projectRoutes,
   ...tenantRoutes,
+  ...feedRoutes,
+  ...billingRoutes,
+  ...confirmIdentityRoutes,
 
   {
     path: '/chat/:roomId?',
@@ -59,11 +71,17 @@ export const routes: RouteRecordRaw[] = [
   },
   {
     path: '/users/:id',
-    name: 'userProfile',
+    name: routeMap.userPublicProfile,
     component: () => import('@/pages/users/UserProfilePage.vue'),
     meta: {
       middlewares: [isAuthenticated, isVerified],
     },
+  },
+
+  {
+    path: '/build-info',
+    name: 'build-info',
+    component: () => import('@/pages/buildInfo/BuildInfoPage.vue'),
   },
   {
     path: '/:pathMatch(.*)*',

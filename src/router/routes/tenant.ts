@@ -5,6 +5,22 @@ import type { RouteRecordRaw } from 'vue-router'
 
 export const tenantRoutes: RouteRecordRaw[] = [
   {
+    path: '/tenants/create',
+    name: 'createTenant',
+    component: () => import('@/pages/tenant/CreateTenantPage.vue'),
+    meta: {
+      middlewares: [isAuthenticated, isVerified],
+    },
+  },
+  {
+    path: '/tenants/welcome',
+    name: 'welcomeTenant',
+    component: () => import('@/pages/tenant/TenantWelcomePage.vue'),
+    meta: {
+      middlewares: [isAuthenticated, isVerified],
+    },
+  },
+  {
     path: '/tenants',
     name: 'tenants',
     component: () => import('@/pages/tenant/SelectTenantPage.vue'),
@@ -26,6 +42,19 @@ export const tenantRoutes: RouteRecordRaw[] = [
         component: () => import('@/pages/tenant/ShowTenantPage/TenantOverviewPage.vue'),
       },
       {
+        path: 'organization-units/:unitId',
+        name: 'tenant.show.organization-unit',
+        component: () => import('@/pages/tenant/ShowOrganizationUnitPage.vue'),
+        meta: {
+          title: 'tenant.organizationUnits.show.title',
+        },
+      },
+      {
+        path: 'organization-units',
+        name: 'tenant.show.organization-units',
+        component: () => import('@/pages/tenant/ShowTenantPage/TenantOrganizationUnitsPage.vue'),
+      },
+      {
         path: 'invitations',
         name: 'tenant.show.invitations',
         component: () => import('@/pages/tenant/ShowTenantPage/TenantInvitationsPage.vue'),
@@ -34,6 +63,16 @@ export const tenantRoutes: RouteRecordRaw[] = [
         path: 'branding',
         name: 'tenant.show.branding',
         component: () => import('@/pages/tenant/ShowTenantPage/TenantBrandingPage.vue'),
+      },
+      {
+        path: 'invoice-templates',
+        name: 'tenant.show.invoice-templates',
+        component: () => import('@/pages/tenant/ShowTenantPage/TenantInvoiceTemplatesPage.vue'),
+      },
+      {
+        path: 'integrations/:integrationId?',
+        name: 'tenant.show.integrations',
+        component: () => import('@/pages/tenant/ShowTenantPage/TenantIntegrationsPage.vue'),
       },
       {
         path: 'public-profile',

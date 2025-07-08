@@ -1,20 +1,16 @@
 <script setup lang="ts">
-import { Pencil, Plus, RefreshCcw, Trash, Upload } from 'lucide-vue-next'
+import { Pencil, Plus, RefreshCw, Trash, Upload } from 'lucide-vue-next'
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { Avatar, AvatarFallback, AvatarImage, type AvatarVariants } from '@/components/ui/avatar'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
 import { cn } from '@/lib/utils'
-
-interface UploaderService {
-  upload(id: string, file: File): Promise<void>
-  delete(id: string): Promise<void>
-}
+import type { UploaderService } from './uploader.type'
 
 const { t } = useI18n()
 
 const { modelId, autoUpload, avatarUrl, uploaderService, readonly, disabled } = defineProps<{
-  modelId: string
+  modelId?: string
   avatarUrl?: string
   fallbackText?: string
   disabled?: boolean
@@ -80,6 +76,7 @@ const upload = async () => {
   emit('upload', file.value)
 
   if (!uploaderService) return
+  if (!modelId) return
 
   try {
     isUploading.value = true
@@ -104,6 +101,7 @@ const removeFile = async () => {
 
   if (!avatarUrl) return
   if (!uploaderService) return
+  if (!modelId) return
 
   try {
     isRemoving.value = true
@@ -125,10 +123,10 @@ const removeFile = async () => {
     tabindex="-1"
     :class="{ 'opacity-50': isLoading }"
   >
-    <Avatar :size :shape :class="cn('border shadow', avatarClass)">
+    <Avatar :size :shape :class="cn('border shadow', avatarClass, isLoading && 'animate-pulse')">
       <AvatarImage v-if="previewUrl" :src="previewUrl" alt="avatar" />
       <AvatarFallback>{{ fallbackText ?? '?' }}</AvatarFallback>
-      <RefreshCcw v-if="isLoading" class="absolute text-gray-700 animate-spin" />
+      <RefreshCw v-if="isLoading" class="absolute text-white animate-spin mix-blend-difference" />
     </Avatar>
 
     <input

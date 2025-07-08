@@ -33,6 +33,7 @@ const props = withDefaults(defineProps<BaseChartProps<T> & {
   showLegend: true,
   showGridLine: true,
 })
+
 const emits = defineEmits<{
   legendItemClick: [d: BulletLegendItemInterface, i: number]
 }>()
@@ -42,7 +43,7 @@ type Data = typeof props.data[number]
 const index = computed(() => props.index)
 const colors = computed(() => props.colors?.length ? props.colors : defaultColors(props.categories.length))
 const legendItems = ref<BulletLegendItemInterface[]>(props.categories.map((category, i) => ({
-  name: category,
+  name: typeof category === 'string' ? category : category.label,
   color: colors.value[i],
   inactive: false,
 })))
@@ -80,7 +81,7 @@ const selectorsBar = computed(() => props.type === 'grouped' ? GroupedBar.select
 
       <VisBarComponent
         :x="(d: Data, i: number) => i"
-        :y="categories.map(category => (d: Data) => d[category]) "
+        :y="categories.map(category => (d: Data) => d[typeof category === 'string' ? category : category.key]) "
         :color="colors"
         :rounded-corners="roundedCorners"
         :bar-padding="0.05"

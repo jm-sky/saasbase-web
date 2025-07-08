@@ -7,23 +7,26 @@ import Button from '@/components/ui/button/Button.vue'
 import Input from '@/components/ui/input/Input.vue'
 import Textarea from '@/components/ui/textarea/Textarea.vue'
 import { contractorBankAccountsService } from '@/domains/contractor/services/ContractorBankAccountsService'
+import IbanLookupButton from '@/domains/utils/components/IbanLookupButton.vue'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
 import { isValidationError } from '@/lib/validation'
 import type { IContractorBankAccountCreate } from '@/domains/contractor/types/contractor.type'
+import type { IIbanInfo } from '@/domains/utils/services/IbanInfoService'
 
 const { t } = useI18n()
 
 const open = defineModel<boolean>('open', { required: true })
 
-const { contractorId } = defineProps<{
+const { country, contractorId } = defineProps<{
   contractorId: string
+  country?: string
 }>()
 
 const emit = defineEmits<{
   create: [IContractorBankAccountCreate]
 }>()
 
-const { handleSubmit, setErrors, isSubmitting } = useForm<IContractorBankAccountCreate>({
+const { handleSubmit, values, setValues, setErrors, isSubmitting } = useForm<IContractorBankAccountCreate>({
   initialValues: {
     bankName: '',
     iban: '',
@@ -42,6 +45,15 @@ const onSubmit = handleSubmit(async (values: IContractorBankAccountCreate) => {
     handleErrorWithToast(t('bankAccounts.add.error'), error)
   }
 })
+
+const onBankAccountLookup = (ibanInfo: IIbanInfo) => {
+  setValues({
+    iban: ibanInfo.iban,
+    swift: ibanInfo.swift ?? values.swift ?? '',
+    bankName: ibanInfo.bankName,
+    currency: ibanInfo.currency ?? values.currency ?? '',
+  })
+}
 </script>
 
 <template>
@@ -57,8 +69,21 @@ const onSubmit = handleSubmit(async (values: IContractorBankAccountCreate) => {
       :class="{ 'opacity-50': isSubmitting }"
       @submit.prevent="onSubmit"
     >
-      <FormFieldLabeled v-slot="{ componentField }" name="iban" :label="t('bankAccounts.fields.iban')">
-        <Input v-bind="componentField" />
+      <FormFieldLabeled
+        v-slot="{ componentField }"
+        name="iban"
+        class="col-span-full"
+        :label="t('bankAccounts.fields.iban')"
+      >
+        <div class="flex flex-row gap-2 items-center grow">
+          <Input v-bind="componentField" class="bg-white/50 dark:bg-black/50" />
+          <IbanLookupButton
+            :iban="componentField.modelValue"
+            :country
+            class="h-9"
+            @lookup="onBankAccountLookup"
+          />
+        </div>
       </FormFieldLabeled>
 
       <FormFieldLabeled v-slot="{ componentField }" name="swift" :label="t('bankAccounts.fields.swift')">
@@ -69,7 +94,12 @@ const onSubmit = handleSubmit(async (values: IContractorBankAccountCreate) => {
         <Input v-bind="componentField" />
       </FormFieldLabeled>
 
-      <FormFieldLabeled v-slot="{ componentField }" name="bankName" :label="t('bankAccounts.fields.bankName')">
+      <FormFieldLabeled
+        v-slot="{ componentField }"
+        name="bankName"
+        class="col-span-full"
+        :label="t('bankAccounts.fields.bankName')"
+      >
         <Input v-bind="componentField" />
       </FormFieldLabeled>
 

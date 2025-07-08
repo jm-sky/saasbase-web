@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useMediaQuery } from '@vueuse/core'
 import { storeToRefs } from 'pinia'
 import { useForm } from 'vee-validate'
 import { onMounted, ref } from 'vue'
@@ -8,18 +9,20 @@ import ButtonLink from '@/components/ButtonLink.vue'
 import FormFieldLabeled from '@/components/Form/FormFieldLabeled.vue'
 import EntityDetailsLayout from '@/components/layouts/EntityDetailsLayout.vue'
 import Button from '@/components/ui/button/Button.vue'
+import FormDescription from '@/components/ui/form/FormDescription.vue'
 import Input from '@/components/ui/input/Input.vue'
 import Separator from '@/components/ui/separator/Separator.vue'
 import Switch from '@/components/ui/switch/Switch.vue'
 import Textarea from '@/components/ui/textarea/Textarea.vue'
 import { useToast } from '@/components/ui/toast'
 import ContractorSidebar from '@/domains/contractor/components/ContractorSidebar.vue'
+import ContractorTypePicker from '@/domains/contractor/components/ContractorTypePicker.vue'
 import { contractorService } from '@/domains/contractor/services/ContractorService'
 import { useContractorStore } from '@/domains/contractor/store/contractor.store'
 import AuthenticatedLayout from '@/layouts/AuthenticatedLayout.vue'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
 import { isValidationError } from '@/lib/validation'
-import type { IContractor } from '@/domains/contractor/types/contractor.type'
+import type { IContractorUpdate } from '@/domains/contractor/types/contractor.type'
 
 const { t } = useI18n()
 const { toast } = useToast()
@@ -32,16 +35,24 @@ const { contractor } = storeToRefs(useContractorStore())
 const loading = ref(false)
 const error = ref<string | null>(null)
 
-const { isSubmitting, handleSubmit, setValues, setErrors, resetForm } = useForm<Omit<IContractor, 'createdAt' | 'updatedAt'>>({
+const isMobile = useMediaQuery('(max-width: 767px)')
+
+const { isSubmitting, handleSubmit, setValues, setFieldValue, setErrors, resetForm } = useForm<IContractorUpdate>({
   initialValues: {
-    name: contractor.value?.name ?? '',
-    description: contractor.value?.description ?? '',
-    taxId: contractor.value?.taxId ?? '',
-    email: contractor.value?.email ?? '',
-    phone: contractor.value?.phone ?? '',
-    website: contractor.value?.website ?? '',
-    isSupplier: contractor.value?.isSupplier ?? true,
-    isBuyer: contractor.value?.isBuyer ?? true,
+    contractor: {
+      name: contractor.value?.name ?? '',
+      type: contractor.value?.type ?? 'company',
+      description: contractor.value?.description ?? '',
+      taxId: contractor.value?.taxId ?? '',
+      email: contractor.value?.email ?? '',
+      phone: contractor.value?.phone ?? '',
+      website: contractor.value?.website ?? '',
+      isSupplier: contractor.value?.isSupplier ?? true,
+      isBuyer: contractor.value?.isBuyer ?? true,
+    },
+    options: {
+      fetchLogo: true,
+    },
   },
 })
 
@@ -51,7 +62,7 @@ const refresh = async () => {
     error.value = null
     const response = await contractorService.get(contractorId)
     contractor.value = response
-    setValues(response)
+    setValues({ contractor: response })
   } catch (err) {
     handleErrorWithToast(t('contractor.show.error'), err)
     error.value = 'Failed to load contractor'
@@ -74,7 +85,6 @@ const onSubmit = handleSubmit(async (values) => {
 })
 
 onMounted(async () => {
-  console.log('[EditContractorPage] onMounted', contractor.value)
   await refresh()
 })
 </script>
@@ -87,6 +97,7 @@ onMounted(async () => {
       :name="contractor?.name"
       :email="contractor?.email"
       :logo="contractor?.logoUrl"
+      :show-sidebar="!isMobile"
       :loading
       @refresh="refresh"
     >
@@ -113,7 +124,7 @@ onMounted(async () => {
           <form class="flex flex-col gap-y-2 gap-x-8" @submit.prevent="onSubmit">
             <FormFieldLabeled
               v-slot="{ componentField }"
-              name="name"
+              name="contractor.name"
               :label="t('contractor.fields.name')"
               :disabled="isSubmitting"
             >
@@ -121,8 +132,20 @@ onMounted(async () => {
             </FormFieldLabeled>
 
             <FormFieldLabeled
+              name="contractor.type"
+              :label="t('contractor.fields.type')"
+              :disabled="isSubmitting"
+            >
+              <ContractorTypePicker
+                :model-value="contractor?.type ?? 'company'"
+                class="bg-white/50 dark:bg-black/50"
+                @update:model-value="setFieldValue('contractor.type', $event)"
+              />
+            </FormFieldLabeled>
+
+            <FormFieldLabeled
               v-slot="{ componentField }"
-              name="description"
+              name="contractor.description"
               :label="t('contractor.fields.description')"
               :disabled="isSubmitting"
             >
@@ -133,7 +156,7 @@ onMounted(async () => {
               <div class="flex flex-col gap-2">
                 <FormFieldLabeled
                   v-slot="{ componentField }"
-                  name="vatId"
+                  name="contractor.vatId"
                   :label="t('contractor.fields.vatId')"
                   :disabled="isSubmitting"
                 >
@@ -141,7 +164,7 @@ onMounted(async () => {
                 </FormFieldLabeled>
                 <FormFieldLabeled
                   v-slot="{ componentField }"
-                  name="taxId"
+                  name="contractor.taxId"
                   :label="t('contractor.fields.taxId')"
                   :disabled="isSubmitting"
                 >
@@ -149,7 +172,7 @@ onMounted(async () => {
                 </FormFieldLabeled>
                 <FormFieldLabeled
                   v-slot="{ componentField }"
-                  name="regon"
+                  name="contractor.regon"
                   :label="t('contractor.fields.regon')"
                   :disabled="isSubmitting"
                 >
@@ -160,7 +183,7 @@ onMounted(async () => {
               <div class="flex flex-col gap-2">
                 <FormFieldLabeled
                   v-slot="{ componentField }"
-                  name="email"
+                  name="contractor.email"
                   :label="t('contractor.fields.email')"
                   :disabled="isSubmitting"
                 >
@@ -169,7 +192,7 @@ onMounted(async () => {
 
                 <FormFieldLabeled
                   v-slot="{ componentField }"
-                  name="phone"
+                  name="contractor.phone"
                   :label="t('contractor.fields.phone')"
                   :disabled="isSubmitting"
                 >
@@ -178,7 +201,7 @@ onMounted(async () => {
 
                 <FormFieldLabeled
                   v-slot="{ componentField }"
-                  name="website"
+                  name="contractor.website"
                   :label="t('contractor.fields.website')"
                   :disabled="isSubmitting"
                 >
@@ -194,7 +217,7 @@ onMounted(async () => {
             </div>
             <FormFieldLabeled
               v-slot="{ componentField }"
-              name="isSupplier"
+              name="contractor.isSupplier"
               :label="t('contractor.fields.isSupplier')"
               :disabled="isSubmitting"
               class="grid grid-cols-2 gap-2"
@@ -204,7 +227,7 @@ onMounted(async () => {
 
             <FormFieldLabeled
               v-slot="{ componentField }"
-              name="isBuyer"
+              name="contractor.isBuyer"
               :label="t('contractor.fields.isBuyer')"
               :disabled="isSubmitting"
               class="grid grid-cols-2 gap-2"
@@ -227,6 +250,24 @@ onMounted(async () => {
               >
                 {{ t('common.reset') }}
               </Button>
+            </div>
+
+            <div class="col-span-full grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-2 border rounded-md p-4 bg-gray-50 dark:bg-gray-800">
+              <div class="col-span-full font-semibold mt-2 mb-2">
+                {{ t('common.options') }}
+              </div>
+              <FormFieldLabeled
+                v-slot="{ value, handleChange }"
+                name="options.fetchLogo"
+                :label="t('contractor.add.fetchLogo')"
+                :disabled="isSubmitting"
+                class="flex flex-col gap-2"
+              >
+                <Switch :model-value="value" @update:model-value="handleChange" />
+                <FormDescription>
+                  {{ t('contractor.add.fetchLogoDescription') }}
+                </FormDescription>
+              </FormFieldLabeled>
             </div>
           </form>
         </div>

@@ -1,11 +1,10 @@
 <script setup lang="ts">
 import { X } from 'lucide-vue-next'
-import { ref } from 'vue'
 import Button from '@/components/ui/button/Button.vue'
 import ExpandableChatToggle from '@/components/ui/chat/ExpandableChatToggle.vue'
 import { cn } from '@/lib/utils'
 
-export type ChatPosition = 'bottom-right' | 'bottom-left'
+export type ChatPosition = 'bottom-right' | 'bottom-left' | 'fullscreen'
 export type ChatSize = 'sm' | 'md' | 'lg' | 'xl' | 'full'
 
 const chatConfig = {
@@ -19,10 +18,12 @@ const chatConfig = {
   positions: {
     'bottom-right': 'bottom-3 right-5',
     'bottom-left': 'bottom-3 left-5',
+    fullscreen: 'inset-0',
   },
   chatPositions: {
     'bottom-right': 'sm:bottom-[calc(100%+10px)] sm:right-0',
     'bottom-left': 'sm:bottom-[calc(100%+10px)] sm:left-0',
+    fullscreen: 'inset-0',
   },
   states: {
     open: 'pointer-events-auto opacity-100 visible scale-100 translate-y-0',
@@ -35,6 +36,7 @@ const props = withDefaults(defineProps<{
   size?: ChatSize
   icon?: unknown
   class?: string
+  hideCloseButton?: boolean
 }>(), {
   position: 'bottom-right',
   size: 'md',
@@ -45,7 +47,7 @@ const emit = defineEmits<{
   closed: []
 }>()
 
-const isOpen = ref(false)
+const isOpen = defineModel<boolean>('isOpen', { default: false })
 
 const toggleChat = () => {
   isOpen.value = !isOpen.value
@@ -63,19 +65,20 @@ const toggleChat = () => {
       class="flex flex-col bg-background border sm:rounded-lg shadow-md overflow-hidden transition-all duration-250 ease-out sm:absolute sm:w-[90vw] sm:h-[80vh] fixed inset-0 w-full h-full sm:inset-auto"
       :class="[
         chatConfig.chatPositions[props.position],
-        chatConfig.dimensions[props.size],
+        props.position === 'fullscreen' ? chatConfig.dimensions.full : chatConfig.dimensions[props.size],
         isOpen ? chatConfig.states.open : chatConfig.states.closed,
         props.class,
       ]"
     >
       <slot />
       <Button
+        v-if="!hideCloseButton"
         variant="ghost"
         size="icon"
         class="absolute top-2 right-2 sm:hidden"
         @click="toggleChat"
       >
-        <X class="h-4 w-4" />
+        <X class="size-4" />
       </Button>
     </div>
     <ExpandableChatToggle

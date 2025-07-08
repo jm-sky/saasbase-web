@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
-import type { ITag } from '../services/tag.service'
+import type { ITag } from '../types/tag.type'
 
 export const useTagStore = defineStore('tags', () => {
   const availableTags = ref<ITag[]>([])

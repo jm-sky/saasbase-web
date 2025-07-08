@@ -1,6 +1,8 @@
 export const settings = {
   // Common settings translations
   pageTitle: 'Settings',
+  title: 'Settings',
+  description: 'Manage your account settings and set e-mail preferences.',
   save: 'Save',
   cancel: 'Cancel',
   delete: 'Delete',
@@ -53,12 +55,27 @@ export const settings = {
       failedToUpload: 'Failed to upload image',
       failedToRemove: 'Failed to remove image',
       success: 'Profile image updated successfully',
+      successRemoved: 'Profile image removed successfully',
+    },
+    skills: {
+      title: 'Skills',
+      description: 'Manage your skills',
+      noSkills: 'No skills found',
     }
+  },
+
+  // Public profile section
+  publicProfile: {
+    title: 'Public Profile',
+    description: 'This is how others will see you on the site.',
+    updateProfile: 'Update Profile',
+    resetForm: 'Reset Form',
   },
 
   // Account section
   account: {
     title: 'Account',
+    description: 'Update your account settings. Set your preferred language and timezone.',
     sessions: {
       title: 'Active Sessions',
       description: 'Manage active sessions on different devices',

@@ -1,10 +1,11 @@
 import api from '@/lib/api'
 import { apiRoutesMap } from '@/lib/api/apiRoutes'
-import type { TDateTime } from '@/domains/shared/types/common'
+import type { IAttachment } from '@/domains/shared/types/attachment.type'
+import type { TDateTime, TUUID } from '@/domains/shared/types/common'
 import type { IResourceCollection } from '@/domains/shared/types/resource.type'
 
-export interface ITenantAttachment {
-  id: string
+export interface ITenantAttachment extends IAttachment {
+  id: TUUID
   fileName: string
   size: number
   mimeType: string

@@ -1,17 +1,18 @@
 <script setup lang="ts">
 import { useForm } from 'vee-validate'
 import { useI18n } from 'vue-i18n'
-import FormFieldLabeled from '@/components/Form/FormFieldLabeled.vue'
 import ModalComponent from '@/components/ModalComponent.vue'
-import Button from '@/components/ui/button/Button.vue'
-import Input from '@/components/ui/input/Input.vue'
-import Textarea from '@/components/ui/textarea/Textarea.vue'
+import { config } from '@/config'
+import BankAccountForm from '@/domains/shared/components/bankAccounts/BankAccountForm.vue'
 import { tenantBankAccountsService } from '@/domains/tenant/services/TenantBankAccountsService'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
 import { isValidationError } from '@/lib/validation'
+import { useTenant } from '../../composables/useTenant'
 import type { ITenantBankAccountCreate } from '@/domains/tenant/types/tenant.type'
+import type { IIbanInfo } from '@/domains/utils/services/IbanInfoService'
 
 const { t } = useI18n()
+const { tenant } = useTenant()
 
 const open = defineModel<boolean>('open', { required: true })
 
@@ -23,7 +24,7 @@ const emit = defineEmits<{
   create: [ITenantBankAccountCreate]
 }>()
 
-const { handleSubmit, setErrors, isSubmitting } = useForm<ITenantBankAccountCreate>({
+const { handleSubmit, setValues, setErrors, isSubmitting } = useForm<ITenantBankAccountCreate>({
   initialValues: {
     bankName: '',
     iban: '',
@@ -42,6 +43,14 @@ const onSubmit = handleSubmit(async (values: ITenantBankAccountCreate) => {
     handleErrorWithToast(t('bankAccounts.add.error'), error)
   }
 })
+
+const onBankAccountLookup = (ibanInfo: IIbanInfo) => {
+  setValues({
+    iban: ibanInfo.iban,
+    swift: ibanInfo.swift ?? '',
+    bankName: ibanInfo.bankName,
+  })
+}
 </script>
 
 <template>
@@ -52,44 +61,11 @@ const onSubmit = handleSubmit(async (values: ITenantBankAccountCreate) => {
     :open="open"
     @update:open="open = $event"
   >
-    <form
-      class="grid grid-cols-1 md:grid-cols-2 gap-4"
-      :class="{ 'opacity-50': isSubmitting }"
+    <BankAccountForm
+      :country="tenant?.country ?? config.defaults.country"
+      :is-submitting="isSubmitting"
       @submit.prevent="onSubmit"
-    >
-      <FormFieldLabeled v-slot="{ componentField }" name="iban" :label="t('bankAccounts.fields.iban')">
-        <Input v-bind="componentField" />
-      </FormFieldLabeled>
-
-      <FormFieldLabeled v-slot="{ componentField }" name="swift" :label="t('bankAccounts.fields.swift')">
-        <Input v-bind="componentField" />
-      </FormFieldLabeled>
-
-      <FormFieldLabeled v-slot="{ componentField }" name="currency" :label="t('bankAccounts.fields.currency')">
-        <Input v-bind="componentField" />
-      </FormFieldLabeled>
-
-      <FormFieldLabeled v-slot="{ componentField }" name="bankName" :label="t('bankAccounts.fields.bankName')">
-        <Input v-bind="componentField" />
-      </FormFieldLabeled>
-
-      <FormFieldLabeled
-        v-slot="{ componentField }"
-        name="description"
-        class="col-span-full"
-        :label="t('bankAccounts.fields.description')"
-      >
-        <Textarea v-bind="componentField" />
-      </FormFieldLabeled>
-
-      <Button
-        type="submit"
-        class="col-span-full"
-        :loading="isSubmitting"
-        :disabled="isSubmitting"
-      >
-        {{ t('common.save') }}
-      </Button>
-    </form>
+      @iban-lookup="onBankAccountLookup"
+    />
   </ModalComponent>
 </template>

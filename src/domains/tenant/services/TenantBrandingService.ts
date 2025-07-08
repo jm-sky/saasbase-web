@@ -1,6 +1,6 @@
 import api from '@/lib/api'
 import { apiRoutesMap } from '@/lib/api/apiRoutes'
-import type { ITenantBranding } from '@/domains/tenant/types/tenant.type'
+import type { ITenantBranding, ITenantBrandingUpdate } from '@/domains/tenant/types/tenant.type'
 
 class TenantBrandingService {
   async show(tenantId: string): Promise<ITenantBranding> {
@@ -8,7 +8,7 @@ class TenantBrandingService {
     return response.data
   }
 
-  async update(tenantId: string, branding: Partial<ITenantBranding>): Promise<ITenantBranding> {
+  async update(tenantId: string, branding: ITenantBrandingUpdate): Promise<ITenantBranding> {
     const response = (await api.put<{ data: ITenantBranding }>(`${apiRoutesMap.tenants}/${tenantId}/branding`, branding)).data
     return response.data
   }

@@ -66,7 +66,7 @@ const loadTenantPublicProfile = async () => {
       address: tenantPublicProfile.value.address,
     })
   } catch (error) {
-    handleErrorWithToast('tenant.publicProfile.show.error', error)
+    handleErrorWithToast(t('tenant.publicProfile.show.error'), error)
   } finally {
     loading.value = false
   }
@@ -209,7 +209,7 @@ onMounted(async () => {
 
       <div class="col-span-full">
         <Button type="submit" class="w-full">
-          {{ $t('tenant.publicProfile.save') }}
+          {{ t('tenant.publicProfile.save') }}
         </Button>
       </div>
     </form>

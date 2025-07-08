@@ -1,0 +1,44 @@
+export default {
+  title: 'Expenses',
+  fields: {
+    type: 'Type',
+    status: 'Status',
+    number: 'Number',
+    totalNet: 'Total Net',
+    totalTax: 'Total Tax',
+    totalGross: 'Total Gross',
+    currency: 'Currency',
+    exchangeRate: 'Exchange Rate',
+    data: 'Data',
+    payment: 'Payment',
+    options: 'Options',
+    issueDate: 'Issue Date',
+    createdAt: 'Created At',
+    updatedAt: 'Updated At',
+  },
+  number: {
+    empty: 'No number',
+  },
+  add: {
+    title: 'Add expense',
+    description: 'Add a new expense to the system',
+    success: 'Expense added successfully',
+    error: 'Failed to add expense',
+  },
+  show: {
+    title: 'Expense',
+  },
+  uploadForOcr: {
+    title: 'Upload for OCR',
+    description: 'Upload the files you want to process with OCR.',
+    noFiles: 'No files to upload',
+    upload: 'Upload',
+    success: 'Files uploaded successfully',
+    error: 'Failed to upload files',
+  },
+  delete: {
+    confirm: 'Are you sure you want to delete this expense?',
+    success: 'Expense deleted successfully',
+    error: 'Failed to delete expense',
+  },
+}

@@ -15,6 +15,7 @@ export class User implements IUser {
   avatarUrl?: string
   isEmailVerified: boolean
   isTwoFactorEnabled: boolean
+  roles: string[]
   createdAt: TDateTime
   updatedAt: TDateTime
 
@@ -32,6 +33,7 @@ export class User implements IUser {
     this.isTwoFactorEnabled = data.isTwoFactorEnabled
     this.createdAt = data.createdAt
     this.updatedAt = data.updatedAt
+    this.roles = data.roles
   }
 
   static load(data: IUser): User {
@@ -47,6 +49,7 @@ export class User implements IUser {
       avatarUrl: this.avatarUrl,
       isEmailVerified: this.isEmailVerified,
       isTwoFactorEnabled: this.isTwoFactorEnabled,
+      roles: this.roles,
       createdAt: this.createdAt,
       updatedAt: this.updatedAt,
     }

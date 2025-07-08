@@ -35,15 +35,6 @@ export interface AccountActivity {
   location?: string
 }
 
-export interface ApiKey {
-  id: string
-  name: string
-  key: string
-  createdAt: string
-  lastUsed?: string
-  expiresAt?: string
-}
-
 export interface BillingPlan {
   id: string
   name: string

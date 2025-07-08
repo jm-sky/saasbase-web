@@ -5,11 +5,11 @@ export default {
   darkMode: ['class'],
   safelist: ['dark'],
   prefix: '',
-  
+
   content: [
     './src/**/*.{ts,tsx,vue}',
 	],
-  
+
   theme: {
     container: {
       center: true,
@@ -43,6 +43,10 @@ export default {
         secondary: {
           DEFAULT: 'hsl(var(--secondary))',
           foreground: 'hsl(var(--secondary-foreground))',
+        },
+        warning: {
+          DEFAULT: 'hsl(var(--warning))',
+          foreground: 'hsl(var(--warning-foreground))',
         },
         destructive: {
           DEFAULT: 'hsl(var(--destructive))',

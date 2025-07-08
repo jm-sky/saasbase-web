@@ -6,7 +6,7 @@ import { z } from 'zod'
 import FormFieldLabeled from '@/components/Form/FormFieldLabeled.vue'
 import Button from '@/components/ui/button/Button.vue'
 import Input from '@/components/ui/input/Input.vue'
-import RoleLookup from '@/domains/rights/components/RoleLookup.vue'
+import RolePicker from '@/domains/rights/components/RolePicker.vue'
 import { tenantInvitationService } from '@/domains/tenant/services/TenantInvitationService'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
 import { isValidationError } from '@/lib/validation'
@@ -65,7 +65,7 @@ const sendInvitation = handleSubmit(async (values) => {
         />
       </FormFieldLabeled>
       <FormFieldLabeled v-slot="{ componentField }" name="role" :label="t('tenant.invitations.send.role')">
-        <RoleLookup
+        <RolePicker
           :model-value="values.role"
           v-bind="componentField"
           popover-content-class="w-full md:w-xl"

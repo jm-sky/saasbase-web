@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import DarkModeButton from '@/components/DarkModeButton.vue'
 import LanguageSwitchDropdown from '@/components/LanguageSwitchDropdown.vue'
-import AppSidebar from '@/components/Layout/AppSidebar.vue'
+import AppSidebarMenu from '@/components/Layout/AppSidebarMenu.vue'
 import NotificationsDrawer from '@/components/Layout/Notifications/NotificationsDrawer.vue'
 import Search from '@/components/Layout/Search.vue'
 import UserNav from '@/components/Layout/UserNav.vue'
@@ -31,9 +31,9 @@ const authStore = useAuthStore()
 </script>
 
 <template>
-  <SidebarProvider>
-    <AppSidebar />
-    <SidebarInset class="bg-sidebar">
+  <SidebarProvider class="bg-sidebar">
+    <AppSidebarMenu />
+    <SidebarInset>
       <header class="px-4 flex h-16 shrink-0 items-center gap-2 bg-sidebar transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12">
         <SidebarTrigger class="-ml-1" />
         <Separator
@@ -63,7 +63,7 @@ const authStore = useAuthStore()
         </Breadcrumb>
       </nav>
 
-      <ScrollArea class="flex flex-col h-full max-w-[100vw] md:h-[var(--content-height)] pr-1 md:mr-4 md:mb-2 bg-background border rounded-xl grow">
+      <ScrollArea class="bg-background flex flex-col h-full max-w-[100vw] md:h-[var(--content-height)] pr-1 md:mr-4 md:mb-2 border rounded-xl grow shadow-lg">
         <slot />
       </ScrollArea>
     </SidebarInset>

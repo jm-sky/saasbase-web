@@ -1,0 +1,26 @@
+<script setup lang="ts">
+import { useI18n } from 'vue-i18n'
+import ProductAttachmentsList from '@/domains/product/components/attachments/ProductAttachmentsList.vue'
+import type { IProduct } from '@/domains/product/types/product.type'
+
+const { t } = useI18n()
+
+defineProps<{
+  product?: IProduct
+}>()
+</script>
+
+<template>
+  <div class="flex flex-col gap-2 border rounded-md p-4 shadow-lg/5">
+    <div class="font-bold">
+      {{ t('product.fields.description') }}
+    </div>
+    <div class="text-muted-foreground">
+      {{ product?.description }}
+    </div>
+  </div>
+
+  <div class="border rounded-md p-2 shadow-lg/5">
+    <ProductAttachmentsList />
+  </div>
+</template>
