@@ -1,8 +1,12 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
+import Checkbox from '@/components/ui/checkbox/Checkbox.vue'
 import Input from '@/components/ui/input/Input.vue'
+import CurrencyPicker from '@/domains/shared/components/CurrencyPicker.vue'
+import DateFormatPicker from '@/domains/shared/components/DateFormatPicker.vue'
 import type { ITemplatePreviewOptions } from '../../services/InvoiceTemplate.service'
+import InvoiceTemplateLanguagePicker from './InvoiceTemplateLanguagePicker.vue'
 
 const { t } = useI18n()
 
@@ -51,75 +55,21 @@ watch(() => props.modelValue, (newValue) => {
         <label class="block text-xs font-medium text-muted-foreground mb-1">
           {{ t('tenant.invoiceTemplates.previewOptions.language') }}
         </label>
-        <select
-          v-model="localOptions.language"
-          class="w-full text-sm border border-border rounded px-2 py-1"
-        >
-          <option value="en">
-            English
-          </option>
-          <option value="pl">
-            Polski
-          </option>
-          <option value="uk">
-            Українська
-          </option>
-          <option value="ru">
-            Русский
-          </option>
-        </select>
+        <InvoiceTemplateLanguagePicker v-model="localOptions.language" />
       </div>
 
       <div>
         <label class="block text-xs font-medium text-muted-foreground mb-1">
           {{ t('tenant.invoiceTemplates.previewOptions.currency') }}
         </label>
-        <select
-          v-model="localOptions.currency"
-          class="w-full text-sm border border-border rounded px-2 py-1"
-        >
-          <option value="PLN">
-            PLN (zł)
-          </option>
-          <option value="USD">
-            USD ($)
-          </option>
-          <option value="EUR">
-            EUR (€)
-          </option>
-          <option value="UAH">
-            UAH (₴)
-          </option>
-          <option value="RUB">
-            RUB (₽)
-          </option>
-        </select>
+        <CurrencyPicker v-model:id="localOptions.currency" class="w-full" />
       </div>
 
       <div>
         <label class="block text-xs font-medium text-muted-foreground mb-1">
           {{ t('tenant.invoiceTemplates.previewOptions.dateFormat') }}
         </label>
-        <select
-          v-model="localOptions.dateFormat"
-          class="w-full text-sm border border-border rounded px-2 py-1"
-        >
-          <option value="Y-m-d">
-            2024-07-06
-          </option>
-          <option value="d/m/Y">
-            06/07/2024
-          </option>
-          <option value="m/d/Y">
-            07/06/2024
-          </option>
-          <option value="d.m.Y">
-            06.07.2024
-          </option>
-          <option value="F j, Y">
-            July 6, 2024
-          </option>
-        </select>
+        <DateFormatPicker v-model="localOptions.dateFormat" />
       </div>
     </div>
 
@@ -175,20 +125,12 @@ watch(() => props.modelValue, (newValue) => {
 
     <div class="mt-4 flex space-x-4">
       <label class="flex items-center text-sm">
-        <input
-          v-model="localOptions.includeLogo"
-          type="checkbox"
-          class="mr-2"
-        >
+        <Checkbox v-model="localOptions.includeLogo" class="mr-2" />
         {{ t('tenant.invoiceTemplates.previewOptions.includeLogo') }}
       </label>
 
       <label class="flex items-center text-sm">
-        <input
-          v-model="localOptions.includeSignatures"
-          type="checkbox"
-          class="mr-2"
-        >
+        <Checkbox v-model="localOptions.includeSignatures" class="mr-2" />
         {{ t('tenant.invoiceTemplates.previewOptions.includeSignatures') }}
       </label>
     </div>

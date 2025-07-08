@@ -392,7 +392,7 @@ onUnmounted(() => {
       <div class="max-w-7xl mx-auto">
         <!-- Header -->
         <div class="flex justify-between items-center mb-8">
-          <h1 class="text-3xl font-bold text-foreground">
+          <h1 class="text-2xl font-bold text-foreground">
             {{ t('tenant.invoiceTemplates.editor.title') }}
           </h1>
           <div class="flex space-x-4">
