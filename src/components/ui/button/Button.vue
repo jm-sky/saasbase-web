@@ -12,6 +12,7 @@ interface Props extends PrimitiveProps {
   class?: HTMLAttributes['class']
   size?: ButtonVariants['size']
   variant?: ButtonVariants['variant']
+  vibe?: ButtonVariants['vibe']
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -23,7 +24,7 @@ const props = withDefaults(defineProps<Props>(), {
   <Primitive
     :as="as"
     :as-child="asChild"
-    :class="cn(buttonVariants({ variant, size }), props.class)"
+    :class="cn(buttonVariants({ variant, size, vibe }), props.class)"
     :disabled="loading"
   >
     <template v-if="loading">
