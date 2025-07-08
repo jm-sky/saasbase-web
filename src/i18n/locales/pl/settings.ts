@@ -73,6 +73,7 @@ export const settings = {
   // Account section
   account: {
     title: 'Konto',
+    description: 'Aktualizuj swoje ustawienia konta. Ustaw swój preferowany język i strefę czasową.',
     sessions: {
       title: 'Aktywne Sesje',
       description: 'Zarządzaj aktywnymi sesjami na różnych urządzeniach',

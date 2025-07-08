@@ -23,6 +23,7 @@ export interface IUserProfile {
     birthDate?: boolean
   },
   skills?: IUserSkill[]
+  roles: string[]
 }
 
 class UserProfileService {

@@ -21,6 +21,7 @@ import DropdownMenuItemLink from '@/components/ui/dropdown-menu/DropdownMenuItem
 import { useLogout } from '@/domains/auth/composables/useLogout'
 import { useAuthStore } from '@/domains/auth/store/auth.store'
 import { routeTo } from '@/router/routeMap'
+import Badge from '../ui/badge/Badge.vue'
 import Switch from '../ui/switch/Switch.vue'
 
 const authStore = useAuthStore()
@@ -45,12 +46,17 @@ const { user } = storeToRefs(authStore)
     </DropdownMenuTrigger>
     <DropdownMenuContent class="w-56" align="end">
       <DropdownMenuLabel class="font-normal flex">
-        <div class="flex flex-col space-y-1">
+        <div class="flex flex-col gap-y-1">
           <p class="text-sm font-medium leading-none">
             {{ user?.fullName }}
           </p>
           <p class="text-xs leading-none text-muted-foreground">
             {{ user?.email }}
+          </p>
+          <p v-if="user?.roles?.length" class="mt-1 flex flex-row flex-wrap gap-1">
+            <Badge v-for="role in user?.roles" :key="role" variant="outline">
+              {{ role }}
+            </Badge>
           </p>
         </div>
       </DropdownMenuLabel>

@@ -59,18 +59,6 @@ class InvoiceTemplateService {
   async preview(request: ITemplatePreviewRequest): Promise<ITemplatePreviewResponse> {
     return (await api.post<ITemplatePreviewResponse>('/invoice-templates/preview', request)).data
   }
-
-  // Get system templates (global, non-editable)
-  async getSystemTemplates(): Promise<IInvoiceTemplate[]> {
-    const response = await api.get<IResourceCollection<IInvoiceTemplate>>('/invoice-templates?isSystem=true')
-    return response.data.data
-  }
-
-  // Get tenant templates (tenant-scoped, editable)
-  async getTenantTemplates(): Promise<IInvoiceTemplate[]> {
-    const response = await api.get<IResourceCollection<IInvoiceTemplate>>('/invoice-templates?isSystem=false')
-    return response.data.data
-  }
 }
 
 export const invoiceTemplateService = new InvoiceTemplateService()

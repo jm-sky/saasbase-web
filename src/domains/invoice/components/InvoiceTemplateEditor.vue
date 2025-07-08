@@ -3,6 +3,7 @@ import { AlertTriangle, Eye, Save, X } from 'lucide-vue-next'
 import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import LoadingIcon from '@/components/Icons/LoadingIcon.vue'
+import Button from '@/components/ui/button/Button.vue'
 import { useToast } from '@/components/ui/toast'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
 import type { IInvoiceTemplate } from '../types/invoiceTemplate.type'
@@ -16,14 +17,16 @@ const { toast } = useToast()
 
 const props = defineProps<{
   template: IInvoiceTemplate | null
-  systemTemplates: IInvoiceTemplate[]
-  userTemplates: IInvoiceTemplate[]
+  invoiceTemplates: IInvoiceTemplate[]
 }>()
 
 const emit = defineEmits<{
   save: [template: IInvoiceTemplate]
   cancel: []
 }>()
+
+const systemTemplates = computed(() => props.invoiceTemplates.filter(template => template.isSystem))
+const userTemplates = computed(() => props.invoiceTemplates.filter(template => !template.isSystem))
 
 // Reactive data
 const editableTemplate = ref<IInvoiceTemplate>({
@@ -83,7 +86,7 @@ const loadTemplate = async () => {
       isSystem: templateData.isSystem
     }
   } catch (error: unknown) {
-    handleErrorWithToast(t('errors.failed_to_load_template'), error)
+    handleErrorWithToast(t('tenant.invoiceTemplates.editor.loadError'), error)
   } finally {
     isLoading.value = false
   }
@@ -91,7 +94,7 @@ const loadTemplate = async () => {
 
 const previewTemplate = async () => {
   if (!editableTemplate.value.content.trim()) {
-    toast.error(t('invoices.enter_template_content'))
+    toast.error(t('tenant.invoiceTemplates.editor.enterTemplateContent'))
     return
   }
 
@@ -107,7 +110,7 @@ const previewTemplate = async () => {
 
     previewHtml.value = response.html
   } catch (error: unknown) {
-    handleErrorWithToast(t('errors.preview_failed'), error)
+    handleErrorWithToast(t('tenant.invoiceTemplates.editor.previewError'), error)
     previewHtml.value = ''
   } finally {
     isLoading.value = false
@@ -135,10 +138,10 @@ const saveTemplate = async () => {
       })
     }
 
-    toast.success(t('invoices.template_saved_successfully'))
+    toast.success(t('tenant.invoiceTemplates.editor.saveSuccess'))
     emit('save', savedTemplate)
   } catch (error: unknown) {
-    handleErrorWithToast(t('errors.save_failed'), error)
+    handleErrorWithToast(t('tenant.invoiceTemplates.editor.saveError'), error)
   } finally {
     isLoading.value = false
   }
@@ -343,7 +346,7 @@ onMounted(() => {
   if (!props.template?.id) {
     const draft = loadDraft()
     if (draft?.content.trim()) {
-      const shouldLoad = confirm(t('invoices.load_unsaved_draft'))
+      const shouldLoad = confirm(t('tenant.invoiceTemplates.editor.loadUnsavedDraft'))
       if (shouldLoad) {
         editableTemplate.value = {
           id: '',
@@ -380,32 +383,21 @@ onUnmounted(() => {
         <!-- Header -->
         <div class="flex justify-between items-center mb-8">
           <h1 class="text-3xl font-bold text-gray-900">
-            {{ t('invoices.template_editor') }}
+            {{ t('tenant.invoiceTemplates.editor.title') }}
           </h1>
           <div class="flex space-x-4">
-            <button
-              :disabled="isLoading"
-              class="bg-blue-500 hover:bg-blue-600 disabled:bg-blue-300 text-white px-4 py-2 rounded flex items-center space-x-2"
-              @click="previewTemplate"
-            >
-              <Eye class="w-4 h-4" />
-              <span>{{ t('common.preview') }}</span>
-            </button>
-            <button
-              :disabled="isLoading || !canSave"
-              class="bg-green-500 hover:bg-green-600 disabled:bg-green-300 text-white px-4 py-2 rounded flex items-center space-x-2"
-              @click="saveTemplate"
-            >
-              <Save class="w-4 h-4" />
+            <Button :disabled="isLoading" variant="primary" @click="previewTemplate">
+              <Eye class="size-4" />
+              <span>{{ t('tenant.invoiceTemplates.editor.preview') }}</span>
+            </Button>
+            <Button :disabled="isLoading || !canSave" variant="primary" @click="saveTemplate">
+              <Save class="size-4" />
               <span>{{ t('common.save') }}</span>
-            </button>
-            <button
-              class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded flex items-center space-x-2"
-              @click="cancelEditing"
-            >
-              <X class="w-4 h-4" />
+            </Button>
+            <Button variant="secondary" @click="cancelEditing">
+              <X class="size-4" />
               <span>{{ t('common.cancel') }}</span>
-            </button>
+            </Button>
           </div>
         </div>
 
@@ -415,31 +407,31 @@ onUnmounted(() => {
             <div class="space-y-4 mb-6">
               <div>
                 <label class="block text-sm font-medium text-gray-700 mb-2">
-                  {{ t('invoices.template_name') }}
+                  {{ t('tenant.invoiceTemplates.fields.name') }}
                 </label>
                 <input
                   v-model="editableTemplate.name"
                   type="text"
                   class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  :placeholder="$t('invoices.template_name_placeholder')"
+                  :placeholder="$t('tenant.invoiceTemplates.fields.name')"
                 >
               </div>
 
               <div>
                 <label class="block text-sm font-medium text-gray-700 mb-2">
-                  {{ t('common.description') }}
+                  {{ t('tenant.invoiceTemplates.fields.description') }}
                 </label>
                 <textarea
                   v-model="editableTemplate.description"
                   rows="2"
                   class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  :placeholder="$t('invoices.template_description_placeholder')"
+                  :placeholder="$t('tenant.invoiceTemplates.fields.description')"
                 />
               </div>
 
               <div>
                 <label class="block text-sm font-medium text-gray-700 mb-2">
-                  {{ t('invoices.load_template') }}
+                  {{ t('tenant.invoiceTemplates.editor.loadTemplate') }}
                 </label>
                 <select
                   v-model="selectedTemplateId"
@@ -447,9 +439,9 @@ onUnmounted(() => {
                   @change="loadTemplate"
                 >
                   <option value="">
-                    {{ t('invoices.select_template') }}
+                    {{ t('tenant.invoiceTemplates.editor.selectTemplate') }}
                   </option>
-                  <optgroup :label="$t('invoices.system_templates')">
+                  <optgroup :label="$t('tenant.invoiceTemplates.filters.system')">
                     <option
                       v-for="tmpl in systemTemplates"
                       :key="tmpl.id"
@@ -458,7 +450,7 @@ onUnmounted(() => {
                       {{ tmpl.name }}
                     </option>
                   </optgroup>
-                  <optgroup v-if="userTemplates.length" :label="$t('invoices.user_templates')">
+                  <optgroup v-if="userTemplates.length" :label="$t('tenant.invoiceTemplates.filters.tenant')">
                     <option
                       v-for="tmpl in userTemplates"
                       :key="tmpl.id"
@@ -473,13 +465,13 @@ onUnmounted(() => {
 
             <div class="mb-4">
               <label class="block text-sm font-medium text-gray-700 mb-2">
-                {{ t('invoices.template_content') }}
+                {{ t('tenant.invoiceTemplates.fields.content') }}
               </label>
               <div class="border border-gray-300 rounded-md">
                 <textarea
                   v-model="editableTemplate.content"
                   class="w-full h-96 font-mono text-sm p-4 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
-                  :placeholder="$t('invoices.template_content_placeholder')"
+                  :placeholder="$t('tenant.invoiceTemplates.fields.content')"
                 />
               </div>
             </div>
@@ -492,15 +484,12 @@ onUnmounted(() => {
           <div class="bg-white rounded-lg shadow-lg p-6">
             <div class="mb-4 flex justify-between items-center">
               <h2 class="text-xl font-semibold text-gray-900">
-                {{ t('common.preview') }}
+                {{ t('tenant.invoiceTemplates.editor.preview') }}
               </h2>
               <div class="flex space-x-2">
-                <button
-                  class="text-sm bg-gray-100 hover:bg-gray-200 px-3 py-1 rounded"
-                  @click="showPreviewOptions = !showPreviewOptions"
-                >
-                  {{ t('invoices.preview_options') }}
-                </button>
+                <Button variant="outline" @click="showPreviewOptions = !showPreviewOptions">
+                  {{ t('tenant.invoiceTemplates.editor.previewOptions') }}
+                </Button>
               </div>
             </div>
 
@@ -529,7 +518,7 @@ onUnmounted(() => {
                 v-else
                 class="text-center text-gray-500 py-8"
               >
-                {{ t('invoices.click_preview') }}
+                {{ t('tenant.invoiceTemplates.editor.clickPreview') }}
               </div>
             </div>
 

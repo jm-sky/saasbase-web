@@ -30,6 +30,7 @@ export interface IUser {
   avatarUrl?: string
   isEmailVerified: boolean
   isTwoFactorEnabled: boolean
+  roles: string[]
   createdAt: TDateTime
   updatedAt: TDateTime
 }

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Pencil, Plus, Star, Trash, Zap } from 'lucide-vue-next'
+import { Plus } from 'lucide-vue-next'
 import { computed, onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import LoadingIcon from '@/components/Icons/LoadingIcon.vue'
@@ -7,6 +7,7 @@ import Button from '@/components/ui/button/Button.vue'
 import { useToast } from '@/components/ui/toast'
 import UIIcon from '@/components/UIIcon.vue'
 import InvoiceTemplateEditor from '@/domains/invoice/components/InvoiceTemplateEditor.vue'
+import InvoiceTemplateListItem from '@/domains/invoice/components/invoiceTemplates/InvoiceTemplateListItem.vue'
 import { invoiceTemplateService } from '@/domains/invoice/services/InvoiceTemplate.service'
 import TenantSectionTitle from '@/domains/tenant/components/TenantSectionTitle.vue'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
@@ -22,38 +23,23 @@ defineProps<{
 
 // State
 const isLoading = ref(false)
-const systemTemplates = ref<IInvoiceTemplate[]>([])
-const tenantTemplates = ref<IInvoiceTemplate[]>([])
+const invoiceTemplates = ref<IInvoiceTemplate[]>([])
 const activeFilter = ref<'all' | 'system' | 'tenant'>('all')
 const isEditing = ref(false)
 const editingTemplate = ref<IInvoiceTemplate | null>(null)
 
 // Computed
-const allTemplates = computed(() => [...systemTemplates.value, ...tenantTemplates.value])
-
-const filteredTemplates = computed(() => {
-  switch (activeFilter.value) {
-    case 'system':
-      return systemTemplates.value
-    case 'tenant':
-      return tenantTemplates.value
-    default:
-      return allTemplates.value
-  }
-})
+const filteredTemplates = computed(() => invoiceTemplates.value.filter(template => {
+  if (activeFilter.value === 'system') return template.isSystem
+  if (activeFilter.value === 'tenant') return !template.isSystem
+  return true
+}))
 
 // Methods
 const loadTemplates = async () => {
   try {
     isLoading.value = true
-
-    const [systemTemplatesRes, tenantTemplatesRes] = await Promise.all([
-      invoiceTemplateService.getSystemTemplates(),
-      invoiceTemplateService.getTenantTemplates()
-    ])
-
-    systemTemplates.value = systemTemplatesRes
-    tenantTemplates.value = tenantTemplatesRes
+    invoiceTemplates.value = (await invoiceTemplateService.index()).data
   } catch (error) {
     handleErrorWithToast(t('tenant.invoiceTemplates.loadError'), error)
   } finally {
@@ -101,51 +87,6 @@ const onTemplateSaved = async () => {
   }
 }
 
-const toggleDefault = async (template: IInvoiceTemplate) => {
-  if (template.isDefault || template.isSystem) return
-
-  try {
-    await invoiceTemplateService.setDefault(template.id)
-    toast.success(t('tenant.invoiceTemplates.defaultSetSuccess'))
-    await loadTemplates()
-  } catch (error) {
-    handleErrorWithToast(t('tenant.invoiceTemplates.defaultSetError'), error)
-  }
-}
-
-const toggleActive = async (template: IInvoiceTemplate) => {
-  if (template.isSystem) return
-
-  try {
-    if (template.isActive) {
-      await invoiceTemplateService.deactivate(template.id)
-      toast.success(t('tenant.invoiceTemplates.deactivateSuccess'))
-    } else {
-      await invoiceTemplateService.activate(template.id)
-      toast.success(t('tenant.invoiceTemplates.activateSuccess'))
-    }
-    await loadTemplates()
-  } catch (error) {
-    handleErrorWithToast(t('tenant.invoiceTemplates.toggleActiveError'), error)
-  }
-}
-
-const deleteTemplate = async (template: IInvoiceTemplate) => {
-  if (template.isSystem || template.isDefault) return
-
-  if (!confirm(t('tenant.invoiceTemplates.confirmDelete', { name: template.name }))) {
-    return
-  }
-
-  try {
-    await invoiceTemplateService.delete(template.id)
-    toast.success(t('tenant.invoiceTemplates.deleteSuccess'))
-    await loadTemplates()
-  } catch (error) {
-    handleErrorWithToast(t('tenant.invoiceTemplates.deleteError'), error)
-  }
-}
-
 // Lifecycle
 onMounted(() => {
   void loadTemplates()
@@ -173,21 +114,21 @@ onMounted(() => {
               @click="activeFilter = 'all'"
             >
               <UIIcon :icon="activeFilter === 'all' ? 'lucide:circle-check' : 'lucide:circle'" class="size-4" />
-              {{ t('tenant.invoiceTemplates.allTemplates') }}
+              {{ t('tenant.invoiceTemplates.filters.all') }}
             </Button>
             <Button
               :variant="activeFilter === 'system' ? 'primary' : 'outline'"
               @click="activeFilter = 'system'"
             >
               <UIIcon :icon="activeFilter === 'system' ? 'lucide:circle-check' : 'lucide:circle'" class="size-4" />
-              {{ t('tenant.invoiceTemplates.systemTemplates') }}
+              {{ t('tenant.invoiceTemplates.filters.system') }}
             </Button>
             <Button
               :variant="activeFilter === 'tenant' ? 'primary' : 'outline'"
               @click="activeFilter = 'tenant'"
             >
               <UIIcon :icon="activeFilter === 'tenant' ? 'lucide:circle-check' : 'lucide:circle'" class="size-4" />
-              {{ t('tenant.invoiceTemplates.tenantTemplates') }}
+              {{ t('tenant.invoiceTemplates.filters.tenant') }}
             </Button>
           </div>
         </div>
@@ -202,79 +143,15 @@ onMounted(() => {
         </div>
 
         <div v-else class="grid gap-4">
-          <div
+          <InvoiceTemplateListItem
             v-for="template in filteredTemplates"
             :key="template.id"
-            class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow"
-          >
-            <div class="flex justify-between items-start">
-              <div class="flex-1">
-                <div class="flex items-center space-x-2 mb-2">
-                  <h3 class="text-lg font-semibold text-gray-900">
-                    {{ template.name }}
-                  </h3>
-                  <span
-                    v-if="template.isDefault"
-                    class="px-2 py-1 text-xs bg-green-100 text-green-800 rounded-full"
-                  >
-                    {{ t('tenant.invoiceTemplates.default') }}
-                  </span>
-                  <span
-                    v-if="template.isSystem"
-                    class="px-2 py-1 text-xs bg-blue-100 text-blue-800 rounded-full"
-                  >
-                    {{ t('tenant.invoiceTemplates.system') }}
-                  </span>
-                  <span
-                    :class="[
-                      'px-2 py-1 text-xs rounded-full',
-                      template.isActive ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
-                    ]"
-                  >
-                    {{ template.isActive ? $t('common.active') : $t('common.inactive') }}
-                  </span>
-                </div>
-                <p v-if="template.description" class="text-gray-600 mb-2">
-                  {{ template.description }}
-                </p>
-                <div class="text-sm text-gray-500">
-                  {{ t('tenant.invoiceTemplates.category') }}: {{ template.category }}
-                </div>
-              </div>
-              <div class="flex space-x-2 ml-4">
-                <button
-                  :disabled="template.isSystem"
-                  class="text-blue-600 hover:text-blue-800 disabled:text-gray-400 disabled:cursor-not-allowed"
-                  @click="editTemplate(template)"
-                >
-                  <Pencil class="w-4 h-4" />
-                </button>
-                <button
-                  :disabled="template.isDefault || template.isSystem"
-                  class="text-green-600 hover:text-green-800 disabled:text-gray-400 disabled:cursor-not-allowed"
-                  :title="t('tenant.invoiceTemplates.setAsDefault')"
-                  @click="toggleDefault(template)"
-                >
-                  <Star class="w-4 h-4" />
-                </button>
-                <button
-                  :disabled="template.isSystem"
-                  class="text-yellow-600 hover:text-yellow-800 disabled:text-gray-400 disabled:cursor-not-allowed"
-                  :title="template.isActive ? $t('common.deactivate') : $t('common.activate')"
-                  @click="toggleActive(template)"
-                >
-                  <Zap class="w-4 h-4" />
-                </button>
-                <button
-                  :disabled="template.isSystem || template.isDefault"
-                  class="text-red-600 hover:text-red-800 disabled:text-gray-400 disabled:cursor-not-allowed"
-                  @click="deleteTemplate(template)"
-                >
-                  <Trash class="w-4 h-4" />
-                </button>
-              </div>
-            </div>
-          </div>
+            :template="template"
+            @changed-active-state="loadTemplates()"
+            @changed-default-status="loadTemplates()"
+            @deleted="loadTemplates()"
+            @edit="editTemplate"
+          />
         </div>
       </div>
 
@@ -282,8 +159,7 @@ onMounted(() => {
       <div v-if="isEditing">
         <InvoiceTemplateEditor
           :template="editingTemplate"
-          :system-templates="systemTemplates"
-          :user-templates="tenantTemplates"
+          :invoice-templates="invoiceTemplates"
           @save="onTemplateSaved"
           @cancel="cancelEditing"
         />

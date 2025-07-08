@@ -74,6 +74,7 @@ export const settings = {
   // Account section
   account: {
     title: 'Account',
+    description: 'Update your account settings. Set your preferred language and timezone.',
     sessions: {
       title: 'Active Sessions',
       description: 'Manage active sessions on different devices',
