@@ -65,6 +65,11 @@ export const tenantRoutes: RouteRecordRaw[] = [
         component: () => import('@/pages/tenant/ShowTenantPage/TenantBrandingPage.vue'),
       },
       {
+        path: 'invoice-templates',
+        name: 'tenant.show.invoice-templates',
+        component: () => import('@/pages/tenant/ShowTenantPage/TenantInvoiceTemplatesPage.vue'),
+      },
+      {
         path: 'integrations/:integrationId?',
         name: 'tenant.show.integrations',
         component: () => import('@/pages/tenant/ShowTenantPage/TenantIntegrationsPage.vue'),

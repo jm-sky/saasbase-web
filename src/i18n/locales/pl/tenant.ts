@@ -382,4 +382,50 @@ export const tenant = {
       error: 'Nie udało się załadować profilu publicznego'
     }
   },
+  invoiceTemplates: {
+    title: 'Szablony faktur',
+    template: 'Szablon',
+    save: 'Zapisz',
+    createTemplate: 'Utwórz szablon',
+    system: 'Szablon systemowy',
+    default: 'Domyślny',
+    tenant: 'Szablony zespołu',
+    category: 'Kategoria',
+    noTemplates: 'Nie znaleziono szablonów',
+    loadError: 'Nie udało się załadować szablonów',
+    setAsDefault: 'Ustaw jako domyślny',
+    delete: 'Usuń',
+    deleteConfirm: 'Czy na pewno chcesz usunąć ten szablon?',
+    deleteSuccess: 'Szablon usunięty pomyślnie',
+    deleteError: 'Nie udało się usunąć szablonu',
+    toggleActive: 'Aktywuj/Deaktywuj',
+    toggleActiveSuccess: 'Szablon aktywowany/deaktywowany pomyślnie',
+    filters: {
+      all: 'Wszystkie szablony',
+      system: 'Szablony systemowe',
+      tenant: 'Szablony zespołu',
+    },
+    fields: {
+      name: 'Nazwa',
+      description: 'Opis',
+      content: 'Treść',
+    },
+    editor: {
+      title: 'Edytuj szablon',
+      description: 'Edytuj szablon',
+      save: 'Zapisz',
+      cancel: 'Anuluj',
+      preview: 'Podgląd',
+      clickPreview: 'Kliknij, aby zobaczyć podgląd',
+      previewOptions: 'Opcje podglądu',
+      saveSuccess: 'Szablon zapisany pomyślnie',
+      saveError: 'Nie udało się zapisać szablonu',
+      loadError: 'Nie udało się załadować szablonu',
+      enterTemplateContent: 'Proszę wprowadzić treść szablonu',
+      previewError: 'Nie udało się załadować podglądu',
+      loadTemplate: 'Załaduj szablon',
+      loadUnsavedDraft: 'Załaduj niezapisany szkic',
+      selectTemplate: 'Wybierz szablon',
+    }
+  }
 }

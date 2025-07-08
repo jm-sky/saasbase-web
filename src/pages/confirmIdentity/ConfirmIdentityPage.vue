@@ -82,7 +82,7 @@ const options = computed<IIdentityConfirmationOption[]>(() => [
   <AuthenticatedLayout>
     <div class="mx-4 px-4 py-8">
       <h1 class="text-2xl font-bold mb-6">
-        {{ $t('identityConfirmation.title') }}
+        {{ t('identityConfirmation.title') }}
       </h1>
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -105,7 +105,7 @@ const options = computed<IIdentityConfirmationOption[]>(() => [
             </component>
 
             <Badge v-if="option.soon" class="absolute top-3 right-3" variant="standout">
-              {{ $t('common.feature.commingSoon') }}
+              {{ t('common.feature.commingSoon') }}
             </Badge>
           </CardHeader>
           <CardContent class="space-y-4">
@@ -114,13 +114,13 @@ const options = computed<IIdentityConfirmationOption[]>(() => [
             </p>
 
             <ButtonLink v-if="!option.active && option.configRoute" :to="option.configRoute" variant="default">
-              ⚙️ {{ $t('identityConfirmation.configureIntegration') }}
+              ⚙️ {{ t('identityConfirmation.configureIntegration') }}
             </ButtonLink>
             <ButtonLink v-if="option.active && option.route" :to="option.route" variant="default">
-              {{ $t('identityConfirmation.next') }}
+              {{ t('identityConfirmation.next') }}
             </ButtonLink>
             <Button v-if="option.active && option.onClick" variant="default" @click="option.onClick">
-              {{ $t('identityConfirmation.next') }}
+              {{ t('identityConfirmation.next') }}
             </Button>
           </CardContent>
         </Card>

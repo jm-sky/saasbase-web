@@ -377,4 +377,49 @@ export const tenant = {
       error: 'Failed to load public profile'
     }
   },
+  invoiceTemplates: {
+    title: 'Invoice Templates',
+    save: 'Save',
+    template: 'Template',
+    createTemplate: 'Create Template',
+    system: 'System Template',
+    default: 'Default',
+    category: 'Category',
+    noTemplates: 'No templates found',
+    loadError: 'Failed to load templates',
+    setAsDefault: 'Set as default',
+    delete: 'Delete',
+    deleteConfirm: 'Are you sure you want to delete this template?',
+    deleteSuccess: 'Template deleted successfully',
+    deleteError: 'Failed to delete template',
+    toggleActive: 'Toggle Active',
+    toggleActiveSuccess: 'Template activated successfully',
+    filters: {
+      all: 'All Templates',
+      system: 'System Templates',
+      tenant: 'Tenant Templates',
+    },
+    fields: {
+      name: 'Name',
+      description: 'Description',
+      content: 'Content',
+    },
+    editor: {
+      title: 'Edit Template',
+      description: 'Edit the template',
+      save: 'Save',
+      cancel: 'Cancel',
+      preview: 'Preview',
+      clickPreview: 'Click to preview',
+      previewOptions: 'Preview Options',
+      saveSuccess: 'Template saved successfully',
+      saveError: 'Failed to save template',
+      loadError: 'Failed to load template',
+      enterTemplateContent: 'Please enter the template content',
+      previewError: 'Failed to preview template',
+      loadTemplate: 'Load Template',
+      loadUnsavedDraft: 'Load unsaved draft',
+      selectTemplate: 'Select Template',
+    }
+  }
 }

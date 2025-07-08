@@ -18,6 +18,7 @@ import { financial } from './financial'
 import { identityConfirmation } from './identityConfirmation'
 import { invitation } from './invitation'
 import invoice from './invoice'
+import { landing } from './landing'
 import { log } from './log'
 import { notifications } from './notifications'
 import { product } from './product'
@@ -51,6 +52,7 @@ export const pl = {
   identityConfirmation,
   invitation,
   invoice,
+  landing,
   notifications,
   company: {
     sources: {

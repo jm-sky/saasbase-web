@@ -226,7 +226,7 @@ onMounted(async () => {
 
       <div class="col-span-full">
         <Button type="submit" :loading="isSubmitting" class="w-full">
-          {{ $t('settings.save') }}
+          {{ t('settings.save') }}
         </Button>
       </div>
     </form>

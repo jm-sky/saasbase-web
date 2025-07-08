@@ -1,11 +1,10 @@
 <script setup lang="ts">
 import { Edit, Plus } from 'lucide-vue-next'
 import { useForm } from 'vee-validate'
-import { computed, onMounted, ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import ButtonLink from '@/components/ButtonLink.vue'
 import NoItems from '@/components/DataLists/NoItems.vue'
-import { FileUpload } from '@/components/Inputs'
 import AvatarUploader from '@/components/Inputs/AvatarUploader.vue'
 import { Button } from '@/components/ui/button'
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
@@ -22,26 +21,14 @@ import { type IUserProfile, userProfileService } from '@/domains/user/services/u
 import { userProfilechema } from '@/domains/user/validation/profileSchema'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
 import SettingsHeader from '../partials/SettingsHeader.vue'
+import type { UploaderService } from '@/components/Inputs/uploader.type'
 
 const authStore = useAuthStore()
 const { t } = useI18n()
 
 const isAddUserSkillModalOpen = ref(false)
 const isLoading = ref(false)
-const isUploading = ref(false)
-const isRemoving = ref(false)
-const avatarFiles = ref<File[]>()
-
 const profile = ref<IUserProfile>()
-
-const avatarFile = computed({
-  get() {
-    return avatarFiles.value?.[0]
-  },
-  set(value) {
-    avatarFiles.value = value ? [value] : []
-  },
-})
 
 const { handleSubmit, setValues, resetForm } = useForm<IUserProfile>({
   validationSchema: userProfilechema,
@@ -64,20 +51,12 @@ const { handleSubmit, setValues, resetForm } = useForm<IUserProfile>({
   },
 })
 
-const handleAvatarUpload = async () => {
-  if (!avatarFile.value) return
+const onAvatarUploaded = () => {
+  toast.success(t('settings.profile.profileImage.success'))
+}
 
-  try {
-    isUploading.value = true
-    await userProfileImageService.upload(avatarFile.value)
-    toast.success(t('settings.profile.profileImage.success'))
-    await authStore.refresh()
-  } catch (error: unknown) {
-    handleErrorWithToast(t('settings.profile.profileImage.failedToUpload'), error)
-  } finally {
-    isUploading.value = false
-    avatarFiles.value = []
-  }
+const onAvatarRemoved = () => {
+  toast.success('Profile image removed successfully')
 }
 
 const onSubmit = handleSubmit(async (values) => {
@@ -90,19 +69,6 @@ const onSubmit = handleSubmit(async (values) => {
     await authStore.refresh()
   }
 })
-
-const removeAvatar = async () => {
-  try {
-    isRemoving.value = true
-    await userProfileImageService.delete()
-    toast.success('Profile image removed successfully')
-    await authStore.refresh()
-  } catch (error: unknown) {
-    handleErrorWithToast(t('settings.profile.profileImage.failedToRemove'), error)
-  } finally {
-    isRemoving.value = false
-  }
-}
 
 const refresh = async () => {
   try {
@@ -136,6 +102,12 @@ const refresh = async () => {
 onMounted(async () => {
   await refresh()
 })
+
+const uploaderService: UploaderService = {
+  upload: (modelId: string, file: File) => userProfileImageService.upload(file),
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  delete: (modelId: string) => userProfileImageService.delete(),
+}
 </script>
 
 <template>
@@ -143,15 +115,14 @@ onMounted(async () => {
     <template #right>
       <AvatarUploader
         v-if="authStore.user?.id"
-        v-model="avatarFile"
         :model-id="authStore.user.id"
         :avatar-url="authStore.user.avatarUrl"
         :fallback-text="authStore.user.initials"
-        :disabled="isUploading"
+        :uploader-service="uploaderService"
         avatar-class="size-16"
         auto-upload
-        @upload="handleAvatarUpload"
-        @remove="removeAvatar"
+        @uploaded="onAvatarUploaded"
+        @removed="onAvatarRemoved"
       />
     </template>
   </SettingsHeader>
@@ -169,23 +140,30 @@ onMounted(async () => {
   </FormField>
 
   <Separator />
-  <div class="flex flex-row flex-wrap items-center gap-2">
-    <UserSkillBadge
-      v-for="skill in profile?.skills"
-      :key="skill.id"
-      :skill="skill"
-      @remove="refresh()"
-    />
-    <NoItems v-if="!profile?.skills?.length" :message="t('settings.profile.skills.noSkills')" />
-    <Button
-      variant="outline"
-      size="icon"
-      class="rounded-full h-7"
-      @click="isAddUserSkillModalOpen = true"
-    >
-      <Plus class="size-4" />
-    </Button>
+
+  <div class="flex flex-col gap-2 -mt-2">
+    <div class="text-xs text-muted-foreground py-2">
+      {{ t('settings.profile.skills.title') }}:
+    </div>
+    <div class="flex flex-row flex-wrap items-center gap-2">
+      <UserSkillBadge
+        v-for="skill in profile?.skills"
+        :key="skill.id"
+        :skill="skill"
+        @remove="refresh()"
+      />
+      <NoItems v-if="!profile?.skills?.length" :message="t('settings.profile.skills.noSkills')" />
+      <Button
+        variant="outline"
+        size="icon"
+        class="rounded-full h-7"
+        @click="isAddUserSkillModalOpen = true"
+      >
+        <Plus class="size-4" />
+      </Button>
+    </div>
   </div>
+
   <Separator />
 
   <form class="grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-8" :class="{ 'opacity-50': isLoading }" @submit="onSubmit">
@@ -327,58 +305,6 @@ onMounted(async () => {
       >
         {{ t('settings.profile.resetForm') }}
       </Button>
-    </div>
-
-    <Separator class="col-span-full" />
-
-    <!-- Profile Image Upload Section -->
-    <div class="col-span-full flex flex-col gap-4">
-      <div class="flex items-center gap-4">
-        <div class="flex-1">
-          <h4 class="text-sm font-medium mb-2">
-            {{ t('settings.profile.profileImage.title') }}
-          </h4>
-          <div class="grid grid-cols-2 gap-4">
-            <div class="flex flex-col gap-2">
-              <FileUpload
-                v-model="avatarFiles"
-                accept="image/jpeg,image/png,image/gif"
-                :multiple="false"
-                :disabled="isUploading"
-              />
-              <Button
-                :disabled="!avatarFiles?.length || isUploading"
-                :loading="isUploading"
-                @click="handleAvatarUpload"
-              >
-                {{ t('settings.profile.profileImage.uploadImage') }}
-              </Button>
-            </div>
-            <div class="flex flex-col gap-1">
-              <div class="flex flex-col gap-1 p-2">
-                <p class="text-sm text-muted-foreground">
-                  {{ t('settings.profile.profileImage.description') }}
-                </p>
-                <p class="text-sm text-muted-foreground">
-                  {{ t('settings.profile.profileImage.maxSize') }}
-                </p>
-              </div>
-              <div v-if="authStore.user?.avatarUrl" class="flex justify-end mt-auto">
-                <Button
-                  type="button"
-                  variant="destructive"
-                  class="w-full"
-                  :disabled="isRemoving"
-                  :loading="isRemoving"
-                  @click="removeAvatar"
-                >
-                  {{ t('settings.profile.profileImage.removeImage') }}
-                </Button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
   </form>
 

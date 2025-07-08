@@ -20,7 +20,7 @@ const closeModal = () => {
     <UserAuthForm @logged-in="closeModal" />
 
     <Button variant="outline" @click="logout">
-      {{ $t('auth.signOut') }}
+      {{ t('auth.signOut') }}
     </Button>
   </ModalComponent>
 </template>
