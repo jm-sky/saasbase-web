@@ -30,7 +30,7 @@ const navigationFeatures = computed<NavigationFeature[]>(() => [
 <template>
   <div class="mt-16 relative w-full max-w-screen-xl mx-auto">
     <div class="flex justify-center w-full">
-      <div class="flex flex-row items-center justify-center gap-6 mx-auto">
+      <div class="flex flex-row items-center justify-center gap-6 mx-auto flex-wrap lg:flex-nowrap ">
         <div
           v-for="(feature, index) in navigationFeatures"
           :key="index"

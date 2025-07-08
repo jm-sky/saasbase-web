@@ -11,10 +11,10 @@ const currentInterfaceSlide = ref(0)
 
 // Interface screenshots for carousel
 const interfaceScreenshots = computed(() => [
-  { image: 'src/assets/images/landing/dashboard.png', title: t('landing.interface.dashboard') },
-  { image: 'src/assets/images/landing/contractor.png', title: t('landing.interface.contractor') },
-  { image: 'src/assets/images/landing/invoices.png', title: t('landing.interface.invoice') },
-  { image: 'src/assets/images/landing/inbox.png', title: t('landing.interface.inbox') },
+  { image: '/images/landing/dashboard.png', title: t('landing.interface.dashboard') },
+  { image: '/images/landing/contractor.png', title: t('landing.interface.contractor') },
+  { image: '/images/landing/invoices.png', title: t('landing.interface.invoice') },
+  { image: '/images/landing/inbox.png', title: t('landing.interface.inbox') },
 ])
 
 const nextInterfaceSlide = () => {

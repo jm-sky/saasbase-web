@@ -32,9 +32,9 @@ onBeforeUnmount(() => {
       <HeroSectionBg />
 
       <div class="relative mx-auto px-4 sm:px-6 lg:px-8 py-20">
-        <div class="container mx-auto grid lg:grid-cols-2 gap-12 items-center">
+        <div class="container mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
           <!-- Left side - Content -->
-          <div class="space-y-8">
+          <div class="space-y-6 lg:space-y-8">
             <div>
               <h1 class="text-5xl lg:text-6xl font-bold mb-4">
                 <span class="text-foreground">Saas</span>
