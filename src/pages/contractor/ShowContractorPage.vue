@@ -26,6 +26,10 @@ const tabs = computed(() => [
     label: t('contractor.overview.title'),
   },
   {
+    to: `/contractors/${contractorId}/show/preferences`,
+    label: t('contractor.preferences.title'),
+  },
+  {
     to: `/contractors/${contractorId}/show/comments`,
     label: t('contractor.comments.title'),
   },

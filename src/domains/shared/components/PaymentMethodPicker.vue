@@ -75,7 +75,7 @@ onMounted(() => {
         role="combobox"
         :aria-expanded="open"
         :disabled="disabled || loading"
-        class="w-full justify-between"
+        class="w-full justify-between overflow-hidden truncate"
         :class="props.class"
       >
         {{ modelValue?.name ?? t('shared.paymentMethod.select') }}

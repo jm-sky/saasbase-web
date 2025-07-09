@@ -21,7 +21,7 @@ const props = defineProps<{
 <template>
   <FormField v-slot="{ componentField, meta, value, handleChange }" :name>
     <FormItem :class="props.class">
-      <FormLabel v-if="label">
+      <FormLabel v-if="label" :disabled>
         {{ label }}
         <span
           v-if="meta.required"

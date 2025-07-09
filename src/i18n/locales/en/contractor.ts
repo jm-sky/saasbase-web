@@ -69,5 +69,19 @@ export const contractor = {
       title: 'Edit Address',
       description: 'Edit the address of the contractor.',
     },
-  }
+  },
+  preferences: {
+    title: 'Preferences',
+    description: 'Contractor preferences.',
+    success: 'Preferences updated successfully',
+    error: 'Could not update preferences',
+    fields: {
+      defaultPaymentMethodId: 'Default payment method',
+      defaultCurrency: 'Default currency',
+      defaultLanguage: 'Default language',
+      defaultPaymentDays: 'Default payment days',
+      defaultTags: 'Default tags',
+      defaultPaymentMethod: 'Default payment method',
+    },
+  },
 }

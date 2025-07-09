@@ -3,7 +3,7 @@ import { defineStore, storeToRefs } from 'pinia'
 import { watch } from 'vue'
 import { config } from '@/config'
 import { useAuthStore } from '@/domains/auth/store/auth.store'
-import type { ITenant, ITenantAddress, ITenantBranding, ITenantPublicProfile } from '../types/tenant.type'
+import type { ITenant, ITenantAddress, ITenantBankAccount, ITenantBranding, ITenantPublicProfile } from '../types/tenant.type'
 import { tenantService } from '../services/TenantService'
 
 export const useTenantStore = defineStore('tenant', () => {
@@ -14,12 +14,14 @@ export const useTenantStore = defineStore('tenant', () => {
   const tenantBranding = useSessionStorage<ITenantBranding | null>(`${config.appId}:tenantBranding`, null, { serializer: StorageSerializers.object })
   const tenantPublicProfile = useSessionStorage<ITenantPublicProfile | null>(`${config.appId}:tenantPublicProfile`, null, { serializer: StorageSerializers.object })
   const tenantBillingAddress = useSessionStorage<ITenantAddress | null>(`${config.appId}:tenantBillingAddress`, null, { serializer: StorageSerializers.object })
+  const tenantBankAccounts = useSessionStorage<ITenantBankAccount[]>(`${config.appId}:tenantBankAccounts`, [], { serializer: StorageSerializers.object })
 
   watch(tenantId, async () => {
     if (tenant.value && tenantId.value && tenant.value.id !== tenantId.value) {
       tenant.value = null
       tenantBranding.value = null
       tenantPublicProfile.value = null
+      tenantBankAccounts.value = []
 
       tenant.value = await tenantService.get(tenantId.value)
     }
@@ -34,5 +36,6 @@ export const useTenantStore = defineStore('tenant', () => {
     tenantBranding,
     tenantPublicProfile,
     tenantBillingAddress,
+    tenantBankAccounts,
   }
 })

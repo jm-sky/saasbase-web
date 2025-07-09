@@ -91,6 +91,7 @@ export interface IInvoiceBody {
   lines: IInvoiceLine[];
   vatSummary: IInvoiceVatSummary[];
   exchange: IInvoiceExchange;
+  description?: string;
 }
 
 export interface IVatRateData {
@@ -105,15 +106,22 @@ export interface IInvoiceLine {
   description: string;
   quantity: number;
   unitPrice: number;
-  vatRate: IVatRateData;
+  vatRate: {
+    rate: number;
+    category?: string;
+  };
   totalNet: number;
   totalVat: number;
   totalGross: number;
   productId?: string | null;
+  gtuCodes?: string[];
 }
 
 export interface IInvoiceVatSummary {
-  vatRate: TVatRate;
+  vatRate: {
+    rate: number;
+    category?: string;
+  };
   net: number;
   vat: number;
   gross: number;
@@ -126,14 +134,20 @@ export interface IInvoiceExchange {
 }
 
 export interface IInvoicePayment {
-  status: TPaymentStatus;
-  dueDate: string;
-  paidDate: string | null;
-  paidAmount: number;
-  method: TPaymentMethod;
-  reference: string;
-  terms: string;
-  notes: string | null;
+  status: 'PENDING' | 'PAID' | 'OVERDUE' | 'CANCELLED';
+  dueDate?: string;
+  paidDate?: string;
+  paidAmount?: number;
+  method: 'BANK_TRANSFER' | 'CASH' | 'CREDIT_CARD' | 'CHEQUE' | 'OTHER';
+  reference?: string;
+  terms?: string;
+  notes?: string;
+  bankAccount?: {
+    name?: string;
+    iban?: string;
+    swift?: string;
+    address?: string;
+  };
 }
 
 export interface IInvoiceOptions {

@@ -72,12 +72,15 @@ export interface IContractorPreferences {
   id: TUUID
   defaultPaymentMethodId?: TUUID
   defaultCurrency?: string
+  defaultLanguage?: string
   defaultPaymentDays?: number
   defaultTags?: string[]
   defaultPaymentMethod?: IPaymentMethod
   createdAt: TDateTime
   updatedAt: TDateTime
 }
+
+export type IContractorPreferencesUpdate = Omit<IContractorPreferences, 'id' | 'createdAt' | 'updatedAt'>
 
 export interface IContractor {
   id: TUUID

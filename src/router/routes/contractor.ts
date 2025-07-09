@@ -47,6 +47,11 @@ export const contractorRoutes: RouteRecordRaw[] = [
         name: 'showContractorLogs',
         component: () => import('@/pages/contractor/ShowContractorLogsPage.vue'),
       },
+      {
+        path: 'preferences',
+        name: 'showContractorPreferences',
+        component: () => import('@/pages/contractor/ShowContractorPreferencesPage.vue'),
+      },
     ],
   },
   {

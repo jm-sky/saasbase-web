@@ -69,5 +69,19 @@ export const contractor = {
       title: 'Edytuj adres',
       description: 'Edytuj adres kontrahenta.',
     },
-  }
+  },
+  preferences: {
+    title: 'Preferencje',
+    description: 'Preferencje kontrahenta.',
+    success: 'Preferencje zaktualizowane pomyślnie',
+    error: 'Nie udało się zaktualizować preferencji',
+    fields: {
+      defaultPaymentMethodId: 'Domyślna metoda płatności',
+      defaultCurrency: 'Domyślna waluta',
+      defaultLanguage: 'Domyślny język',
+      defaultPaymentDays: 'Domyślne dni płatności',
+      defaultTags: 'Domyślne tagi',
+      defaultPaymentMethod: 'Domyślna metoda płatności',
+    },
+  },
 }

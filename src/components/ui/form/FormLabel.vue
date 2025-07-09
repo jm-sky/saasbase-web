@@ -5,7 +5,10 @@ import { useFormField } from './useFormField'
 import type { LabelProps } from 'reka-ui'
 import type { HTMLAttributes } from 'vue'
 
-const props = defineProps<LabelProps & { class?: HTMLAttributes['class'] }>()
+const props = defineProps<LabelProps & {
+  class?: HTMLAttributes['class']
+  disabled?: boolean
+}>()
 
 const { error, formItemId } = useFormField()
 </script>
@@ -15,7 +18,8 @@ const { error, formItemId } = useFormField()
     data-slot="form-label"
     :data-error="!!error"
     :class="cn(
-      'data-[error=true]:text-destructive-foreground',
+      'data-[error=true]:text-destructive',
+      props.disabled && 'opacity-50',
       props.class,
     )"
     :for="formItemId"
