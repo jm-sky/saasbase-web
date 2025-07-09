@@ -17,12 +17,16 @@ import {
   SidebarMenuSub,
   SidebarMenuSubButton,
   SidebarMenuSubItem,
+  useSidebar,
 } from '@/components/ui/sidebar'
 import type { MenuItem, MenuItemOrMenuCategory } from './menu.type'
 import ComingSoonIcon from './Menu/ComingSoonIcon.vue'
 import FeatureLockedIcon from './Menu/FeatureLockedIcon.vue'
 
 const { t } = useI18n()
+
+const { state } = useSidebar()
+
 
 defineProps<{
   items: MenuItemOrMenuCategory[]
@@ -49,8 +53,8 @@ const checkIsActive = (url: string) => {
       <template v-for="item in items" :key="item.title">
         <template v-if="item.isCategory">
           <SidebarMenuItem>
-            <div class="px-3 py-2 text-xs font-medium text-sidebar-foreground/70">
-              {{ item.title }}
+            <div v-tooltip="state === 'collapsed' ? item.title : undefined" class="px-3 py-2 text-xs font-medium text-sidebar-foreground/70">
+              {{ state === 'collapsed' ? item.title.slice(0, 1) : item.title }}
             </div>
           </SidebarMenuItem>
         </template>
