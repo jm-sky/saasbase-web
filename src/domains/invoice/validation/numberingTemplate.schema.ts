@@ -1,4 +1,7 @@
 import { z } from 'zod'
+import { i18n } from '@/i18n'
+
+const { t } = i18n.global
 
 export const resetPeriodSchema = z.enum(['monthly', 'yearly', 'never'])
 
@@ -22,35 +25,26 @@ export const invoiceTypeSchema = z.enum([
 
 export const numberingTemplateFormSchema = z.object({
   name: z.string()
-    .min(1, 'invoice.numberingTemplate.validation.nameRequired')
-    .min(3, 'invoice.numberingTemplate.validation.nameMinLength'),
-  
+    .min(1, t('invoice.numberingTemplate.validation.nameRequired'))
+    .min(3, t('invoice.numberingTemplate.validation.nameMinLength')),
+
   invoiceType: invoiceTypeSchema,
-  
+
   format: z.string()
-    .min(1, 'invoice.numberingTemplate.validation.formatRequired')
+    .min(1, t('invoice.numberingTemplate.validation.formatRequired'))
     .refine(
       (format) => format.includes('NNN') || format.includes('NNNN'),
-      'invoice.numberingTemplate.validation.missingNumberPlaceholder'
-    )
-    .refine(
-      (format) => {
-        const validPlaceholders = ['YYYY', 'YY', 'MM', 'NNN', 'NNNN']
-        const placeholderRegex = /[A-Z]{2,4}/g
-        const foundPlaceholders = format.match(placeholderRegex) ?? []
-        return foundPlaceholders.every(placeholder => validPlaceholders.includes(placeholder))
-      },
-      'invoice.numberingTemplate.validation.invalidPlaceholder'
+      t('invoice.numberingTemplate.validation.missingNumberPlaceholder')
     ),
-  
+
   nextNumber: z.number()
-    .min(1, 'invoice.numberingTemplate.validation.nextNumberMin')
-    .int('invoice.numberingTemplate.validation.nextNumberInt'),
-  
+    .min(1, t('invoice.numberingTemplate.validation.nextNumberMin'))
+    .int(t('invoice.numberingTemplate.validation.nextNumberInt')),
+
   resetPeriod: resetPeriodSchema,
-  
+
   prefix: z.string().optional().default(''),
-  
+
   suffix: z.string().optional().default(''),
 })
 

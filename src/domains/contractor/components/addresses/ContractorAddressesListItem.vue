@@ -42,11 +42,11 @@ const emit = defineEmits<{
       <CopyToClipboard :text="fullAddress(address)" class="ml-1" />
     </div>
 
-    <div class="col-span-full text-sm text-muted-foreground order-3 md:order-2">
+    <div v-if="address.description" class="col-span-full text-sm text-muted-foreground order-3 md:order-2">
       {{ address.description }}
     </div>
 
-    <div class="flex flex-row gap-1 justify-end order-1 md:order-1">
+    <div class="flex flex-row items-center justify-end gap-1 order-1 md:order-1">
       <Button
         v-tooltip="t('address.setDefault')"
         variant="ghost"
