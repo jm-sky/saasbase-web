@@ -86,4 +86,120 @@ export default {
       error: 'Failed to configure recurring invoice',
     },
   },
+  numberingTemplate: {
+    title: 'Numbering Templates',
+    subtitle: 'Manage invoice numbering templates for different invoice types',
+    
+    groups: {
+      basic: 'Basic Invoices',
+      advancePayment: 'Advance Payment',
+      export: 'Export',
+      settlement: 'Settlement',
+      ue: 'EU Sales',
+      debitNote: 'Debit Notes',
+      import: 'Import',
+      proforma: 'Proforma',
+    },
+    
+    types: {
+      'basic': 'Basic Invoice',
+      'basic-correction': 'Basic Correction',
+      'advance-payment': 'Advance Payment',
+      'advance-payment-correction': 'Advance Payment Correction',
+      'export': 'Export Invoice',
+      'export-correction': 'Export Correction',
+      'settlement': 'Settlement Invoice',
+      'settlement-correction': 'Settlement Correction',
+      'proforma': 'Proforma',
+      'ue': 'EU Sales Invoice',
+      'ue-correction': 'EU Sales Correction',
+      'debit-note': 'Debit Note',
+      'debit-note-correction': 'Debit Note Correction',
+      'import': 'Import Invoice',
+      'import-correction': 'Import Correction',
+    },
+    
+    form: {
+      name: 'Template Name',
+      namePlaceholder: 'Enter template name',
+      invoiceType: 'Invoice Type',
+      format: 'Number Format',
+      formatHelp: 'Use placeholders: YYYY (year), MM (month), NNN/NNNN (numbers)',
+      nextNumber: 'Next Number',
+      resetPeriod: 'Reset Period',
+      prefix: 'Prefix',
+      suffix: 'Suffix',
+      prefixPlaceholder: 'Optional prefix',
+      suffixPlaceholder: 'Optional suffix',
+    },
+    
+    resetPeriods: {
+      monthly: 'Monthly',
+      yearly: 'Yearly',
+      never: 'Never',
+    },
+    
+    formatBuilder: {
+      title: 'Format Builder',
+      palette: 'Drag elements to build format',
+      canvas: 'Format Pattern',
+      preview: 'Preview',
+      elements: {
+        year4: 'Year (YYYY)',
+        year2: 'Year (YY)',
+        month: 'Month (MM)',
+        number3: 'Number (NNN)',
+        number4: 'Number (NNNN)',
+        text: 'Custom Text',
+      },
+    },
+    
+    actions: {
+      add: 'Add Template',
+      edit: 'Edit Template',
+      delete: 'Delete Template',
+      setDefault: 'Set as Default',
+      clone: 'Clone Template',
+      save: 'Save',
+      cancel: 'Cancel',
+      
+      create: {
+        success: 'Template created successfully',
+        error: 'Failed to create template',
+      },
+      update: {
+        success: 'Template updated successfully',
+        error: 'Failed to update template',
+      },
+      deleteTemplate: {
+        confirm: 'Are you sure you want to delete this template?',
+        confirmDescription: 'This action cannot be undone',
+        success: 'Template deleted successfully',
+        error: 'Failed to delete template',
+      },
+      setDefaultTemplate: {
+        success: 'Default template updated successfully',
+        error: 'Failed to set default template',
+      },
+    },
+    
+    validation: {
+      nameRequired: 'Template name is required',
+      nameMinLength: 'Template name must be at least 3 characters',
+      formatRequired: 'Format is required',
+      missingNumberPlaceholder: 'Format must contain at least one number placeholder (NNN or NNNN)',
+      invalidPlaceholder: 'Invalid placeholder found in format',
+      nextNumberMin: 'Next number must be greater than 0',
+      nextNumberRequired: 'Next number is required',
+      nextNumberInt: 'Next number must be a whole number',
+    },
+    
+    states: {
+      noTemplates: 'No templates found',
+      addFirstTemplate: 'Add your first template',
+      default: 'Default',
+      loading: 'Loading templates...',
+      error: 'Failed to load templates',
+    },
+  },
 }

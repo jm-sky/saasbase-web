@@ -36,4 +36,13 @@ export const invoiceRoutes: RouteRecordRaw[] = [
       middlewares: [isAuthenticated, isVerified, isInTenant],
     },
   },
+  {
+    path: '/invoices/numbering-templates',
+    name: 'numberingTemplates',
+    component: () => import('@/pages/invoice/NumberingTemplatesPage.vue'),
+    meta: {
+      middlewares: [isAuthenticated, isVerified, isInTenant],
+      title: 'invoice.numberingTemplate.title',
+    },
+  },
 ]
