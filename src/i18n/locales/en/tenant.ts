@@ -1,6 +1,12 @@
 export const tenant = {
   title: 'Tenant',
   tenantDetails: 'Tenant Details',
+  menuCategories: {
+    tenantSettings: 'Tenant Settings',
+    companySettings: 'Company Settings',
+    financialSettings: 'Financial Settings',
+    usersSettings: 'Users Settings',
+  },
   fields: {
     country: 'Country',
     name: 'Name',

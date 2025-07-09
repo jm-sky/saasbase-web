@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
 import EntityDetailsLayout from '@/components/layouts/EntityDetailsLayout.vue'
@@ -18,7 +18,7 @@ const project = ref<IProject>()
 const loading = ref(false)
 const error = ref<string | null>(null)
 
-const tabs = [
+const tabs = computed(() => [
   {
     to: `/projects/${projectId}/show/overview`,
     label: t('project.overview.title'),
@@ -35,7 +35,7 @@ const tabs = [
     to: `/projects/${projectId}/show/logs`,
     label: t('project.logs.title'),
   },
-]
+])
 
 const refresh = async () => {
   try {

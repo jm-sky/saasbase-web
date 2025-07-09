@@ -55,9 +55,9 @@ const { t } = useI18n()
                 {{ t('invoice.numberingTemplate.actions.setDefault') }}
               </DropdownMenuItem>
               <DropdownMenuItem
-                class="text-destructive"
                 :disabled="template.isDefault"
                 hoverable
+                variant="destructive"
                 @click="$emit('delete', template.id)"
               >
                 <Trash2 class="size-4 mr-2" />

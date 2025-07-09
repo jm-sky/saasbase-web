@@ -63,17 +63,11 @@ const emit = defineEmits<{
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
-          <DropdownMenuItem
-            class="cursor-pointer gap-2 hover:bg-accent"
-            @click="emit('edit', address)"
-          >
+          <DropdownMenuItem hoverable @click="emit('edit', address)">
             <Icon icon="lucide:edit" />
             {{ t('common.edit') }}
           </DropdownMenuItem>
-          <DropdownMenuItem
-            class="cursor-pointer gap-2 hover:bg-accent"
-            @click="emit('delete', address)"
-          >
+          <DropdownMenuItem variant="destructive" hoverable @click="emit('delete', address)">
             <Icon icon="lucide:trash" />
             {{ t('common.delete') }}
           </DropdownMenuItem>

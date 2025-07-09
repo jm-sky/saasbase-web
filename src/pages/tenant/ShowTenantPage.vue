@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
-import { onMounted, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
 import AvatarUploader from '@/components/Inputs/AvatarUploader.vue'
@@ -25,26 +25,14 @@ const { tenant } = storeToRefs(tenantStore)
 const loading = ref(false)
 const error = ref<string | null>(null)
 
-const tabs = [
+const tabs = computed(() => [
   {
     to: `/tenants/${tenantId}/show/overview`,
     label: t('tenant.overview.title'),
   },
   {
-    to: `/tenants/${tenantId}/show/organization-units`,
-    label: t('tenant.organizationUnits.title'),
-  },
-  {
-    to: `/tenants/${tenantId}/show/invitations`,
-    label: t('tenant.invitations.title'),
-  },
-  {
     to: `/tenants/${tenantId}/show/branding`,
     label: t('tenant.branding.title'),
-  },
-  {
-    to: `/tenants/${tenantId}/show/invoice-templates`,
-    label: t('tenant.invoiceTemplates.title'),
   },
   {
     to: `/tenants/${tenantId}/show/public-profile`,
@@ -66,7 +54,7 @@ const tabs = [
     to: `/tenants/${tenantId}/show/logs`,
     label: t('tenant.logs.title'),
   },
-]
+])
 
 const refresh = async () => {
   try {

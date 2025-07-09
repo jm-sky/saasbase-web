@@ -6,6 +6,7 @@ import { useI18n } from 'vue-i18n'
 import { tenantOrganizationUnitService } from '@/domains/tenant/services/TenantOrganizationUnit.service'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
 import { cn } from '@/lib/utils'
+import { routeMap } from '@/router/routeMap'
 import type { OrganizationUnitNodeData } from '../../../composables/useOrganizationChartLayout'
 import type { IOrganizationUnit } from '../../../types/organizationUnit.type'
 import AssignUserToOrganizationUnitModal from '../modals/AssignUserToOrganizationUnitModal.vue'
@@ -75,7 +76,7 @@ const handleRemove = async () => {
         <span>{{ unit.name }}</span>
         <RouterLink
           v-if="!unit.isTechnical"
-          :to="{ name: 'tenant.show.organization-unit', params: { id: unit.tenantId, unitId: unit.id } }"
+          :to="{ name: routeMap.tenant.userSettings.organizationUnit, params: { id: unit.tenantId, unitId: unit.id } }"
           class="text-primary hover:text-primary/80 transition-colors"
           title="View Details"
         >

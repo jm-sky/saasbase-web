@@ -104,6 +104,9 @@ importers:
       dayjs:
         specifier: ^1.11.13
         version: 1.11.13
+      embla-carousel-vue:
+        specifier: ^8.6.0
+        version: 8.6.0(vue@3.5.17(typescript@5.8.3))
       floating-vue:
         specifier: ^5.2.2
         version: 5.2.2(vue@3.5.17(typescript@5.8.3))
@@ -720,9 +723,6 @@ packages:
   '@floating-ui/dom@1.1.1':
     resolution: {integrity: sha512-TpIO93+DIujg3g7SykEAGZMDtbJRrmnYRCNYSjJlvIbGhBjRSNTLVbNeDQBrzy9qDgUbiWdc7KA0uZHZ2tJmiw==}
 
-  '@floating-ui/dom@1.6.13':
-    resolution: {integrity: sha512-umqzocjDgNRGTuO7Q8CU32dkHkECqI8ZdMZ5Swb6QAM0t5rnlrN3lGo1hdpscRd3WS8T6DKYK4ephgIH9iRh3w==}
-
   '@floating-ui/dom@1.7.2':
     resolution: {integrity: sha512-7cfaOQuCS27HD7DX+6ib2OrnW+b4ZBwDNnCcT0uTyidcmyWb03FnQqJybDBoCnpdxwBSfA94UAYlRCt7mV+TbA==}
 
@@ -731,9 +731,6 @@ packages:
 
   '@floating-ui/utils@0.2.9':
     resolution: {integrity: sha512-MDWhGtE+eHw5JW7lq4qhc5yRLS11ERl1c7Z6Xd0a58DozHES6EnNNwUWbMiG4J9Cgj053Bhk8zvlhFYKVhULwg==}
-
-  '@floating-ui/vue@1.1.6':
-    resolution: {integrity: sha512-XFlUzGHGv12zbgHNk5FN2mUB7ROul3oG2ENdTpWdE+qMFxyNxWSRmsoyhiEnpmabNm6WnUvR1OvJfUfN4ojC1A==}
 
   '@floating-ui/vue@1.1.7':
     resolution: {integrity: sha512-idmAtbAIigGXN2SI5gItiXYBYtNfDTP9yIiObxgu13dgtG7ARCHlNfnR29GxP4LI4o13oiwsJ8wVgghj1lNqcw==}
@@ -786,9 +783,6 @@ packages:
 
   '@internationalized/date@3.7.0':
     resolution: {integrity: sha512-VJ5WS3fcVx0bejE/YHfbDKR/yawZgKqn/if+oEeLqNwBtPzVB06olkfcnojTmEMX+gTpH+FlQ69SHNitJ8/erQ==}
-
-  '@internationalized/number@3.6.0':
-    resolution: {integrity: sha512-PtrRcJVy7nw++wn4W2OuePQQfTqDzfusSuY1QTtui4wa7r+rGVtR75pO8CyKvHvzyQYi3Q1uO5sY0AsB4e65Bw==}
 
   '@internationalized/number@3.6.3':
     resolution: {integrity: sha512-p+Zh1sb6EfrfVaS86jlHGQ9HA66fJhV9x5LiE5vCbZtXEHAuhcmUZUdZ4WrFpUBfNalr2OkAJI5AcKEQF+Lebw==}
@@ -1223,9 +1217,6 @@ packages:
   '@tanstack/virtual-core@3.13.12':
     resolution: {integrity: sha512-1YBOJfRHV4sXUmWsFSf5rQor4Ss82G8dQWLRbnk3GA4jeP8hQt1hxXh0tmflpC0dz3VgEv/1+qwPyLeWkQuPFA==}
 
-  '@tanstack/virtual-core@3.13.5':
-    resolution: {integrity: sha512-gMLNylxhJdUlfRR1G3U9rtuwUh2IjdrrniJIDcekVJN3/3i+bluvdMi3+eodnxzJq5nKnxnigo9h0lIpaqV6HQ==}
-
   '@tanstack/vue-query@5.81.5':
     resolution: {integrity: sha512-Ylt2pzRj1KyXOoidRemRoySU8ub3PXLKwGBr+iQxs6lhfvo1JlimTS2CANM2+3Uph+7JIIguFc8w0Mw3vSjVsw==}
     peerDependencies:
@@ -1243,11 +1234,6 @@ packages:
 
   '@tanstack/vue-virtual@3.13.12':
     resolution: {integrity: sha512-vhF7kEU9EXWXh+HdAwKJ2m3xaOnTTmgcdXcF2pim8g4GvI7eRrk2YRuV5nUlZnd/NbCIX4/Ja2OZu5EjJL06Ww==}
-    peerDependencies:
-      vue: ^2.7.0 || ^3.0.0
-
-  '@tanstack/vue-virtual@3.13.5':
-    resolution: {integrity: sha512-1hhUA6CUjmKc5JDyKLcYOV6mI631FaKKxXh77Ja4UtIy6EOofYaLPk8vVgvK6vLMUSfHR2vI3ZpPY9ibyX60SA==}
     peerDependencies:
       vue: ^2.7.0 || ^3.0.0
 
@@ -1968,10 +1954,6 @@ packages:
   argparse@2.0.1:
     resolution: {integrity: sha512-8+9WqebbFzpX9OR+Wa6O29asIogeRMzcGtAINdpMHHyAg10f05aSFVBbcEqGf/PXw1EjAZ+q2/bEBg3DvurK3Q==}
 
-  aria-hidden@1.2.4:
-    resolution: {integrity: sha512-y+CcFFwelSXpLZk/7fMB2mUbGtX9lKycf1MWJ7CaTIERyitVlyQx6C+sxcROU2BAJ24OiZyK+8wj2i8AlBoS3A==}
-    engines: {node: '>=10'}
-
   aria-hidden@1.2.6:
     resolution: {integrity: sha512-ik3ZgC9dY/lYVVM++OISsaYDeg1tb0VtP5uL3ouh1koGOaUMDPpbFIei4JkFimWUFPn90sbMNMXQAIVOlnYKJA==}
     engines: {node: '>=10'}
@@ -2470,6 +2452,19 @@ packages:
 
   elkjs@0.10.0:
     resolution: {integrity: sha512-v/3r+3Bl2NMrWmVoRTMBtHtWvRISTix/s9EfnsfEWApNrsmNjqgqJOispCGg46BPwIFdkag3N/HYSxJczvCm6w==}
+
+  embla-carousel-reactive-utils@8.6.0:
+    resolution: {integrity: sha512-fMVUDUEx0/uIEDM0Mz3dHznDhfX+znCCDCeIophYb1QGVM7YThSWX+wz11zlYwWFOr74b4QLGg0hrGPJeG2s4A==}
+    peerDependencies:
+      embla-carousel: 8.6.0
+
+  embla-carousel-vue@8.6.0:
+    resolution: {integrity: sha512-v8UO5UsyLocZnu/LbfQA7Dn2QHuZKurJY93VUmZYP//QRWoCWOsionmvLLAlibkET3pGPs7++03VhJKbWD7vhQ==}
+    peerDependencies:
+      vue: ^3.2.37
+
+  embla-carousel@8.6.0:
+    resolution: {integrity: sha512-SjWyZBHJPbqxHOzckOfo8lHisEaJWmwd23XppYFYVh10bU66/Pn5tkVkbkCMZVdbUE5eTCI2nD8OyIP4Z+uwkA==}
 
   emoji-regex@8.0.0:
     resolution: {integrity: sha512-MSjYzcWNOA0ewAHpz0MxpYFvwg6yjy1NG3xteoqz644VCo/RPgnr1/GGt+ic3iJTzQ8Eu3TdM14SawnVUmGE6A==}
@@ -3413,11 +3408,6 @@ packages:
   nanoid@3.3.11:
     resolution: {integrity: sha512-N8SpfPUnUp1bK+PMYW8qSWdl9U+wwNWI4QKxOYDy9JAro3WMX7p2OeVRF9v+347pnakNevPmiHhNmZ2HbFA76w==}
     engines: {node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1}
-    hasBin: true
-
-  nanoid@5.0.7:
-    resolution: {integrity: sha512-oLxFY2gd2IqnjcYyOXD8XGCftpGtZP2AbHbOkthDkvRywH5ayNtPVy9YlOPcHckXzbLTCHpkb7FB+yuxKV13pQ==}
-    engines: {node: ^18 || >=20}
     hasBin: true
 
   nanoid@5.1.5:
@@ -4876,11 +4866,6 @@ snapshots:
     dependencies:
       '@floating-ui/core': 1.6.9
 
-  '@floating-ui/dom@1.6.13':
-    dependencies:
-      '@floating-ui/core': 1.6.9
-      '@floating-ui/utils': 0.2.9
-
   '@floating-ui/dom@1.7.2':
     dependencies:
       '@floating-ui/core': 1.7.2
@@ -4889,15 +4874,6 @@ snapshots:
   '@floating-ui/utils@0.2.10': {}
 
   '@floating-ui/utils@0.2.9': {}
-
-  '@floating-ui/vue@1.1.6(vue@3.5.17(typescript@5.8.3))':
-    dependencies:
-      '@floating-ui/dom': 1.6.13
-      '@floating-ui/utils': 0.2.9
-      vue-demi: 0.14.10(vue@3.5.17(typescript@5.8.3))
-    transitivePeerDependencies:
-      - '@vue/composition-api'
-      - vue
 
   '@floating-ui/vue@1.1.7(vue@3.5.17(typescript@5.8.3))':
     dependencies:
@@ -4942,10 +4918,6 @@ snapshots:
       vue: 3.5.17(typescript@5.8.3)
 
   '@internationalized/date@3.7.0':
-    dependencies:
-      '@swc/helpers': 0.5.15
-
-  '@internationalized/number@3.6.0':
     dependencies:
       '@swc/helpers': 0.5.15
 
@@ -5297,8 +5269,6 @@ snapshots:
 
   '@tanstack/virtual-core@3.13.12': {}
 
-  '@tanstack/virtual-core@3.13.5': {}
-
   '@tanstack/vue-query@5.81.5(vue@3.5.17(typescript@5.8.3))':
     dependencies:
       '@tanstack/match-sorter-utils': 8.19.4
@@ -5315,11 +5285,6 @@ snapshots:
   '@tanstack/vue-virtual@3.13.12(vue@3.5.17(typescript@5.8.3))':
     dependencies:
       '@tanstack/virtual-core': 3.13.12
-      vue: 3.5.17(typescript@5.8.3)
-
-  '@tanstack/vue-virtual@3.13.5(vue@3.5.17(typescript@5.8.3))':
-    dependencies:
-      '@tanstack/virtual-core': 3.13.5
       vue: 3.5.17(typescript@5.8.3)
 
   '@tiptap/core@2.24.1(@tiptap/pm@2.24.1)':
@@ -6231,10 +6196,6 @@ snapshots:
 
   argparse@2.0.1: {}
 
-  aria-hidden@1.2.4:
-    dependencies:
-      tslib: 2.8.1
-
   aria-hidden@1.2.6:
     dependencies:
       tslib: 2.8.1
@@ -6773,6 +6734,18 @@ snapshots:
   electron-to-chromium@1.4.767: {}
 
   elkjs@0.10.0: {}
+
+  embla-carousel-reactive-utils@8.6.0(embla-carousel@8.6.0):
+    dependencies:
+      embla-carousel: 8.6.0
+
+  embla-carousel-vue@8.6.0(vue@3.5.17(typescript@5.8.3)):
+    dependencies:
+      embla-carousel: 8.6.0
+      embla-carousel-reactive-utils: 8.6.0(embla-carousel@8.6.0)
+      vue: 3.5.17(typescript@5.8.3)
+
+  embla-carousel@8.6.0: {}
 
   emoji-regex@8.0.0: {}
 
@@ -7835,8 +7808,6 @@ snapshots:
 
   nanoid@3.3.11: {}
 
-  nanoid@5.0.7: {}
-
   nanoid@5.1.5: {}
 
   natural-compare@1.4.0: {}
@@ -8172,17 +8143,17 @@ snapshots:
 
   radix-vue@1.9.17(vue@3.5.17(typescript@5.8.3)):
     dependencies:
-      '@floating-ui/dom': 1.6.13
-      '@floating-ui/vue': 1.1.6(vue@3.5.17(typescript@5.8.3))
+      '@floating-ui/dom': 1.7.2
+      '@floating-ui/vue': 1.1.7(vue@3.5.17(typescript@5.8.3))
       '@internationalized/date': 3.7.0
-      '@internationalized/number': 3.6.0
-      '@tanstack/vue-virtual': 3.13.5(vue@3.5.17(typescript@5.8.3))
+      '@internationalized/number': 3.6.3
+      '@tanstack/vue-virtual': 3.13.12(vue@3.5.17(typescript@5.8.3))
       '@vueuse/core': 10.11.1(vue@3.5.17(typescript@5.8.3))
       '@vueuse/shared': 10.11.1(vue@3.5.17(typescript@5.8.3))
-      aria-hidden: 1.2.4
+      aria-hidden: 1.2.6
       defu: 6.1.4
       fast-deep-equal: 3.1.3
-      nanoid: 5.0.7
+      nanoid: 5.1.5
       vue: 3.5.17(typescript@5.8.3)
     transitivePeerDependencies:
       - '@vue/composition-api'

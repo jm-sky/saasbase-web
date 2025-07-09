@@ -3,6 +3,7 @@ import { Handle, Position } from '@vue-flow/core'
 import { ArrowRight } from 'lucide-vue-next'
 import { computed, ref } from 'vue'
 import { cn } from '@/lib/utils'
+import { routeMap } from '@/router/routeMap'
 import type { OrganizationUnitNodeData } from '../../../composables/useOrganizationChartLayout'
 import type { IOrganizationUnit } from '../../../types/organizationUnit.type'
 import EditOrganizationUnitModal from '../modals/EditOrganizationUnitModal.vue'
@@ -50,7 +51,7 @@ const handleAddChild = () => {
         <span>{{ unit.name }}</span>
         <RouterLink
           v-if="!unit.isTechnical"
-          :to="{ name: 'tenant.show.organization-unit', params: { id: unit.tenantId, unitId: unit.id } }"
+          :to="{ name: routeMap.tenant.userSettings.organizationUnit, params: { id: unit.tenantId, unitId: unit.id } }"
           class="text-primary hover:text-primary/80 transition-colors"
           title="View Details"
         >

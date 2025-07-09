@@ -48,6 +48,7 @@
     "axios-mock-adapter": "^2.1.0",
     "date-fns": "^4.1.0",
     "dayjs": "^1.11.13",
+    "embla-carousel-vue": "^8.6.0",
     "floating-vue": "^5.2.2",
     "laravel-echo": "^2.1.6",
     "lodash-es": "^4.17.21",

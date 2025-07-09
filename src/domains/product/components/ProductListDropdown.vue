@@ -43,7 +43,7 @@ const exportToExcel = async () => {
       </Button>
     </DropdownMenuTrigger>
     <DropdownMenuContent align="end" class="space-y-1">
-      <DropdownMenuItem class="cursor-pointer" @click="exportToExcel()">
+      <DropdownMenuItem hoverable @click="exportToExcel()">
         <Download class="size-4 mr-2" />
         <span>{{ t('common.export.excel') }}</span>
       </DropdownMenuItem>

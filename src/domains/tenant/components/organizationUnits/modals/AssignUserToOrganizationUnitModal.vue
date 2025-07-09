@@ -108,6 +108,7 @@ watch(open, (isOpen) => {
           v-bind="componentField"
           :model-value="defaultPosition"
           :options="positionOptions"
+          class="w-full"
           @update:model-value="setFieldValue('positionId', $event?.value ?? '')"
         />
       </FormFieldLabeled>

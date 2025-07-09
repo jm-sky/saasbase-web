@@ -32,6 +32,17 @@ export const routeMap = {
   identityConfirmation: {
     index: 'identityConfirmation',
   },
+  tenant: {
+    financialSettings: {
+      numberingTemplates: 'tenant.financial.numbering-templates',
+      invoiceTemplates: 'tenant.financial.invoice-templates',
+    },
+    userSettings: {
+      organizationUnits: 'tenant.user.organization-units',
+      organizationUnit: 'tenant.user.organization-unit',
+      invitations: 'tenant.user.invitations',
+    },
+  },
 }
 
 export const routeTo = {

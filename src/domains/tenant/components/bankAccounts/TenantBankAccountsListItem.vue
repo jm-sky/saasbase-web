@@ -80,17 +80,11 @@ const handleDelete = async () => {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
-          <DropdownMenuItem
-            class="cursor-pointer gap-2 hover:bg-accent"
-            @click="emit('edit', bankAccount)"
-          >
+          <DropdownMenuItem hoverable @click="emit('edit', bankAccount)">
             <Icon icon="lucide:edit" />
             {{ t('common.edit') }}
           </DropdownMenuItem>
-          <DropdownMenuItem
-            class="cursor-pointer gap-2 hover:bg-accent"
-            @click="handleDelete"
-          >
+          <DropdownMenuItem hoverable variant="destructive" @click="handleDelete">
             <Icon icon="lucide:trash" />
             {{ t('common.delete') }}
           </DropdownMenuItem>

@@ -1,6 +1,7 @@
 import { isAuthenticated } from '@/router/middleware/isAuthenticated'
 import { isInTenant } from '@/router/middleware/isInTenant'
 import { isVerified } from '@/router/middleware/isVerified'
+import { routeMap } from '../routeMap'
 import type { RouteRecordRaw } from 'vue-router'
 
 export const tenantRoutes: RouteRecordRaw[] = [
@@ -29,8 +30,62 @@ export const tenantRoutes: RouteRecordRaw[] = [
     },
   },
   {
+    path: '/tenants/:id/financial-settings',
+    name: 'showTenantFinancialSettings',
+    redirect: { name: routeMap.tenant.financialSettings.numberingTemplates },
+    component: () => import('@/pages/tenant/TenantFinancialSettingsPage.vue'),
+    meta: {
+      middlewares: [isAuthenticated, isVerified, isInTenant],
+    },
+    children: [
+      {
+        path: 'invoice-templates',
+        name: routeMap.tenant.financialSettings.invoiceTemplates,
+        component: () => import('@/pages/tenant/FinancialSettings/TenantInvoiceTemplatesPage.vue'),
+      },
+      {
+        path: 'numbering-templates',
+        name: routeMap.tenant.financialSettings.numberingTemplates,
+        component: () => import('@/pages/tenant/FinancialSettings/NumberingTemplatesPage.vue'),
+        meta: {
+          title: 'invoice.numberingTemplate.title',
+        },
+      },
+    ],
+  },
+  {
+    path: '/tenants/:id/user-settings',
+    name: 'showTenantUserSettings',
+    redirect: { name: routeMap.tenant.userSettings.organizationUnits },
+    component: () => import('@/pages/tenant/TenantUserSettingsPage.vue'),
+    meta: {
+      middlewares: [isAuthenticated, isVerified, isInTenant],
+    },
+    children: [
+      {
+        path: 'organization-units/:unitId',
+        name: routeMap.tenant.userSettings.organizationUnit,
+        component: () => import('@/pages/tenant/ShowOrganizationUnitPage.vue'),
+        meta: {
+          title: 'tenant.organizationUnits.show.title',
+        },
+      },
+      {
+        path: 'organization-units',
+        name: routeMap.tenant.userSettings.organizationUnits,
+        component: () => import('@/pages/tenant/UserSettings/TenantOrganizationUnitsPage.vue'),
+      },
+      {
+        path: 'invitations',
+        name: routeMap.tenant.userSettings.invitations,
+        component: () => import('@/pages/tenant/UserSettings/TenantInvitationsPage.vue'),
+      },
+    ],
+  },
+  {
     path: '/tenants/:id/show',
     name: 'showTenant',
+    redirect: { name: 'tenant.show.overview' },
     component: () => import('@/pages/tenant/ShowTenantPage.vue'),
     meta: {
       middlewares: [isAuthenticated, isVerified, isInTenant],
@@ -42,32 +97,9 @@ export const tenantRoutes: RouteRecordRaw[] = [
         component: () => import('@/pages/tenant/ShowTenantPage/TenantOverviewPage.vue'),
       },
       {
-        path: 'organization-units/:unitId',
-        name: 'tenant.show.organization-unit',
-        component: () => import('@/pages/tenant/ShowOrganizationUnitPage.vue'),
-        meta: {
-          title: 'tenant.organizationUnits.show.title',
-        },
-      },
-      {
-        path: 'organization-units',
-        name: 'tenant.show.organization-units',
-        component: () => import('@/pages/tenant/ShowTenantPage/TenantOrganizationUnitsPage.vue'),
-      },
-      {
-        path: 'invitations',
-        name: 'tenant.show.invitations',
-        component: () => import('@/pages/tenant/ShowTenantPage/TenantInvitationsPage.vue'),
-      },
-      {
         path: 'branding',
         name: 'tenant.show.branding',
         component: () => import('@/pages/tenant/ShowTenantPage/TenantBrandingPage.vue'),
-      },
-      {
-        path: 'invoice-templates',
-        name: 'tenant.show.invoice-templates',
-        component: () => import('@/pages/tenant/ShowTenantPage/TenantInvoiceTemplatesPage.vue'),
       },
       {
         path: 'integrations/:integrationId?',

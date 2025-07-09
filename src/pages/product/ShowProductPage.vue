@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
 import EntityDetailsLayout from '@/components/layouts/EntityDetailsLayout.vue'
@@ -18,7 +18,7 @@ const product = ref<IProduct>()
 const loading = ref(false)
 const error = ref<string | null>(null)
 
-const tabs = [
+const tabs = computed(() => [
   {
     to: `/products/${productId}/show/overview`,
     label: t('product.overview.title'),
@@ -31,7 +31,7 @@ const tabs = [
     to: `/products/${productId}/show/logs`,
     label: t('product.logs.title'),
   },
-]
+])
 
 const refresh = async () => {
   try {

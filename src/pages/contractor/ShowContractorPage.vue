@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
-import { onMounted, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
 import EntityDetailsLayout from '@/components/layouts/EntityDetailsLayout.vue'
@@ -20,7 +20,7 @@ const { contractor } = storeToRefs(useContractorStore())
 const loading = ref(false)
 const error = ref<string | null>(null)
 
-const tabs = [
+const tabs = computed(() => [
   {
     to: `/contractors/${contractorId}/show/overview`,
     label: t('contractor.overview.title'),
@@ -33,7 +33,7 @@ const tabs = [
     to: `/contractors/${contractorId}/show/logs`,
     label: t('contractor.logs.title'),
   },
-]
+])
 
 const refresh = async () => {
   try {

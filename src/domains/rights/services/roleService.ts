@@ -1,4 +1,5 @@
 import api from '@/lib/api'
+import type { IResourceCollection } from '@/domains/shared/types/resource.type'
 
 export interface IRole {
   id: string
@@ -9,7 +10,7 @@ export interface IRole {
 
 class RoleService {
   async list(): Promise<IRole[]> {
-    const response = await api.get<{ data: IRole[] }>('/roles')
+    const response = await api.get<IResourceCollection<IRole>>('/roles')
     return response.data.data
   }
 }

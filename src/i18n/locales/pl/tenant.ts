@@ -1,6 +1,12 @@
 export const tenant = {
   title: 'Zespoły',
   tenantDetails: 'Szczegóły zespołu',
+  menuCategories: {
+    tenantSettings: 'Ustawienia zespołu',
+    companySettings: 'Ustawienia firmy',
+    financialSettings: 'Ustawienia finansowe',
+    usersSettings: 'Ustawienia użytkowników',
+  },
   fields: {
     country: 'Kraj',
     name: 'Nazwa',
