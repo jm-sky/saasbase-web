@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useFormContext } from 'vee-validate'
-import { computed, ref, watch } from 'vue'
+import { ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import FormFieldLabeled from '@/components/Form/FormFieldLabeled.vue'
 import { Button } from '@/components/ui/button'
@@ -9,10 +9,11 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import InvoiceTemplatePicker from '@/domains/invoice/components/pickers/InvoiceTemplatePicker.vue'
+import type { IContractorPreferences } from '@/domains/contractor/types/contractor.type'
 import type { IInvoiceCreate } from '@/domains/invoice/types/invoice.type'
 
 const { t, locale } = useI18n()
-const { setFieldValue, values } = useFormContext<IInvoiceCreate>()
+const { setFieldValue } = useFormContext<IInvoiceCreate>()
 
 const props = defineProps<{
   values: IInvoiceCreate
@@ -26,12 +27,12 @@ const languages = [
 // Smart language defaulting
 const getDefaultLanguage = () => {
   // Priority: buyer's preference > current locale
-  const buyerPreference = props.values.buyer.contractorId ? 
+  const buyerPreference: IContractorPreferences | undefined = props.values.buyer.contractorId ?
     // In real implementation, you would fetch contractor preferences here
     // For now, we'll use a placeholder
-    undefined : undefined
-  
-  return buyerPreference || locale.value
+    {} as IContractorPreferences : undefined
+
+  return buyerPreference?.defaultLanguage ?? locale.value
 }
 
 // Watch for buyer changes to update language
@@ -88,7 +89,7 @@ const onSendEmailChange = (checked: boolean) => {
 
       <FormFieldLabeled name="options.template" :label="t('financial.options.template', 'Template')">
         <InvoiceTemplatePicker
-          :model-value="values.options.template"
+          :model-value="{ id: values.options.template, name: values.options.template, category: 'invoice', isActive: true, isDefault: false, isSystem: false }"
           class="w-full"
           @update:model-value="(value) => setFieldValue('options.template', String(value?.id || value || ''))"
         />

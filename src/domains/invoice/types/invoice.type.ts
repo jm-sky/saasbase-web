@@ -26,16 +26,16 @@ export interface IInvoice {
   payment: IInvoicePayment;
   options: IInvoiceOptions;
   tags: ITagPreview[];
-  issueDate?: TDate | null;
-  createdAt?: TDateTime | null;
-  updatedAt?: TDateTime | null;
+  issueDate: TDate;
+  createdAt: TDateTime;
+  updatedAt: TDateTime;
   numberingTemplate?: IInvoiceNumberingTemplate;
 }
 
 export interface IInvoiceCreate {
   type: TInvoiceType;
   issueDate: TDate;
-  status?: string;
+  status?: TInvoiceStatus;
   statusInfo?: {
     general?: TInvoiceStatus;
     ocr?: TApprovalStatus;

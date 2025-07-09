@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { useFieldArray, useFormContext } from 'vee-validate'
-import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -14,21 +13,25 @@ import type { IProductLookup } from '@/domains/product/types/product.type'
 import type { IVatRate } from '@/domains/shared/types/vatRate.type'
 
 const { t } = useI18n()
-const { setFieldValue, values } = useFormContext<IInvoiceCreate>()
+const { setFieldValue } = useFormContext<IInvoiceCreate>()
 
 const props = defineProps<{
   values: IInvoiceCreate
   addLine: () => void
 }>()
 
+// eslint-disable-next-line @typescript-eslint/unbound-method
 const { fields: lines, remove } = useFieldArray<IInvoiceLine>('body.lines')
 
 const onProductUpdate = (index: number, product: IProductLookup | undefined) => {
   if (!product) return
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   setFieldValue(`body.lines[${index}].productId` as any, product.id)
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   setFieldValue(`body.lines[${index}].description` as any, product.name)
   if (product.priceNet) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
     setFieldValue(`body.lines[${index}].unitPrice` as any, product.priceNet)
   }
   recalculateLine(index)
@@ -37,6 +40,7 @@ const onProductUpdate = (index: number, product: IProductLookup | undefined) => 
 const onVatRateUpdate = (index: number, vatRate: IVatRate | undefined) => {
   if (!vatRate) return
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   setFieldValue(`body.lines[${index}].vatRate` as any, {
     rate: vatRate.rate * 100,
     category: vatRate.name,
@@ -46,13 +50,18 @@ const onVatRateUpdate = (index: number, vatRate: IVatRate | undefined) => {
 
 const recalculateLine = (index: number) => {
   const line = props.values.body.lines[index]
+
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (!line) return
 
   const calculated = calculateLineTotal(line)
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   setFieldValue(`body.lines[${index}].totalNet` as any, calculated.totalNet)
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   setFieldValue(`body.lines[${index}].totalVat` as any, calculated.totalVat)
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   setFieldValue(`body.lines[${index}].totalGross` as any, calculated.totalGross)
-  
+
   recalculateTotals()
 }
 
@@ -65,16 +74,19 @@ const recalculateTotals = () => {
 }
 
 const onQuantityChange = (index: number, quantity: number) => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   setFieldValue(`body.lines[${index}].quantity` as any, quantity)
   recalculateLine(index)
 }
 
 const onUnitPriceChange = (index: number, unitPrice: number) => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   setFieldValue(`body.lines[${index}].unitPrice` as any, unitPrice)
   recalculateLine(index)
 }
 
 const onDescriptionChange = (index: number, description: string) => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   setFieldValue(`body.lines[${index}].description` as any, description)
 }
 
@@ -131,28 +143,31 @@ const removeLine = (index: number) => {
             </div>
           </td>
           <td class="border-b p-2 text-right">
-            <Input 
-              type="number" 
+            <Input
+              type="number"
               :model-value="item.value.quantity"
-              class="w-full text-right" 
+              class="w-full text-right"
               placeholder="Quantity"
               @update:model-value="onQuantityChange(index, Number($event))"
             />
           </td>
           <td class="border-b p-2 text-right">
-            <Input 
-              type="number" 
+            <Input
+              type="number"
               :model-value="item.value.unitPrice"
-              class="w-full text-right" 
+              class="w-full text-right"
               placeholder="Price"
               step="0.01"
               @update:model-value="onUnitPriceChange(index, Number($event))"
             />
           </td>
           <td class="border-b p-2 text-right">
+            <VatRatePicker
+              :model-value="(item.value.vatRate as IVatRate)"
+              @update:model-value="onVatRateUpdate(index, $event)"
+            />
             <div class="text-sm">
-              {{ item.value.vatRate.rate }}% 
-              <span v-if="item.value.vatRate.category">({{ item.value.vatRate.category }})</span>
+              {{ item.value.vatRate.name }}
             </div>
           </td>
           <td class="border-b p-2 text-right">
@@ -166,10 +181,10 @@ const removeLine = (index: number) => {
             </div>
           </td>
           <td class="border-b p-2 text-center">
-            <Button 
-              type="button" 
-              variant="ghost" 
-              size="sm" 
+            <Button
+              type="button"
+              variant="ghost"
+              size="sm"
               class="h-8 w-8 p-0 text-red-500 hover:text-red-700"
               @click="removeLine(index)"
             >

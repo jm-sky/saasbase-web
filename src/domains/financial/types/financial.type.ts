@@ -106,10 +106,7 @@ export interface IInvoiceLine {
   description: string;
   quantity: number;
   unitPrice: number;
-  vatRate: {
-    rate: number;
-    category?: string;
-  };
+  vatRate: IVatRateData;
   totalNet: number;
   totalVat: number;
   totalGross: number;
@@ -133,12 +130,18 @@ export interface IInvoiceExchange {
   date: string;
 }
 
+export interface IInvoicePaymentMethod {
+  id?: TUUID;
+  name?: string;
+  paymentDays?: number
+}
+
 export interface IInvoicePayment {
-  status: 'PENDING' | 'PAID' | 'OVERDUE' | 'CANCELLED';
+  status: TPaymentStatus;
   dueDate?: string;
   paidDate?: string;
   paidAmount?: number;
-  method: 'BANK_TRANSFER' | 'CASH' | 'CREDIT_CARD' | 'CHEQUE' | 'OTHER';
+  method: IInvoicePaymentMethod;
   reference?: string;
   terms?: string;
   notes?: string;

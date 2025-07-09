@@ -15,6 +15,7 @@ import CurrencyPicker from '@/domains/shared/components/CurrencyPicker.vue'
 import ExchangeRatePicker from '@/domains/shared/components/ExchangeRatePicker.vue'
 import PaymentMethodPicker from '@/domains/shared/components/PaymentMethodPicker.vue'
 import SidebarSection from './SidebarSection.vue'
+import type { TPaymentStatus } from '@/domains/financial/types/financial.type'
 import type { IInvoiceCreate } from '@/domains/invoice/types/invoice.type'
 import type { IPaymentMethod } from '@/domains/shared/types/paymentMethod.type'
 
@@ -27,8 +28,8 @@ defineProps<{
 }>()
 
 const emit = defineEmits<{
-  updatePaymentMethod: [method: string]
-  updatePaymentStatus: [status: string]
+  updatePaymentMethod: [method: IPaymentMethod | undefined]
+  updatePaymentStatus: [status: TPaymentStatus]
   updatePaymentDueDate: [date: string]
   updatePaymentReference: [reference: string]
   updatePaymentTerms: [terms: string]
@@ -36,28 +37,25 @@ const emit = defineEmits<{
   updateExchangeDate: [date: string]
   updateSendEmail: [sendEmail: boolean]
   updateEmailTo: [emailTo: string[]]
-  updatePaymentMethodObject: [paymentMethod: IPaymentMethod | undefined]
 }>()
 
-const paymentStatuses = [
-  { value: 'PENDING', label: t('financial.paymentStatus.pending', 'Pending'), color: 'bg-yellow-500' },
-  { value: 'PAID', label: t('financial.paymentStatus.paid', 'Paid'), color: 'bg-green-500' },
-  { value: 'OVERDUE', label: t('financial.paymentStatus.overdue', 'Overdue'), color: 'bg-red-500' },
-  { value: 'CANCELLED', label: t('financial.paymentStatus.cancelled', 'Cancelled'), color: 'bg-gray-500' },
+const paymentStatuses: { value: TPaymentStatus, label: string, color: string }[] = [
+  { value: 'pending', label: t('financial.paymentStatus.pending', 'Pending'), color: 'bg-yellow-500' },
+  { value: 'paid', label: t('financial.paymentStatus.paid', 'Paid'), color: 'bg-green-500' },
+  { value: 'partiallyPaid', label: t('financial.paymentStatus.partiallyPaid', 'partiallyPaid'), color: 'bg-gray-500' },
+  { value: 'overdue', label: t('financial.paymentStatus.overdue', 'Overdue'), color: 'bg-red-500' },
+  { value: 'cancelled', label: t('financial.paymentStatus.cancelled', 'Cancelled'), color: 'bg-gray-500' },
 ]
 
 const getCurrentStatusColor = (status: string) => {
-  return paymentStatuses.find(s => s.value === status)?.color || 'bg-gray-500'
+  return paymentStatuses.find(s => s.value === status)?.color ?? 'bg-gray-500'
 }
 
 const selectedPaymentMethod = ref<IPaymentMethod | undefined>()
 
 const onPaymentMethodChange = (paymentMethod: IPaymentMethod | undefined) => {
   selectedPaymentMethod.value = paymentMethod
-  emit('updatePaymentMethodObject', paymentMethod)
-  if (paymentMethod) {
-    emit('updatePaymentMethod', paymentMethod.key)
-  }
+  emit('updatePaymentMethod', paymentMethod)
 }
 </script>
 
@@ -74,7 +72,7 @@ const onPaymentMethodChange = (paymentMethod: IPaymentMethod | undefined) => {
             {{ t('financial.payment.status', 'Status') }}
           </FormLabel>
           <FormControl>
-            <Select :model-value="values.payment.status" @update:model-value="emit('updatePaymentStatus', $event)">
+            <Select :model-value="values.payment.status" @update:model-value="emit('updatePaymentStatus', $event as TPaymentStatus)">
               <SelectTrigger class="w-40">
                 <SelectValue>
                   <div class="flex items-center gap-2">

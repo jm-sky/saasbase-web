@@ -86,9 +86,13 @@ const { isSubmitting, handleSubmit, values, setErrors, setFieldValue, resetForm,
       },
     },
     payment: {
-      status: 'PENDING',
+      status: 'pending',
       dueDate: '',
-      method: 'BANK_TRANSFER',
+      method: {
+        id: '',
+        name: 'Bank Transfer',
+        paymentDays: 0,
+      },
       reference: '',
       terms: '',
       bankAccount: {
@@ -115,8 +119,10 @@ const createLine = (): IInvoiceLine => {
     quantity: 1,
     unitPrice: 0,
     vatRate: {
+      id: '23%',
+      name: '23%',
       rate: 23,
-      category: 'standard',
+      type: 'percentage',
     },
     totalNet: 0,
     totalVat: 0,
@@ -307,9 +313,9 @@ const formErrors = computed(() => {
         :values="values"
         :reset-form="resetForm"
         :is-submitting="isSubmitting"
-        @update-payment-method="setFieldValue('payment.method', $event as any)"
+        @update-payment-method="setFieldValue('payment.method', $event ?? values.payment.method)"
         @update-payment-method-object="onPaymentMethodUpdate"
-        @update-payment-status="setFieldValue('payment.status', $event as any)"
+        @update-payment-status="setFieldValue('payment.status', $event ?? values.payment.status)"
         @update-payment-due-date="setFieldValue('payment.dueDate', $event)"
         @update-payment-reference="setFieldValue('payment.reference', $event)"
         @update-payment-terms="setFieldValue('payment.terms', $event)"
