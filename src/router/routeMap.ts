@@ -2,6 +2,7 @@ import type { RouteLocationRaw } from 'vue-router'
 import type { TIdentityConfirmationType } from '@/domains/identityConfirmation/types/identityConfirmation.type'
 
 export const routeMap = {
+  landing: 'landing',
   auth: {
     login: 'login',
     passwordForgot: 'passwordForgot',
@@ -34,6 +35,7 @@ export const routeMap = {
 }
 
 export const routeTo = {
+  landing: (): RouteLocationRaw => ({ name: routeMap.landing }),
   login: (): RouteLocationRaw => ({ name: routeMap.auth.login }),
   passwordForgot: (): RouteLocationRaw => ({ name: routeMap.auth.passwordForgot }),
   resetPassword: (): RouteLocationRaw => ({ name: routeMap.auth.resetPassword }),

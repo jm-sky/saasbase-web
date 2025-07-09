@@ -30,13 +30,13 @@ const navigationFeatures = computed<NavigationFeature[]>(() => [
 <template>
   <div class="mt-16 relative w-full max-w-screen-xl mx-auto">
     <div class="flex justify-center w-full">
-      <div class="flex flex-row items-center justify-center gap-6 mx-auto flex-wrap lg:flex-nowrap ">
+      <div class="grid grid-cols-2 md:flex md:flex-row items-center justify-center gap-6 mx-auto flex-wrap lg:flex-nowrap ">
         <div
           v-for="(feature, index) in navigationFeatures"
           :key="index"
-          class="relative group hover:scale-120 transition-all duration-300"
+          class="relative group flex flex-col items-center hover:scale-120 transition-all duration-300"
         >
-          <div class="w-48 p-4 flex flex-col items-center justify-center text-center bg-background/75 rounded-lg shadow-lg cursor-pointer group-hover:shadow-xl transition-all duration-300">
+          <div class="w-32 md:w-48 p-4 flex flex-col items-center justify-center text-center bg-background/75 rounded-lg shadow-lg cursor-pointer group-hover:shadow-xl transition-all duration-300">
             <div class="p-3 flex items-center justify-center mb-2">
               <component :is="feature.icon" class="size-12 opacity-80 group-hover:text-primary transition-all duration-300" />
             </div>
@@ -44,7 +44,7 @@ const navigationFeatures = computed<NavigationFeature[]>(() => [
               {{ feature.title }}
             </div>
           </div>
-          <div class="absolute bottom-0 translate-y-full left-0 p-1 w-full text-center text-xs text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity duration-800">
+          <div class="min-h-10 static md:absolute bottom-0 md:translate-y-full left-0 p-1 w-full text-center text-xs text-muted-foreground opacity-100 md:opacity-0 group-hover:opacity-100 transition-opacity duration-800">
             {{ feature.subtitle }}
           </div>
         </div>
