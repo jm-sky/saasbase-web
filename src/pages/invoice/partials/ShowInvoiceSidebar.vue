@@ -8,7 +8,8 @@ import AttachmentListWrapper from '@/domains/shared/components/attachments/Attac
 import { toDateString } from '@/lib/toDateString'
 import type { IInvoice } from '@/domains/invoice/types/invoice.type'
 
-const { t } = useI18n()
+// eslint-disable-next-line @typescript-eslint/unbound-method
+const { t, te } = useI18n()
 
 defineProps<{
   invoice?: IInvoice | null
@@ -36,7 +37,7 @@ defineExpose({
           {{ t('financial.payment.fields.method') }}
         </div>
         <div class="font-semibold">
-          {{ t(`financial.payment.method.${invoice?.payment?.method}`) }}
+          {{ te(`financial.payment.method.${invoice?.payment?.method?.code ?? ''}`) ? t(`financial.payment.method.${invoice?.payment?.method?.code}`) : invoice?.payment?.method?.name }}
         </div>
       </div>
 

@@ -40,11 +40,23 @@ export type TApprovalStatus =
   | 'rejected'
   | 'cancelled'
 
+export type TInvoiceAllocationStatus =
+  | 'notRequired'
+  | 'pending'
+  | 'partiallyAllocated'
+  | 'fullyAllocated'
+
 export type TDeliveryStatus =
   | 'notSent'
   | 'pending'
   | 'sent'
   | 'delivered'
+  | 'failed'
+
+export type TInvoiceOcrStatus =
+  | 'pending'
+  | 'processing'
+  | 'completed'
   | 'failed'
 
 export type TPaymentMethod =
@@ -99,6 +111,7 @@ export interface IVatRateData {
   name: string;
   rate: number;
   type: TVatRateType;
+  country?: string;
 }
 
 export interface IInvoiceLine {
@@ -133,6 +146,7 @@ export interface IInvoiceExchange {
 export interface IInvoicePaymentMethod {
   id?: TUUID;
   name?: string;
+  code?: string;
   paymentDays?: number
 }
 
@@ -146,16 +160,16 @@ export interface IInvoicePayment {
   terms?: string;
   notes?: string;
   bankAccount?: {
-    name?: string;
     iban?: string;
+    country?: string;
     swift?: string;
-    address?: string;
+    bankName?: string;
   };
 }
 
 export interface IInvoiceOptions {
-  language: string;
-  template: string;
+  language?: string;
+  template?: string;
   sendEmail: boolean;
   emailTo: string[];
 }

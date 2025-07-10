@@ -76,12 +76,15 @@ const { isSubmitting, handleSubmit, values, setErrors, setFieldValue, resetForm 
     payment: {
       status: 'pending',
       dueDate: '',
-      paidDate: null,
+      paidDate: undefined,
       paidAmount: 0,
-      method: 'bankTransfer',
+      method: {
+        name: 'bankTransfer',
+        code: 'bankTransfer',
+      },
       reference: '',
       terms: '',
-      notes: null,
+      notes: undefined,
     },
     options: {
       language: 'en',

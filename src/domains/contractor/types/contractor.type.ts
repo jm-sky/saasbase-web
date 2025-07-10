@@ -1,5 +1,6 @@
 import type { IAddress } from '@/domains/shared/types/address.type'
 import type { TDateTime, TUUID } from '@/domains/shared/types/common'
+import type { ICurrency } from '@/domains/shared/types/currency.type'
 import type { IMedia } from '@/domains/shared/types/media.type'
 import type { IPaymentMethod } from '@/domains/shared/types/paymentMethod.type'
 import type { IRegistryConfirmation } from '@/domains/shared/types/registryConfirmation'
@@ -70,11 +71,12 @@ export type TContractorType =
 
 export interface IContractorPreferences {
   id: TUUID
-  defaultPaymentMethodId?: TUUID
-  defaultCurrency?: string
-  defaultLanguage?: string
-  defaultPaymentDays?: number
+  defaultPaymentMethodId?: TUUID | null
+  defaultCurrencyCode?: TUUID | null
+  defaultLanguage?: string | null
+  defaultPaymentDays?: number | null
   defaultTags?: string[]
+  defaultCurrency?: ICurrency
   defaultPaymentMethod?: IPaymentMethod
   createdAt: TDateTime
   updatedAt: TDateTime

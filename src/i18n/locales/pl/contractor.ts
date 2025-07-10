@@ -76,12 +76,15 @@ export const contractor = {
     success: 'Preferencje zaktualizowane pomyślnie',
     error: 'Nie udało się zaktualizować preferencji',
     fields: {
+      defaultPaymentMethod: 'Domyślna metoda płatności',
       defaultPaymentMethodId: 'Domyślna metoda płatności',
+      defaultPaymentMethodIdDescription: 'Domyślna metoda płatności dla kontrahenta używana w fakturach.',
       defaultCurrency: 'Domyślna waluta',
+      defaultCurrencyCode: 'Domyślna waluta',
       defaultLanguage: 'Domyślny język',
+      defaultLanguageDescription: 'Domyślny język dla kontrahenta używany w fakturach.',
       defaultPaymentDays: 'Domyślne dni płatności',
       defaultTags: 'Domyślne tagi',
-      defaultPaymentMethod: 'Domyślna metoda płatności',
     },
   },
 }

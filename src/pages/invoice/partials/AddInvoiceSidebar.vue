@@ -40,11 +40,11 @@ const emit = defineEmits<{
 }>()
 
 const paymentStatuses: { value: TPaymentStatus, label: string, color: string }[] = [
-  { value: 'pending', label: t('financial.paymentStatus.pending', 'Pending'), color: 'bg-yellow-500' },
-  { value: 'paid', label: t('financial.paymentStatus.paid', 'Paid'), color: 'bg-green-500' },
-  { value: 'partiallyPaid', label: t('financial.paymentStatus.partiallyPaid', 'partiallyPaid'), color: 'bg-gray-500' },
-  { value: 'overdue', label: t('financial.paymentStatus.overdue', 'Overdue'), color: 'bg-red-500' },
-  { value: 'cancelled', label: t('financial.paymentStatus.cancelled', 'Cancelled'), color: 'bg-gray-500' },
+  { value: 'pending', label: t('financial.payment.status.pending', 'Pending'), color: 'bg-yellow-500' },
+  { value: 'paid', label: t('financial.payment.status.paid', 'Paid'), color: 'bg-green-500' },
+  { value: 'partiallyPaid', label: t('financial.payment.status.partiallyPaid', 'partiallyPaid'), color: 'bg-gray-500' },
+  { value: 'overdue', label: t('financial.payment.status.overdue', 'Overdue'), color: 'bg-red-500' },
+  { value: 'cancelled', label: t('financial.payment.status.cancelled', 'Cancelled'), color: 'bg-gray-500' },
 ]
 
 const getCurrentStatusColor = (status: string) => {
@@ -69,7 +69,7 @@ const onPaymentMethodChange = (paymentMethod: IPaymentMethod | undefined) => {
       <FormField name="payment.status">
         <FormItem class="space-y-0 flex flex-row items-center justify-between gap-1">
           <FormLabel required>
-            {{ t('financial.payment.status', 'Status') }}
+            {{ t('financial.payment.fields.status', 'Status') }}
           </FormLabel>
           <FormControl>
             <Select :model-value="values.payment.status" @update:model-value="emit('updatePaymentStatus', $event as TPaymentStatus)">
@@ -102,6 +102,7 @@ const onPaymentMethodChange = (paymentMethod: IPaymentMethod | undefined) => {
           </FormLabel>
           <FormControl>
             <PaymentMethodPicker
+              pick-first
               :model-value="selectedPaymentMethod"
               class="w-40"
               @update:model-value="onPaymentMethodChange"
@@ -114,7 +115,7 @@ const onPaymentMethodChange = (paymentMethod: IPaymentMethod | undefined) => {
       <FormField name="payment.dueDate">
         <FormItem class="space-y-0 flex flex-row items-center justify-between gap-1">
           <FormLabel>
-            {{ t('financial.payment.dueDate', 'Due Date') }}
+            {{ t('financial.payment.fields.dueDate', 'Due Date') }}
           </FormLabel>
           <FormControl>
             <DatePickerInput
@@ -130,12 +131,12 @@ const onPaymentMethodChange = (paymentMethod: IPaymentMethod | undefined) => {
       <FormField name="payment.reference">
         <FormItem class="space-y-1">
           <FormLabel>
-            {{ t('financial.payment.reference', 'Reference') }}
+            {{ t('financial.payment.fields.reference', 'Reference') }}
           </FormLabel>
           <FormControl>
             <Input
               :model-value="values.payment.reference"
-              :placeholder="t('financial.payment.referencePlaceholder', 'Payment reference')"
+              :placeholder="t('financial.payment.fields.referencePlaceholder', 'Payment reference')"
               @update:model-value="emit('updatePaymentReference', $event as string)"
             />
           </FormControl>
@@ -146,12 +147,12 @@ const onPaymentMethodChange = (paymentMethod: IPaymentMethod | undefined) => {
       <FormField name="payment.terms">
         <FormItem class="space-y-1">
           <FormLabel>
-            {{ t('financial.payment.terms', 'Terms') }}
+            {{ t('financial.payment.fields.terms', 'Terms') }}
           </FormLabel>
           <FormControl>
             <Textarea
               :model-value="values.payment.terms"
-              :placeholder="t('financial.payment.termsPlaceholder', 'Payment terms')"
+              :placeholder="t('financial.payment.fields.termsPlaceholder', 'Payment terms')"
               class="min-h-[60px]"
               @update:model-value="emit('updatePaymentTerms', $event as string)"
             />

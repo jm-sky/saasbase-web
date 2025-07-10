@@ -65,6 +65,8 @@ export const shared = {
     select: 'Select product',
     search: 'Search product',
     notFound: 'No products found',
+    recent: 'Recent',
+    all: 'All',
   },
   vatRate: {
     select: 'Select vat rate',

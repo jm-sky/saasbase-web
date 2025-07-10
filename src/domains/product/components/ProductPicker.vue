@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { templateRef, useDebounceFn, useInfiniteScroll } from '@vueuse/core'
-import { Plus } from 'lucide-vue-next'
 import { computed, nextTick, onMounted, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import LoadingIcon from '@/components/Icons/LoadingIcon.vue'
@@ -11,8 +10,7 @@ import {
   PickerList,
   PickerPopover
 } from '@/components/Pickers'
-import Button from '@/components/ui/button/Button.vue'
-import { CommandEmpty, CommandGroup } from '@/components/ui/command'
+import { CommandGroup } from '@/components/ui/command'
 import { config } from '@/config'
 import TagList from '@/domains/tags/components/TagList.vue'
 import { useCache } from '@/lib/cache'
@@ -83,6 +81,11 @@ const saveToRecent = (product: IProductLookup) => {
   } catch {
     // Ignore localStorage errors
   }
+}
+
+const clearRecentSelections = () => {
+  recentSelections.value = []
+  localStorage.removeItem(cacheKey.value)
 }
 
 const filters = computed<IProductFilters>(() => {
@@ -199,9 +202,12 @@ const resetSearch = () => {
 }
 
 const cleanCacheAndSearch = () => {
+  console.log('cleanCacheAndSearch')
+  loading.value = true
   clearCache()
   resetSearch()
-  void searchWithCache(filters.value).catch((err: unknown) => {
+  clearRecentSelections()
+  void searchWithCache(filters.value, true).catch((err: unknown) => {
     console.error('ProductPicker cleanCacheAndSearch error:', err)
     error.value = err instanceof Error ? err.message : 'Failed to load products'
     hasMoreData.value = false
@@ -276,23 +282,11 @@ onMounted(() => {
       @search-input="onSearchDebounced"
     />
 
-    <PickerList ref="listRef" :max-height="maxHeight">
-      <CommandEmpty>
-        <div class="text-center py-4">
-          <p>{{ t('shared.product.notFound') }}</p>
-          <Button
-            v-if="showCreateButton"
-            variant="outline"
-            size="sm"
-            class="mt-2"
-            @click="emit('create')"
-          >
-            <Plus class="mr-2 h-4 w-4" />
-            {{ t('shared.product.create') }}
-          </Button>
-        </div>
-      </CommandEmpty>
-
+    <PickerList
+      ref="listRef"
+      :max-height="maxHeight"
+      :show-create-button="showCreateButton"
+    >
       <!-- Recent Selections -->
       <CommandGroup v-if="groupedProducts.recent.length > 0" :heading="t('shared.product.recent')">
         <PickerItem
@@ -362,23 +356,11 @@ onMounted(() => {
       </CommandGroup>
     </PickerList>
 
-    <PickerActions>
-      <Button variant="outline" size="sm" @click="cleanCacheAndSearch()">
-        {{ t('common.clearCache', 'Clear cache') }}
-      </Button>
-      <Button
-        v-if="showCreateButton"
-        variant="outline"
-        size="sm"
-        @click="emit('create')"
-      >
-        <Plus class="mr-2 h-4 w-4" />
-        {{ t('shared.product.create') }}
-      </Button>
-    </PickerActions>
+    <PickerActions
+      :show-clear-cache="true"
+      :show-create-button="showCreateButton"
+      @clear-cache="cleanCacheAndSearch"
+      @create="emit('create')"
+    />
   </PickerPopover>
 </template>
-
-<style scoped>
-/* No custom scrollbar styles needed - handled by PickerList */
-</style>

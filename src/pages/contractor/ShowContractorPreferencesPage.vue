@@ -5,6 +5,7 @@ import { useI18n } from 'vue-i18n'
 import FormFieldLabeled from '@/components/Form/FormFieldLabeled.vue'
 import Button from '@/components/ui/button/Button.vue'
 import Input from '@/components/ui/input/Input.vue'
+import TagsInputField from '@/components/ui/tags-input/TagsInputField.vue'
 import { useToast } from '@/components/ui/toast'
 import { contractorService } from '@/domains/contractor/services/ContractorService'
 import { useContractorStore } from '@/domains/contractor/store/contractor.store'
@@ -21,12 +22,13 @@ const { contractor } = storeToRefs(useContractorStore())
 
 const { handleSubmit, setFieldValue, setErrors, isSubmitting, values } = useForm<IContractorPreferencesUpdate>({
   initialValues: {
-    defaultPaymentMethodId: contractor.value?.preferences?.defaultPaymentMethodId ?? '',
-    defaultCurrency: contractor.value?.preferences?.defaultCurrency ?? '',
-    defaultLanguage: contractor.value?.preferences?.defaultLanguage ?? '',
-    defaultPaymentDays: contractor.value?.preferences?.defaultPaymentDays ?? 0,
+    defaultPaymentMethod: contractor.value?.preferences?.defaultPaymentMethod ?? undefined,
+    defaultPaymentMethodId: contractor.value?.preferences?.defaultPaymentMethodId ?? undefined,
+    defaultCurrency: contractor.value?.preferences?.defaultCurrency ?? undefined,
+    defaultCurrencyCode: contractor.value?.preferences?.defaultCurrencyCode ?? undefined,
+    defaultLanguage: contractor.value?.preferences?.defaultLanguage ?? undefined,
+    defaultPaymentDays: contractor.value?.preferences?.defaultPaymentDays ?? undefined,
     defaultTags: contractor.value?.preferences?.defaultTags ?? [],
-    defaultPaymentMethod: contractor.value?.preferences?.defaultPaymentMethod ?? {},
   }
 })
 
@@ -46,15 +48,15 @@ const onSubmit = handleSubmit(async (formValues) => {
 
 <template>
   <div class="flex flex-col gap-2 border rounded-md p-4 shadow-lg/5">
-    <form class="flex flex-col gap-4 max-w-md" @submit.prevent="onSubmit">
+    <form class="flex flex-col gap-8 max-w-md" :class="{ 'opacity-50': isSubmitting }" @submit.prevent="onSubmit">
       <FormFieldLabeled
         name="defaultPaymentMethodId"
         :label="t('contractor.preferences.fields.defaultPaymentMethodId')"
-        disabled
+        :description="t('contractor.preferences.fields.defaultPaymentMethodIdDescription')"
       >
         <PaymentMethodPicker
+          clearable
           :model-value="values.defaultPaymentMethod"
-          disabled
           @update:model-value="setFieldValue('defaultPaymentMethod', $event)"
           @update:id="setFieldValue('defaultPaymentMethodId', $event)"
         />
@@ -64,17 +66,20 @@ const onSubmit = handleSubmit(async (formValues) => {
         :label="t('contractor.preferences.fields.defaultCurrency')"
       >
         <CurrencyPicker
-          :id="values.defaultCurrency"
-          :model-value="{ code: values.defaultCurrency ?? '', name: values.defaultCurrency ?? '', symbol: values.defaultCurrency ?? '' }"
-          @update:model-value="setFieldValue('defaultCurrency', $event?.code ?? '')"
+          clearable
+          :model-value="values.defaultCurrency"
+          @update:model-value="setFieldValue('defaultCurrency', $event)"
+          @update:id="setFieldValue('defaultCurrencyCode', $event)"
         />
       </FormFieldLabeled>
       <FormFieldLabeled
         v-slot="{ componentField }"
         name="defaultLanguage"
         :label="t('contractor.preferences.fields.defaultLanguage')"
+        :description="t('contractor.preferences.fields.defaultLanguageDescription')"
       >
         <InvoiceTemplateLanguagePicker
+          clearable
           :model-value="values.defaultLanguage"
           v-bind="componentField"
         />
@@ -87,12 +92,14 @@ const onSubmit = handleSubmit(async (formValues) => {
         <Input v-bind="componentField" type="number" min="0" />
       </FormFieldLabeled>
       <FormFieldLabeled
-        v-slot="{ componentField }"
         name="defaultTags"
         :label="t('contractor.preferences.fields.defaultTags')"
         disabled
       >
-        <Input v-bind="componentField" :value="Array.isArray(values.defaultTags) ? values.defaultTags.join(', ') : values.defaultTags" />
+        <TagsInputField
+          :model-value="values.defaultTags ?? []"
+          @update:model-value="setFieldValue('defaultTags', $event)"
+        />
       </FormFieldLabeled>
 
       <Button

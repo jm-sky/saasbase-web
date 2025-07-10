@@ -29,6 +29,7 @@ export const financial = {
     createdAt: 'Created At',
     updatedAt: 'Updated At',
     numberingTemplate: 'Numbering Template',
+    mailing: 'Mailing',
     exchange: {
       date: 'Exchange Rate Date',
       rate: 'Exchange Rate',
@@ -49,10 +50,18 @@ export const financial = {
     }
   },
   payment: {
+    title: 'Payment Information',
     fields: {
       method: 'Method',
       status: 'Status',
       dueDate: 'Due Date',
+      reference: 'Reference',
+      terms: 'Terms',
+      notes: 'Payment notes',
+      notesPlaceholder: 'Payment notes',
+      referencePlaceholder: 'Payment reference',
+      termsPlaceholder: 'Payment terms',
+      bankAccount: 'Bank Account Details',
     },
     status: {
       pending: 'Pending',
@@ -81,6 +90,16 @@ export const financial = {
       prepayment: 'Prepayment',
       undefined: '',
       voucher: 'Voucher',
+    },
+    bankAccount: {
+      select: 'Select Bank Account',
+      iban: 'IBAN',
+      ibanPlaceholder: 'IBAN number',
+      ibanInvalid: 'Invalid IBAN',
+      bankName: 'Bank Name',
+      bankNamePlaceholder: 'Bank name',
+      swift: 'SWIFT',
+      swiftPlaceholder: 'SWIFT',
     },
   },
   invoiceType:{

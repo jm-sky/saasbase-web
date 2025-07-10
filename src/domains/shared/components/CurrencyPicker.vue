@@ -3,6 +3,7 @@ import { Check, ChevronsUpDown } from 'lucide-vue-next'
 import { storeToRefs } from 'pinia'
 import { type HTMLAttributes, onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
+import ClearButton from '@/components/Buttons/ClearButton.vue'
 import Button from '@/components/ui/button/Button.vue'
 import {
   Command,
@@ -34,6 +35,7 @@ const props = defineProps<{
   class?: HTMLAttributes['class']
   popoverContentClass?: string
   disabled?: boolean
+  clearable?: boolean
 }>()
 
 const open = ref(false)
@@ -60,6 +62,11 @@ const onSelect = (event: any) => {
   open.value = false
 }
 
+const clear = () => {
+  id.value = undefined
+  modelValue.value = undefined
+}
+
 onMounted(() => {
   if (currencies.value.length === 0) {
     void loadCurrencies()
@@ -69,7 +76,7 @@ onMounted(() => {
 
 <template>
   <Popover v-model:open="open">
-    <PopoverTrigger as-child>
+    <PopoverTrigger as="div" class="relative">
       <Button
         variant="outline"
         role="combobox"
@@ -81,6 +88,7 @@ onMounted(() => {
         {{ modelValue?.code ?? t('shared.currency.select') }}
         <ChevronsUpDown class="ml-2 size-4 shrink-0 opacity-50" />
       </Button>
+      <ClearButton v-if="clearable && modelValue?.code" class="absolute top-0 right-6" @click.stop.capture="clear()" />
     </PopoverTrigger>
     <PopoverContent :class="cn('w-full p-0', popoverContentClass)">
       <Command>

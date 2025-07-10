@@ -12,7 +12,7 @@ import type { IInvoiceCreate } from '@/domains/invoice/types/invoice.type'
 import type { IProductLookup } from '@/domains/product/types/product.type'
 import type { IVatRate } from '@/domains/shared/types/vatRate.type'
 
-const { t } = useI18n()
+const { t, locale} = useI18n()
 const { setFieldValue } = useFormContext<IInvoiceCreate>()
 
 const props = defineProps<{
@@ -21,7 +21,7 @@ const props = defineProps<{
 }>()
 
 // eslint-disable-next-line @typescript-eslint/unbound-method
-const { fields: lines, remove } = useFieldArray<IInvoiceLine>('body.lines')
+const { fields: lines, update, remove } = useFieldArray<IInvoiceLine>('body.lines')
 
 const onProductUpdate = (index: number, product: IProductLookup | undefined) => {
   if (!product) return
@@ -40,10 +40,9 @@ const onProductUpdate = (index: number, product: IProductLookup | undefined) => 
 const onVatRateUpdate = (index: number, vatRate: IVatRate | undefined) => {
   if (!vatRate) return
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  setFieldValue(`body.lines[${index}].vatRate` as any, {
-    rate: vatRate.rate * 100,
-    category: vatRate.name,
+  update(index, {
+    ...lines.value[index].value,
+    vatRate,
   })
   recalculateLine(index)
 }
@@ -113,7 +112,7 @@ const removeLine = (index: number) => {
           <th class="py-2 px-4 text-white bg-primary text-right pr-8">
             {{ t('financial.lines.fields.unitPrice') }}
           </th>
-          <th class="py-2 px-4 text-white bg-primary text-right pr-8">
+          <th class="w-32 py-2 px-4 text-white bg-primary text-right pr-8">
             {{ t('financial.lines.fields.tax') }}
           </th>
           <th class="py-2 px-4 text-white bg-primary text-right pr-8">
@@ -163,20 +162,18 @@ const removeLine = (index: number) => {
           </td>
           <td class="border-b p-2 text-right">
             <VatRatePicker
-              :model-value="(item.value.vatRate as IVatRate)"
+              pick-first
+              :model-value="item.value.vatRate"
               @update:model-value="onVatRateUpdate(index, $event)"
             />
-            <div class="text-sm">
-              {{ item.value.vatRate.name }}
-            </div>
           </td>
           <td class="border-b p-2 text-right">
             <div class="text-right">
               <div class="font-medium">
-                {{ money(item.value.totalGross ?? 0, values.currency, t('locale')) }}
+                {{ money(item.value.totalGross ?? 0, values.currency, locale) }}
               </div>
               <div class="text-xs text-muted-foreground">
-                Net: {{ money(item.value.totalNet ?? 0, values.currency, t('locale')) }}
+                Net: {{ money(item.value.totalNet ?? 0, values.currency, locale) }}
               </div>
             </div>
           </td>

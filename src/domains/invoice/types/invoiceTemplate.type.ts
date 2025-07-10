@@ -1,3 +1,5 @@
+import type { TUUID } from '@/domains/shared/types/common'
+
 export type TemplateCategory =
   | 'invoice'
   | 'quote'
@@ -6,7 +8,7 @@ export type TemplateCategory =
   | 'credit_note'
 
 export interface IInvoiceTemplatePreview {
-  id: string
+  id: TUUID
   name: string
   description?: string
   category: TemplateCategory
@@ -17,8 +19,8 @@ export interface IInvoiceTemplatePreview {
 }
 
 export interface IInvoiceTemplate {
-  id: string
-  tenantId?: string
+  id: TUUID
+  tenantId?: TUUID
   userId?: string
   name: string
   description?: string

@@ -198,7 +198,7 @@ watch(filters, () => refresh(), { deep: true })
           </template>
           <template #actions-header>
             <div class="w-full text-right">
-              {{ t('actions', 'Actions') }}
+              {{ t('common.actions', 'Actions') }}
             </div>
           </template>
         </DataTable>

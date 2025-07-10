@@ -7,10 +7,11 @@ import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import InvoiceTemplateLanguagePicker from '@/domains/invoice/components/invoiceTemplates/InvoiceTemplateLanguagePicker.vue'
 import InvoiceTemplatePicker from '@/domains/invoice/components/pickers/InvoiceTemplatePicker.vue'
 import type { IContractorPreferences } from '@/domains/contractor/types/contractor.type'
 import type { IInvoiceCreate } from '@/domains/invoice/types/invoice.type'
+import type { IInvoiceTemplatePreview } from '@/domains/invoice/types/invoiceTemplate.type'
 
 const { t, locale } = useI18n()
 const { setFieldValue } = useFormContext<IInvoiceCreate>()
@@ -19,10 +20,14 @@ const props = defineProps<{
   values: IInvoiceCreate
 }>()
 
-const languages = [
-  { value: 'en', label: 'English' },
-  { value: 'pl', label: 'Polski' },
-]
+const invoiceTemplatePreview = ref<IInvoiceTemplatePreview | undefined>({
+  id: props.values.options.template ?? '',
+  name: props.values.options.template ?? '',
+  category: 'invoice',
+  isActive: true,
+  isDefault: false,
+  isSystem: false,
+})
 
 // Smart language defaulting
 const getDefaultLanguage = () => {
@@ -75,23 +80,17 @@ const onSendEmailChange = (checked: boolean) => {
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
       <FormFieldLabeled name="options.language" :label="t('financial.options.language', 'Language')">
-        <Select :model-value="values.options.language" @update:model-value="(value) => setFieldValue('options.language', String(value))">
-          <SelectTrigger>
-            <SelectValue :placeholder="t('financial.options.selectLanguage', 'Select language')" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem v-for="lang in languages" :key="lang.value" :value="lang.value">
-              {{ lang.label }}
-            </SelectItem>
-          </SelectContent>
-        </Select>
+        <InvoiceTemplateLanguagePicker
+          :model-value="values.options.language"
+          @update:model-value="(value) => setFieldValue('options.language', value)"
+        />
       </FormFieldLabeled>
 
       <FormFieldLabeled name="options.template" :label="t('financial.options.template', 'Template')">
         <InvoiceTemplatePicker
-          :model-value="{ id: values.options.template, name: values.options.template, category: 'invoice', isActive: true, isDefault: false, isSystem: false }"
+          v-model="invoiceTemplatePreview"
           class="w-full"
-          @update:model-value="(value) => setFieldValue('options.template', String(value?.id || value || ''))"
+          @update:model-value="(value) => setFieldValue('options.template', value?.name)"
         />
       </FormFieldLabeled>
     </div>
@@ -100,8 +99,8 @@ const onSendEmailChange = (checked: boolean) => {
     <div class="space-y-4">
       <div class="flex items-center space-x-2">
         <Checkbox
-          :checked="values.options.sendEmail"
-          @update:checked="onSendEmailChange"
+          :model-value="values.options.sendEmail"
+          @update:model-value="(value) => onSendEmailChange(value as boolean)"
         />
         <Label for="sendEmail">
           {{ t('financial.options.sendEmail', 'Send email notification') }}

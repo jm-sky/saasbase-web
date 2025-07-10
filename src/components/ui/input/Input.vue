@@ -6,10 +6,10 @@ import type { HTMLAttributes } from 'vue'
 
 const props = defineProps<{
   variant?: 'default' | 'filled'
-
   defaultValue?: string | number
   modelValue?: string | number
   class?: HTMLAttributes['class']
+  error?: boolean
 }>()
 
 const emits = defineEmits<(e: 'update:modelValue', payload: string | number) => void>()
@@ -24,6 +24,6 @@ const modelValue = useVModel(props, 'modelValue', emits, {
   <input
     v-model="modelValue"
     data-slot="input"
-    :class="cn(inputVariants({ variant }), props.class)"
+    :class="cn(inputVariants({ variant }), props.class, { 'border-destructive': error })"
   >
 </template>

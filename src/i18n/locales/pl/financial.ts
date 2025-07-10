@@ -29,6 +29,7 @@ export const financial = {
     createdAt: 'Data utworzenia',
     updatedAt: 'Data aktualizacji',
     numberingTemplate: 'Szablon numeracji',
+    mailing: 'Mailing',
     exchange: {
       date: 'Data kursu wymiany',
       rate: 'Kurs wymiany',
@@ -49,10 +50,18 @@ export const financial = {
     }
   },
   payment: {
+    title: 'Informacje o płatności',
     fields: {
       method: 'Metoda',
       status: 'Status',
       dueDate: 'Termin płatności',
+      reference: 'Referencja',
+      terms: 'Terminy',
+      notes: 'Uwagi do płatności',
+      notesPlaceholder: 'Uwagi do płatności',
+      referencePlaceholder: 'Referencja płatności',
+      termsPlaceholder: 'Terminy płatności',
+      bankAccount: 'Szczegóły konta bankowego',
     },
     status: {
       pending: 'Oczekuje',
@@ -81,6 +90,16 @@ export const financial = {
       paidByBankTransfer: 'Zapłacono przelewem bankowym',
       other: 'Inna',
       undefined: '',
+    },
+    bankAccount: {
+      select: 'Wybierz konto bankowe',
+      iban: 'IBAN',
+      ibanPlaceholder: 'Numer IBAN',
+      ibanInvalid: 'Nieprawidłowy IBAN',
+      bankName: 'Nazwa banku',
+      bankNamePlaceholder: 'Nazwa banku',
+      swift: 'SWIFT',
+      swiftPlaceholder: 'SWIFT',
     },
   },
   invoiceType:{

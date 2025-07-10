@@ -17,20 +17,20 @@ const emit = defineEmits<{
   change: [template: IInvoiceTemplate | undefined]
 }>()
 
-const selectedTemplateId = defineModel<string | undefined>('selectedTemplateId')
+const selectedTemplateId = defineModel<string | null | undefined>('selectedTemplateId')
 
 const selectedTemplate = computed(() => props.invoiceTemplates.find(template => template.id === selectedTemplateId.value))
 const systemTemplates = computed(() => props.invoiceTemplates.filter(template => template.isSystem))
 const userTemplates = computed(() => props.invoiceTemplates.filter(template => !template.isSystem))
 
-const handleChange = (value: string | undefined) => {
+const handleChange = (value: string | null | undefined) => {
   const template = props.invoiceTemplates.find(template => template.id === value)
   emit('change', template ?? undefined)
 }
 </script>
 
 <template>
-  <Select v-model="selectedTemplateId" @update:model-value="handleChange">
+  <Select v-model="selectedTemplateId" @update:model-value="event => handleChange(event as string | null | undefined)">
     <SelectTrigger
       :aria-label="t('tenant.invoiceTemplates.editor.selectTemplate')"
       :class="cn('flex items-center gap-2 [&>span]:line-clamp-1 [&>span]:flex [&>span]:w-full [&>span]:items-center [&>span]:gap-1 [&>span]:truncate [&_svg]:h-4 [&_svg]:w-4 [&_svg]:shrink-0')"

@@ -76,12 +76,15 @@ export const contractor = {
     success: 'Preferences updated successfully',
     error: 'Could not update preferences',
     fields: {
+      defaultPaymentMethod: 'Default payment method',
       defaultPaymentMethodId: 'Default payment method',
+      defaultPaymentMethodIdDescription: 'Default payment method for the contractor used in invoices.',
       defaultCurrency: 'Default currency',
+      defaultCurrencyCode: 'Default currency',
       defaultLanguage: 'Default language',
+      defaultLanguageDescription: 'Default language for the contractor used in invoices.',
       defaultPaymentDays: 'Default payment days',
       defaultTags: 'Default tags',
-      defaultPaymentMethod: 'Default payment method',
     },
   },
 }

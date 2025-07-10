@@ -65,6 +65,8 @@ export const shared = {
     select: 'Wybierz produkt',
     search: 'Szukaj produktu',
     notFound: 'Nie znaleziono produktów',
+    recent: 'Ostatnie',
+    all: 'Wszystkie',
   },
   vatRate: {
     select: 'Wybierz stawkę VAT',

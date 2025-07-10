@@ -2,6 +2,7 @@
 import { useI18n } from 'vue-i18n'
 import AvatarUploader from '@/components/Inputs/AvatarUploader.vue'
 import InfoSection from '@/components/Sections/InfoSection.vue'
+import Badge from '@/components/ui/badge/Badge.vue'
 import Separator from '@/components/ui/separator/Separator.vue'
 import { config } from '@/config'
 import { productLogoService } from '@/domains/product/services/ProductLogoService'
@@ -48,6 +49,13 @@ const emit = defineEmits<{
     <InfoSection :label="t('product.fields.unit')" :value="product?.unit?.name" />
     <InfoSection :label="t('product.fields.priceNet')" :value="money(product?.priceNet ?? 0, config.defaults.currency, locale)" />
     <InfoSection :label="t('product.fields.vatRate')" :value="product?.vatRate?.name" />
+    <InfoSection :label="t('product.fields.pkwiuCode')" :value="product?.pkwiuCode" />
+    <InfoSection :label="t('product.fields.ean')" :value="product?.ean" />
+    <InfoSection :label="t('product.fields.gtuCodes')">
+      <Badge v-for="code in product?.gtuCodes ?? []" :key="code" variant="outline">
+        {{ code }}
+      </Badge>
+    </InfoSection>
     <InfoSection :label="t('product.fields.tags')">
       <TagList
         v-if="product && disabled"

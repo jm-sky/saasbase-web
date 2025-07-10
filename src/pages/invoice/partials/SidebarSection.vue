@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ChevronDown, ChevronUp } from 'lucide-vue-next'
 import { ref } from 'vue'
+import Button from '@/components/ui/button/Button.vue'
 
 defineProps<{
   title: string

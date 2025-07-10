@@ -17,7 +17,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover'
-import { formatIBAN } from '@/lib/formatIBAN'
+import { formatIBAN, getIbanWithCountryCode } from '@/lib/formatIBAN'
 import { cn } from '@/lib/utils'
 import type { ITenantBankAccount } from '../types/tenant.type'
 import { tenantBankAccountsService } from '../services/TenantBankAccountsService'
@@ -57,7 +57,10 @@ const loadBankAccounts = async () => {
 }
 
 const filteredBankAccounts = computed(() => {
-  return bankAccounts.value
+  return bankAccounts.value.map((account) => ({
+    ...account,
+    iban: getIbanWithCountryCode(account.iban, account.country),
+  }))
 })
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

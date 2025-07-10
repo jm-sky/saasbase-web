@@ -20,6 +20,9 @@ export interface IProduct {
   unit?: IMeasurementUnit
   vatRate?: IVatRate
   tags: ITagPreview[]
+  pkwiuCode?: string
+  ean?: string
+  gtuCodes?: string[]
   createdAt: TDateTime
   updatedAt: TDateTime
 }
@@ -51,6 +54,9 @@ export interface IProductCreate {
   unit?: IMeasurementUnit
   vatRateId?: string
   vatRate?: IVatRate
+  pkwiuCode?: string
+  ean?: string
+  gtuCodes?: string[]
   logo?: File
 }
 
@@ -64,6 +70,9 @@ export interface IProductUpdate {
   unit?: IMeasurementUnit
   vatRateId?: string
   vatRate?: IVatRate
+  pkwiuCode?: string
+  ean?: string
+  gtuCodes?: string[]
   logo?: File
 }
 

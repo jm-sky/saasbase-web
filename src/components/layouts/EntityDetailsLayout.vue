@@ -65,7 +65,7 @@ const emit = defineEmits<{
       :class="{ 'opacity-50': loading, 'lg:grid-cols-[15rem_1fr] xl:grid-cols-[20rem_1fr] ': showSidebar }"
     >
       <!-- Sidebar -->
-      <div v-if="showSidebar" class="flex flex-col text-center gap-2 border rounded-md p-4 shadow-lg/5">
+      <div v-if="showSidebar" class="flex flex-col text-center gap-2 border rounded-md px-6 py-4 shadow-lg/5">
         <slot name="sidebar" />
       </div>
 

@@ -19,6 +19,7 @@ export const buttonVariants = cva(
           'hover:bg-sky-300/20 hover:text-primary dark:hover:bg-primary/50',
         'ghost-destructive':
           'hover:bg-destructive/2 hover:text-destructive',
+        transparent: 'bg-transparent text-foreground/50 hover:text-foreground',
         link: 'text-primary underline-offset-4 hover:underline',
       },
       size: {

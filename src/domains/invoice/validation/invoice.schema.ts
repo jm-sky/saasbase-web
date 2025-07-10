@@ -1,4 +1,5 @@
 import { z } from 'zod'
+import { approvalStatuses, deliveryStatuses, invoiceAllocationStatuses, invoiceOcrStatuses, invoiceStatuses, invoiceTypes, paymentStatuses } from '@/domains/financial/data/statuses'
 
 // Base schemas
 const contractorSchema = z.object({
@@ -13,12 +14,14 @@ const contractorSchema = z.object({
 })
 
 const vatRateSchema = z.object({
+  id: z.string().min(1, 'VAT rate is required'),
   rate: z.number().min(0).max(100),
-  category: z.string().max(50).optional(),
+  name: z.string().max(255).optional(),
+  type: z.string().max(255).optional(),
 })
 
 const invoiceLineSchema = z.object({
-  id: z.string().max(255),
+  id: z.string().optional(),
   description: z.string().max(1000).optional(),
   quantity: z.number().min(0),
   unitPrice: z.number().min(0),
@@ -30,13 +33,6 @@ const invoiceLineSchema = z.object({
   gtuCodes: z.array(z.string().max(10)).optional(),
 })
 
-const vatSummarySchema = z.object({
-  vatRate: vatRateSchema,
-  net: z.number().min(0),
-  vat: z.number().min(0),
-  gross: z.number().min(0),
-})
-
 const exchangeSchema = z.object({
   currency: z.string().length(3),
   exchangeRate: z.number().min(0).optional(),
@@ -45,7 +41,6 @@ const exchangeSchema = z.object({
 
 const bodySchema = z.object({
   lines: z.array(invoiceLineSchema).min(1, 'At least one line item is required'),
-  vatSummary: z.array(vatSummarySchema),
   exchange: exchangeSchema,
   description: z.string().max(2000).optional(),
 })
@@ -57,12 +52,18 @@ const bankAccountSchema = z.object({
   address: z.string().max(500).optional(),
 })
 
+const paymentMethodSchema = z.object({
+  id: z.string().max(255).optional(),
+  name: z.string().max(255).optional(),
+  paymentDays: z.number().min(0).optional(),
+})
+
 const paymentSchema = z.object({
-  status: z.enum(['PENDING', 'PAID', 'OVERDUE', 'CANCELLED']),
-  dueDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).optional(),
-  paidDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).optional(),
+  status: z.enum(['pending', 'paid', 'partiallyPaid', 'overdue', 'cancelled']),
+  dueDate: z.string().optional(),
+  paidDate: z.string().optional(),
   paidAmount: z.number().min(0).optional(),
-  method: z.string().max(255).optional(),
+  method: paymentMethodSchema,
   reference: z.string().max(255).optional(),
   terms: z.string().max(500).optional(),
   notes: z.string().max(1000).optional(),
@@ -70,12 +71,12 @@ const paymentSchema = z.object({
 })
 
 const statusInfoSchema = z.object({
-  general: z.enum(['DRAFT', 'SENT', 'PAID', 'CANCELLED', 'OVERDUE']).optional(),
-  ocr: z.enum(['PENDING', 'PROCESSING', 'COMPLETED', 'FAILED']).optional(),
-  allocation: z.enum(['PENDING', 'ALLOCATED', 'PARTIALLY_ALLOCATED']).optional(),
-  approval: z.enum(['PENDING', 'APPROVED', 'REJECTED', 'CANCELLED']).optional(),
-  delivery: z.enum(['PENDING', 'DELIVERED', 'FAILED']).optional(),
-  payment: z.enum(['PENDING', 'PAID', 'OVERDUE', 'CANCELLED']).optional(),
+  general: z.enum(invoiceStatuses as [string, ...string[]]).optional(),
+  ocr: z.enum(invoiceOcrStatuses as [string, ...string[]]).optional(),
+  allocation: z.enum(invoiceAllocationStatuses as [string, ...string[]]).optional(),
+  approval: z.enum(approvalStatuses as [string, ...string[]]).optional(),
+  delivery: z.enum(deliveryStatuses as [string, ...string[]]).optional(),
+  payment: z.enum(paymentStatuses as [string, ...string[]]).optional(),
 })
 
 const optionsSchema = z.object({
@@ -87,8 +88,8 @@ const optionsSchema = z.object({
 
 // Main invoice creation schema
 export const invoiceCreateSchema = z.object({
-  type: z.enum(['IN', 'OUT']),
-  issueDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+  type: z.enum(invoiceTypes as [string, ...string[]]),
+  issueDate: z.string(),
   status: z.string().optional(),
   statusInfo: statusInfoSchema.optional(),
   number: z.string().max(255),
@@ -116,7 +117,6 @@ export {
   paymentSchema,
   statusInfoSchema,
   vatRateSchema,
-  vatSummarySchema,
 }
 
 export type TInvoiceCreateSchema = z.infer<typeof invoiceCreateSchema>

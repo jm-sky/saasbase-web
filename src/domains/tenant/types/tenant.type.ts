@@ -29,6 +29,7 @@ export interface ITenantBankAccount extends IBankAccount {
   bankName?: string
   iban: string
   currency?: string
+  country?: string
   isDefault: boolean
   description?: string
   createdAt: TDateTime

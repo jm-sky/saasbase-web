@@ -22,6 +22,7 @@ export default {
   add: {
     title: 'Add expense',
     description: 'Add a new expense to the system',
+    submit: 'Save Expense',
     success: 'Expense added successfully',
     error: 'Failed to add expense',
   },

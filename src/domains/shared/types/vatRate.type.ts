@@ -1,5 +1,3 @@
-import type { TDateTime } from './common'
-
 export type TVatRateType =
   | 'percentage'
   | 'zero_percent'
@@ -13,6 +11,5 @@ export interface IVatRate {
   name: string
   rate: number
   type: TVatRateType
-  country: string
-  createdAt: TDateTime
+  country?: string
 }

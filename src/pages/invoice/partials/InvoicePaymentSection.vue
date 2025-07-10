@@ -5,6 +5,7 @@ import { useI18n } from 'vue-i18n'
 import FormFieldLabeled from '@/components/Form/FormFieldLabeled.vue'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
+import { config } from '@/config'
 import TenantBankAccountPicker from '@/domains/tenant/components/TenantBankAccountPicker.vue'
 import { useTenant } from '@/domains/tenant/composables/useTenant'
 import { formatIBAN, isValidIBANFormat } from '@/lib/formatIBAN'
@@ -38,9 +39,10 @@ const onBankAccountSelect = (bankAccount: ITenantBankAccount | undefined) => {
   selectedBankAccount.value = bankAccount
   if (!bankAccount) return
 
-  setFieldValue('payment.bankAccount.name', bankAccount.bankName)
   setFieldValue('payment.bankAccount.iban', bankAccount.iban)
   setFieldValue('payment.bankAccount.swift', bankAccount.swift)
+  setFieldValue('payment.bankAccount.bankName', bankAccount.bankName)
+  setFieldValue('payment.bankAccount.country', bankAccount.country)
 }
 
 const displayIBAN = computed(() => {
@@ -49,7 +51,7 @@ const displayIBAN = computed(() => {
 
 const isIBANValid = computed(() => {
   const iban = props.values.payment.bankAccount?.iban
-  return !iban || isValidIBANFormat(iban)
+  return !iban || isValidIBANFormat(iban, props.values.payment.bankAccount?.country ?? config.defaults.country)
 })
 </script>
 
@@ -59,10 +61,10 @@ const isIBANValid = computed(() => {
       {{ t('financial.payment.title', 'Payment Information') }}
     </div>
 
-    <FormFieldLabeled name="payment.notes" :label="t('financial.payment.notes', 'Notes')">
+    <FormFieldLabeled name="payment.notes" :label="t('financial.payment.fields.notes', 'Notes')">
       <Textarea
         :model-value="values.payment.notes"
-        :placeholder="t('financial.payment.notesPlaceholder', 'Additional payment notes')"
+        :placeholder="t('financial.payment.fields.notesPlaceholder', 'Additional payment notes')"
         @update:model-value="(value) => setFieldValue('payment.notes', String(value))"
       />
     </FormFieldLabeled>
@@ -70,7 +72,7 @@ const isIBANValid = computed(() => {
     <!-- Bank Account Section -->
     <div class="space-y-4 p-4 border rounded-lg bg-muted/50">
       <div class="font-medium">
-        {{ t('financial.payment.bankAccount', 'Bank Account Details') }}
+        {{ t('financial.payment.fields.bankAccount', 'Bank Account Details') }}
       </div>
 
       <FormFieldLabeled name="payment.bankAccount" :label="t('financial.payment.bankAccount.select', 'Select Bank Account')">
@@ -81,11 +83,11 @@ const isIBANValid = computed(() => {
       </FormFieldLabeled>
 
       <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <FormFieldLabeled name="payment.bankAccount.name" :label="t('financial.payment.bankAccount.name', 'Account Name')">
+        <FormFieldLabeled name="payment.bankAccount.bankName" :label="t('financial.payment.bankAccount.bankName', 'Bank Name')">
           <Input
-            :model-value="values.payment.bankAccount?.name"
-            :placeholder="t('financial.payment.bankAccount.namePlaceholder', 'Account holder name')"
-            @update:model-value="(value) => setFieldValue('payment.bankAccount.name', String(value))"
+            :model-value="values.payment.bankAccount?.bankName"
+            :placeholder="t('financial.payment.bankAccount.bankNamePlaceholder', 'Account holder name')"
+            @update:model-value="(value) => setFieldValue('payment.bankAccount.bankName', String(value))"
           />
         </FormFieldLabeled>
 
@@ -93,10 +95,10 @@ const isIBANValid = computed(() => {
           <Input
             :model-value="displayIBAN"
             :placeholder="t('financial.payment.bankAccount.ibanPlaceholder', 'IBAN number')"
-            :class="{ 'border-red-500': !isIBANValid }"
+            :error="!isIBANValid"
             @update:model-value="(value) => setFieldValue('payment.bankAccount.iban', String(value))"
           />
-          <div v-if="!isIBANValid" class="text-xs text-red-600 mt-1">
+          <div v-if="!isIBANValid" class="text-xs text-destructive mt-1">
             {{ t('financial.payment.bankAccount.ibanInvalid', 'Invalid IBAN format') }}
           </div>
         </FormFieldLabeled>

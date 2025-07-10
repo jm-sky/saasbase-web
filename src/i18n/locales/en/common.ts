@@ -50,7 +50,9 @@ export const common = {
   },
   language: {
     en: 'English',
-    pl: 'Polish'
+    pl: 'Polish',
+    uk: 'Ukrainian',
+    ru: 'Russian',
   },
   fileUpload: {
     upload: 'Upload',
@@ -83,5 +85,8 @@ export const common = {
     communication: 'Communication',
     configurations: 'Configurations',
     other: 'Other',
-  }
+  },
+  form: {
+    validationErrors: 'Validation errors',
+  },
 }

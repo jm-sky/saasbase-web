@@ -109,15 +109,13 @@ const useAuthProviders = computed<boolean>(() => Object.values(config.auth.provi
 
         <div class="flex flex-row gap-3 items-center justify-between text-sm mb-4">
           <FormFieldLabeledAfter
-            v-slot="{ componentField }"
             name="remember"
             :label="t('auth.rememberMe')"
           >
             <Checkbox
-              v-bind="componentField"
               class="transition-shadow"
-              :checked="values.remember"
-              @update:checked="(checked) => setFieldValue('remember', checked)"
+              :model-value="values.remember"
+              @update:model-value="(value) => setFieldValue('remember', value as boolean)"
             />
           </FormFieldLabeledAfter>
 

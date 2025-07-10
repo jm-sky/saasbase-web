@@ -60,21 +60,21 @@ const { isSubmitting, handleSubmit, values, setErrors, setFieldValue, resetForm,
       contractorId: undefined,
       contractorType: 'company',
       name: tenant.value?.name ?? 'DEMO COMPANY',
-      taxId: tenant.value?.taxId ?? '',
+      taxId: tenant.value?.taxId ?? undefined,
       address: tenantBillingAddress.value?.street ?? 'OUR ADDRESS',
       country: tenant.value?.country ?? 'PL',
       iban: '',
-      email: tenant.value?.email ?? '',
+      email: tenant.value?.email ?? undefined,
     },
     buyer: {
       contractorId: undefined,
       contractorType: 'company',
       name: 'DEMO BUYER',
-      taxId: '',
+      taxId: undefined,
       address: 'Random street 123',
       country: 'PL',
-      iban: '',
-      email: '',
+      iban: undefined,
+      email: undefined,
     },
     body: {
       lines: [],
@@ -87,24 +87,24 @@ const { isSubmitting, handleSubmit, values, setErrors, setFieldValue, resetForm,
     },
     payment: {
       status: 'pending',
-      dueDate: '',
+      dueDate: undefined,
       method: {
-        id: '',
+        id: undefined,
         name: 'Bank Transfer',
         paymentDays: 0,
       },
-      reference: '',
-      terms: '',
+      reference: undefined,
+      terms: undefined,
       bankAccount: {
-        name: '',
-        iban: '',
-        swift: '',
-        address: '',
+        bankName: undefined,
+        iban: undefined,
+        swift: undefined,
+        country: undefined,
       },
     },
     options: {
       language: 'en',
-      template: '',
+      template: undefined,
       sendEmail: false,
       emailTo: [],
     },
@@ -142,17 +142,17 @@ onMounted(async () => {
   const defaultBankAccount = await loadTenantDefaultBankAccount()
 
   setFieldValue('seller.name', tenant.value.name)
-  setFieldValue('seller.taxId', tenant.value.taxId ?? tenant.value.vatId ?? '')
+  setFieldValue('seller.taxId', tenant.value.taxId ?? tenant.value.vatId ?? undefined)
   setFieldValue('seller.address', tenantBillingAddress.value?.street ? fullAddress(tenantBillingAddress.value) : 'OUR ADDRESS')
   setFieldValue('seller.country', tenant.value.country ?? 'PL')
-  setFieldValue('seller.email', tenant.value.email ?? '')
+  setFieldValue('seller.email', tenant.value.email ?? undefined)
 
   // Initialize bank account from tenant default
   if (defaultBankAccount) {
-    setFieldValue('payment.bankAccount.name', defaultBankAccount.bankName ?? tenant.value.name)
     setFieldValue('payment.bankAccount.iban', defaultBankAccount.iban)
-    setFieldValue('payment.bankAccount.swift', defaultBankAccount.swift ?? '')
-    // Bank address is kept in payload but not shown in form
+    setFieldValue('payment.bankAccount.swift', defaultBankAccount.swift ?? undefined)
+    setFieldValue('payment.bankAccount.bankName', defaultBankAccount.bankName)
+    setFieldValue('payment.bankAccount.country', defaultBankAccount.country)
   }
 
   addLine()
