@@ -7,6 +7,7 @@ import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
 import FormFieldLabeled from '@/components/Form/FormFieldLabeled.vue'
 import DatePicker from '@/components/Inputs/DatePicker.vue'
+import EntityDetailsHeader from '@/components/layouts/EntityDetailsHeader.vue'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import Button from '@/components/ui/button/Button.vue'
 import Separator from '@/components/ui/separator/Separator.vue'
@@ -62,7 +63,7 @@ const { isSubmitting, handleSubmit, values, setErrors, setFieldValue, resetForm,
       name: tenant.value?.name ?? 'DEMO COMPANY',
       taxId: tenant.value?.taxId ?? undefined,
       address: tenantBillingAddress.value?.street ?? 'OUR ADDRESS',
-      country: tenant.value?.country ?? 'PL',
+      country: tenant.value?.country ?? config.defaults.country,
       iban: '',
       email: tenant.value?.email ?? undefined,
     },
@@ -72,7 +73,7 @@ const { isSubmitting, handleSubmit, values, setErrors, setFieldValue, resetForm,
       name: 'DEMO BUYER',
       taxId: undefined,
       address: 'Random street 123',
-      country: 'PL',
+      country: config.defaults.country,
       iban: undefined,
       email: undefined,
     },
@@ -80,7 +81,7 @@ const { isSubmitting, handleSubmit, values, setErrors, setFieldValue, resetForm,
       lines: [],
       vatSummary: [],
       exchange: {
-        currency: 'PLN',
+        currency: config.defaults.currency,
         exchangeRate: 1,
         date: issueDate.value,
       },
@@ -91,7 +92,7 @@ const { isSubmitting, handleSubmit, values, setErrors, setFieldValue, resetForm,
       method: {
         id: undefined,
         name: 'Bank Transfer',
-        paymentDays: 0,
+        paymentDays: config.defaults.paymentDays,
       },
       reference: undefined,
       terms: undefined,
@@ -216,20 +217,12 @@ const formErrors = computed(() => {
 
 <template>
   <AuthenticatedLayout>
-    <div class="px-4 md:px-6 py-4 md:py-6 flex flex-col gap-y-6" data-testid="entity-details-layout">
-      <div class="flex flex-row gap-4 items-center justify-between">
-        <div>
-          <div class="font-bold">
-            {{ t('invoice.add.title') }}
-          </div>
-          <div class="text-sm text-muted-foreground">
-            <RouterLink :to="'/invoices'">
-              {{ t('invoice.title') }}
-            </RouterLink>
-          </div>
-        </div>
-      </div>
-    </div>
+    <EntityDetailsHeader
+      :title="t('invoice.add.title')"
+      :back-link-text="t('invoice.title')"
+      back-link="/invoices"
+      padded
+    />
 
     <div class="flex flex-row gap-8 lg:mx-6">
       <form class="w-full lg:w-7xl mx-auto p-2 sm:p-4 md:p-8 border shadow-xl/30" @submit.prevent="onSubmit">

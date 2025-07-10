@@ -8,6 +8,13 @@ export default {
     error: 'Failed to add invoice',
     submit: 'Save Invoice',
   },
+  edit: {
+    title: 'Edit invoice',
+    description: 'Edit an existing invoice',
+    success: 'Invoice updated successfully',
+    error: 'Failed to update invoice',
+    submit: 'Save Invoice',
+  },
   show: {
     title: 'Invoice',
   },
@@ -89,7 +96,7 @@ export default {
   numberingTemplate: {
     title: 'Numbering Templates',
     subtitle: 'Manage invoice numbering templates for different invoice types',
-    
+
     groups: {
       basic: 'Basic Invoices',
       advancePayment: 'Advance Payment',
@@ -100,7 +107,7 @@ export default {
       import: 'Import',
       proforma: 'Proforma',
     },
-    
+
     types: {
       'basic': 'Basic Invoice',
       'basic-correction': 'Basic Correction',
@@ -118,7 +125,7 @@ export default {
       'import': 'Import Invoice',
       'import-correction': 'Import Correction',
     },
-    
+
     form: {
       name: 'Template Name',
       namePlaceholder: 'Enter template name',
@@ -132,13 +139,13 @@ export default {
       prefixPlaceholder: 'Optional prefix',
       suffixPlaceholder: 'Optional suffix',
     },
-    
+
     resetPeriods: {
       monthly: 'Monthly',
       yearly: 'Yearly',
       never: 'Never',
     },
-    
+
     formatBuilder: {
       title: 'Format Builder',
       palette: 'Drag elements to build format',
@@ -153,7 +160,7 @@ export default {
         text: 'Custom Text',
       },
     },
-    
+
     actions: {
       add: 'Add Template',
       edit: 'Edit Template',
@@ -162,7 +169,7 @@ export default {
       clone: 'Clone Template',
       save: 'Save',
       cancel: 'Cancel',
-      
+
       create: {
         success: 'Template created successfully',
         error: 'Failed to create template',
@@ -182,7 +189,7 @@ export default {
         error: 'Failed to set default template',
       },
     },
-    
+
     validation: {
       nameRequired: 'Template name is required',
       nameMinLength: 'Template name must be at least 3 characters',
@@ -193,7 +200,7 @@ export default {
       nextNumberRequired: 'Next number is required',
       nextNumberInt: 'Next number must be a whole number',
     },
-    
+
     states: {
       noTemplates: 'No templates found',
       addFirstTemplate: 'Add your first template',

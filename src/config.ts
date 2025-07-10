@@ -21,6 +21,7 @@ export const config = {
     country: import.meta.env.VITE_DEFAULTS_COUNTRY ?? 'PL',
     language: import.meta.env.VITE_DEFAULTS_LANGUAGE ?? 'pl',
     currency: import.meta.env.VITE_DEFAULTS_CURRENCY ?? 'PLN',
+    paymentDays: 14,
   },
   pusher: {
     appKey: import.meta.env.VITE_PUSHER_APP_KEY ?? 'saasbase-key',

@@ -3,7 +3,7 @@ import { ArrowDown, FileDown } from 'lucide-vue-next'
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import LoadingIcon from '@/components/Icons/LoadingIcon.vue'
-import { Button } from '@/components/ui/button'
+import { Button, type ButtonVariants } from '@/components/ui/button'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -20,9 +20,10 @@ import GenerateInvoicePdfModal from '../modals/GenerateInvoicePdfModal.vue'
 const { t } = useI18n()
 const { toast } = useToast()
 
-const props = defineProps<{
+const { size = 'sm', variant = 'button', invoice, invoices } = defineProps<{
   invoice?: IInvoice | null
   invoices?: IInvoice[]
+  size?: ButtonVariants['size']
   variant?: 'button' | 'menu-item'
 }>()
 
@@ -40,10 +41,10 @@ const invoiceOptions = {
 }
 
 const generatePdf = async (type: 'original' | 'duplicate') => {
-  if (!props.invoice?.id) return
+  if (!invoice?.id) return
   loading.value = true
   try {
-    await invoiceService.generatePdf(props.invoice.id, invoiceOptions)
+    await invoiceService.generatePdf(invoice.id, invoiceOptions)
     toast.success(t(`invoice.actions.generatePdf.${type}.success`, `${type} PDF generated successfully`))
     emit('done', type)
   } catch (error) {
@@ -58,11 +59,11 @@ const generatePdf = async (type: 'original' | 'duplicate') => {
 
 <template>
   <DropdownMenu>
-    <DropdownMenuTrigger as="div" class="border rounded-md">
+    <DropdownMenuTrigger as="div" class="border flex flex-row rounded-md">
       <template v-if="variant === 'button'">
         <Button
           variant="ghost"
-          size="sm"
+          :size="size"
           type="button"
           class="rounded-r-none border-r-1"
           :disabled="loading || (!invoice && !invoices?.length)"
@@ -74,7 +75,7 @@ const generatePdf = async (type: 'original' | 'duplicate') => {
         </Button>
         <Button
           variant="ghost"
-          size="sm"
+          :size="size"
           class="rounded-l-none"
           :disabled="loading || (!invoice && !invoices?.length)"
         >

@@ -8,6 +8,13 @@ export default {
     error: 'Nie udało się dodać faktury',
     submit: 'Zapisz fakturę',
   },
+  edit: {
+    title: 'Edycja faktury',
+    description: 'Edytuj istniejącą fakturę',
+    success: 'Faktura zaktualizowana pomyślnie',
+    error: 'Nie udało się zaktualizować faktury',
+    submit: 'Zapisz fakturę',
+  },
   show: {
     title: 'Faktura',
   },
@@ -89,7 +96,7 @@ export default {
   numberingTemplate: {
     title: 'Szablony numeracji',
     subtitle: 'Zarządzaj szablonami numeracji faktur dla różnych typów faktur',
-    
+
     groups: {
       basic: 'Faktury podstawowe',
       advancePayment: 'Faktury zaliczkowe',
@@ -100,7 +107,7 @@ export default {
       import: 'Import',
       proforma: 'Proforma',
     },
-    
+
     types: {
       'basic': 'Faktura podstawowa',
       'basic-correction': 'Korekta podstawowa',
@@ -118,7 +125,7 @@ export default {
       'import': 'Faktura importowa',
       'import-correction': 'Korekta importowa',
     },
-    
+
     form: {
       name: 'Nazwa szablonu',
       namePlaceholder: 'Wprowadź nazwę szablonu',
@@ -132,13 +139,13 @@ export default {
       prefixPlaceholder: 'Opcjonalny prefiks',
       suffixPlaceholder: 'Opcjonalny sufiks',
     },
-    
+
     resetPeriods: {
       monthly: 'Miesięcznie',
       yearly: 'Rocznie',
       never: 'Nigdy',
     },
-    
+
     formatBuilder: {
       title: 'Kreator formatu',
       palette: 'Przeciągnij elementy aby zbudować format',
@@ -153,7 +160,7 @@ export default {
         text: 'Tekst niestandardowy',
       },
     },
-    
+
     actions: {
       add: 'Dodaj szablon',
       edit: 'Edytuj szablon',
@@ -162,7 +169,7 @@ export default {
       clone: 'Sklonuj szablon',
       save: 'Zapisz',
       cancel: 'Anuluj',
-      
+
       create: {
         success: 'Szablon utworzony pomyślnie',
         error: 'Nie udało się utworzyć szablonu',
@@ -182,7 +189,7 @@ export default {
         error: 'Nie udało się ustawić domyślnego szablonu',
       },
     },
-    
+
     validation: {
       nameRequired: 'Nazwa szablonu jest wymagana',
       nameMinLength: 'Nazwa szablonu musi mieć co najmniej 3 znaki',
@@ -193,7 +200,7 @@ export default {
       nextNumberRequired: 'Następny numer jest wymagany',
       nextNumberInt: 'Następny numer musi być liczbą całkowitą',
     },
-    
+
     states: {
       noTemplates: 'Nie znaleziono szablonów',
       addFirstTemplate: 'Dodaj pierwszy szablon',

@@ -6,10 +6,12 @@ import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
 import FormFieldLabeled from '@/components/Form/FormFieldLabeled.vue'
 import DatePicker from '@/components/Inputs/DatePicker.vue'
+import EntityDetailsHeader from '@/components/layouts/EntityDetailsHeader.vue'
 import Button from '@/components/ui/button/Button.vue'
 import Input from '@/components/ui/input/Input.vue'
 import Separator from '@/components/ui/separator/Separator.vue'
 import { useToast } from '@/components/ui/toast/use-toast'
+import { config } from '@/config'
 import { expenseService } from '@/domains/expense/services/expenseService'
 import { useTenant } from '@/domains/tenant/composables/useTenant'
 import AuthenticatedLayout from '@/layouts/AuthenticatedLayout.vue'
@@ -42,7 +44,7 @@ const { isSubmitting, handleSubmit, values, setErrors, setFieldValue, resetForm 
     totalNet: 0,
     totalTax: 0,
     totalGross: 0,
-    currency: 'PLN',
+    currency: config.defaults.currency,
     exchangeRate: 1,
     seller: {
       contractorId: undefined,
@@ -50,7 +52,7 @@ const { isSubmitting, handleSubmit, values, setErrors, setFieldValue, resetForm 
       name: tenant.value?.name ?? 'DEMO COMPANY',
       taxId: tenant.value?.taxId ?? '',
       address: tenantBillingAddress.value?.street ?? 'OUR ADDRESS',
-      country: tenant.value?.country ?? 'PL',
+      country: tenant.value?.country ?? config.defaults.country,
       iban: '',
       email: tenant.value?.email ??'',
     },
@@ -60,7 +62,7 @@ const { isSubmitting, handleSubmit, values, setErrors, setFieldValue, resetForm 
       name: 'DEMO BUYER',
       taxId: '',
       address: 'Random street 123',
-      country: 'PL',
+      country: config.defaults.country,
       iban: '',
       email: '',
     },
@@ -68,7 +70,7 @@ const { isSubmitting, handleSubmit, values, setErrors, setFieldValue, resetForm 
       lines: [],
       vatSummary: [],
       exchange: {
-        currency: 'PLN',
+        currency: config.defaults.currency,
         exchangeRate: 1,
         date: issueDate.value,
       },
@@ -81,14 +83,15 @@ const { isSubmitting, handleSubmit, values, setErrors, setFieldValue, resetForm 
       method: {
         name: 'bankTransfer',
         code: 'bankTransfer',
+        paymentDays: config.defaults.paymentDays,
       },
       reference: '',
       terms: '',
       notes: undefined,
     },
     options: {
-      language: 'en',
-      template: '',
+      language: undefined,
+      template: undefined,
       sendEmail: false,
       emailTo: [],
     },
@@ -155,20 +158,12 @@ const onSellerUpdate = (contractor: IContractorLookup | undefined) => {
 
 <template>
   <AuthenticatedLayout>
-    <div class="px-4 md:px-6 py-4 md:py-6 flex flex-col gap-y-6" data-testid="entity-details-layout">
-      <div class="flex flex-row gap-4 items-center justify-between">
-        <div>
-          <div class="font-bold">
-            {{ t('expense.add.title') }}
-          </div>
-          <div class="text-sm text-muted-foreground">
-            <RouterLink :to="'/expenses'">
-              {{ t('expense.title') }}
-            </RouterLink>
-          </div>
-        </div>
-      </div>
-    </div>
+    <EntityDetailsHeader
+      :title="t('expense.add.title')"
+      :back-link-text="t('expense.title')"
+      back-link="/expenses"
+      padded
+    />
 
     <div class="flex flex-row gap-8 lg:mx-6">
       <form class="w-full lg:w-7xl mx-auto p-2 sm:p-4 md:p-8 border shadow-xl/30" @submit.prevent="onSubmit">

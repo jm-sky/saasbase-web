@@ -9,6 +9,7 @@ import Button from '@/components/ui/button/Button.vue'
 import Input from '@/components/ui/input/Input.vue'
 import Separator from '@/components/ui/separator/Separator.vue'
 import { useToast } from '@/components/ui/toast/use-toast'
+import { config } from '@/config'
 import { expenseService } from '@/domains/expense/services/expenseService'
 import { useExpenseStore } from '@/domains/expense/stores/expense.store'
 import PartySideForContractorCard from '@/domains/financial/components/PartySideForContractorCard.vue'
@@ -25,8 +26,10 @@ const { t } = useI18n()
 const { toast } = useToast()
 const route = useRoute()
 const router = useRouter()
+
 const tenantStore = useTenantStore()
 const { tenant } = storeToRefs(tenantStore)
+
 const expenseStore = useExpenseStore()
 const { expense } = storeToRefs(expenseStore)
 
@@ -42,7 +45,7 @@ const { isSubmitting, handleSubmit, values, setErrors, setValues, setFieldValue,
     totalNet: expense.value?.totalNet ?? 0,
     totalTax: expense.value?.totalTax ?? 0,
     totalGross: expense.value?.totalGross ?? 0,
-    currency: expense.value?.currency ?? 'PLN',
+    currency: expense.value?.currency ?? config.defaults.currency,
     exchangeRate: expense.value?.exchangeRate ?? 1,
     seller: {
       contractorId: expense.value?.seller.contractorId ?? undefined,
@@ -50,7 +53,7 @@ const { isSubmitting, handleSubmit, values, setErrors, setValues, setFieldValue,
       name: expense.value?.seller.name ?? 'DEMO BUYER',
       taxId: expense.value?.seller.taxId ?? undefined,
       address: expense.value?.seller.address ?? 'Random street 123',
-      country: expense.value?.seller.country ?? 'PL',
+      country: expense.value?.seller.country ?? config.defaults.country,
       iban: expense.value?.seller.iban ?? undefined,
       email: expense.value?.seller.email ?? undefined,
     },
@@ -60,7 +63,7 @@ const { isSubmitting, handleSubmit, values, setErrors, setValues, setFieldValue,
       name: expense.value?.buyer.name ?? 'DEMO COMPANY',
       taxId: expense.value?.buyer.taxId ?? undefined,
       address: expense.value?.buyer.address ?? 'OUR ADDRESS',
-      country: expense.value?.buyer.country ?? 'PL',
+      country: expense.value?.buyer.country ?? config.defaults.country,
       iban: expense.value?.buyer.iban ?? undefined,
       email: expense.value?.buyer.email ?? undefined,
     },
@@ -68,27 +71,28 @@ const { isSubmitting, handleSubmit, values, setErrors, setValues, setFieldValue,
       lines: expense.value?.body.lines ?? [],
       vatSummary: expense.value?.body.vatSummary ?? [],
       exchange: {
-        currency: expense.value?.body.exchange.currency ?? 'PLN',
+        currency: expense.value?.body.exchange.currency ?? config.defaults.currency,
         exchangeRate: expense.value?.body.exchange.exchangeRate ?? 1,
-        date: expense.value?.body.exchange.date ?? '',
+        date: expense.value?.body.exchange.date ?? undefined,
       },
     },
     payment: {
       status: expense.value?.payment.status ?? 'pending',
-      dueDate: expense.value?.payment.dueDate ?? '',
+      dueDate: expense.value?.payment.dueDate ?? undefined,
       paidDate: expense.value?.payment.paidDate ?? undefined,
       paidAmount: expense.value?.payment.paidAmount ?? 0,
       method: expense.value?.payment.method ?? {
         name: 'bankTransfer',
         code: 'bankTransfer',
+        paymentDays: config.defaults.paymentDays,
       },
-      reference: expense.value?.payment.reference ?? '',
-      terms: expense.value?.payment.terms ?? '',
+      reference: expense.value?.payment.reference ?? undefined,
+      terms: expense.value?.payment.terms ?? undefined,
       notes: expense.value?.payment.notes ?? undefined,
     },
     options: {
-      language: expense.value?.options.language ?? 'en',
-      template: expense.value?.options.template ?? '',
+      language: expense.value?.options.language ?? undefined,
+      template: expense.value?.options.template ?? undefined,
       sendEmail: expense.value?.options.sendEmail ?? false,
       emailTo: expense.value?.options.emailTo ?? [],
     },
