@@ -48,7 +48,7 @@ class InvoiceService {
   }
 
   async generatePdf(invoiceId: string, params?: IGeneratePdfParams): Promise<Blob> {
-    const response = await api.post(`${apiRoutesMap.invoices}/${invoiceId}/pdf`, { params })
+    const response = await api.post(`${apiRoutesMap.invoices}/${invoiceId}/pdf`, { ...params })
     return response.data
   }
 

@@ -9,6 +9,7 @@ export const contractorRoutes: RouteRecordRaw[] = [
     name: 'contractors',
     component: () => import('@/pages/contractor/ContractorListPage.vue'),
     meta: {
+      title: 'contractor.title',
       middlewares: [isAuthenticated, isVerified, isInTenant],
     },
   },
@@ -17,6 +18,7 @@ export const contractorRoutes: RouteRecordRaw[] = [
     name: 'addContractor',
     component: () => import('@/pages/contractor/AddContractorPage.vue'),
     meta: {
+      title: 'contractor.add.title',
       middlewares: [isAuthenticated, isVerified, isInTenant],
     },
   },
@@ -24,6 +26,7 @@ export const contractorRoutes: RouteRecordRaw[] = [
     path: '/contractors/:id/show',
     component: () => import('@/pages/contractor/ShowContractorPage.vue'),
     meta: {
+      title: 'contractor.show.title',
       middlewares: [isAuthenticated, isVerified, isInTenant],
     },
     children: [

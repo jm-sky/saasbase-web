@@ -21,6 +21,7 @@ import { useInvoiceStore } from '@/domains/invoice/stores/invoice.store'
 import AuthenticatedLayout from '@/layouts/AuthenticatedLayout.vue'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
 import { isValidationError } from '@/lib/validation'
+import { setRouteTitle } from '@/router/helpers/setRouteTitle'
 import InvoiceBuyerBox from './partials/InvoiceBuyerBox.vue'
 import InvoiceInfoTable from './partials/InvoiceInfoTable.vue'
 import InvoiceLinesEditable from './partials/InvoiceLinesEditable.vue'
@@ -206,6 +207,7 @@ const onPaymentMethodUpdate = (paymentMethod: IPaymentMethod | undefined) => {
 
 onMounted(async () => {
   await refresh()
+  setRouteTitle(route, invoice.value?.number)
 })
 </script>
 

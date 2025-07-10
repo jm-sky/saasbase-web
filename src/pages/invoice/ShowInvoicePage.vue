@@ -15,6 +15,7 @@ import { useInvoiceStore } from '@/domains/invoice/stores/invoice.store'
 import AuthenticatedLayout from '@/layouts/AuthenticatedLayout.vue'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
 import { toDateString } from '@/lib/toDateString'
+import { setRouteTitle } from '@/router/helpers/setRouteTitle'
 import ShowInvoiceSidebar from './partials/ShowInvoiceSidebar.vue'
 
 const { t } = useI18n()
@@ -44,6 +45,7 @@ const refresh = async () => {
 
 onMounted(async () => {
   await refresh()
+  setRouteTitle(route, invoice.value?.number)
 })
 </script>
 

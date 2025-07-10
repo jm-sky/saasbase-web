@@ -17,6 +17,7 @@ export const invoiceRoutes: RouteRecordRaw[] = [
     name: 'addInvoice',
     component: () => import('@/pages/invoice/AddInvoicePage.vue'),
     meta: {
+      title: 'invoice.add.title',
       middlewares: [isAuthenticated, isVerified, isInTenant],
     },
   },
@@ -25,6 +26,7 @@ export const invoiceRoutes: RouteRecordRaw[] = [
     name: 'showInvoice',
     component: () => import('@/pages/invoice/ShowInvoicePage.vue'),
     meta: {
+      title: 'invoice.show.title',
       middlewares: [isAuthenticated, isVerified, isInTenant],
     },
   },
@@ -33,6 +35,7 @@ export const invoiceRoutes: RouteRecordRaw[] = [
     name: 'editInvoice',
     component: () => import('@/pages/invoice/EditInvoicePage.vue'),
     meta: {
+      title: 'invoice.edit.title',
       middlewares: [isAuthenticated, isVerified, isInTenant],
     },
   },

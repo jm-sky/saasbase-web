@@ -23,6 +23,7 @@ import { expenseCreateSchema } from '@/domains/expense/validation/expense.schema
 import AuthenticatedLayout from '@/layouts/AuthenticatedLayout.vue'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
 import { isValidationError } from '@/lib/validation'
+import { setRouteTitle } from '@/router/helpers/setRouteTitle'
 import ExpensePaymentSection from './partials/ExpensePaymentSection.vue'
 import ExpenseSidebarEditable from './partials/ExpenseSidebarEditable.vue'
 import InvoiceBuyerBox from './partials/InvoiceBuyerBox.vue'
@@ -207,6 +208,7 @@ const onPaymentMethodUpdate = (paymentMethod: IPaymentMethod | undefined) => {
 
 onMounted(async () => {
   await refresh()
+  setRouteTitle(route, expense.value?.number)
 })
 </script>
 

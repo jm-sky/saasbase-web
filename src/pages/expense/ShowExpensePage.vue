@@ -16,6 +16,7 @@ import InvoiceLines from '@/domains/invoice/components/InvoiceLines.vue'
 import AuthenticatedLayout from '@/layouts/AuthenticatedLayout.vue'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
 import { toDateString } from '@/lib/toDateString'
+import { setRouteTitle } from '@/router/helpers/setRouteTitle'
 import ShowExpenseSidebar from './partials/ShowExpenseSidebar.vue'
 
 const { t } = useI18n()
@@ -55,6 +56,7 @@ const startOcr = async () => {
 
 onMounted(async () => {
   await refresh()
+  setRouteTitle(route, expense.value?.number)
 })
 </script>
 
