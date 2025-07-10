@@ -1,13 +1,12 @@
 <script setup lang="ts">
 import { templateRef } from '@vueuse/core'
-import { Pencil, RefreshCcw } from 'lucide-vue-next'
+import { Pencil } from 'lucide-vue-next'
 import { storeToRefs } from 'pinia'
 import { onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
 import ButtonLink from '@/components/ButtonLink.vue'
 import EntityDetailsHeader from '@/components/layouts/EntityDetailsHeader.vue'
-import Button from '@/components/ui/button/Button.vue'
 import PaymentInfoDisplay from '@/domains/financial/components/PaymentInfoDisplay.vue'
 import GeneratePdfAction from '@/domains/invoice/components/actions/GeneratePdfAction.vue'
 import InvoiceLines from '@/domains/invoice/components/InvoiceLines.vue'
@@ -56,7 +55,7 @@ onMounted(async () => {
       back-link="/invoices"
       padded
     >
-      <template #actions>
+      <template #actions-left>
         <GeneratePdfAction
           :invoice="invoice"
           variant="button"
@@ -73,19 +72,10 @@ onMounted(async () => {
         >
           <Pencil class="size-4" />
         </ButtonLink>
-
-        <Button
-          v-tooltip.bottom.focus="t('common.refresh')"
-          variant="ghost"
-          :loading
-          @click="refresh"
-        >
-          <RefreshCcw class="size-4" />
-        </Button>
       </template>
     </EntityDetailsHeader>
 
-    <div class="flex flex-row gap-8 lg:mx-6">
+    <div class="flex flex-row gap-8 lg:mx-6 mb-10">
       <div class="w-full lg:w-7xl max-w-7xl mx-auto p-2 sm:p-4 md:p-8 border shadow-xl/30">
         <!-- Main content -->
         <div class="grid grid-cols-1 lg:grid-cols-[2fr_1fr]">
@@ -154,7 +144,7 @@ onMounted(async () => {
 
           <div class="p-2 sm:p-4 md:p-6">
             <div class="text-sm text-muted-foreground mb-2">
-              Issued for
+              {{ t('financial.fields.issuedFor') }}
             </div>
             <div class="font-semibold text-lg">
               {{ invoice?.buyer?.name }}
@@ -178,11 +168,12 @@ onMounted(async () => {
           :total-net="invoice?.totalNet"
           :total-tax="invoice?.totalTax"
           :total-gross="invoice?.totalGross"
+          class="mt-8"
         />
 
         <!-- Payment Information Section -->
         <div v-if="invoice" class="mt-8">
-          <PaymentInfoDisplay :invoice="invoice" />
+          <PaymentInfoDisplay :payment="invoice?.payment" />
         </div>
       </div>
 

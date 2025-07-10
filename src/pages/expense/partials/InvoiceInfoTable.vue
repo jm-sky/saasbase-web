@@ -27,10 +27,10 @@ defineProps<{
     </thead>
     <tbody>
       <tr>
-        <td class="font-semibold border-r text-right px-2 py-1">
+        <td class="font-semibold border-r text-right px-4 py-1">
           {{ money(values.totalGross, values.currency, locale) }}
         </td>
-        <td class="font-semibold border-r text-right px-2 py-1">
+        <td class="font-semibold border-r text-right px-4 py-1">
           {{ money(values.totalNet, values.currency, locale) }}
         </td>
         <td class="font-semibold px-2 py-1">

@@ -21,9 +21,9 @@ export default {
   },
   add: {
     title: 'Dodawanie wydatku',
-    description: 'Dodaj nowy wydatku do systemu',
-    submit: 'Zapisz wydatkę',
-    success: 'Wydatku dodana pomyślnie',
+    description: 'Dodaj nowy wydatek do systemu',
+    submit: 'Zapisz wydatek',
+    success: 'Wydatek dodany pomyślnie',
     error: 'Nie udało się dodać wydatku',
   },
   show: {

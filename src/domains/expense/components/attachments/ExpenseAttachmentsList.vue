@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { templateRef } from '@vueuse/core'
-import { Scan } from 'lucide-vue-next'
+import { ScanEye } from 'lucide-vue-next'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import DataListSection from '@/components/DataLists/DataListSection.vue'
@@ -70,7 +70,7 @@ const startOcr = async (attachment: IAttachment) => {
           variant="ghost"
           @click="startOcr(attachment)"
         >
-          <Scan class="size-4" />
+          <ScanEye class="size-4" />
         </Button>
       </template>
     </AttachmentListWrapper>

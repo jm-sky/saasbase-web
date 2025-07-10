@@ -144,7 +144,7 @@ export interface IInvoiceExchange {
 }
 
 export interface IInvoicePaymentMethod {
-  id?: TUUID;
+  id: TUUID;
   name?: string;
   code?: string;
   paymentDays?: number

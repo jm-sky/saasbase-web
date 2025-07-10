@@ -128,7 +128,7 @@ watch(
       <NoItems v-if="attachments.length === 0 && !loading" :message="t('attachments.list.noAttachments')" />
     </div>
 
-    <div v-if="!readOnly" class="flex flex-col items-center gap-2">
+    <div v-if="!readOnly" class="flex flex-col items-center gap-4">
       <FileUpload
         v-model="files"
         :disabled="uploading"

@@ -21,12 +21,12 @@ import AuthenticatedLayout from '@/layouts/AuthenticatedLayout.vue'
 import { fullAddress } from '@/lib/fullAddress'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
 import { isValidationError } from '@/lib/validation'
-import AddInvoiceSidebar from './partials/AddInvoiceSidebar.vue'
 import InvoiceBuyerBox from './partials/InvoiceBuyerBox.vue'
 import InvoiceInfoTable from './partials/InvoiceInfoTable.vue'
 import InvoiceLinesEditable from './partials/InvoiceLinesEditable.vue'
 import InvoicePaymentSection from './partials/InvoicePaymentSection.vue'
 import InvoiceSellerBox from './partials/InvoiceSellerBox.vue'
+import InvoiceSidebarEditable from './partials/InvoiceSidebarEditable.vue'
 import type { IContractor, IContractorLookup } from '@/domains/contractor/types/contractor.type'
 import type { IInvoiceLine } from '@/domains/financial/types/financial.type'
 import type { IInvoiceCreate } from '@/domains/invoice/types/invoice.type'
@@ -302,7 +302,7 @@ const formErrors = computed(() => {
         </div>
       </form>
 
-      <AddInvoiceSidebar
+      <InvoiceSidebarEditable
         :values="values"
         :reset-form="resetForm"
         :is-submitting="isSubmitting"

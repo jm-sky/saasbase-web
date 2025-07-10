@@ -21,6 +21,8 @@ export const financial = {
     exchangeRate: 'Exchange Rate',
     seller: 'Seller',
     buyer: 'Buyer',
+    issuedFor: 'Issued for',
+    issuedBy: 'Issued by',
     data: 'Data',
     payment: 'Payment',
     options: 'Options',
@@ -93,6 +95,7 @@ export const financial = {
     },
     bankAccount: {
       select: 'Select Bank Account',
+      country: 'Country',
       iban: 'IBAN',
       ibanPlaceholder: 'IBAN number',
       ibanInvalid: 'Invalid IBAN',
@@ -101,6 +104,10 @@ export const financial = {
       swift: 'SWIFT',
       swiftPlaceholder: 'SWIFT',
     },
+  },
+  mailing: {
+    sendEmail: 'Send Email',
+    emailTo: 'Email Recipients',
   },
   invoiceType:{
     'basic': 'Basic invoice',

@@ -5,16 +5,17 @@ import DatePickerInput from '@/components/Inputs/DatePickerInput.vue'
 import { Button } from '@/components/ui/button'
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Separator } from '@/components/ui/separator'
 import { Switch } from '@/components/ui/switch'
 import { TagsInput, TagsInputInput, TagsInputItem, TagsInputItemDelete, TagsInputItemText } from '@/components/ui/tags-input'
 import { Textarea } from '@/components/ui/textarea'
+import DocumentSidebar from '@/domains/financial/components/DocumentSidebar/DocumentSidebar.vue'
+import SidebarSection from '@/domains/financial/components/DocumentSidebar/DocumentSidebarSectionCollapsable.vue'
 import InvoiceStatusBadge from '@/domains/financial/components/InvoiceStatusBadge.vue'
 import CurrencyPicker from '@/domains/shared/components/CurrencyPicker.vue'
 import ExchangeRatePicker from '@/domains/shared/components/ExchangeRatePicker.vue'
 import PaymentMethodPicker from '@/domains/shared/components/PaymentMethodPicker.vue'
-import SidebarSection from './SidebarSection.vue'
+import PaymentStatusPicker from '@/domains/shared/components/PaymentStatusPicker.vue'
 import type { TPaymentStatus } from '@/domains/financial/types/financial.type'
 import type { IInvoiceCreate } from '@/domains/invoice/types/invoice.type'
 import type { IPaymentMethod } from '@/domains/shared/types/paymentMethod.type'
@@ -39,18 +40,6 @@ const emit = defineEmits<{
   updateEmailTo: [emailTo: string[]]
 }>()
 
-const paymentStatuses: { value: TPaymentStatus, label: string, color: string }[] = [
-  { value: 'pending', label: t('financial.payment.status.pending', 'Pending'), color: 'bg-yellow-500' },
-  { value: 'paid', label: t('financial.payment.status.paid', 'Paid'), color: 'bg-green-500' },
-  { value: 'partiallyPaid', label: t('financial.payment.status.partiallyPaid', 'partiallyPaid'), color: 'bg-gray-500' },
-  { value: 'overdue', label: t('financial.payment.status.overdue', 'Overdue'), color: 'bg-red-500' },
-  { value: 'cancelled', label: t('financial.payment.status.cancelled', 'Cancelled'), color: 'bg-gray-500' },
-]
-
-const getCurrentStatusColor = (status: string) => {
-  return paymentStatuses.find(s => s.value === status)?.color ?? 'bg-gray-500'
-}
-
 const selectedPaymentMethod = ref<IPaymentMethod | undefined>()
 
 const onPaymentMethodChange = (paymentMethod: IPaymentMethod | undefined) => {
@@ -60,7 +49,7 @@ const onPaymentMethodChange = (paymentMethod: IPaymentMethod | undefined) => {
 </script>
 
 <template>
-  <div class="flex flex-col gap-4 w-xs border p-4 shadow-lg/30">
+  <DocumentSidebar>
     <div class="flex flex-row gap-2 mb-2">
       <InvoiceStatusBadge :status="values.status ?? 'draft'" />
     </div>
@@ -72,24 +61,10 @@ const onPaymentMethodChange = (paymentMethod: IPaymentMethod | undefined) => {
             {{ t('financial.payment.fields.status', 'Status') }}
           </FormLabel>
           <FormControl>
-            <Select :model-value="values.payment.status" @update:model-value="emit('updatePaymentStatus', $event as TPaymentStatus)">
-              <SelectTrigger class="w-40">
-                <SelectValue>
-                  <div class="flex items-center gap-2">
-                    <div class="w-2 h-2 rounded-full" :class="getCurrentStatusColor(values.payment.status)" />
-                    <span>{{ paymentStatuses.find(s => s.value === values.payment.status)?.label }}</span>
-                  </div>
-                </SelectValue>
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem v-for="status in paymentStatuses" :key="status.value" :value="status.value">
-                  <div class="flex items-center gap-2">
-                    <div class="w-2 h-2 rounded-full" :class="status.color" />
-                    <span>{{ status.label }}</span>
-                  </div>
-                </SelectItem>
-              </SelectContent>
-            </Select>
+            <PaymentStatusPicker
+              :model-value="values.payment.status"
+              @update:model-value="emit('updatePaymentStatus', $event as TPaymentStatus)"
+            />
           </FormControl>
           <FormMessage />
         </FormItem>
@@ -246,5 +221,5 @@ const onPaymentMethodChange = (paymentMethod: IPaymentMethod | undefined) => {
         {{ t('invoice.add.submit', 'Save Invoice') }}
       </Button>
     </div>
-  </div>
+  </DocumentSidebar>
 </template>

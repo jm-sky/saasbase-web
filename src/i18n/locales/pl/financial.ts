@@ -21,6 +21,8 @@ export const financial = {
     exchangeRate: 'Kurs wymiany',
     seller: 'Sprzedawca',
     buyer: 'Kupujący',
+    issuedFor: 'Wystawione dla',
+    issuedBy: 'Wystawione przez',
     data: 'Data',
     payment: 'Płatność',
     options: 'Opcje',
@@ -38,7 +40,7 @@ export const financial = {
   },
   lines: {
     fields: {
-      items: 'Przedmioty',
+      items: 'Pozycje',
       description: 'Opis',
       quantity: 'Ilość',
       unitPrice: 'Cena jednostkowa',
@@ -93,6 +95,7 @@ export const financial = {
     },
     bankAccount: {
       select: 'Wybierz konto bankowe',
+      country: 'Kraj',
       iban: 'IBAN',
       ibanPlaceholder: 'Numer IBAN',
       ibanInvalid: 'Nieprawidłowy IBAN',
@@ -101,6 +104,10 @@ export const financial = {
       swift: 'SWIFT',
       swiftPlaceholder: 'SWIFT',
     },
+  },
+  mailing: {
+    sendEmail: 'Wyślij email',
+    emailTo: 'Odbiorcy email',
   },
   invoiceType:{
     'basic': 'Faktura podstawowa',

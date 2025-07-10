@@ -1,4 +1,5 @@
 import type { IAddress } from '@/domains/shared/types/address.type'
+import type { IBankAccount } from '@/domains/shared/types/bankAccount.type'
 import type { TDateTime, TUUID } from '@/domains/shared/types/common'
 import type { ICurrency } from '@/domains/shared/types/currency.type'
 import type { IMedia } from '@/domains/shared/types/media.type'
@@ -15,7 +16,7 @@ export interface IContractorAddress extends IAddress {
 
 export type IContractorAddressCreate = Omit<IContractorAddress, 'id' | 'tenantId' | 'meta' | 'createdAt' | 'updatedAt'>
 
-export interface IContractorBankAccount {
+export interface IContractorBankAccount extends IBankAccount {
   id: TUUID
   contractorId: TUUID
   iban: string
