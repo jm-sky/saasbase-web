@@ -122,7 +122,7 @@ defineExpose({
 
     <DocumentSidebarSection
       v-if="invoice?.payment?.bankAccount && (invoice?.payment?.bankAccount?.iban || invoice?.payment?.bankAccount?.bankName)"
-      :title="t('financial.fields.bankAccount')"
+      :title="t('financial.payment.fields.bankAccount')"
     >
       <DocumentSidebarSectionItem v-if="invoice?.payment?.bankAccount?.bankName">
         <template #title>

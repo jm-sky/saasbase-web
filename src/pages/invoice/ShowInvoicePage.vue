@@ -59,7 +59,7 @@ onMounted(async () => {
         <GeneratePdfAction
           :invoice="invoice"
           variant="button"
-          @done="sidebar?.attachments?.refresh()"
+          @done="[sidebar?.attachments?.refresh(), refresh()]"
         />
 
         <ButtonLink
