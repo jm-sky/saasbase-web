@@ -12,6 +12,7 @@ import type { IInvoiceTemplate } from '../../types/invoiceTemplate.type'
 import { invoiceTemplateService, type ITemplatePreviewOptions } from '../../services/InvoiceTemplate.service'
 import AdvancedFeaturesReference from './AdvancedFeaturesReference.vue'
 import InvoiceTemplateGroupedPicker from './InvoiceTemplateGroupedPicker.vue'
+import MonacoTemplateEditor from './MonacoTemplateEditor.vue'
 import PreviewOptions from './PreviewOptions.vue'
 import TemplateHelperReference from './TemplateHelperReference.vue'
 
@@ -302,6 +303,113 @@ const clearDraft = () => {
   localStorage.removeItem(draftId.value)
 }
 
+const getInvoiceSchema = () => {
+  return {
+    invoice: {
+      type: 'object' as const,
+      description: 'Main invoice data',
+      properties: {
+        id: { type: 'string' as const, description: 'Invoice ID' },
+        number: { type: 'string' as const, description: 'Invoice number' },
+        type: { type: 'string' as const, description: 'Invoice type' },
+        status: { type: 'string' as const, description: 'Invoice status' },
+        issueDate: { type: 'string' as const, description: 'Invoice issue date' },
+        dueDate: { type: 'string' as const, description: 'Payment due date' },
+        currency: { type: 'string' as const, description: 'Currency code' },
+        currencySymbol: { type: 'string' as const, description: 'Currency symbol' },
+        formattedTotalNet: { type: 'string' as const, description: 'Formatted net total' },
+        formattedTotalTax: { type: 'string' as const, description: 'Formatted tax total' },
+        formattedTotalGross: { type: 'string' as const, description: 'Formatted gross total' },
+        seller: {
+          type: 'object' as const,
+          description: 'Seller information',
+          properties: {
+            name: { type: 'string' as const, description: 'Company/seller name' },
+            address: { type: 'string' as const, description: 'Seller address' },
+            country: { type: 'string' as const, description: 'Seller country' },
+            taxId: { type: 'string' as const, description: 'Tax ID/VAT number' },
+            email: { type: 'string' as const, description: 'Seller email' },
+            logoUrl: { type: 'string' as const, description: 'Logo URL' }
+          }
+        },
+        buyer: {
+          type: 'object' as const,
+          description: 'Buyer information',
+          properties: {
+            name: { type: 'string' as const, description: 'Buyer name' },
+            address: { type: 'string' as const, description: 'Buyer address' },
+            country: { type: 'string' as const, description: 'Buyer country' },
+            taxId: { type: 'string' as const, description: 'Buyer tax ID' },
+            email: { type: 'string' as const, description: 'Buyer email' }
+          }
+        },
+        lines: {
+          type: 'array' as const,
+          description: 'Invoice line items',
+          items: {
+            type: 'object' as const,
+            properties: {
+              id: { type: 'string' as const, description: 'Line item ID' },
+              description: { type: 'string' as const, description: 'Item description' },
+              formattedQuantity: { type: 'string' as const, description: 'Formatted quantity' },
+              formattedUnitPrice: { type: 'string' as const, description: 'Formatted unit price' },
+              formattedTotalNet: { type: 'string' as const, description: 'Formatted net amount' },
+              formattedTotalVat: { type: 'string' as const, description: 'Formatted VAT amount' },
+              formattedTotalGross: { type: 'string' as const, description: 'Formatted gross amount' },
+              vatRateName: { type: 'string' as const, description: 'VAT rate name' },
+              vatRateValue: { type: 'number' as const, description: 'VAT rate percentage' }
+            }
+          }
+        },
+        vatSummary: {
+          type: 'array' as const,
+          description: 'VAT summary by rate',
+          items: {
+            type: 'object' as const,
+            properties: {
+              vatRateName: { type: 'string' as const, description: 'VAT rate name' },
+              vatRateValue: { type: 'number' as const, description: 'VAT rate percentage' },
+              formattedNet: { type: 'string' as const, description: 'Formatted net amount' },
+              formattedVat: { type: 'string' as const, description: 'Formatted VAT amount' },
+              formattedGross: { type: 'string' as const, description: 'Formatted gross amount' }
+            }
+          }
+        },
+        payment: {
+          type: 'object' as const,
+          description: 'Payment information',
+          properties: {
+            status: { type: 'string' as const, description: 'Payment status' },
+            method: { type: 'string' as const, description: 'Payment method' },
+            dueDate: { type: 'string' as const, description: 'Payment due date' },
+            terms: { type: 'string' as const, description: 'Payment terms' },
+            bankAccount: {
+              type: 'object' as const,
+              description: 'Bank account details',
+              properties: {
+                iban: { type: 'string' as const, description: 'IBAN number' },
+                swift: { type: 'string' as const, description: 'SWIFT code' },
+                bankName: { type: 'string' as const, description: 'Bank name' }
+              }
+            }
+          }
+        }
+      }
+    },
+    options: {
+      type: 'object' as const,
+      description: 'Template options',
+      properties: {
+        includeSignatures: { type: 'boolean' as const, description: 'Include signature blocks' },
+        language: { type: 'string' as const, description: 'Template language' },
+        currency: { type: 'string' as const, description: 'Template currency' },
+        accentColor: { type: 'string' as const, description: 'Accent color' },
+        includeLogo: { type: 'boolean' as const, description: 'Include logo' }
+      }
+    }
+  }
+}
+
 // Keyboard shortcuts
 const handleKeydown = (event: KeyboardEvent) => {
   if (event.ctrlKey || event.metaKey) {
@@ -449,10 +557,11 @@ onUnmounted(() => {
               <label class="block text-sm font-medium text-gray-700 mb-2">
                 {{ t('tenant.invoiceTemplates.fields.content') }}
               </label>
-              <Textarea
+              <MonacoTemplateEditor
                 v-model="editableTemplate.content"
-                class="w-full h-96 font-mono resize-none"
-                :placeholder="$t('tenant.invoiceTemplates.fields.content')"
+                height="400px"
+                theme="vs"
+                :schema="getInvoiceSchema()"
               />
             </div>
 

@@ -125,6 +125,9 @@ importers:
       markdown-it:
         specifier: ^14.1.0
         version: 14.1.0
+      monaco-editor:
+        specifier: ^0.52.2
+        version: 0.52.2
       pinia:
         specifier: ^2.3.1
         version: 2.3.1(typescript@5.8.3)(vue@3.5.17(typescript@5.8.3))
@@ -249,6 +252,9 @@ importers:
       vite:
         specifier: ^6.3.5
         version: 6.3.5(@types/node@22.16.0)(jiti@2.4.2)(lightningcss@1.30.1)(terser@5.39.0)
+      vite-plugin-monaco-editor:
+        specifier: ^1.1.0
+        version: 1.1.0(monaco-editor@0.52.2)
       vite-plugin-vue-devtools:
         specifier: ^7.7.7
         version: 7.7.7(rollup@4.40.1)(vite@6.3.5(@types/node@22.16.0)(jiti@2.4.2)(lightningcss@1.30.1)(terser@5.39.0))(vue@3.5.17(typescript@5.8.3))
@@ -3385,6 +3391,9 @@ packages:
     engines: {node: '>=10'}
     hasBin: true
 
+  monaco-editor@0.52.2:
+    resolution: {integrity: sha512-GEQWEZmfkOGLdd3XK8ryrfWz3AIP8YymVXiPHEdewrUq7mh0qrKrfHLNCXcbB6sTnMLnOZ3ztSiKcciFUkIJwQ==}
+
   mri@1.2.0:
     resolution: {integrity: sha512-tzzskb3bG8LvYGFF/mDTpq3jpI6Q9wc3LEmBaghu+DdCssd1FakN7Bc0hVNmEyGq1bq3RgfkCb3cmQLpNPOroA==}
     engines: {node: '>=4'}
@@ -4175,6 +4184,11 @@ packages:
     peerDependenciesMeta:
       '@nuxt/kit':
         optional: true
+
+  vite-plugin-monaco-editor@1.1.0:
+    resolution: {integrity: sha512-IvtUqZotrRoVqwT0PBBDIZPNraya3BxN/bfcNfnxZ5rkJiGcNtO5eAOWWSgT7zullIAEqQwxMU83yL9J5k7gww==}
+    peerDependencies:
+      monaco-editor: '>=0.33.0'
 
   vite-plugin-vue-devtools@7.7.7:
     resolution: {integrity: sha512-d0fIh3wRcgSlr4Vz7bAk4va1MkdqhQgj9ANE/rBhsAjOnRfTLs2ocjFMvSUOsv6SRRXU9G+VM7yMgqDb6yI4iQ==}
@@ -7794,6 +7808,8 @@ snapshots:
 
   mkdirp@3.0.1: {}
 
+  monaco-editor@0.52.2: {}
+
   mri@1.2.0: {}
 
   mrmime@2.0.1: {}
@@ -8728,6 +8744,10 @@ snapshots:
     transitivePeerDependencies:
       - rollup
       - supports-color
+
+  vite-plugin-monaco-editor@1.1.0(monaco-editor@0.52.2):
+    dependencies:
+      monaco-editor: 0.52.2
 
   vite-plugin-vue-devtools@7.7.7(rollup@4.40.1)(vite@6.3.5(@types/node@22.16.0)(jiti@2.4.2)(lightningcss@1.30.1)(terser@5.39.0))(vue@3.5.17(typescript@5.8.3)):
     dependencies:
