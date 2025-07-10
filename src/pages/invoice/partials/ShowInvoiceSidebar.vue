@@ -153,15 +153,17 @@ defineExpose({
       </DocumentSidebarSectionItem>
     </DocumentSidebarSection>
 
-    <Separator v-if="invoice?.payment?.bankAccount && (invoice?.payment?.bankAccount?.iban || invoice?.payment?.bankAccount?.bankName)" class="my-8" />
-
-    <AttachmentListWrapper
-      ref="attachments"
-      :model-id="invoice?.id"
-      :service="invoiceeAttachmentsService"
-      downloadable
-      viewable
-      with-icon
-    />
+    <template #after>
+      <div class="border p-4 shadow-xl/30 bg-background mt-4">
+        <AttachmentListWrapper
+          ref="attachments"
+          :model-id="invoice?.id"
+          :service="invoiceeAttachmentsService"
+          downloadable
+          viewable
+          with-icon
+        />
+      </div>
+    </template>
   </DocumentSidebar>
 </template>

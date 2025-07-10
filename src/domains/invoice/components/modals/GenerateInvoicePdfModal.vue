@@ -51,7 +51,8 @@ const onSubmit = handleSubmit(async (values: IGeneratePdfParams) => {
   }
 })
 
-const onSelectTemplate = (template: IInvoiceTemplatePreview) => {
+const onSelectTemplate = (template: IInvoiceTemplatePreview | undefined) => {
+  if (!template) return
   setFieldValue('templateId', template.id)
   selectedTemplate.value = template
 }
@@ -79,14 +80,11 @@ watch(open, (isOpen) => {
       :class="{ 'opacity-50': isSubmitting }"
       @submit.prevent="onSubmit"
     >
-      <FormFieldLabeled
-        name="templateId"
-        :label="t('invoice.actions.generatePdf.fields.template')"
-      >
+      <FormFieldLabeled name="templateId" :label="t('invoice.actions.generatePdf.fields.template')">
         <InvoiceTemplatePicker
           :id="values?.templateId ?? ''"
           :model-value="selectedTemplate"
-          @select="onSelectTemplate"
+          @update:model-value="onSelectTemplate"
         />
       </FormFieldLabeled>
 

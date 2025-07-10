@@ -109,6 +109,7 @@ const generatePdf = async (type: 'original' | 'duplicate') => {
     <GenerateInvoicePdfModal
       v-model:open="open"
       :invoice="invoice"
+      @done="emit('done', 'original')"
     />
   </DropdownMenu>
 </template>
