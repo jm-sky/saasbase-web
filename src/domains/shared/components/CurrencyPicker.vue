@@ -83,7 +83,7 @@ onMounted(() => {
         :aria-expanded="open"
         :disabled="disabled || loading"
         class="w-full justify-between"
-        :class="props.class"
+        :class="[props.class, !modelValue?.code ? 'text-muted-foreground font-normal' : '']"
       >
         {{ modelValue?.code ?? t('shared.currency.select') }}
         <ChevronsUpDown class="ml-2 size-4 shrink-0 opacity-50" />
