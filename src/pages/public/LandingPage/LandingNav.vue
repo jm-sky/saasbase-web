@@ -1,12 +1,23 @@
 <script setup lang="ts">
+import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { useRoute } from 'vue-router'
 import ButtonLink from '@/components/ButtonLink.vue'
 import DarkModeButton from '@/components/DarkModeButton.vue'
 import LanguageSwitchDropdown from '@/components/LanguageSwitchDropdown.vue'
 import { useAuthStore } from '@/domains/auth/store/auth.store'
+import { routeMap } from '@/router/routeMap'
 
 const { t } = useI18n()
 const authStore = useAuthStore()
+const route = useRoute()
+
+const loginRoute = computed(() => ({
+  name: routeMap.auth.login,
+  query: {
+    next: route.query.next,
+  },
+}))
 </script>
 
 <template>
@@ -27,7 +38,7 @@ const authStore = useAuthStore()
             v-if="!authStore.isAuthenticated"
             variant="outline"
             size="sm"
-            to="/login"
+            :to="loginRoute"
           >
             {{ t('landing.nav.login') }}
           </ButtonLink>
