@@ -12,7 +12,7 @@ const handleOAuthLogin = (provider: 'gitHub' | 'google') => {
   <div class="grid gap-2">
     <Button
       v-if="config.auth.providers.gitHub"
-      variant="outline"
+      variant="light"
       type="button"
       class="w-full transition-all duration-200 hover:shadow-md"
       @click="handleOAuthLogin('gitHub')"
@@ -23,7 +23,7 @@ const handleOAuthLogin = (provider: 'gitHub' | 'google') => {
 
     <Button
       v-if="config.auth.providers.google"
-      variant="outline"
+      variant="light"
       type="button"
       class="w-full transition-all duration-200 hover:shadow-md"
       @click="handleOAuthLogin('google')"

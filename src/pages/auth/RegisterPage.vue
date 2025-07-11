@@ -84,7 +84,7 @@ onMounted(() => {
         <p class="text-sm text-muted-foreground">
           {{ t('common.or') }}
           <ButtonLink to="/login">
-            {{ t('auth.login.title') }}
+            {{ t('auth.signIn') }}
           </ButtonLink>
         </p>
       </div>
@@ -155,13 +155,13 @@ onMounted(() => {
 
         <Button
           type="button"
-          variant="outline"
+          variant="light"
           class="w-full"
           :disabled="isSubmitting"
           :loading="isSubmitting"
           @click="resetForm()"
         >
-          Reset
+          {{ t('common.reset') }}
         </Button>
       </form>
 

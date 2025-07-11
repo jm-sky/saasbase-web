@@ -25,6 +25,7 @@ export interface IGeneratePdfResponse {
   mediaId: string
   fileName: string
   size: number
+  templateName: string
   collectionName: string
   url: string
 }
