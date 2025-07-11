@@ -1,32 +1,37 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import SelectGroup from '@/components/ui/select/SelectGroup.vue'
 import SelectLabel from '@/components/ui/select/SelectLabel.vue'
 import { cn } from '@/lib/utils'
-import type { IInvoiceTemplate } from '../../types/invoiceTemplate.type'
+import type { IInvoiceTemplatePreview } from '../../types/invoiceTemplate.type'
+import { useInvoiceTemplates } from '../../helpers/useInvoiceTemplates'
 
 const { t } = useI18n()
 
-const props = defineProps<{
-  invoiceTemplates: IInvoiceTemplate[]
-}>()
+const { invoiceTemplates, loadTemplates } = useInvoiceTemplates()
 
 const emit = defineEmits<{
-  change: [template: IInvoiceTemplate | undefined]
+  change: [template: IInvoiceTemplatePreview | undefined]
 }>()
 
 const selectedTemplateId = defineModel<string | null | undefined>('selectedTemplateId')
 
-const selectedTemplate = computed(() => props.invoiceTemplates.find(template => template.id === selectedTemplateId.value))
-const systemTemplates = computed(() => props.invoiceTemplates.filter(template => template.isSystem))
-const userTemplates = computed(() => props.invoiceTemplates.filter(template => !template.isSystem))
+const selectedTemplate = computed(() => invoiceTemplates.value.find(template => template.id === selectedTemplateId.value))
+const systemTemplates = computed(() => invoiceTemplates.value.filter(template => template.isSystem))
+const userTemplates = computed(() => invoiceTemplates.value.filter(template => !template.isSystem))
 
 const handleChange = (value: string | null | undefined) => {
-  const template = props.invoiceTemplates.find(template => template.id === value)
+  const template = invoiceTemplates.value.find(template => template.id === value)
   emit('change', template ?? undefined)
 }
+
+onMounted(() => {
+  if (invoiceTemplates.value.length === 0) {
+    void loadTemplates()
+  }
+})
 </script>
 
 <template>

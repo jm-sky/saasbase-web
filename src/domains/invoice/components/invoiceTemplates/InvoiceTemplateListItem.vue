@@ -1,28 +1,55 @@
 <script setup lang="ts">
-import { LockIcon, LockOpenIcon, Pencil, Star, Trash, Zap } from 'lucide-vue-next'
+import { Copy, LockIcon, LockOpenIcon, Pencil, Star, Trash, Zap } from 'lucide-vue-next'
+import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
+import ButtonLink from '@/components/ButtonLink.vue'
 import Badge from '@/components/ui/badge/Badge.vue'
 import Button from '@/components/ui/button/Button.vue'
 import { useToast } from '@/components/ui/toast'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
-import type { IInvoiceTemplate } from '../../types/invoiceTemplate.type'
+import { routeMap } from '@/router/routeMap'
+import type { IInvoiceTemplatePreview } from '../../types/invoiceTemplate.type'
+import { useInvoiceTemplates } from '../../helpers/useInvoiceTemplates'
 import { invoiceTemplateService } from '../../services/InvoiceTemplate.service'
+import type { TUUID } from '@/domains/shared/types/common'
 
 const { t } = useI18n()
 const { toast } = useToast()
+const { setTemplate } = useInvoiceTemplates()
 
-defineProps<{
-  template: IInvoiceTemplate
+const props = defineProps<{
+  tenantId: TUUID
+  template: IInvoiceTemplatePreview
 }>()
 
 const emit = defineEmits<{
-  'changed-active-state': [template: IInvoiceTemplate]
-  'changed-default-status': [template: IInvoiceTemplate]
-  'deleted': [template: IInvoiceTemplate]
-  'edit': [template: IInvoiceTemplate]
+  'changed-active-state': [template: IInvoiceTemplatePreview]
+  'changed-default-status': [template: IInvoiceTemplatePreview]
+  'deleted': [template: IInvoiceTemplatePreview]
 }>()
 
-const toggleDefault = async (template: IInvoiceTemplate) => {
+const editTemplateRoute = computed(() => {
+  return {
+    name: routeMap.tenant.financialSettings.invoiceTemplatesEdit,
+    params: {
+      id: props.tenantId,
+      templateId: props.template.id,
+    }
+  }
+})
+
+const copyTemplateRoute = computed(() => {
+  return {
+    name: routeMap.tenant.financialSettings.invoiceTemplatesEdit,
+    params: { id: null },
+    query: {
+      id: props.tenantId,
+      parentId: props.template.id,
+    }
+  }
+})
+
+const toggleDefault = async (template: IInvoiceTemplatePreview) => {
   if (template.isDefault || template.isSystem) return
 
   try {
@@ -34,7 +61,7 @@ const toggleDefault = async (template: IInvoiceTemplate) => {
   }
 }
 
-const toggleActive = async (template: IInvoiceTemplate) => {
+const toggleActive = async (template: IInvoiceTemplatePreview) => {
   if (template.isSystem) return
 
   try {
@@ -51,7 +78,7 @@ const toggleActive = async (template: IInvoiceTemplate) => {
   }
 }
 
-const deleteTemplate = async (template: IInvoiceTemplate) => {
+const deleteTemplate = async (template: IInvoiceTemplatePreview) => {
   if (template.isSystem || template.isDefault) return
 
   if (!confirm(t('tenant.invoiceTemplates.delete.confirm', { name: template.name }))) {
@@ -96,15 +123,25 @@ const deleteTemplate = async (template: IInvoiceTemplate) => {
         </div>
       </div>
       <div class="flex gap-1 ml-4">
-        <Button
+        <ButtonLink
           v-tooltip="t('common.edit')"
           :disabled="template.isSystem"
           variant="ghost"
           size="icon"
-          @click="emit('edit', template)"
+          :to="editTemplateRoute"
+          @click="setTemplate(template)"
         >
           <Pencil class="size-4" />
-        </Button>
+        </ButtonLink>
+        <ButtonLink
+          v-tooltip="t('common.copy')"
+          variant="ghost"
+          size="icon"
+          :to="copyTemplateRoute"
+          @click="setTemplate(template)"
+        >
+          <Copy class="size-4" />
+        </ButtonLink>
         <Button
           v-tooltip="t('tenant.invoiceTemplates.setDefault.setAsDefault')"
           :disabled="template.isDefault || template.isSystem"

@@ -36,6 +36,8 @@ export const routeMap = {
     financialSettings: {
       numberingTemplates: 'tenant.financial.numbering-templates',
       invoiceTemplates: 'tenant.financial.invoice-templates',
+      invoiceTemplatesCreate: 'tenant.financial.invoice-templates-create',
+      invoiceTemplatesEdit: 'tenant.financial.invoice-templates-edit',
     },
     userSettings: {
       organizationUnits: 'tenant.user.organization-units',

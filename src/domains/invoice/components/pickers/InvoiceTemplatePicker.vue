@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { Check, ChevronsUpDown } from 'lucide-vue-next'
-import { storeToRefs } from 'pinia'
 import { onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import Button from '@/components/ui/button/Button.vue'
@@ -19,12 +18,10 @@ import {
 } from '@/components/ui/popover'
 import { cn } from '@/lib/utils'
 import type { IInvoiceTemplatePreview } from '../../types/invoiceTemplate.type'
-import { invoiceTemplateService } from '../../services/InvoiceTemplate.service'
-import { useInvoiceTemplateStore } from '../../stores/invoiceTemplate.store'
+import { useInvoiceTemplates } from '../../helpers/useInvoiceTemplates'
 
 const { t } = useI18n()
-const invoiceTemplateStore = useInvoiceTemplateStore()
-const { invoiceTemplates } = storeToRefs(invoiceTemplateStore)
+const { invoiceTemplates, loadTemplates: loadTemplatesHelper } = useInvoiceTemplates()
 
 const id = defineModel<string | undefined>('id')
 const modelValue = defineModel<IInvoiceTemplatePreview | undefined>('modelValue', { required: true })
@@ -44,7 +41,7 @@ const loadTemplates = async () => {
   try {
     loading.value = true
     error.value = null
-    invoiceTemplates.value = (await invoiceTemplateService.index()).data
+    await loadTemplatesHelper()
   } catch (err) {
     error.value = 'Failed to load invoice templates'
     console.error('[InvoiceTemplatePicker][loadTemplates] error:', err)

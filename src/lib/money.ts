@@ -1,11 +1,13 @@
+import { unref, type WritableComputedRef } from 'vue'
+
 export const money = (
   amount: number,
   currency: string | null = null,
-  locale: string,
+  locale: string | WritableComputedRef<string>,
   currencyDisplay: 'code' | 'symbol' | 'name' = 'code'
 ) => {
   if (!currency) {
-    return new Intl.NumberFormat(locale, {
+    return new Intl.NumberFormat(unref(locale), {
       style: 'decimal',
       useGrouping: true,
       minimumFractionDigits: 2,
@@ -13,7 +15,7 @@ export const money = (
     }).format(amount)
   }
 
-  return new Intl.NumberFormat(locale, {
+  return new Intl.NumberFormat(unref(locale), {
     style: 'currency',
     useGrouping: true,
     currencyDisplay,
