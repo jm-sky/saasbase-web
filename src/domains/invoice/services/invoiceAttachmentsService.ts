@@ -31,12 +31,12 @@ class InvoiceAttachmentsService implements IAttachmentService {
     return response.data
   }
 
-  async delete(invoiceId: TUUID, id: string): Promise<void> {
-    await api.delete(`${apiRoutesMap.invoices}/${invoiceId}/attachments/${id}`)
+  async delete(invoiceId: TUUID, mediaId: string): Promise<void> {
+    await api.delete(`${apiRoutesMap.invoices}/${invoiceId}/attachments/${mediaId}`)
   }
 
-  async download(invoiceId: TUUID, id: string): Promise<Blob> {
-    const response = await api.get(`${apiRoutesMap.invoices}/${invoiceId}/attachments/${id}/download`, { responseType: 'blob' })
+  async download(invoiceId: TUUID, mediaId: string): Promise<Blob> {
+    const response = await api.get(`${apiRoutesMap.invoices}/${invoiceId}/attachments/${mediaId}/download`, { responseType: 'blob' })
     return response.data
   }
 }

@@ -4,6 +4,7 @@ export const common = {
   deactivate: 'Deaktywuj',
   activate: 'Aktywuj',
   cancel: 'Anuluj',
+  copy: 'Kopiuj',
   inactive: 'Nieaktywny',
   add: 'Dodaj',
   back: 'Wstecz',
