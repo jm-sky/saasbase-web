@@ -2,31 +2,28 @@
 import { Plus } from 'lucide-vue-next'
 import { computed, onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
+import ButtonLink from '@/components/ButtonLink.vue'
 import LoadingIcon from '@/components/Icons/LoadingIcon.vue'
 import Button from '@/components/ui/button/Button.vue'
-import { useToast } from '@/components/ui/toast'
 import UIIcon from '@/components/UIIcon.vue'
-import InvoiceTemplateEditor from '@/domains/invoice/components/invoiceTemplates/InvoiceTemplateEditor.vue'
 import InvoiceTemplateListItem from '@/domains/invoice/components/invoiceTemplates/InvoiceTemplateListItem.vue'
 import { invoiceTemplateService } from '@/domains/invoice/services/InvoiceTemplate.service'
 import TenantSectionTitle from '@/domains/tenant/components/TenantSectionTitle.vue'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
-import type { IInvoiceTemplate } from '@/domains/invoice/types/invoiceTemplate.type'
+import { routeMap } from '@/router/routeMap'
+import type { IInvoiceTemplatePreview } from '@/domains/invoice/types/invoiceTemplate.type'
 import type { ITenant } from '@/domains/tenant/types/tenant.type'
 
 const { t } = useI18n()
-const { toast } = useToast()
 
-defineProps<{
+const props = defineProps<{
   tenant?: ITenant
 }>()
 
 // State
 const isLoading = ref(false)
-const invoiceTemplates = ref<IInvoiceTemplate[]>([])
+const invoiceTemplates = ref<IInvoiceTemplatePreview[]>([])
 const activeFilter = ref<'all' | 'system' | 'tenant'>('all')
-const isEditing = ref(false)
-const editingTemplate = ref<IInvoiceTemplate | null>(null)
 
 // Computed
 const filteredTemplates = computed(() => invoiceTemplates.value.filter(template => {
@@ -47,43 +44,10 @@ const loadTemplates = async () => {
   }
 }
 
-const createNewTemplate = () => {
-  editingTemplate.value = {
-    id: '',
-    name: '',
-    description: '',
-    content: '',
-    category: 'invoice',
-    previewData: {},
-    settings: {},
-    isActive: true,
-    isDefault: false,
-    isSystem: false
-  } as IInvoiceTemplate
-  isEditing.value = true
-}
-
-const editTemplate = (template: IInvoiceTemplate) => {
-  if (template.isSystem) {
-    toast.warning(t('tenant.invoiceTemplates.cannotEditSystem'))
-    return
-  }
-  editingTemplate.value = { ...template }
-  isEditing.value = true
-}
-
-const cancelEditing = () => {
-  isEditing.value = false
-  editingTemplate.value = null
-}
-
-const onTemplateSaved = async () => {
-  try {
-    await loadTemplates()
-    toast.success(t('tenant.invoiceTemplates.editor.saveSuccess'))
-    cancelEditing()
-  } catch (error) {
-    handleErrorWithToast(t('tenant.invoiceTemplates.editor.saveError'), error)
+const createNewTemplateRoute = () => {
+  return {
+    name: routeMap.tenant.financialSettings.invoiceTemplatesCreate,
+    params: { id: props.tenant?.id ?? '' }
   }
 }
 
@@ -97,16 +61,16 @@ onMounted(() => {
   <div class="flex flex-col gap-2 border rounded-md p-4 shadow-lg/5">
     <TenantSectionTitle :title="t('tenant.invoiceTemplates.title')">
       <template #actions>
-        <Button variant="primary" :disabled="isEditing" @click="createNewTemplate">
+        <ButtonLink variant="primary" :to="createNewTemplateRoute()">
           <Plus class="size-4" />
           {{ t('tenant.invoiceTemplates.createTemplate') }}
-        </Button>
+        </ButtonLink>
       </template>
     </TenantSectionTitle>
 
     <div class="flex flex-col gap-6">
       <!-- Template List -->
-      <div v-if="!isEditing" class="p-6">
+      <div>
         <div class="mb-6">
           <div class="flex space-x-4 mb-4">
             <Button
@@ -146,23 +110,13 @@ onMounted(() => {
           <InvoiceTemplateListItem
             v-for="template in filteredTemplates"
             :key="template.id"
+            :tenant-id="tenant?.id ?? ''"
             :template="template"
             @changed-active-state="loadTemplates()"
             @changed-default-status="loadTemplates()"
             @deleted="loadTemplates()"
-            @edit="editTemplate"
           />
         </div>
-      </div>
-
-      <!-- Template Editor -->
-      <div v-if="isEditing">
-        <InvoiceTemplateEditor
-          :template="editingTemplate"
-          :invoice-templates="invoiceTemplates"
-          @save="onTemplateSaved"
-          @cancel="cancelEditing"
-        />
       </div>
     </div>
   </div>

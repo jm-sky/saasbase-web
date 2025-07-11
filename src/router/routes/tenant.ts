@@ -41,7 +41,17 @@ export const tenantRoutes: RouteRecordRaw[] = [
       {
         path: 'invoice-templates',
         name: routeMap.tenant.financialSettings.invoiceTemplates,
-        component: () => import('@/pages/tenant/FinancialSettings/TenantInvoiceTemplatesPage.vue'),
+        component: () => import('@/pages/tenant/FinancialSettings/InvoiceTemplatesPage.vue'),
+      },
+      {
+        path: 'invoice-templates/create/:parentId?',
+        name: routeMap.tenant.financialSettings.invoiceTemplatesCreate,
+        component: () => import('@/pages/tenant/FinancialSettings/EditInvoiceTemplatesPage.vue'),
+      },
+      {
+        path: 'invoice-templates/edit/:templateId?',
+        name: routeMap.tenant.financialSettings.invoiceTemplatesEdit,
+        component: () => import('@/pages/tenant/FinancialSettings/EditInvoiceTemplatesPage.vue'),
       },
       {
         path: 'numbering-templates',

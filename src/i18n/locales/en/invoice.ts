@@ -44,8 +44,16 @@ export default {
     generatePdf: {
       title: 'Generate PDF',
       description: 'Generate a PDF for the invoice',
-      original: 'Original PDF',
-      duplicate: 'Duplicate PDF',
+      original: {
+        title: 'Original PDF',
+        success: 'Original PDF generated successfully',
+        error: 'Failed to generate original PDF',
+      },
+      duplicate: {
+        title: 'Duplicate PDF',
+        success: 'Duplicate PDF generated successfully',
+        error: 'Failed to generate duplicate PDF',
+      },
       more: 'More options',
       fields: {
         template: 'Template',

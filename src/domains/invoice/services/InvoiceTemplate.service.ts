@@ -1,5 +1,5 @@
 import api from '@/lib/api'
-import type { IInvoiceTemplate } from '../types/invoiceTemplate.type'
+import type { IInvoiceTemplate, IInvoiceTemplatePreview } from '../types/invoiceTemplate.type'
 import type { IResource, IResourceCollection } from '@/domains/shared/types/resource.type'
 
 export interface ITemplatePreviewOptions {
@@ -24,8 +24,8 @@ export interface ITemplatePreviewResponse {
 }
 
 class InvoiceTemplateService {
-  async index(): Promise<IResourceCollection<IInvoiceTemplate>> {
-    return (await api.get<IResourceCollection<IInvoiceTemplate>>('/invoice-templates')).data
+  async index(): Promise<IResourceCollection<IInvoiceTemplatePreview>> {
+    return (await api.get<IResourceCollection<IInvoiceTemplatePreview>>('/invoice-templates')).data
   }
 
   async get(id: string): Promise<IInvoiceTemplate> {

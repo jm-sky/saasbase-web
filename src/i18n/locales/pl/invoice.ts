@@ -44,8 +44,16 @@ export default {
     generatePdf: {
       title: 'Generuj PDF',
       description: 'Generuj PDF dla faktury',
-      original: 'PDF oryginalny',
-      duplicate: 'PDF duplikat',
+      original: {
+        title: 'PDF oryginalny',
+        success: 'PDF oryginalny wygenerowany pomyślnie',
+        error: 'Nie udało się wygenerować PDF oryginalnego',
+      },
+      duplicate: {
+        title: 'PDF duplikat',
+        success: 'PDF duplikat wygenerowany pomyślnie',
+        error: 'Nie udało się wygenerować PDF duplikatu',
+      },
       more: 'Więcej opcji',
       fields: {
         template: 'Szablon',

@@ -12,19 +12,22 @@ import {
 } from '@/components/ui/dropdown-menu'
 import Separator from '@/components/ui/separator/Separator.vue'
 import { useToast } from '@/components/ui/toast'
+import { downloadBlob } from '@/lib/downloadBlob'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
 import type { IInvoice } from '../../types/invoice.type'
-import { invoiceService } from '../../services/invoiceService'
+import { invoiceeAttachmentsService } from '../../services/invoiceAttachmentsService'
+import { type IGeneratePdfResponse, invoiceService } from '../../services/invoiceService'
 import GenerateInvoicePdfModal from '../modals/GenerateInvoicePdfModal.vue'
 
 const { t } = useI18n()
 const { toast } = useToast()
 
-const { size = 'sm', variant = 'button', invoice, invoices } = defineProps<{
+const { size = 'sm', variant = 'button', invoice, invoices, download = false } = defineProps<{
   invoice?: IInvoice | null
   invoices?: IInvoice[]
   size?: ButtonVariants['size']
   variant?: 'button' | 'menu-item'
+  download?: boolean
 }>()
 
 const emit = defineEmits<{
@@ -44,9 +47,10 @@ const generatePdf = async (type: 'original' | 'duplicate') => {
   if (!invoice?.id) return
   loading.value = true
   try {
-    await invoiceService.generatePdf(invoice.id, invoiceOptions)
+    const response = await invoiceService.generatePdf(invoice.id, invoiceOptions)
     toast.success(t(`invoice.actions.generatePdf.${type}.success`, `${type} PDF generated successfully`))
     emit('done', type)
+    await optionalDownload(response)
   } catch (error) {
     handleErrorWithToast(t('invoice.actions.generatePdf.error', 'Failed to generate PDF'), error)
     console.error(`Failed to generate ${type} PDF:`, error)
@@ -54,6 +58,13 @@ const generatePdf = async (type: 'original' | 'duplicate') => {
   } finally {
     loading.value = false
   }
+}
+
+const optionalDownload = async (response: IGeneratePdfResponse) => {
+  if (!download) return
+  if (!invoice?.id) return
+  const blob = await invoiceeAttachmentsService.download(invoice.id, response.mediaId)
+  downloadBlob(blob, response.fileName)
 }
 </script>
 
@@ -93,10 +104,10 @@ const generatePdf = async (type: 'original' | 'duplicate') => {
     </DropdownMenuTrigger>
     <DropdownMenuContent align="end">
       <DropdownMenuItem hoverable @click="generatePdf('original')">
-        {{ t('invoice.actions.generatePdf.original', 'Original PDF') }}
+        {{ t('invoice.actions.generatePdf.original.title', 'Original PDF') }}
       </DropdownMenuItem>
       <DropdownMenuItem hoverable @click="generatePdf('duplicate')">
-        {{ t('invoice.actions.generatePdf.duplicate', 'Duplicate PDF') }}
+        {{ t('invoice.actions.generatePdf.duplicate.title', 'Duplicate PDF') }}
       </DropdownMenuItem>
 
       <Separator class="my-2" />
@@ -109,6 +120,7 @@ const generatePdf = async (type: 'original' | 'duplicate') => {
     <GenerateInvoicePdfModal
       v-model:open="open"
       :invoice="invoice"
+      :download
       @done="emit('done', 'original')"
     />
   </DropdownMenu>

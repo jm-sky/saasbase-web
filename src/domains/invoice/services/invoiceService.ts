@@ -21,6 +21,14 @@ export interface IGeneratePdfParams {
   action?: 'download' | 'stream' | 'attach' | 'preview'
 }
 
+export interface IGeneratePdfResponse {
+  mediaId: string
+  fileName: string
+  size: number
+  collectionName: string
+  url: string
+}
+
 class InvoiceService {
   async index(filters?: IInvoiceFilters): Promise<IResourceCollection<IInvoice>> {
     const params = buildSpatieQuery(filters ?? { filter: {} })
@@ -47,9 +55,9 @@ class InvoiceService {
     await api.delete(`${apiRoutesMap.invoices}/${id}`)
   }
 
-  async generatePdf(invoiceId: string, params?: IGeneratePdfParams): Promise<Blob> {
-    const response = await api.post(`${apiRoutesMap.invoices}/${invoiceId}/pdf`, { ...params })
-    return response.data
+  async generatePdf(invoiceId: string, params?: IGeneratePdfParams): Promise<IGeneratePdfResponse> {
+    const response = await api.post<{ data: IGeneratePdfResponse }>(`${apiRoutesMap.invoices}/${invoiceId}/pdf`, { ...params })
+    return response.data.data
   }
 
   async export(filters?: IInvoiceFilters): Promise<Blob> {

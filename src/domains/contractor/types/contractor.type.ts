@@ -128,6 +128,7 @@ export interface IContractorLookup {
   logo?: IMedia
   preferences?: IContractorPreferences
   defaultAddress?: IContractorAddress
+  [key: string]: unknown
 }
 
 export type IContractorCreate = Omit<IContractor, 'id' | 'tenantId' | 'logo' | 'logoUrl' | 'createdAt' | 'updatedAt'>
