@@ -1,7 +1,5 @@
-import { StorageSerializers, useSessionStorage } from '@vueuse/core'
 import { defineStore, storeToRefs } from 'pinia'
 import { ref, watch } from 'vue'
-import { config } from '@/config'
 import { useAuthStore } from '@/domains/auth/store/auth.store'
 import type { IInvoiceTemplatePreview } from '../types/invoiceTemplate.type'
 
@@ -10,7 +8,7 @@ export const useInvoiceTemplateStore = defineStore('invoiceTemplate', () => {
   const { tenantId } = storeToRefs(authStore)
 
   const invoiceTemplate = ref<IInvoiceTemplatePreview | null>(null)
-  const invoiceTemplates = useSessionStorage<IInvoiceTemplatePreview[]>(`${config.appId}:invoiceTemplates`, [], { serializer: StorageSerializers.object })
+  const invoiceTemplates = ref<IInvoiceTemplatePreview[]>([])
 
   const setTemplateById = (id: string) => {
     if (invoiceTemplate.value?.id === id) return
