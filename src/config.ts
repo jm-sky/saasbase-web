@@ -22,6 +22,8 @@ export const config = {
     language: import.meta.env.VITE_DEFAULTS_LANGUAGE ?? 'pl',
     currency: import.meta.env.VITE_DEFAULTS_CURRENCY ?? 'PLN',
     paymentDays: 14,
+    primaryColor: '#0284C7', // blue-500
+    secondaryColor: '#6B7280', // gray-500
   },
   pusher: {
     appKey: import.meta.env.VITE_PUSHER_APP_KEY ?? 'saasbase-key',

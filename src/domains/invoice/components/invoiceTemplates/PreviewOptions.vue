@@ -35,12 +35,26 @@ const applyColorScheme = (scheme: { accent: string; secondary: string }) => {
   localOptions.value.secondaryColor = scheme.secondary
 }
 
+// Track if we're updating from props to prevent circular updates
+let isUpdatingFromProps = false
+
 watch(localOptions, (newValue) => {
-  emit('update:modelValue', { ...newValue })
+  if (!isUpdatingFromProps) {
+    emit('update:modelValue', { ...newValue })
+  }
 }, { deep: true })
 
 watch(() => props.modelValue, (newValue) => {
-  localOptions.value = { ...newValue }
+  // Prevent circular updates by checking if values are actually different
+  const isDifferent = JSON.stringify(localOptions.value) !== JSON.stringify(newValue)
+  if (isDifferent) {
+    isUpdatingFromProps = true
+    localOptions.value = { ...newValue }
+    // Reset flag on next tick to allow local changes
+    setTimeout(() => {
+      isUpdatingFromProps = false
+    }, 0)
+  }
 }, { deep: true })
 </script>
 

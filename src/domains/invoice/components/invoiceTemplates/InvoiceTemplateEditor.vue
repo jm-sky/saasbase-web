@@ -9,7 +9,9 @@ import Input from '@/components/ui/input/Input.vue'
 import Label from '@/components/ui/label/Label.vue'
 import Textarea from '@/components/ui/textarea/Textarea.vue'
 import { useToast } from '@/components/ui/toast'
+import { config } from '@/config'
 import TenantSectionTitle from '@/domains/tenant/components/TenantSectionTitle.vue'
+import { useTenantBranding } from '@/domains/tenant/composables/useTenantBranding'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
 import { routeMap } from '@/router/routeMap'
 import type { IInvoiceTemplate } from '../../types/invoiceTemplate.type'
@@ -23,9 +25,10 @@ import PreviewOptions from './PreviewOptions.vue'
 import TemplateHelperReference from './TemplateHelperReference.vue'
 import type { TUUID } from '@/domains/shared/types/common'
 
-const { t } = useI18n()
+const { t, locale } = useI18n()
 const { toast } = useToast()
 const router = useRouter()
+const { tenantBranding } = useTenantBranding()
 
 const props = defineProps<{
   templateId?: TUUID | null
@@ -64,15 +67,18 @@ const previewIframe = ref<HTMLIFrameElement | null>(null)
 const previewOptions = ref<ITemplatePreviewOptions>({
   language: undefined,
   currency: undefined,
-  accentColor: '#3B82F6',
-  secondaryColor: '#6B7280',
+  accentColor: tenantBranding.value?.colorPrimary ?? config.defaults.primaryColor,
+  secondaryColor: tenantBranding.value?.colorSecondary ?? config.defaults.secondaryColor,
   includeLogo: true,
   includeSignatures: false,
   dateFormat: 'Y-m-d',
-  timezone: 'UTC'
+  timezone: config.timeZone, // TODO: user.settings.timezone ?? config.timeZone
 })
 
 const { getSampleData, getInvoiceSchema } = useGetSampleData(previewOptions)
+
+// Convert schema to computed to prevent reactive calls
+const invoiceSchema = computed(() => getInvoiceSchema())
 const { saveDraft, checkForUnsavedDraft, clearDraft } = useInvoiceTemplateDraftStorage(draftId, editableTemplate)
 
 // Computed properties
@@ -221,8 +227,8 @@ onMounted(async () => {
   }
 
   // Load default app settings
-  previewOptions.value.language = 'en' // window.AppConfig?.locale || 'en'
-  previewOptions.value.timezone = 'UTC' // window.AppConfig?.timezone || 'UTC'
+  previewOptions.value.language = locale.value // Use current locale instead of hardcoded 'en'
+  previewOptions.value.timezone = config.timeZone // window.AppConfig?.timezone || 'UTC'
 
   // Check for unsaved drafts only for new templates
   if (!props.templateId && !props.parentId) {
@@ -302,7 +308,7 @@ onUnmounted(() => {
             v-model="editableTemplate.content"
             height="400px"
             theme="vs"
-            :schema="getInvoiceSchema()"
+            :schema="invoiceSchema"
           />
         </div>
 
