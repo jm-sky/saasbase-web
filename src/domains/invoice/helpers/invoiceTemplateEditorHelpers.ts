@@ -1,3 +1,4 @@
+import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { money } from '@/lib/money'
 import type { ITemplatePreviewOptions } from '../services/InvoiceTemplate.service'
@@ -6,6 +7,9 @@ import type { Ref } from 'vue'
 
 export const useGetSampleData = (previewOptions: Ref<ITemplatePreviewOptions>) => {
   const { locale } = useI18n()
+  
+  // Use a computed ref to make locale dependency explicit and prevent recursion
+  const currentLocale = computed(() => previewOptions.value.language ?? locale.value)
 
   const getCurrencySymbol = (currency: string) => {
     const symbols: Record<string, string> = {
@@ -25,11 +29,11 @@ export const useGetSampleData = (previewOptions: Ref<ITemplatePreviewOptions>) =
         number: 'PREVIEW-001',
         type: 'invoice',
         status: 'issued',
-        formattedTotalNet: money(1000.00, previewOptions.value.currency, locale),
-        formattedTotalTax: money(230.00, previewOptions.value.currency, locale),
-        formattedTotalGross: money(1230.00, previewOptions.value.currency, locale),
+        formattedTotalNet: money(1000.00, previewOptions.value.currency, currentLocale.value),
+        formattedTotalTax: money(230.00, previewOptions.value.currency, currentLocale.value),
+        formattedTotalGross: money(1230.00, previewOptions.value.currency, currentLocale.value),
         currency: previewOptions.value.currency,
-        currencySymbol: getCurrencySymbol(previewOptions.value.currency),
+        currencySymbol: getCurrencySymbol(previewOptions.value.currency ?? 'USD'),
         issueDate: '2024-07-06',
         dueDate: '2024-08-05',
         seller: {
@@ -52,10 +56,10 @@ export const useGetSampleData = (previewOptions: Ref<ITemplatePreviewOptions>) =
             id: '01HZ123456790',
             description: 'Web Development Services',
             formattedQuantity: '40.00',
-            formattedUnitPrice: money(20.00, previewOptions.value.currency, locale),
-            formattedTotalNet: money(800.00, previewOptions.value.currency, locale),
-            formattedTotalVat: money(184.00, previewOptions.value.currency, locale),
-            formattedTotalGross: money(984.00, previewOptions.value.currency, locale),
+            formattedUnitPrice: money(20.00, previewOptions.value.currency, currentLocale.value),
+            formattedTotalNet: money(800.00, previewOptions.value.currency, currentLocale.value),
+            formattedTotalVat: money(184.00, previewOptions.value.currency, currentLocale.value),
+            formattedTotalGross: money(984.00, previewOptions.value.currency, currentLocale.value),
             vatRateName: 'Standard VAT',
             vatRateValue: 23.0
           },
@@ -63,10 +67,10 @@ export const useGetSampleData = (previewOptions: Ref<ITemplatePreviewOptions>) =
             id: '01HZ123456791',
             description: 'Consulting Services',
             formattedQuantity: '10.00',
-            formattedUnitPrice: money(20.00, previewOptions.value.currency, locale),
-            formattedTotalNet: money(200.00, previewOptions.value.currency, locale),
-            formattedTotalVat: money(46.00, previewOptions.value.currency, locale),
-            formattedTotalGross: money(246.00, previewOptions.value.currency, locale),
+            formattedUnitPrice: money(20.00, previewOptions.value.currency, currentLocale.value),
+            formattedTotalNet: money(200.00, previewOptions.value.currency, currentLocale.value),
+            formattedTotalVat: money(46.00, previewOptions.value.currency, currentLocale.value),
+            formattedTotalGross: money(246.00, previewOptions.value.currency, currentLocale.value),
             vatRateName: 'Standard VAT',
             vatRateValue: 23.0
           }
@@ -75,9 +79,9 @@ export const useGetSampleData = (previewOptions: Ref<ITemplatePreviewOptions>) =
           {
             vatRateName: 'Standard VAT',
             vatRateValue: 23.0,
-            formattedNet: money(1000.00, previewOptions.value.currency, locale),
-            formattedVat: money(230.00, previewOptions.value.currency, locale),
-            formattedGross: money(1230.00, previewOptions.value.currency, locale)
+            formattedNet: money(1000.00, previewOptions.value.currency, currentLocale.value),
+            formattedVat: money(230.00, previewOptions.value.currency, currentLocale.value),
+            formattedGross: money(1230.00, previewOptions.value.currency, currentLocale.value)
           }
         ],
         payment: {

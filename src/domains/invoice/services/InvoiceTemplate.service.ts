@@ -3,8 +3,8 @@ import type { IInvoiceTemplate, IInvoiceTemplatePreview } from '../types/invoice
 import type { IResource, IResourceCollection } from '@/domains/shared/types/resource.type'
 
 export interface ITemplatePreviewOptions {
-  language: string
-  currency: string
+  language: string | undefined
+  currency: string | undefined
   accentColor: string
   secondaryColor: string
   includeLogo: boolean

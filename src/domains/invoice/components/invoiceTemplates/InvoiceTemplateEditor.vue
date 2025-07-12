@@ -62,8 +62,8 @@ const draftTimeout = ref<ReturnType<typeof setTimeout> | null>(null)
 const previewIframe = ref<HTMLIFrameElement | null>(null)
 
 const previewOptions = ref<ITemplatePreviewOptions>({
-  language: 'en',
-  currency: 'USD',
+  language: undefined,
+  currency: undefined,
   accentColor: '#3B82F6',
   secondaryColor: '#6B7280',
   includeLogo: true,
@@ -187,12 +187,28 @@ watch([() => editableTemplate.value.content, () => editableTemplate.value.name],
   draftTimeout.value = setTimeout(() => { saveDraft() }, 2000)
 }, { deep: true })
 
-// Watch for preview option changes to auto-update preview
-watch(previewOptions, () => {
-  if (previewHtml.value) {
-    void previewTemplate()
-  }
-}, { deep: true })
+// // Watch for preview option changes to auto-update preview
+// // Exclude language changes to prevent recursive updates when locale changes globally
+// watch(() => ({
+//   currency: previewOptions.value.currency,
+//   accentColor: previewOptions.value.accentColor,
+//   secondaryColor: previewOptions.value.secondaryColor,
+//   includeLogo: previewOptions.value.includeLogo,
+//   includeSignatures: previewOptions.value.includeSignatures,
+//   dateFormat: previewOptions.value.dateFormat,
+//   timezone: previewOptions.value.timezone
+// }), () => {
+//   if (previewHtml.value) {
+//     void previewTemplate()
+//   }
+// }, { deep: true })
+
+// // Watch language separately to avoid recursion
+// watch(() => previewOptions.value.language, () => {
+//   if (previewHtml.value) {
+//     void previewTemplate()
+//   }
+// })
 
 // Lifecycle
 onMounted(async () => {
