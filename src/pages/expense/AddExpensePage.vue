@@ -21,11 +21,11 @@ import AuthenticatedLayout from '@/layouts/AuthenticatedLayout.vue'
 import { fullAddress } from '@/lib/fullAddress'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
 import { isValidationError } from '@/lib/validation'
+import ExpenseLinesEditable from './partials/ExpenseLinesEditable.vue'
 import ExpensePaymentSection from './partials/ExpensePaymentSection.vue'
 import ExpenseSidebarEditable from './partials/ExpenseSidebarEditable.vue'
 import InvoiceBuyerBox from './partials/InvoiceBuyerBox.vue'
 import InvoiceInfoTable from './partials/InvoiceInfoTable.vue'
-import InvoiceLinesEditable from './partials/InvoiceLinesEditable.vue'
 import InvoiceSellerBox from './partials/InvoiceSellerBox.vue'
 import type { IContractor, IContractorLookup } from '@/domains/contractor/types/contractor.type'
 import type { IExpenseCreate } from '@/domains/expense/types/expense.type'
@@ -250,7 +250,7 @@ const formErrors = computed(() => {
           <InvoiceBuyerBox :values="values" />
         </div>
 
-        <InvoiceLinesEditable
+        <ExpenseLinesEditable
           :values="values"
           :add-line="addLine"
         />

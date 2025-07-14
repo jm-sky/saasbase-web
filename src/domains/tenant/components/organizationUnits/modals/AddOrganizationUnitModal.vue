@@ -119,7 +119,7 @@ const generateCode = () => {
           :label="t('tenant.organizationUnits.fields.isActive')"
           class="flex flex-col items-center gap-1"
         >
-          <Switch v-bind="componentField" :checked="values.isActive" />
+          <Switch v-bind="componentField" :model-value="values.isActive" />
         </FormFieldLabeled>
       </div>
 

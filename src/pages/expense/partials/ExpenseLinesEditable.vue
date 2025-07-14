@@ -80,7 +80,7 @@ const removeLine = (index: number) => {
 </script>
 
 <template>
-  <div>
+  <div class="overflow-x-auto">
     <table class="w-full border-collapse mt-6">
       <thead>
         <tr>

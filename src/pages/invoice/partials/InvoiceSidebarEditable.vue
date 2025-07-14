@@ -196,7 +196,7 @@ const onPaymentMethodChange = (paymentMethod: IPaymentMethod | undefined) => {
         <FormItem class="flex flex-row items-center justify-between gap-1">
           <FormLabel>Send email</FormLabel>
           <FormControl>
-            <Switch v-bind="componentField" :checked="values?.options.sendEmail" />
+            <Switch v-bind="componentField" :model-value="values?.options.sendEmail" />
           </FormControl>
           <FormMessage />
         </FormItem>

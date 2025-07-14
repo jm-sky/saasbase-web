@@ -97,10 +97,10 @@ const deleteTemplate = async (template: IInvoiceTemplatePreview) => {
 
 <template>
   <div class="bg-card border border-border rounded-lg p-4 shadow hover:shadow-md transition-shadow">
-    <div class="flex justify-between items-start">
+    <div class="flex justify-between items-start flex-wrap">
       <div class="flex-1">
-        <div class="flex items-center space-x-2 mb-2">
-          <h3 class="text-lg font-semibold flex items-center gap-2">
+        <div class="flex items-center gap-2 mb-2">
+          <h3 class="flex items-center gap-2 text-lg font-semibold">
             <LockIcon v-if="template.isSystem" class="size-4 opacity-50" />
             <LockOpenIcon v-else class="size-4 opacity-50" />
             {{ template.name }}
@@ -115,6 +115,7 @@ const deleteTemplate = async (template: IInvoiceTemplatePreview) => {
             {{ template.isActive ? $t('common.active') : $t('common.inactive') }}
           </Badge>
         </div>
+
         <p v-if="template.description" class="text-muted-foreground mb-2">
           {{ template.description }}
         </p>
@@ -122,6 +123,7 @@ const deleteTemplate = async (template: IInvoiceTemplatePreview) => {
           {{ t('tenant.invoiceTemplates.category') }}: {{ template.category }}
         </div>
       </div>
+
       <div class="flex gap-1 ml-4">
         <ButtonLink
           v-tooltip="t('common.edit')"

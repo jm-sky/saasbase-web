@@ -363,7 +363,7 @@ export const tenant = {
       taxId: 'Tax ID',
       email: 'Email',
       phone: 'Phone',
-      website: 'Website',
+      websiteUrl: 'Website',
       visible: 'Visible',
       publicName: 'Public Name',
       industry: 'Industry',
@@ -388,7 +388,7 @@ export const tenant = {
     save: 'Save',
     template: 'Template',
     createTemplate: 'Create Template',
-    system: 'System Template',
+    system: 'System',
     default: 'Default',
     category: 'Category',
     setDefault: {

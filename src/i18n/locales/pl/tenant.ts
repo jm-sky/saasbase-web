@@ -368,7 +368,7 @@ export const tenant = {
       taxId: 'Identyfikator podatkowy',
       email: 'Email',
       phone: 'Telefon',
-      website: 'Strona internetowa',
+      websiteUrl: 'Strona internetowa',
       visible: 'Widoczny',
       publicName: 'Nazwa publiczna',
       industry: 'Branża',
@@ -393,7 +393,7 @@ export const tenant = {
     template: 'Szablon',
     save: 'Zapisz',
     createTemplate: 'Utwórz szablon',
-    system: 'Szablon systemowy',
+    system: 'Systemowy',
     default: 'Domyślny',
     category: 'Kategoria',
     setDefault: {

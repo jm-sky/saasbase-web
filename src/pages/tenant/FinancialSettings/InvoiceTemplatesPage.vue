@@ -72,7 +72,7 @@ onMounted(() => {
       <!-- Template List -->
       <div>
         <div class="mb-6">
-          <div class="flex space-x-4 mb-4">
+          <div class="flex flex-wrap gap-4 mb-4">
             <Button
               :variant="activeFilter === 'all' ? 'primary' : 'outline'"
               @click="activeFilter = 'all'"

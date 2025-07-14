@@ -124,7 +124,7 @@ const generateCode = () => {
           class="flex flex-col items-center gap-1"
           :disabled="isRoot"
         >
-          <Switch v-bind="componentField" :checked="values.isActive" />
+          <Switch v-bind="componentField" :model-value="values.isActive" />
         </FormFieldLabeled>
       </div>
 

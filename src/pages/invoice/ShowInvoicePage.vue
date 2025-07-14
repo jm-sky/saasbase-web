@@ -78,7 +78,7 @@ onMounted(async () => {
       </template>
     </EntityDetailsHeader>
 
-    <div class="flex flex-row gap-8 lg:mx-6 mb-10">
+    <div class="flex flex-col md:flex-row gap-8 lg:mx-6 mb-10">
       <div class="w-full lg:w-7xl max-w-7xl mx-auto p-2 sm:p-4 md:p-8 border shadow-xl/30">
         <!-- Main content -->
         <div class="grid grid-cols-1 lg:grid-cols-[2fr_1fr]">

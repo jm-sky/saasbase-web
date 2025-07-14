@@ -14,6 +14,7 @@ import {
   DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
+  DropdownMenuPortal,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
@@ -21,17 +22,27 @@ import DropdownMenuItemLink from '@/components/ui/dropdown-menu/DropdownMenuItem
 import { useLogout } from '@/domains/auth/composables/useLogout'
 import { useAuthStore } from '@/domains/auth/store/auth.store'
 import { routeTo } from '@/router/routeMap'
+import { useLanguageStore } from '@/stores/language.store'
 import Badge from '../ui/badge/Badge.vue'
+import DropdownMenuSub from '../ui/dropdown-menu/DropdownMenuSub.vue'
+import DropdownMenuSubContent from '../ui/dropdown-menu/DropdownMenuSubContent.vue'
+import DropdownMenuSubTrigger from '../ui/dropdown-menu/DropdownMenuSubTrigger.vue'
 import Switch from '../ui/switch/Switch.vue'
+import type { TLocale } from '@/i18n'
 
 const authStore = useAuthStore()
 const { t } = useI18n()
+const languageStore = useLanguageStore()
 
 const { logout } = useLogout()
 const isDark = useDark()
 const toggleDark = useToggle(isDark)
 
 const { user } = storeToRefs(authStore)
+
+const switchLanguage = (langCode: TLocale) => {
+  languageStore.setLocale(langCode)
+}
 </script>
 
 <template>
@@ -63,30 +74,46 @@ const { user } = storeToRefs(authStore)
       <DropdownMenuSeparator />
       <DropdownMenuGroup>
         <DropdownMenuItemLink :to="routeTo.settingsProfile()">
-          Profile
+          {{ t('settings.profile.title') }}
         </DropdownMenuItemLink>
         <DropdownMenuItemLink :to="routeTo.settingsAccount()">
-          Settings
+          {{ t('settings.account.title') }}
         </DropdownMenuItemLink>
         <DropdownMenuItemLink :to="routeTo.selectTenant()">
-          Change Tenant
+          {{ t('auth.selectTenant.title') }}
         </DropdownMenuItemLink>
       </DropdownMenuGroup>
 
       <DropdownMenuSeparator />
 
       <DropdownMenuItem class="flex items-center justify-between">
-        Dark Mode
+        {{ t('layout.darkMode') }}
         <Switch :model-value="isDark" class="w-10 h-4" @click.stop.capture="toggleDark()" />
       </DropdownMenuItem>
 
-      <DropdownMenuItem class="flex items-center justify-between">
-        Language
-      </DropdownMenuItem>
+      <DropdownMenuSub>
+        <DropdownMenuSubTrigger>
+          {{ t('settings.preferences.appearance.language') }}
+        </DropdownMenuSubTrigger>
+        <DropdownMenuPortal>
+          <DropdownMenuSubContent>
+            <DropdownMenuItem
+              v-for="locale in languageStore.availableLocales"
+              :key="locale"
+              :active="locale === languageStore.currentLocale"
+              hoverable
+              @click="switchLanguage(locale)"
+            >
+              <span>{{ t(`common.language.${locale}`) }}</span>
+              <span class="ml-2 text-xs text-muted-foreground">({{ locale.toUpperCase() }})</span>
+            </DropdownMenuItem>
+          </DropdownMenuSubContent>
+        </DropdownMenuPortal>
+      </DropdownMenuSub>
 
       <DropdownMenuSeparator />
 
-      <DropdownMenuItem>
+      <DropdownMenuItem class="bg-transparent!">
         <Button
           variant="outline"
           class="w-full"

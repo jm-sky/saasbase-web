@@ -85,7 +85,7 @@ onMounted(async () => {
       >
         {{ t('subscription.billingInterval.monthly') }}
       </span>
-      <Switch :checked="selectedInterval === 'yearly'" @update:checked="selectedInterval = selectedInterval === 'yearly' ? 'monthly' : 'yearly'" />
+      <Switch :model-value="selectedInterval === 'yearly'" @update:model-value="selectedInterval = selectedInterval === 'yearly' ? 'monthly' : 'yearly'" />
       <span class="text-sm font-medium cursor-pointer" :class="selectedInterval === 'yearly' ? 'text-primary' : 'text-muted-foreground'" @click="selectedInterval = 'yearly'">
         {{ t('subscription.billingInterval.yearly') }}
         <span class="ml-1 text-xs text-success">

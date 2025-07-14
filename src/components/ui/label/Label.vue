@@ -21,6 +21,6 @@ const delegatedProps = reactiveOmit(props, 'class', 'required')
     "
   >
     <slot />
-    <span v-if="required" class="text-red-500 ml-1">*</span>
+    <span v-if="required" class="text-destructive">*</span>
   </Label>
 </template>

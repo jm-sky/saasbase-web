@@ -16,7 +16,7 @@ defineProps<{
       </p>
     </div>
 
-    <div v-if="$slots.actions" class="flex flex-row items-center justify-end gap-2">
+    <div v-if="$slots.actions" class="flex flex-row items-center justify-end flex-wrap gap-2">
       <slot name="actions" />
     </div>
   </div>

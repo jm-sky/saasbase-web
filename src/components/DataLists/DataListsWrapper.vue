@@ -25,13 +25,13 @@ const emit = defineEmits<{
 <template>
   <div class="px-4 md:px-8 py-4 md:py-6 mx-auto relative">
     <div class="flex flex-col md:flex-row justify-between items-center gap-3 mb-6">
-      <div class="flex flex-row items-center gap-4">
+      <div class="flex flex-row items-center flex-wrap gap-4">
         <h1 class="text-2xl font-bold">
           {{ title }}
         </h1>
         <slot name="title-actions" />
       </div>
-      <div class="flex gap-2 items-center">
+      <div class="flex flex-wrap items-center justify-center max-w-full gap-2">
         <slot name="actions">
           <Button variant="outline" @click="emit('refresh')">
             <RefreshCw class="size-4" />

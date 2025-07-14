@@ -65,4 +65,5 @@ export const routeTo = {
   settingsNotifications: (): RouteLocationRaw => ({ name: routeMap.settings.notifications }),
   userPublicProfile: (id: string): RouteLocationRaw => ({ name: routeMap.userPublicProfile, params: { id } }),
   identityConfirmation: (type?: TIdentityConfirmationType): RouteLocationRaw => ({ name: routeMap.identityConfirmation.index, params: { type } }),
+  tenants: (): RouteLocationRaw => ({ name: routeMap.auth.selectTenant }),
 }

@@ -138,7 +138,7 @@ onMounted(() => {
       class="w-full"
       :class="{ 'opacity-50': loading }"
     >
-      <TabsList class="grid w-full grid-cols-4 lg:grid-cols-8">
+      <TabsList class="grid w-full grid-cols-2 md:grid-cols-4 lg:grid-cols-8 h-auto">
         <TabsTrigger
           v-for="group in groupedTemplates"
           :key="group.key"

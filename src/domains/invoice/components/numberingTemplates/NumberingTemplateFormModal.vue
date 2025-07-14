@@ -169,10 +169,12 @@ watch(() => [form.values.format, form.values.nextNumber, form.values.resetPeriod
     size="lg"
   >
     <form class="space-y-6" @submit="handleSubmit">
-      <div class="grid grid-cols-2 gap-4">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <FormField v-slot="{ componentField }" name="name">
           <FormItem>
-            <FormLabel>{{ t('invoice.numberingTemplate.form.name') }}</FormLabel>
+            <FormLabel required>
+              {{ t('invoice.numberingTemplate.form.name') }}
+            </FormLabel>
             <FormControl>
               <Input
                 v-bind="componentField"
@@ -185,7 +187,9 @@ watch(() => [form.values.format, form.values.nextNumber, form.values.resetPeriod
 
         <FormField v-slot="{ componentField }" name="invoiceType">
           <FormItem>
-            <FormLabel>{{ t('invoice.numberingTemplate.form.invoiceType') }}</FormLabel>
+            <FormLabel required>
+              {{ t('invoice.numberingTemplate.form.invoiceType') }}
+            </FormLabel>
             <Select v-bind="componentField" :disabled="isEditing">
               <FormControl>
                 <SelectTrigger>
@@ -210,7 +214,9 @@ watch(() => [form.values.format, form.values.nextNumber, form.values.resetPeriod
       <div class="space-y-4">
         <FormField v-slot="{ componentField }" name="format">
           <FormItem>
-            <FormLabel>{{ t('invoice.numberingTemplate.form.format') }}</FormLabel>
+            <FormLabel required>
+              {{ t('invoice.numberingTemplate.form.format') }}
+            </FormLabel>
             <FormControl>
               <Input
                 v-bind="componentField"
@@ -243,7 +249,7 @@ watch(() => [form.values.format, form.values.nextNumber, form.values.resetPeriod
         </div>
       </div>
 
-      <div class="grid grid-cols-3 gap-4">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
         <FormField v-slot="{ componentField }" name="nextNumber">
           <FormItem>
             <FormLabel>{{ t('invoice.numberingTemplate.form.nextNumber') }}</FormLabel>
@@ -263,7 +269,7 @@ watch(() => [form.values.format, form.values.nextNumber, form.values.resetPeriod
             <FormLabel>{{ t('invoice.numberingTemplate.form.resetPeriod') }}</FormLabel>
             <Select v-bind="componentField">
               <FormControl>
-                <SelectTrigger>
+                <SelectTrigger class="w-full">
                   <SelectValue />
                 </SelectTrigger>
               </FormControl>

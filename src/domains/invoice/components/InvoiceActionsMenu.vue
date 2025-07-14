@@ -20,7 +20,7 @@ defineEmits<{
 </script>
 
 <template>
-  <div class="flex flex-row col items-center gap-2">
+  <div class="flex flex-row flex-wrap max-w-full justify-center items-center gap-2">
     <ButtonLink
       to="/invoices/add"
       variant="default"
