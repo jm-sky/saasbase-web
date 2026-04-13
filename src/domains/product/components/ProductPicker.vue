@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { templateRef, useDebounceFn, useInfiniteScroll } from '@vueuse/core'
-import { computed, nextTick, onMounted, ref, watch } from 'vue'
+import { useDebounceFn, useInfiniteScroll } from '@vueuse/core'
+import { computed, nextTick, onMounted, ref, useTemplateRef, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import LoadingIcon from '@/components/Icons/LoadingIcon.vue'
 import {
@@ -27,9 +27,9 @@ const {
   popoverContentClass,
   disabled,
   class: classProp,
-  type = undefined,
-  showCreateButton = false,
-  showPrice = true,
+  type,
+  showCreateButton,
+  showPrice,
   perPage = 20,
   maxHeight = '300px'
 } = defineProps<{
@@ -54,7 +54,7 @@ const products = ref<IProductLookup[]>([])
 const currentPage = ref(1)
 const hasMoreData = ref(true)
 const error = ref<string | null>(null)
-const listRef = templateRef<HTMLElement>('listRef')
+const listRef = useTemplateRef<HTMLElement>('listRef')
 const recentSelections = ref<IProductLookup[]>([])
 
 const cacheKey = computed(() => `${config.appId}:product-recent-${type ?? 'all'}`)

@@ -5,7 +5,7 @@ import ButtonLink from '@/components/ButtonLink.vue'
 
 const { t } = useI18n()
 
-const { withText = false, withIcon = true } = defineProps<{
+const { withText, withIcon } = defineProps<{
   id: string
   withIcon?: boolean
   withText?: boolean

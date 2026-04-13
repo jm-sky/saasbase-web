@@ -35,13 +35,13 @@ export function useOrganizationChartLayout(organizationUnits: Ref<IOrganizationU
     edges.value = []
 
     organizationUnits.value.forEach(unit => {
-      unitMap.set(unit.id.toString(), unit)
+      unitMap.set(unit.id, unit)
     })
   }
 
   const prepareNodes = () => {
     organizationUnits.value.forEach(unit => {
-      const nodeId = unit.id.toString()
+      const nodeId = unit.id
 
       const node: Node<OrganizationUnitNodeData> = {
         id: nodeId,
@@ -57,7 +57,7 @@ export function useOrganizationChartLayout(organizationUnits: Ref<IOrganizationU
       nodeMap.set(nodeId, node)
       nodes.value.push(node)
 
-      const parentNode = unit.parentId ? nodeMap.get(unit.parentId.toString()) : null
+      const parentNode = unit.parentId ? nodeMap.get(unit.parentId) : null
 
       if (parentNode) {
         parentNode.data?.children?.push(node)
@@ -67,12 +67,12 @@ export function useOrganizationChartLayout(organizationUnits: Ref<IOrganizationU
 
   const prepareEdges = () => {
     organizationUnits.value.forEach(unit => {
-      const nodeId = unit.id.toString()
+      const nodeId = unit.id
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       const node = nodeMap.get(nodeId)!
 
       if (unit.parentId) {
-        const parentId = unit.parentId.toString()
+        const parentId = unit.parentId
         const parentNode = nodeMap.get(parentId)
 
         if (parentNode && !unit.isTechnical) {

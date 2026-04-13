@@ -53,14 +53,14 @@ const columnsWithSelection = computed(() => {
     header: ({ table }) => {
       return h(Checkbox, {
         checked: table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && 'indeterminate'),
-        'onUpdate:checked': (value: boolean) => { table.toggleAllPageRowsSelected(!!value) },
+        'onUpdate:checked': (value: boolean) => { table.toggleAllPageRowsSelected(value) },
         ariaLabel: 'Select all',
       })
     },
     cell: ({ row }) => {
       return h(Checkbox, {
         checked: row.getIsSelected(),
-        'onUpdate:checked': (value: boolean) => { row.toggleSelected(!!value) },
+        'onUpdate:checked': (value: boolean) => { row.toggleSelected(value) },
         ariaLabel: 'Select row',
       })
     },

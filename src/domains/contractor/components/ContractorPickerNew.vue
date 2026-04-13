@@ -21,8 +21,8 @@ const {
   disabled,
   class: classProp,
   type = 'buyer',
-  showCreateButton = false,
-  showVatId = true,
+  showCreateButton,
+  showVatId,
   perPage = 20,
   maxHeight = '300px'
 } = defineProps<{

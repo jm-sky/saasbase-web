@@ -8,7 +8,7 @@ import { useContractorStore } from '../../store/contractor.store'
 const { t } = useI18n()
 const contractorStore = useContractorStore()
 
-const { withText = false, withIcon = true } = defineProps<{
+const { withText, withIcon } = defineProps<{
   id: string
   contractor: IContractor | IContractorListItem
   withIcon?: boolean

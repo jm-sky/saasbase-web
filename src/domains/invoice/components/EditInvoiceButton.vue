@@ -9,7 +9,7 @@ const { t } = useI18n()
 
 const invoiceStore = useInvoiceStore()
 
-const { withText = false, withIcon = true } = defineProps<{
+const { withText, withIcon } = defineProps<{
   invoice: IInvoice
   withIcon?: boolean
   withText?: boolean

@@ -19,7 +19,7 @@ export interface CacheOptions<TFilters extends object, TModel extends object> {
 }
 
 export const useCache = <TFilters extends object, TModel extends object>({
-  softRefreshInterval = 5 * 60 * 1000, // 5 minut
+  softRefreshInterval, // 5 minut
   loadItems,
   showResults,
   areArraysEqual = baseArrayEqual,

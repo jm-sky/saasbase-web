@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import { templateRef } from '@vueuse/core'
 import { ScanEye } from 'lucide-vue-next'
-import { computed } from 'vue'
+import { computed, useTemplateRef } from 'vue'
 import { useI18n } from 'vue-i18n'
 import DataListSection from '@/components/DataLists/DataListSection.vue'
 import Button from '@/components/ui/button/Button.vue'
@@ -19,7 +18,7 @@ const { expenseId } = defineProps<{
   expenseId?: string | null
 }>()
 
-const listWrapper = templateRef('listWrapper')
+const listWrapper = useTemplateRef('listWrapper')
 
 const loading = computed(() => listWrapper.value?.loading ?? false)
 

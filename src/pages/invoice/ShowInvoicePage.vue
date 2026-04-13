@@ -1,8 +1,7 @@
 <script setup lang="ts">
-import { templateRef } from '@vueuse/core'
 import { Pencil } from 'lucide-vue-next'
 import { storeToRefs } from 'pinia'
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, useTemplateRef } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
 import ButtonLink from '@/components/ButtonLink.vue'
@@ -28,7 +27,7 @@ const { invoice } = storeToRefs(invoiceStore)
 const loading = ref(false)
 const error = ref<string | null>(null)
 
-const sidebar = templateRef<typeof ShowInvoiceSidebar>('sidebar')
+const sidebar = useTemplateRef<typeof ShowInvoiceSidebar>('sidebar')
 
 const refresh = async () => {
   try {

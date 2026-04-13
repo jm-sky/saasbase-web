@@ -6,7 +6,7 @@ import { uploadFileTypesMap } from '@/config'
 
 const { t } = useI18n()
 
-const { accept = uploadFileTypesMap.forOcr, multiple = false, disabled = false } = defineProps<{
+const { accept = uploadFileTypesMap.forOcr, multiple, disabled } = defineProps<{
   accept?: string
   multiple?: boolean
   disabled?: boolean

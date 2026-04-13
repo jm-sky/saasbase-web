@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { templateRef } from '@vueuse/core'
+import { useTemplateRef } from 'vue'
 import { useI18n } from 'vue-i18n'
 import Badge from '@/components/ui/badge/Badge.vue'
 import Separator from '@/components/ui/separator/Separator.vue'
@@ -19,7 +19,7 @@ defineProps<{
   expense?: IExpense | null
 }>()
 
-const attachments = templateRef<typeof AttachmentListWrapper>('attachments')
+const attachments = useTemplateRef<typeof AttachmentListWrapper>('attachments')
 
 defineExpose({
   attachments,

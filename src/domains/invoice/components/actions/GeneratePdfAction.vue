@@ -22,7 +22,7 @@ import GenerateInvoicePdfModal from '../modals/GenerateInvoicePdfModal.vue'
 const { t } = useI18n()
 const { toast } = useToast()
 
-const { size = 'sm', variant = 'button', invoice, invoices, download = false } = defineProps<{
+const { size = 'sm', variant = 'button', invoice, invoices, download } = defineProps<{
   invoice?: IInvoice | null
   invoices?: IInvoice[]
   size?: ButtonVariants['size']

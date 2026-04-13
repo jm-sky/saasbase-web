@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import EntityDetailsHeader from './EntityDetailsHeader.vue'
 
-const { showSidebar = true } = defineProps<{
+const { showSidebar } = defineProps<{
   title: string
   backLink: string
   editLink?: string

@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { templateRef } from '@vueuse/core'
-import { computed } from 'vue'
+import { computed, useTemplateRef } from 'vue'
 import { useI18n } from 'vue-i18n'
 import DataListSection from '@/components/DataLists/DataListSection.vue'
 import { contractorAttachmentsService } from '@/domains/contractor/services/ContractorAttachmentsService'
@@ -12,7 +11,7 @@ defineProps<{
   contractorId?: string | null
 }>()
 
-const listWrapper = templateRef('listWrapper')
+const listWrapper = useTemplateRef('listWrapper')
 
 const refresh = async () => {
   await listWrapper.value?.refresh()

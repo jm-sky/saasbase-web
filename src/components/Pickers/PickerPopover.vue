@@ -14,8 +14,8 @@ const { t } = useI18n()
 
 const {
   open,
-  disabled = false,
-  loading = false,
+  disabled,
+  loading,
   placeholder,
   modelValue,
   class: classProp,

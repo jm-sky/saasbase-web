@@ -9,7 +9,7 @@ const { t } = useI18n()
 
 const expenseStore = useExpenseStore()
 
-const { withText = false, withIcon = true } = defineProps<{
+const { withText, withIcon } = defineProps<{
   expense: IExpense
   withIcon?: boolean
   withText?: boolean

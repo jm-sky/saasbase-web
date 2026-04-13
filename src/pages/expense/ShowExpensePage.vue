@@ -1,8 +1,7 @@
 <script setup lang="ts">
-import { templateRef } from '@vueuse/core'
 import { Pencil, ScanEye } from 'lucide-vue-next'
 import { storeToRefs } from 'pinia'
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, useTemplateRef } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
 import ButtonLink from '@/components/ButtonLink.vue'
@@ -30,7 +29,7 @@ const { expense } = storeToRefs(expenseStore)
 const loading = ref(false)
 const error = ref<string | null>(null)
 
-const sidebar = templateRef<typeof ShowExpenseSidebar>('sidebar')
+const sidebar = useTemplateRef<typeof ShowExpenseSidebar>('sidebar')
 
 const refresh = async () => {
   try {

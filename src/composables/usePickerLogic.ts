@@ -1,5 +1,5 @@
-import { templateRef, useDebounceFn } from '@vueuse/core'
-import { computed, nextTick, onMounted, ref, type Ref, watch } from 'vue'
+import { useDebounceFn } from '@vueuse/core'
+import { computed, nextTick, onMounted, ref, type Ref, useTemplateRef, watch } from 'vue'
 import { useCache } from '@/lib/cache'
 import type { FilterDefinition } from '@/domains/shared/types/resource.type'
 import type {
@@ -35,7 +35,7 @@ export const usePickerLogic = <
   const currentPage = ref(1)
   const hasMoreData = ref(true)
   const error = ref<string | null>(null)
-  const listRef = templateRef<HTMLElement>('listRef')
+  const listRef = useTemplateRef<HTMLElement>('listRef')
   const recentSelections: Ref<TItem[]> = ref([])
 
   // Load recent selections from localStorage

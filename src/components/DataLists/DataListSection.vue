@@ -6,7 +6,7 @@ import Button from '@/components/ui/button/Button.vue'
 
 const { t } = useI18n()
 
-const { withAddButton = true, withRefreshButton = true } = defineProps<{
+const { withAddButton, withRefreshButton } = defineProps<{
   title: string
   withAddButton?: boolean
   withRefreshButton?: boolean
