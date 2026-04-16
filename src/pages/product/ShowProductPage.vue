@@ -61,6 +61,7 @@ onMounted(async () => {
       :name="product.name"
       :logo="product.logoUrl"
       :loading
+      show-sidebar
       @refresh="refresh"
     >
       <template #back-link-text>

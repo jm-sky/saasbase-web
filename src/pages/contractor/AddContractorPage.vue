@@ -124,6 +124,7 @@ const onBankAccountLookup = (ibanInfo: IIbanInfo) => {
     <EntityDetailsLayout
       :title="t('contractor.add.title')"
       back-link="/contractors"
+      show-sidebar
     >
       <template #back-link-text>
         {{ t('contractor.title') }}

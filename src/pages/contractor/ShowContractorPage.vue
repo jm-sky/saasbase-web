@@ -67,6 +67,7 @@ onMounted(async () => {
       :email="contractor?.email"
       :logo="contractor?.logoUrl"
       :loading
+      show-sidebar
       @refresh="refresh"
     >
       <template #back-link-text>

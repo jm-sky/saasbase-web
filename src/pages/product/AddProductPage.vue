@@ -56,6 +56,7 @@ const onSubmit = handleSubmit(async (values) => {
     <EntityDetailsLayout
       :title="t('product.add.title')"
       back-link="/products"
+      show-sidebar
     >
       <template #back-link-text>
         {{ t('product.title') }}

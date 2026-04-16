@@ -77,6 +77,7 @@ onMounted(async () => {
     <EntityDetailsLayout
       :title="t('project.edit.title')"
       back-link="/projects"
+      show-sidebar
     >
       <template #back-link-text>
         {{ t('project.title') }}

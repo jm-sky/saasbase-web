@@ -83,6 +83,7 @@ onMounted(async () => {
       :name="tenant.name"
       :logo="tenant.logoUrl"
       :loading
+      show-sidebar
       @refresh="refresh"
     >
       <template #back-link-text>
