@@ -48,7 +48,7 @@ onMounted(async () => {
           {{ error }}
         </Alert>
 
-        <div class="opacity-80">
+        <div class="flex flex-col items-center justify-center gap-4 opacity-80">
           <LoadingIcon />
           Redirecting...
         </div>

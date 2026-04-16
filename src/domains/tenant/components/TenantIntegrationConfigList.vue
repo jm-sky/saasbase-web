@@ -164,7 +164,7 @@ onMounted(() => {
       <Card
         v-for="integration in filteredIntegrationList"
         :key="integration.id"
-        class="flex flex-col"
+        class="flex flex-col hover:shadow-lg transition-shadow duration-300"
         :class="[
           { 'opacity-50 pointer-events-none bg-muted/50 grayscale': integration.disabled || saving[integration.type] },
           integration.enabled ? 'border border-primary' : 'border-dotted border-2'
