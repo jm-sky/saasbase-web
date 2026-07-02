@@ -14,12 +14,42 @@ commitach.
 | Grupa domen | Status |
 |---|---|
 | auth, account, tenant, user | **Ukończona** |
-| invoice, expense, product, project, contractor | W trakcie |
+| invoice, expense, product, project, contractor | **Ukończona** |
 | financial, identityConfirmation, subscription | **Ukończona** |
 | chat, feed, task, tags, skill, comment, invitations | **Ukończona** |
 | rights, shared, utils, infrastruktura (api client, router, i18n) | W trakcie |
 
 ## Findings
+
+### invoice, expense, product, project, contractor
+
+**Wzorzec:** to najbogatsza w findingi grupa tej fazy. Cały dropdown akcji faktury (poza PDF i delete) to atrapy UI (`TODO` + `setTimeout` + fałszywy toast sukcesu) — "share link" i "zmień status" nic nie robią mimo naprawionego backendu. Do tego realny bug shadowingu zmiennej kasujący całą listę faktur po usunięciu jednej, formularz tworzenia projektu strukturalnie niekompletny (brak wymaganego `statusId`), i systemowy brak jakiejkolwiek kontroli roli (Owner/Admin) w UI całej tej grupy domen — przyciski usuwania/eksportu/zarządzania adresami zawsze widoczne, awaria dopiero po kliknięciu.
+
+**Invoice:**
+
+- **[CRITICAL]** `ChangeStatusAction.vue`/`SharePublicLinkAction.vue` (i praktycznie cały dropdown akcji faktury: `CopyInvoiceAction`, `ManagePaymentAction`, `ExportBankTransferAction`, `ManageRemindersAction`, `ManageRelationshipsAction`, `RecurringInvoiceAction`, `SendToKsefAction`, `SendEmailAction`) to atrapy — `TODO: Implement service integration`, `setTimeout`, `console.log`, kończą się fałszywym `toast.success(...)` bez żadnego wywołania API. `SharePublicLinkAction` nawet nie kopiuje niczego do schowka mimo komunikatu "Public link copied". Efekt: mimo że `InvoiceShareTokenController::store()` naprawiono w Fazie 3, funkcja "udostępnij link" nadal nic nie robi na froncie — nigdy nie wywoływała serwisu. Dodatkowo lista statusów w `ChangeStatusAction.vue` (`draft/sent/paid/overdue/cancelled`) nie odpowiada realnemu enumowi backendu (`draft/processing/issued/completed/cancelled`) — nawet po podłączeniu API zostałyby odrzucone przez `new Enum(InvoiceStatus::class)`.
+- **[CRITICAL]** Blokada pól finansowych na fakturach COMPLETED/CANCELLED (naprawiona w Fazie 2) nie działa w praktyce dla PATCH z powodu niezgodności camelCase/snake_case: frontend wysyła `totalNet`/`totalTax`/`totalGross`/`exchangeRate` (camelCase), a `UpdateInvoiceRequest::FINANCIAL_FIELDS`/`validateFinancialSum()` na backendzie sprawdzają `$this->has('total_net')` itd. (snake_case) — zawsze `false` dla realnych requestów z frontu. **Backendowa "siatka bezpieczeństwa" jest dziurawa przy update**: da się nadpisać sumy finansowe na ukończonej fakturze, a walidacja `total_net+total_tax=total_gross` nigdy się nie uruchamia przy edycji (działa poprawnie tylko przy CREATE, gdzie klucze są camelCase). Front też nie ma własnej blokady UI — pola zawsze edytowalne niezależnie od statusu. **To wymaga fixu po stronie backendu** (już zgłoszone do REVIEW_PLAN.md saasbase-api jako known-issue do doprecyzowania), plus warto dodać blokadę UI na froncie niezależnie.
+- **[HIGH]** Bug shadowingu zmiennej w `DeleteInvoiceAction.vue`: `invoiceStore.invoices = invoicesStore.value.filter((invoice) => invoice.id !== invoice.id)` — parametr callbacku przesłania zewnętrzny `invoice`, porównanie zawsze `false`, `filter` zawsze zwraca pustą tablicę. **Usunięcie JEDNEJ faktury czyści całą listę w store.** Równoległy, poprawny komponent `DeleteInvoiceButton.vue` filtruje poprawnie po `props.id` — dwie implementacje tej samej funkcji, jedna zepsuta.
+- **[MEDIUM]** Błąd unikalności numeru faktury (nowa walidacja z Fazy 2) wyświetla się tylko w ogólnym banerze na dole długiego formularza, nie przy polu `number` (które nie ma własnego `FormFieldLabeled`) — myląca UX.
+- **[MEDIUM]** Twarde dane demo jako wartości domyślne formularza tworzenia faktury: `number: 'TEST/0001'`, `name: 'DEMO BUYER'`, `address: 'Random street 123'` — realny user może przypadkiem wysłać fakturę z tymi wartościami, walidacja Zod to przepuści.
+- **[LOW]** Niezlokalizowane placeholdery w liniach faktury (`Description`/`Quantity`/`Price` bez `t()`).
+
+**Expense:**
+
+- **[LOW]** Kopiuj-wklej bug: eksport wydatków pobiera plik jako `invoices.xlsx` zamiast `expenses.xlsx`.
+- **[INFO]** Brak UI alokacji/zatwierdzania wydatków w ogóle — backendowy 403-dla-wszystkich (znany known-issue) nigdy nie jest odpytywany z frontu, bo nie ma odpowiednich komponentów.
+
+**Product/Contractor — brak kontroli roli (potwierdza finding z grupy auth/tenant):**
+
+- **[HIGH]** Zero kontroli roli Owner/Admin w UI całej tej grupy domen (invoice/expense/product/contractor/project) — przyciski usuwania i eksportu kontrahentów/produktów/faktur/wydatków oraz zarządzania adresami/kontami bankowymi kontrahenta zawsze widoczne i klikalne dla każdego membera. Globalny interceptor Axios obsługuje tylko 401, nie 403 — każdy komponent ma lokalny `catch` → toast, więc user dostaje komunikat (nie cichy fail), ale UX jest zły: przycisk nie powinien się w ogóle pojawiać dla kogoś bez uprawnień. Systemowy brak — potwierdzone grepem zero wystąpień `isOwner`/`isAdmin`/`hasRole`/`can()` w całym repo.
+- **[INFO]** Whitelist kolumn eksportu (Faza 3) nieistotna dla frontu — nie ma column-pickera, wszystkie `export()` wysyłają tylko filtry, bez `columns[]`.
+- **[LOW]** Zduplikowana deklaracja interfejsu `IProductLookup` w tym samym pliku (TS scala przez declaration merging, ale to mylący dead code).
+
+**Project:**
+
+- **[CRITICAL]** Formularz tworzenia projektu nie wysyła wymaganego pola `statusId` (`AddProjectPage.vue` buduje initialValues tylko z `name`/`description`) — backend wymaga `statusId` jako `required`, a UI nie ma w ogóle pickera statusu. **Funkcja jest strukturalnie zepsuta niezależnie od znanego backendowego crasha 500** — nawet po naprawie backendu formularz zawsze skończy się 422. Duży, wyeksponowany przycisk "+" na liście projektów prowadzi do w pełni niedziałającej funkcji. `IProjectCreate` (TS type) też jest niepoprawny dla create (wymusza pola typu `owner`/`users`/`requiredSkills`, których realny `CreateProjectRequest` nie przyjmuje).
+- **[LOW]** Błędna przestrzeń nazw i18n w `ProjectSidebar.vue` — używa kluczy `t('product.fields.*')` zamiast `t('project.fields.*')` (kopiuj-wklej z ProductSidebar).
+- **[MEDIUM]** Brak UI tworzenia/edycji tasków — ogranicza ekspozycję znanego braku `TaskPolicy` (403 na view/update/delete) do samego wyświetlania listy.
 
 ### chat, feed, task, tags, skill, comment, invitations
 
