@@ -13,13 +13,29 @@ commitach.
 
 | Grupa domen | Status |
 |---|---|
-| auth, account, tenant, user | W trakcie |
+| auth, account, tenant, user | **Ukończona** |
 | invoice, expense, product, project, contractor | W trakcie |
 | financial, identityConfirmation, subscription | **Ukończona** |
 | chat, feed, task, tags, skill, comment, invitations | W trakcie |
 | rights, shared, utils, infrastruktura (api client, router, i18n) | W trakcie |
 
 ## Findings
+
+### auth, account, tenant, user
+
+**Wzorzec:** przepływ logowania i 2FA jest rozjechany — kod obsługujący wymuszenie 2FA istnieje, ale jest martwy i niepodłączony; callback OAuth ignoruje stan błędu, który backend teraz faktycznie wysyła; UI nigdzie nie warunkuje akcji administracyjnych rolą użytkownika mimo świeżo dodanego RBAC na backendzie.
+
+- **[CRITICAL]** Wymuszenie 2FA po stronie frontu jest martwym kodem — backendowy `mfa` middleware zablokuje niemal całą aplikację użytkownikom z 2FA. `src/router/middleware/is2faRequested.ts` nigdy nie jest importowany/używany, ma też przestarzałą sygnaturę niezgodną z pozostałymi middleware. `LoginPage.vue`/`UserAuthModal.vue` przekierowują na dashboard od razu po loginie, bez sprawdzenia czy 2FA zostało zweryfikowane. `src/lib/api/interceptTenantRequired.ts` obsługuje tylko `actionRequired === 'select-tenant'` — nowy `EnsureTwoFactorVerified` (backend) zwraca 403 z `actionRequired: 'verify-2fa'`, na co nigdzie w kodzie frontu nie ma obsługi. **Efekt: user z włączonym 2FA loguje się, ląduje na dashboardzie, po czym każde kolejne wywołanie API (praktycznie cała aplikacja poza auth/invitations/images) zwraca 403 bez żadnej sensownej obsługi.** Strona `/2fa-verify` istnieje i działa poprawnie, ale nic tam nie przekierowuje.
+- **[HIGH]** Strona callbacku OAuth (`OAuth2CallbackPage.vue`) nie odczytuje parametru `error` z przekierowania odrzucenia konta — backend (`OAuthController::callback`) przy istniejącym mailu pod innym providerem przekierowuje z `?error=account_exists`, ale frontend czyta tylko `jwtToken`. Zmienna `error` i `<Alert v-if="error">` to martwy kod — user zawsze widzi ogólny toast zamiast informacji, że mail jest już zarejestrowany. Brak i18n na tej stronie.
+- **[HIGH]** Brak jakiegokolwiek warunkowania UI rolą (Owner/Admin) mimo nowego RBAC na backendzie. Potwierdzone grepem: w domenach tenant/auth/account/user nie ma żadnego helpera `isOwner`/`isAdmin`/`hasRole`/`can()`. Przyciski edycji/usuwania w org units, addresses, bank accounts, invitations, branding są zawsze widoczne dla każdego membera — o odmowie dowiaduje się dopiero po kliknięciu, przez generyczny, nietłumaczony toast. Pozytyw: `RolePicker`/`roleService` pobierają role dynamicznie z `GET /roles`, więc nie ma ryzyka zahardkodowanej/nieaktualnej listy ról przy wysyłce zaproszeń.
+- **[MEDIUM]** `UserProfilePage.vue` nie obsługuje błędu przy pobieraniu profilu (brak `catch`) — backend teraz odrzuca (403) jeśli viewer i target nie dzielą tenanta. Ryzyko ograniczone w praktyce (wszystkie linki do `/users/:id` w kodzie pochodzą z zasobów już przypisanych do bieżącego tenanta), ale trasa nie ma middleware `isInTenant`.
+- **[MEDIUM]** Typ `IUserProfileLegacy` nie ma pola `birthDate`, które backend (`UserProfileTenantScopedResource`) teraz zwraca.
+- **[MEDIUM]** Typy dla `/user/preferences` (nowo zarejestrowany endpoint) istnieją 1:1 z backendowym kontraktem (`UserPreference`/`UpdatePreferenceRequest`), ale nie są nigdzie użyte — endpoint nigdy nie jest wołany z frontendu. Zamiast tego istnieją dwie równoległe, częściowo pokrywające się ścieżki (`/user/settings` i `/user/profile`) — niejasne, czy `/user/preferences` ma je zastąpić, czy to zaplanowana ale nierozpoczęta funkcja.
+- **[LOW]** i18n: `TenantBrandingPage.vue` przekazuje surowy klucz i18n do `handleErrorWithToast` zamiast wywołać `t(...)` — user widzi dosłowny klucz zamiast tłumaczenia. `SettingsAccountPage.vue` ma całą sekcję email/phone/2FA/password zahardkodowaną po angielsku (formularz email/phone jest przy tym martwy — przycisk disabled, submit tylko loguje do konsoli).
+- **[LOW]** Literówka w kontrakcie: `ITenant.prefereces` zamiast `preferences` (pre-existing, nie z tej sesji).
+- **[LOW]** `AccountService.ts` to w większości mock/placeholder (`// TODO: Replace with actual API call`) dla billing history/devices/sessions, równoległy do realnego, działającego `UserSessions.service.ts` — dwa mechanizmy dla tej samej funkcji, jeden fałszywy, niepodłączony do `SettingsDevicesPage.vue`.
+
+**Priorytety napraw:** (1) podłączyć wymuszenie 2FA — bez tego funkcja jest realnie zepsuta, (2) obsłużyć `route.query.error` w OAuth callbacku, (3) dodać warunkowanie UI rolą lub co najmniej ujednolicić/przetłumaczyć obsługę 403, (4) `catch` w UserProfilePage + uzupełnić typ.
 
 ### financial, identityConfirmation, subscription
 
