@@ -17,9 +17,47 @@ commitach.
 | invoice, expense, product, project, contractor | **Ukończona** |
 | financial, identityConfirmation, subscription | **Ukończona** |
 | chat, feed, task, tags, skill, comment, invitations | **Ukończona** |
-| rights, shared, utils, infrastruktura (api client, router, i18n) | W trakcie |
+| rights, shared, utils, infrastruktura (api client, router, i18n) | **Ukończona** |
 
 ## Findings
+
+### rights, shared, utils, infrastruktura (api client, router, stores, i18n)
+
+**Wzorzec:** centralny klient Axios obsługuje tylko 401 i jeden konkretny wariant 403 (`select-tenant`) — każdy inny 403 (w tym nowo wyegzekwowane uprawnienia z backendu i `verify-2fa`) przepływa dalej i zależy wyłącznie od tego, czy dany komponent ręcznie owinął wywołanie w `handleErrorWithToast` (robi to 115 plików, ale nic tego nie wymusza centralnie). System 2FA jest w praktyce całkowicie zepsuty end-to-end — trzy niezależne, kumulujące się bugi.
+
+**Obsługa błędów / 403 (najważniejsze ustalenie całej fazy):**
+
+- **[CRITICAL]** `src/lib/api/index.ts` ma tylko dwa interceptory: `interceptUnauthorized` (401) i `interceptTenantRequired` (403 + `actionRequired === 'select-tenant'`). **Nie istnieje żaden ogólny handler dla zwykłego 403** — leci dalej przez łańcuch promisów. Domyślnym wzorcem jest opcjonalne `handleErrorWithToast()` (115 miejsc używa), więc większość ekranów pokaże jakiś toast — ale to nie jest wymuszone centralnie, nie rozróżnia 403 "brak uprawnień" od 422/500 (zawsze ten sam czerwony toast), a fallback przy braku `data.message` to zahardkodowany `'Unknown error'` (nie i18n). **Wniosek dla reszty audytu Fazy 4: nowe 403 z backendu w większości NIE spowodują crashy, tylko generyczny toast — ale zawsze po angielsku (patrz niżej) i bez rozróżnienia "brak uprawnień".**
+
+**2FA/MFA — całkowicie zepsute end-to-end (potwierdza i pogłębia finding z grupy auth/account/tenant/user):**
+
+- **[CRITICAL]** Middleware `is2faRequested` nie jest podpięty do ŻADNEJ trasy (potwierdzone grepem po `src/router/routes/*.ts`) — użytkownik z 2FA loguje się i ląduje prosto na dashboardzie zamiast na `/2fa-verify`.
+- **[CRITICAL]** Backend zwraca `403 { actionRequired: 'verify-2fa' }` przy blokadzie — `interceptTenantRequired.ts` sprawdza wyłącznie `'select-tenant'`, string `'verify-2fa'` nie występuje nigdzie indziej w kodzie. Każde żądanie API takiego usera kończy się nieobsłużonym 403.
+- **[CRITICAL]** Nawet gdyby user ręcznie trafił na `/2fa-verify` i podał poprawny kod: backend zwraca NOWY token z `mfa=2`, ale `2faVerifyPage.vue` po `verify2fa()` od razu robi `router.push({ name: 'dashboard' })` **bez zapisania nowego tokena przez `authStore.setToken()`**. Stary token z `mfa=1` zostaje w localStorage — user jest efektywnie trwale zablokowany w aplikacji, nie ma żadnej ścieżki wyjścia.
+
+**Accept-Language / i18n komunikatów backendowych:**
+
+- **[HIGH]** Nagłówek `Accept-Language` ustawiony RAZ, statycznie na `DEFAULT_LOCALE` przy tworzeniu instancji Axios — nigdy nie aktualizowany gdy user przełącza język. Backend wybiera lokalizację wyłącznie na podstawie tego nagłówka. **Wszystkie komunikaty generowane przez backend (błędy walidacji, komunikaty odmowy uprawnień z polityk) będą zawsze po angielsku**, niezależnie od języka UI — szczególnie dotkliwe teraz, gdy dużo więcej endpointów zwraca opisowe 403.
+
+**Brak client-side role/permission gatingu (potwierdza findingi z innych grup):**
+
+- **[HIGH]** W całym `src/` nie ma żadnego `useCan`/`usePermissions`/`hasRole`/`hasPermission`, ani statycznego odpowiednika backendowego enuma `RoleName`. Systemowy brak, nie luka pojedynczej domeny — potwierdza identyczne findingi z grup auth/tenant i invoice/product/contractor.
+
+**JWT / tenant / refresh — plumbing (głównie pozytywne):**
+
+- **[POZYTYWNE]** Nie znaleziono realnego bugu "stale tenant context" po przełączeniu tenanta — `TenantService.switch` poprawnie zapisuje nowy token, każde żądanie czyta aktualny token z localStorage.
+- **[MEDIUM]** `interceptUnauthorized.ts` — refresh tokena używa gołego `axios` zamiast skonfigurowanej instancji `api` (brak `baseURL`/`withCredentials`). Dziś "działa" bo `VITE_API_URL` jest relatywny (ten sam origin), ale cichy fail przy przyszłym absolutnym cross-origin URL.
+- **[MEDIUM]** `interceptTenantRequired.ts` czyta `error.response.data.actionRequired` bez opcjonalnego chainingu na `data` — rzuci wyjątkiem wewnątrz interceptora jeśli backend kiedyś zwróci 403 z pustym/nie-JSON body.
+
+**Domena rights:**
+
+- **[MEDIUM]** `RolePicker.vue`/`PositionCategoryPicker.vue` ustawiają lokalny `error` ref przy nieudanym pobraniu listy, ale nigdy go nie renderują w template — user zobaczy po prostu pusty/martwy picker bez wyjaśnienia. Istotne teraz, gdy `GET /roles` może dostać nowo wyegzekwowany 403.
+
+**Ogólna jakość:**
+
+- **[LOW]** `apiRoutesMap` używane tylko w 35 z 75 plików serwisowych — reszta hardkoduje literały ścieżek. Centralizacja istnieje, ale nieegzekwowana.
+- **[LOW]** `'Access-Control-Allow-Origin': '*'` ustawiony jako nagłówek żądania (nie ma sensu — to nagłówek odpowiedzi CORS) — relikt kopiuj-wklej.
+- **[LOW]** Drift i18n: `en/tenant.ts` brakuje bloku `addresses.delete.*`, obecnego w `pl/tenant.ts` (dziś nieużywany w kodzie, więc nieszkodliwy).
 
 ### invoice, expense, product, project, contractor
 
