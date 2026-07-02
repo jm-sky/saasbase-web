@@ -16,10 +16,25 @@ commitach.
 | auth, account, tenant, user | **Ukończona** |
 | invoice, expense, product, project, contractor | W trakcie |
 | financial, identityConfirmation, subscription | **Ukończona** |
-| chat, feed, task, tags, skill, comment, invitations | W trakcie |
+| chat, feed, task, tags, skill, comment, invitations | **Ukończona** |
 | rights, shared, utils, infrastruktura (api client, router, i18n) | W trakcie |
 
 ## Findings
+
+### chat, feed, task, tags, skill, comment, invitations
+
+**Wzorzec:** dobra wiadomość — większość nowych restrykcji backendu (Skill/SkillCategory auth, DM cross-tenant check, tag delete route) nic nie psuje na froncie, bo odpowiadające akcje po prostu nie mają UI (są martwym kodem serwisowym). Realne problemy leżą gdzie indziej: zamrożony token JWT w kliencie WebSocket (Echo), hardkodowany bot w widżecie czatu bez obsługi błędu, brak jakiegokolwiek client-side gate'owania roli w formularzu zaproszeń, oraz polskie placeholdery demo pozostawione w produkcyjnych formularzach (feed/comment).
+
+- **[HIGH]** `src/plugins/echo.ts` — token JWT do autoryzacji prywatnych kanałów Pusher/Echo jest odczytany z `localStorage` **raz, przy imporcie modułu** (Echo tworzone przy starcie aplikacji). Zwykłe requesty REST czytają token dynamicznie przy każdym wywołaniu i mają pełny refresh-flow (`interceptUnauthorized.ts`). Po odświeżeniu tokenu (np. po 401) Echo dalej autoryzuje `/broadcasting/auth` starym tokenem — subskrypcje kanałów czatu zaczną dostawać 401 aż do przeładowania strony. Niezależne od zmian backendu w tej sesji, ale krytyczne dla stabilności czatu w dłuższych sesjach.
+- **[HIGH]** `FloatingChatWidget.vue` tworzy pokój DM z hardkodowanym botem (`config.chat.botId`). Po nowej regule backendu (`DirectMessageController::createRoom` wymaga wspólnego tenanta) — jeśli bot nie jest formalnie przypisany do danego tenanta (pivot `tenants`), `createRoom()` dostanie 403. `onOpened()` nie ma `try/catch` — cały widżet po prostu przestanie działać bez żadnego komunikatu. Wymaga weryfikacji, czy bot faktycznie ma wpis w `tenants` pivot dla każdego tenanta.
+- **[MEDIUM]** `ChatFullPageComponent.vue::createRoom()` nie ma `try/catch` (w przeciwieństwie do sąsiednich wywołań w tym samym pliku) — błąd 403 (np. race condition z userem usuniętym z tenanta) wpadnie jako nieobsłużony unhandled rejection.
+- **[MEDIUM]** `TenantInvitationForm.vue` (formularz zapraszania z wyborem roli) renderowany bezwarunkowo, trasa ma tylko `isAuthenticated, isVerified, isInTenant` — brak sprawdzenia roli Owner/Admin. Po nowym wymogu backendu zwykły user dostaje w pełni aktywny formularz i 403 dopiero po kliknięciu "Wyślij" (obsłużone przez toast, więc nie jest to cichy fail, ale zły UX). Pozytyw: lista ról w pickerze pobierana dynamicznie z `GET /roles`, nie hardkodowana — brak ryzyka niezgodności z `RoleName::cases()`.
+- **[MEDIUM]** `CreateFeedForm.vue` i `CommentForm.vue` inicjalizują pola formularza polskim tekstem demo (`'Mój pierwszy post'` / `'To jest mój pierwszy post'`) zamiast pustym polem — realnie używane w produkcji (comment form w projektach/produktach/kontrahentach). Brak walidacji Zod na obu formularzach (`useForm` bez `validationSchema`), brak obsługi błędów 422 w `catch`.
+- **[POZYTYWNE]** Skill/SkillCategory: `skillService.ts` ma metody `create/update/delete`, ale żaden komponent ich nie wywołuje — nie ma UI do zarządzania skillami/kategoriami, więc nowy wymóg roli Owner/Admin na backendzie nic nie psuje. Podobnie DM-picker w `ChatFullPageComponent.vue` pobiera userów z `GET /users`, który już zwraca tylko userów bieżącego tenanta — nowa restrykcja cross-tenant w `createRoom` nigdy nie zostanie naruszona normalnym przepływem UI. Podobnie cała domena `task` jest UI-wise wyłącznie do odczytu (create/update/delete nieużywane).
+- **[LOW]** `TagService.delete`/`useTags.ts::deleteTag` wołają `DELETE /tags/{tag}`, ale backendowa trasa jest zarejestrowana tylko z `only(['index','store'])` — nie ma route'u destroy dla globalnych tagów. Na szczęście nigdy nie wywoływane z UI (prawdziwe usuwanie tagów idzie przez inny, per-model serwis) — martwy kod do usunięcia.
+- **[LOW]** i18n: hardkodowane angielskie stringi w `useTags.ts` i `ShowProjectTasksPage.vue` zamiast `t()`.
+- **[LOW]** Dead code: `aiChatService.ts` ma zakomentowany zduplikowany kod; `comment.schema.ts` cały plik nieużywany (`CommentForm.vue` nie ma `validationSchema`), a jego enum `commentableType` ma `Task` (brak UI) i brakuje mu `Product` (ma UI) — dowód że plik nie jest utrzymywany.
+- **Uwaga strukturalna:** właściwy przepływ "zaproszenie do tenanta z rolą" żyje w `src/domains/tenant/*/invitations/`, NIE w `src/domains/invitations/` (to ostatnie to osobne "Application Invitations" bez ról, niezwiązane z RoleName/Owner-Admin).
 
 ### auth, account, tenant, user
 
