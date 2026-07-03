@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { Bell } from 'lucide-vue-next'
-import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { Button } from '@/components/ui/button'
 import { DropdownMenuItem } from '@/components/ui/dropdown-menu'
@@ -16,20 +15,11 @@ defineProps<{
   variant?: 'button' | 'menu-item'
 }>()
 
-const loading = ref(false)
-
-const manageReminders = async () => {
-  loading.value = true
-  try {
-    // TODO: Implement service integration - open reminder modal
-    await new Promise(resolve => setTimeout(resolve, 1000))
-    toast.success(t('invoice.actions.reminders.success', 'Reminders managed successfully'))
-  } catch (error) {
-    console.error('Failed to manage reminders:', error)
-    toast.error(t('invoice.actions.reminders.error', 'Failed to manage reminders'))
-  } finally {
-    loading.value = false
-  }
+// No backend endpoint exists for this yet — previously faked a delay then
+// claimed success regardless, which was actively misleading rather than
+// just an unfinished feature.
+const manageReminders = () => {
+  toast.info(t('invoice.actions.notImplemented'))
 }
 </script>
 
@@ -38,7 +28,7 @@ const manageReminders = async () => {
     v-if="variant === 'button'"
     variant="outline"
     size="sm"
-    :disabled="loading || (!invoice && !invoices?.length)"
+    :disabled="!invoice && !invoices?.length"
     @click="manageReminders"
   >
     <Bell class="size-4" />
@@ -47,7 +37,7 @@ const manageReminders = async () => {
   <DropdownMenuItem
     v-else
     hoverable
-    :disabled="loading || (!invoice && !invoices?.length)"
+    :disabled="!invoice && !invoices?.length"
     @click="manageReminders"
   >
     <Bell class="size-4 mr-2" />

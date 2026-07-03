@@ -31,6 +31,7 @@ export default {
   actions: {
     create: 'Dodaj fakturę',
     settings: 'Ustawienia faktury',
+    notImplemented: 'Ta funkcja nie jest jeszcze dostępna.',
     changeStatus: {
       title: 'Zmień status',
       success: 'Status zmieniony pomyślnie',

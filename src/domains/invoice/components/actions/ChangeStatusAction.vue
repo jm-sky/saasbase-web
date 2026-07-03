@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { RefreshCw } from 'lucide-vue-next'
+import { storeToRefs } from 'pinia'
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { Button } from '@/components/ui/button'
@@ -10,37 +11,52 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { useToast } from '@/components/ui/toast'
+import { invoiceStatuses } from '@/domains/financial/data/statuses'
+import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
 import type { IInvoice } from '../../types/invoice.type'
+import { invoiceService } from '../../services/invoiceService'
+import { useInvoiceStore } from '../../stores/invoice.store'
+import type { TInvoiceStatus } from '@/domains/financial/types/financial.type'
 
 const { t } = useI18n()
 const { toast } = useToast()
 
-defineProps<{
+const invoiceStore = useInvoiceStore()
+const { invoices: invoicesStore } = storeToRefs(invoiceStore)
+
+const props = defineProps<{
   invoice?: IInvoice
   invoices?: IInvoice[]
   variant?: 'button' | 'menu-item'
 }>()
 
+const emit = defineEmits<{
+  changed: [ids: string[], status: TInvoiceStatus]
+}>()
+
 const loading = ref(false)
 
-const statusOptions = [
-  { value: 'draft', label: 'Draft' },
-  { value: 'sent', label: 'Sent' },
-  { value: 'paid', label: 'Paid' },
-  { value: 'overdue', label: 'Overdue' },
-  { value: 'cancelled', label: 'Cancelled' },
-]
+// Must match the backend InvoiceStatus enum (draft/processing/issued/
+// completed/cancelled) — this list previously used unrelated values
+// (draft/sent/paid/overdue/cancelled) that the backend would reject.
+const statusOptions = invoiceStatuses
 
-const changeStatus = async (newStatus: string) => {
+const changeStatus = async (newStatus: TInvoiceStatus) => {
+  const targets = props.invoice ? [props.invoice] : (props.invoices ?? [])
+
+  if (!targets.length) return
+
   loading.value = true
   try {
-    // TODO: Implement service integration
-    console.log('Changing status to:', newStatus)
-    await new Promise(resolve => setTimeout(resolve, 1000))
+    await Promise.all(targets.map(target => invoiceService.update(target.id, { status: newStatus })))
+
+    const ids = targets.map(target => target.id)
+    invoiceStore.invoices = invoicesStore.value.map(inv => ids.includes(inv.id) ? { ...inv, status: newStatus } : inv)
+
+    emit('changed', ids, newStatus)
     toast.success(t('invoice.actions.changeStatus.success', 'Status changed successfully'))
   } catch (error) {
-    console.error('Failed to change status:', error)
-    toast.error(t('invoice.actions.changeStatus.error', 'Failed to change status'))
+    handleErrorWithToast(t('invoice.actions.changeStatus.error', 'Failed to change status'), error)
   } finally {
     loading.value = false
   }
@@ -71,11 +87,11 @@ const changeStatus = async (newStatus: string) => {
     <DropdownMenuContent align="end">
       <DropdownMenuItem
         v-for="status in statusOptions"
-        :key="status.value"
+        :key="status"
         class="cursor-pointer"
-        @click="changeStatus(status.value)"
+        @click="changeStatus(status)"
       >
-        {{ t(`financial.invoiceStatus.${status.value}`, status.label) }}
+        {{ t(`financial.invoiceStatus.${status}`) }}
       </DropdownMenuItem>
     </DropdownMenuContent>
   </DropdownMenu>

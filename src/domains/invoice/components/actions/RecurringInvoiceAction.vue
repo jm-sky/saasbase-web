@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { Repeat } from 'lucide-vue-next'
-import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { Button } from '@/components/ui/button'
 import { DropdownMenuItem } from '@/components/ui/dropdown-menu'
@@ -16,20 +15,11 @@ defineProps<{
   variant?: 'button' | 'menu-item'
 }>()
 
-const loading = ref(false)
-
-const setupRecurring = async () => {
-  loading.value = true
-  try {
-    // TODO: Implement service integration - open recurring setup modal
-    await new Promise(resolve => setTimeout(resolve, 1000))
-    toast.success(t('invoice.actions.recurring.success', 'Recurring invoice configured successfully'))
-  } catch (error) {
-    console.error('Failed to configure recurring invoice:', error)
-    toast.error(t('invoice.actions.recurring.error', 'Failed to configure recurring invoice'))
-  } finally {
-    loading.value = false
-  }
+// No backend endpoint exists for this yet — previously faked a delay then
+// claimed success regardless, which was actively misleading rather than
+// just an unfinished feature.
+const setupRecurring = () => {
+  toast.info(t('invoice.actions.notImplemented'))
 }
 </script>
 
@@ -38,7 +28,7 @@ const setupRecurring = async () => {
     v-if="variant === 'button'"
     variant="outline"
     size="sm"
-    :disabled="loading || (!invoice && !invoices?.length)"
+    :disabled="!invoice && !invoices?.length"
     @click="setupRecurring"
   >
     <Repeat class="size-4" />
@@ -47,7 +37,7 @@ const setupRecurring = async () => {
   <DropdownMenuItem
     v-else
     hoverable
-    :disabled="loading || (!invoice && !invoices?.length)"
+    :disabled="!invoice && !invoices?.length"
     @click="setupRecurring"
   >
     <Repeat class="size-4 mr-2" />

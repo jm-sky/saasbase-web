@@ -31,6 +31,7 @@ export default {
   actions: {
     create: 'Add invoice',
     settings: 'Invoice Settings',
+    notImplemented: 'This feature is not available yet.',
     changeStatus: {
       title: 'Change Status',
       success: 'Status changed successfully',

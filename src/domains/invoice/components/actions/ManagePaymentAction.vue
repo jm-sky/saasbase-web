@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { CreditCard } from 'lucide-vue-next'
-import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { Button } from '@/components/ui/button'
 import {
@@ -21,20 +20,11 @@ defineProps<{
   variant?: 'button' | 'menu-item'
 }>()
 
-const loading = ref(false)
-
-const managePayment = async (action: 'attach' | 'generate') => {
-  loading.value = true
-  try {
-    // TODO: Implement service integration
-    await new Promise(resolve => setTimeout(resolve, 1000))
-    toast.success(t(`invoice.actions.payment.${action}.success`, `Payment ${action}ed successfully`))
-  } catch (error) {
-    console.error(`Failed to ${action} payment:`, error)
-    toast.error(t(`invoice.actions.payment.${action}.error`, `Failed to ${action} payment`))
-  } finally {
-    loading.value = false
-  }
+// No backend endpoint exists for this yet — previously faked a delay then
+// claimed success regardless, which was actively misleading rather than
+// just an unfinished feature.
+const managePayment = () => {
+  toast.info(t('invoice.actions.notImplemented'))
 }
 </script>
 
@@ -45,7 +35,7 @@ const managePayment = async (action: 'attach' | 'generate') => {
         v-if="variant === 'button'"
         variant="outline"
         size="sm"
-        :disabled="loading || (!invoice && !invoices?.length)"
+        :disabled="!invoice && !invoices?.length"
       >
         <CreditCard class="size-4" />
         {{ t('invoice.actions.payment.title', 'Manage Payment') }}
@@ -53,7 +43,7 @@ const managePayment = async (action: 'attach' | 'generate') => {
       <DropdownMenuItem
         v-else
         hoverable
-        :disabled="loading || (!invoice && !invoices?.length)"
+        :disabled="!invoice && !invoices?.length"
       >
         <CreditCard class="size-4 mr-2" />
         {{ t('invoice.actions.payment.title', 'Manage Payment') }}
@@ -62,13 +52,13 @@ const managePayment = async (action: 'attach' | 'generate') => {
     <DropdownMenuContent align="end">
       <DropdownMenuItem
         class="cursor-pointer"
-        @click="managePayment('attach')"
+        @click="managePayment"
       >
         {{ t('invoice.actions.payment.attach', 'Attach Payment') }}
       </DropdownMenuItem>
       <DropdownMenuItem
         class="cursor-pointer"
-        @click="managePayment('generate')"
+        @click="managePayment"
       >
         {{ t('invoice.actions.payment.generate', 'Generate Payment') }}
       </DropdownMenuItem>

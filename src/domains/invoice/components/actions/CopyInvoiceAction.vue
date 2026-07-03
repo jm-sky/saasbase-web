@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { Copy } from 'lucide-vue-next'
-import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { Button } from '@/components/ui/button'
 import { DropdownMenuItem } from '@/components/ui/dropdown-menu'
@@ -16,20 +15,14 @@ defineProps<{
   variant?: 'button' | 'menu-item'
 }>()
 
-const loading = ref(false)
-
-const copyInvoice = async () => {
-  loading.value = true
-  try {
-    // TODO: Implement service integration
-    await new Promise(resolve => setTimeout(resolve, 1000))
-    toast.success(t('invoice.actions.copy.success', 'Invoice copied successfully'))
-  } catch (error) {
-    console.error('Failed to copy invoice:', error)
-    toast.error(t('invoice.actions.copy.error', 'Failed to copy invoice'))
-  } finally {
-    loading.value = false
-  }
+// No dedicated duplicate endpoint exists, and building one requires a
+// product decision this fix shouldn't invent (numbering is client-supplied
+// and unique per tenant — a real "copy" needs a defined answer for what
+// number/status the duplicate gets). Previously faked a delay then claimed
+// success regardless, which was actively misleading rather than just an
+// unfinished feature.
+const copyInvoice = () => {
+  toast.info(t('invoice.actions.notImplemented'))
 }
 </script>
 
@@ -38,7 +31,7 @@ const copyInvoice = async () => {
     v-if="variant === 'button'"
     variant="outline"
     size="sm"
-    :disabled="loading || (!invoice && !invoices?.length)"
+    :disabled="!invoice && !invoices?.length"
     @click="copyInvoice"
   >
     <Copy class="size-4" />
@@ -47,7 +40,7 @@ const copyInvoice = async () => {
   <DropdownMenuItem
     v-else
     hoverable
-    :disabled="loading || (!invoice && !invoices?.length)"
+    :disabled="!invoice && !invoices?.length"
     @click="copyInvoice"
   >
     <Copy class="size-4 mr-2" />

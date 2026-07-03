@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { FileCheck } from 'lucide-vue-next'
-import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { Button } from '@/components/ui/button'
 import { DropdownMenuItem } from '@/components/ui/dropdown-menu'
@@ -16,20 +15,11 @@ defineProps<{
   variant?: 'button' | 'menu-item'
 }>()
 
-const loading = ref(false)
-
-const sendToKsef = async () => {
-  loading.value = true
-  try {
-    // TODO: Implement service integration
-    await new Promise(resolve => setTimeout(resolve, 1000))
-    toast.success(t('invoice.actions.sendToKsef.success', 'Sent to KSeF successfully'))
-  } catch (error) {
-    console.error('Failed to send to KSeF:', error)
-    toast.error(t('invoice.actions.sendToKsef.error', 'Failed to send to KSeF'))
-  } finally {
-    loading.value = false
-  }
+// KSeF has no backend integration at all yet (no route/controller/action) —
+// previously faked a delay then claimed success regardless, which was
+// actively misleading rather than just an unfinished feature.
+const sendToKsef = () => {
+  toast.info(t('invoice.actions.notImplemented'))
 }
 </script>
 
@@ -38,7 +28,7 @@ const sendToKsef = async () => {
     v-if="variant === 'button'"
     variant="outline"
     size="sm"
-    :disabled="loading || (!invoice && !invoices?.length)"
+    :disabled="!invoice && !invoices?.length"
     @click="sendToKsef"
   >
     <FileCheck class="size-4" />
@@ -47,7 +37,7 @@ const sendToKsef = async () => {
   <DropdownMenuItem
     v-else
     hoverable
-    :disabled="loading || (!invoice && !invoices?.length)"
+    :disabled="!invoice && !invoices?.length"
     @click="sendToKsef"
   >
     <FileCheck class="size-4 mr-2" />

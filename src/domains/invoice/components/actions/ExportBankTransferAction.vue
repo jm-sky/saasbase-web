@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { Banknote } from 'lucide-vue-next'
-import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { Button } from '@/components/ui/button'
 import { DropdownMenuItem } from '@/components/ui/dropdown-menu'
@@ -16,20 +15,11 @@ defineProps<{
   variant?: 'button' | 'menu-item'
 }>()
 
-const loading = ref(false)
-
-const exportBankTransfer = async () => {
-  loading.value = true
-  try {
-    // TODO: Implement service integration
-    await new Promise(resolve => setTimeout(resolve, 1000))
-    toast.success(t('invoice.actions.exportBank.success', 'Bank transfer package exported successfully'))
-  } catch (error) {
-    console.error('Failed to export bank transfer package:', error)
-    toast.error(t('invoice.actions.exportBank.error', 'Failed to export bank transfer package'))
-  } finally {
-    loading.value = false
-  }
+// No backend endpoint exists for this yet — previously faked a delay then
+// claimed success regardless, which was actively misleading rather than
+// just an unfinished feature.
+const exportBankTransfer = () => {
+  toast.info(t('invoice.actions.notImplemented'))
 }
 </script>
 
@@ -38,7 +28,7 @@ const exportBankTransfer = async () => {
     v-if="variant === 'button'"
     variant="outline"
     size="sm"
-    :disabled="loading || (!invoice && !invoices?.length)"
+    :disabled="!invoice && !invoices?.length"
     @click="exportBankTransfer"
   >
     <Banknote class="size-4" />
@@ -47,7 +37,7 @@ const exportBankTransfer = async () => {
   <DropdownMenuItem
     v-else
     hoverable
-    :disabled="loading || (!invoice && !invoices?.length)"
+    :disabled="!invoice && !invoices?.length"
     @click="exportBankTransfer"
   >
     <Banknote class="size-4 mr-2" />
