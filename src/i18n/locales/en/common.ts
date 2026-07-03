@@ -28,6 +28,7 @@ export const common = {
   refresh: 'Refresh',
   or: 'or',
   error: 'Error',
+  unknownError: 'An unexpected error occurred. Please try again.',
   noItems: 'No items',
   createdAt: 'Created at',
   tags: 'Tags',
