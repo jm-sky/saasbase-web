@@ -39,12 +39,15 @@ const deleteInvoice = async () => {
     if (invoice) {
       await invoiceService.delete(invoice.id)
       emit('deleted', invoice.id)
-      invoiceStore.invoices = invoicesStore.value.filter((invoice) => invoice.id !== invoice.id)
+      // The callback param must not be named `invoice` — it shadows the
+      // component's `invoice` prop above, making `invoice.id !== invoice.id`
+      // always false and wiping the entire list on every single delete.
+      invoiceStore.invoices = invoicesStore.value.filter((inv) => inv.id !== invoice.id)
     } else if (invoices) {
-      const ids = invoices.map(invoice => invoice.id)
+      const ids = invoices.map(inv => inv.id)
       await invoiceBatchService.delete(ids)
       emit('deletedBatch', ids)
-      invoiceStore.invoices = invoicesStore.value.filter((invoice) => !ids.includes(invoice.id))
+      invoiceStore.invoices = invoicesStore.value.filter((inv) => !ids.includes(inv.id))
     }
     toast.success(t('invoice.delete.success'))
   } catch (error) {
