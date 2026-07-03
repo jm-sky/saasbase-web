@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { watch } from 'vue'
+import { useRouter } from 'vue-router'
 import DarkModeButton from '@/components/DarkModeButton.vue'
 import LanguageSwitchDropdown from '@/components/LanguageSwitchDropdown.vue'
 import AppSidebarMenu from '@/components/Layout/AppSidebarMenu.vue'
@@ -26,8 +28,17 @@ import FloatingAiChatWidget from '@/domains/chat/components/FloatingAiChatWidget
 import FloatingChatWidget from '@/domains/chat/components/FloatingChatWidget.vue'
 import SelectTenantModal from '@/domains/tenant/components/SelectTenantModal.vue'
 import TopbarNav from '@/layouts/partials/TopbarNav.vue'
+import { routeMap } from '@/router/routeMap'
 
 const authStore = useAuthStore()
+const router = useRouter()
+
+watch(() => authStore.needsTwoFactorVerification, (needsVerification) => {
+  if (needsVerification) {
+    authStore.needsTwoFactorVerification = false
+    void router.push({ name: routeMap.auth.mfaVerify })
+  }
+})
 </script>
 
 <template>

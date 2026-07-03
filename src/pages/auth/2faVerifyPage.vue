@@ -8,11 +8,13 @@ import { PinInput } from '@/components/ui/pin-input'
 import { useToast } from '@/components/ui/toast'
 import UIIcon from '@/components/UIIcon.vue'
 import { mfaService } from '@/domains/auth/services/mfaService'
+import { useAuthStore } from '@/domains/auth/store/auth.store'
 import GuestLayout from '@/layouts/GuestLayout.vue'
 
 const { t } = useI18n()
 const router = useRouter()
 const { toast } = useToast()
+const authStore = useAuthStore()
 
 const { values, isSubmitting, handleSubmit } = useForm({
   initialValues: {
@@ -22,7 +24,11 @@ const { values, isSubmitting, handleSubmit } = useForm({
 
 const onSubmit = handleSubmit(async (values) => {
   try {
-    await mfaService.verify2fa(values.code.join(''))
+    const { accessToken } = await mfaService.verify2fa(values.code.join(''))
+    // Without this the old mfa=1 token stays in localStorage — every
+    // subsequent request keeps getting rejected with the same
+    // "verify 2FA" error even though verification just succeeded.
+    authStore.setToken(accessToken)
     await router.push({ name: 'dashboard' })
   } catch (error) {
     console.error('2FA verification failed:', error)

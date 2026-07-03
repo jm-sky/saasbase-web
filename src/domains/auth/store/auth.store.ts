@@ -42,6 +42,7 @@ export const useAuthStore = defineStore('auth', () => {
   const userData = useLocalStorage<null | IUser>(`${config.appId}:user`, null, { serializer: StorageSerializers.object})
   const showAuthModal = ref(false)
   const showSelectTenantModal = ref(false)
+  const needsTwoFactorVerification = ref(false)
   const isAuthenticated = computed<boolean>(() => !!token.value)
   const jwtPayload = computed<null | JwtPayload>(() => extractJwt(token.value))
   const tenantId = computed<null | TUUID>(() => jwtPayload.value?.tid ?? null)
@@ -60,6 +61,7 @@ export const useAuthStore = defineStore('auth', () => {
     userData.value = null
     showAuthModal.value = false
     showSelectTenantModal.value = false
+    needsTwoFactorVerification.value = false
   }
 
   const setUser = (newUser: IUser) => userData.value = newUser
@@ -70,6 +72,7 @@ export const useAuthStore = defineStore('auth', () => {
     userData,
     showAuthModal,
     showSelectTenantModal,
+    needsTwoFactorVerification,
     user,
     jwtPayload,
     isAuthenticated,
