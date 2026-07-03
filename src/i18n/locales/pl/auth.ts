@@ -71,4 +71,10 @@ export const auth = {
     errorDescription: 'Nie udało się zresetować hasła. Spróbuj ponownie.',
     submit: 'Zresetuj hasło',
   },
+  oauth: {
+    title: 'OAuth',
+    redirecting: 'Przekierowywanie...',
+    invalidCallback: 'Nieprawidłowe wywołanie zwrotne OAuth.',
+    accountExists: 'Konto z tym adresem e-mail już istnieje, ale nie jest połączone z tym dostawcą logowania. Zaloguj się najpierw swoją oryginalną metodą, a następnie połącz tego dostawcę w ustawieniach konta.',
+  },
 }

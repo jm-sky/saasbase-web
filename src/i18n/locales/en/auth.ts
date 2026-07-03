@@ -71,4 +71,10 @@ export const auth = {
     errorDescription: 'Failed to reset password. Please try again.',
     submit: 'Reset password',
   },
+  oauth: {
+    title: 'OAuth',
+    redirecting: 'Redirecting...',
+    invalidCallback: 'Invalid OAuth callback.',
+    accountExists: 'An account with this email already exists but is not linked to this sign-in provider. Please log in with your original method first, then link this provider from your account settings.',
+  },
 }
