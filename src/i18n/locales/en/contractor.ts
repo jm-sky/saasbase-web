@@ -1,6 +1,9 @@
 export const contractor = {
   title: 'Contractors',
   contractorDetails: 'Contractor details',
+  list: {
+    error: 'Failed to load contractors',
+  },
   fields: {
     name: 'Name',
     country: 'Country',

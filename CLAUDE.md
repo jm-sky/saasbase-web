@@ -80,6 +80,12 @@ Each domain contains:
 - Domain stores in `src/domains/*/store/`
 - Global stores in `src/stores/`
 - Reactive configuration in `src/config.ts`
+- Server-state/caching is TanStack Query's job, not Pinia's. New domains should
+  fetch/mutate through `src/domains/*/composables/queryKeys.ts` +
+  `use<Domain>Queries.ts` + `use<Domain>Mutations.ts` (see the `contractor`
+  domain for the reference pattern), invalidating the relevant query keys on
+  mutation success. Pinia stores stay scoped to client/UI state only (e.g. the
+  currently-selected entity), not list/detail data fetched from the API.
 
 ## Development Guidelines
 

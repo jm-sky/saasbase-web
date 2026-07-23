@@ -5,7 +5,6 @@ import type { IContractor, IContractorListItem } from '../types/contractor.type'
 
 export const useContractorStore = defineStore('contractor', () => {
   const contractor: Ref<IContractor | null> = ref(null)
-  const contractors: Ref<IContractor[]> = ref([])
 
   const routeId = useRouteParams<string | undefined>('id')
 
@@ -21,7 +20,6 @@ export const useContractorStore = defineStore('contractor', () => {
 
   return {
     contractor,
-    contractors,
     setContractor,
   }
 })

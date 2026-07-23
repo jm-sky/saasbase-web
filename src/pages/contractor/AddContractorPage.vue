@@ -13,7 +13,7 @@ import Textarea from '@/components/ui/textarea/Textarea.vue'
 import { useToast } from '@/components/ui/toast/use-toast'
 import ContractorSidebar from '@/domains/contractor/components/ContractorSidebar.vue'
 import ContractorTypePicker from '@/domains/contractor/components/ContractorTypePicker.vue'
-import { contractorService } from '@/domains/contractor/services/ContractorService'
+import { useCreateContractor } from '@/domains/contractor/composables/useContractorMutations'
 import CompanyLookupButton from '@/domains/utils/components/CompanyLookupButton.vue'
 import AuthenticatedLayout from '@/layouts/AuthenticatedLayout.vue'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
@@ -34,6 +34,8 @@ const emptyRegistryConfirmation: ICompanyRegistryConfirmation = {
   vies: false,
   mf: false,
 }
+
+const { mutateAsync: createContractor } = useCreateContractor()
 
 const { isSubmitting, handleSubmit, values, setFieldValue, setValues, setErrors, resetForm } = useForm<IContractorCombinedCreate>({
   initialValues: {
@@ -71,7 +73,7 @@ const { isSubmitting, handleSubmit, values, setFieldValue, setValues, setErrors,
 
 const onSubmit = handleSubmit(async (values) => {
   try {
-    await contractorService.create(values)
+    await createContractor(values)
     toast.success(t('contractor.add.success'))
     resetForm()
     await router.push('/contractors') // Navigate to the contractors list

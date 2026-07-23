@@ -17,6 +17,7 @@ import Textarea from '@/components/ui/textarea/Textarea.vue'
 import { useToast } from '@/components/ui/toast'
 import ContractorSidebar from '@/domains/contractor/components/ContractorSidebar.vue'
 import ContractorTypePicker from '@/domains/contractor/components/ContractorTypePicker.vue'
+import { useUpdateContractor } from '@/domains/contractor/composables/useContractorMutations'
 import { contractorService } from '@/domains/contractor/services/ContractorService'
 import { useContractorStore } from '@/domains/contractor/store/contractor.store'
 import AuthenticatedLayout from '@/layouts/AuthenticatedLayout.vue'
@@ -36,6 +37,8 @@ const loading = ref(false)
 const error = ref<string | null>(null)
 
 const isMobile = useMediaQuery('(max-width: 767px)')
+
+const { mutateAsync: updateContractor } = useUpdateContractor()
 
 const { isSubmitting, handleSubmit, setValues, setFieldValue, setErrors, resetForm } = useForm<IContractorUpdate>({
   initialValues: {
@@ -73,7 +76,7 @@ const refresh = async () => {
 
 const onSubmit = handleSubmit(async (values) => {
   try {
-    await contractorService.update(contractorId, values)
+    await updateContractor({ id: contractorId, data: values })
     toast.success('Contractor updated successfully')
     resetForm()
     await router.push({ name: 'showContractor', params: { id: contractorId } })

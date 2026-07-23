@@ -7,7 +7,7 @@ import Button from '@/components/ui/button/Button.vue'
 import Input from '@/components/ui/input/Input.vue'
 import TagsInputField from '@/components/ui/tags-input/TagsInputField.vue'
 import { useToast } from '@/components/ui/toast'
-import { contractorService } from '@/domains/contractor/services/ContractorService'
+import { useUpdateContractorPreferences } from '@/domains/contractor/composables/useContractorMutations'
 import { useContractorStore } from '@/domains/contractor/store/contractor.store'
 import InvoiceTemplateLanguagePicker from '@/domains/invoice/components/invoiceTemplates/InvoiceTemplateLanguagePicker.vue'
 import CurrencyPicker from '@/domains/shared/components/CurrencyPicker.vue'
@@ -19,6 +19,7 @@ import type { IContractorPreferences, IContractorPreferencesUpdate } from '@/dom
 const { t } = useI18n()
 const { toast } = useToast()
 const { contractor } = storeToRefs(useContractorStore())
+const { mutateAsync: updatePreferences } = useUpdateContractorPreferences()
 
 const { handleSubmit, setFieldValue, setErrors, isSubmitting, values } = useForm<IContractorPreferencesUpdate>({
   initialValues: {
@@ -36,7 +37,7 @@ const onSubmit = handleSubmit(async (formValues) => {
   if (!contractor.value) return
 
   try {
-    const preferences: IContractorPreferences = await contractorService.updatePreferences(contractor.value.id, formValues)
+    const preferences: IContractorPreferences = await updatePreferences({ id: contractor.value.id, data: formValues })
     toast.success(t('contractor.preferences.success'))
     contractor.value.preferences = preferences
   } catch (error) {

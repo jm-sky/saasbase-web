@@ -1,6 +1,9 @@
 export const contractor = {
   title: 'Kontrahenci',
   contractorDetails: 'Szczegóły kontrahenta',
+  list: {
+    error: 'Nie udało się załadować kontrahentów',
+  },
   fields: {
     name: 'Nazwa',
     country: 'Kraj',
