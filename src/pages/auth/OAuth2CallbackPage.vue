@@ -10,7 +10,7 @@ import GuestLayout from '@/layouts/GuestLayout.vue'
 
 const TIMEOUT = 3000
 
-const { jwtToken } = useRoute().query
+const { jwtToken, error: errorParam } = useRoute().query
 
 const error = ref('')
 
@@ -19,9 +19,15 @@ const authStore = useAuthStore()
 
 const redirect = () => setTimeout(() => router.push('/'), TIMEOUT)
 
+const ERROR_MESSAGES: Record<string, string> = {
+  account_exists: 'An account with this email already exists. Please sign in and link this provider from your account settings.',
+  oauth_failed: 'Sign-in with this provider failed. Please try again.'
+}
+
 const processOAuth2Callback = async () => {
   if (!jwtToken) {
-    toast.error('Invalid OAuth2 callback')
+    error.value = ERROR_MESSAGES[errorParam as string] ?? 'Invalid OAuth2 callback'
+    toast.error(error.value)
     redirect()
     return
   }
