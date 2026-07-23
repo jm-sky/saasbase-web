@@ -31,7 +31,7 @@ class MfaService {
   }
 
   async enable2fa(code: string) {
-    const response = await api.post<MfaEnableResponse>(apiRoutesMap.auth2faSetup, { code })
+    const response = await api.post<MfaEnableResponse>(apiRoutesMap.auth2faEnable, { code })
     return response.data
   }
 
