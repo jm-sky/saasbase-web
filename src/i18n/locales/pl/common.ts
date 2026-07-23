@@ -90,4 +90,12 @@ export const common = {
   form: {
     validationErrors: 'Błędy walidacji',
   },
+  pwa: {
+    update: {
+      title: 'Dostępna aktualizacja',
+      description: 'Nowa wersja SaaSBase jest dostępna. Odśwież, aby zaktualizować.',
+      later: 'Później',
+      reload: 'Odśwież',
+    },
+  },
 }

@@ -90,4 +90,12 @@ export const common = {
   form: {
     validationErrors: 'Validation errors',
   },
+  pwa: {
+    update: {
+      title: 'Update available',
+      description: 'A new version of SaaSBase is available. Reload to update.',
+      later: 'Later',
+      reload: 'Reload',
+    },
+  },
 }

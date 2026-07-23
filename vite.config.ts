@@ -4,6 +4,7 @@ import { execSync } from 'child_process'
 import { fileURLToPath, URL } from 'node:url'
 import { defineConfig } from 'vite'
 import monacoEditorPlugin from 'vite-plugin-monaco-editor'
+import { pwaPlugin } from './pwa.config'
 
 // https://vitejs.dev/config/
 export default defineConfig(() => ({
@@ -13,6 +14,7 @@ export default defineConfig(() => ({
     monacoEditorPlugin.default({
       languageWorkers: ['editorWorkerService', 'typescript', 'json', 'html', 'css']
     }),
+    pwaPlugin,
   ],
   resolve: {
     alias: {
