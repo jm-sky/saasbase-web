@@ -8,8 +8,8 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import type { IInvoice } from '../../types/invoice.type'
 import { useComingSoonAction } from '../../composables/useComingSoonAction'
+import type { IInvoice } from '../../types/invoice.type'
 
 const { t } = useI18n()
 const { notifyComingSoon } = useComingSoonAction()

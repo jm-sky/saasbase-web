@@ -11,8 +11,8 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { useToast } from '@/components/ui/toast'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
-import type { IInvoice } from '../../types/invoice.type'
 import { invoiceService } from '../../services/invoiceService'
+import type { IInvoice } from '../../types/invoice.type'
 import type { TInvoiceStatus } from '@/domains/financial/types/financial.type'
 
 const { t } = useI18n()

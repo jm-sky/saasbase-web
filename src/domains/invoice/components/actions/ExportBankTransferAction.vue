@@ -3,8 +3,8 @@ import { Banknote } from 'lucide-vue-next'
 import { useI18n } from 'vue-i18n'
 import { Button } from '@/components/ui/button'
 import { DropdownMenuItem } from '@/components/ui/dropdown-menu'
-import type { IInvoice } from '../../types/invoice.type'
 import { useComingSoonAction } from '../../composables/useComingSoonAction'
+import type { IInvoice } from '../../types/invoice.type'
 
 const { t } = useI18n()
 const { notifyComingSoon } = useComingSoonAction()
