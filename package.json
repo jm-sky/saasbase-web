@@ -5,7 +5,8 @@
   "type": "module",
   "pnpm": {
     "overrides": {
-      "postcss@<8.5.12": "8.5.16"
+      "postcss@<8.5.12": "8.5.16",
+      "dompurify@<3.4.12": "3.4.12"
     }
   },
   "scripts": {
