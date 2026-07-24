@@ -132,8 +132,8 @@ importers:
         specifier: ^0.52.2
         version: 0.52.2
       pinia:
-        specifier: ^2.3.1
-        version: 2.3.1(typescript@5.8.3)(vue@3.5.40(typescript@5.8.3))
+        specifier: ^4.0.2
+        version: 4.0.2(@vue/devtools-api@7.7.10)(typescript@5.8.3)(vue@3.5.40(typescript@5.8.3))
       pusher-js:
         specifier: ^8.6.0
         version: 8.6.0
@@ -3706,6 +3706,9 @@ packages:
     resolution: {integrity: sha512-wRNIrw4DmVLKQlbgOMdkMx27Wrpzes2hh5Jtbi2bjPd+4wJstWIqP5A+lscnqbm0xxmT5Bpg8Lec5ItEBwx6BQ==}
     engines: {node: '>=18'}
 
+  nostics@1.2.0:
+    resolution: {integrity: sha512-FGqEfhQjrvo1lL8KFifdTQiNwwQHJxC1jtYE1Rc54qF/jxONUNL+kC9gS1krX8Q65PgrQ5fCqH/I4NhWBvdSqg==}
+
   npm-normalize-package-bin@6.0.0:
     resolution: {integrity: sha512-tdt4aFn9QamlhdN3HV2D2ccpBwO5/fyjjbXUxYA6uBjyekMZcZvDq0aSj9t5Jo+tih6AYFnt/cuIRn9013e0Uw==}
     engines: {node: ^22.22.2 || ^24.15.0 || >=26.0.0}
@@ -3850,11 +3853,12 @@ packages:
     engines: {node: '>=18'}
     hasBin: true
 
-  pinia@2.3.1:
-    resolution: {integrity: sha512-khUlZSwt9xXCaTbbxFYBKDc/bWAGWJjOgvxETwkTN7KRm66EeT1ZdZj6i2ceh9sP2Pzqsbc704r2yngBrxBVug==}
+  pinia@4.0.2:
+    resolution: {integrity: sha512-yKVVA7bSj5oRZFp/Ab9wLlmyb5gPUYEiIm4ryiWTe/xe7PtkRdMVOp1X1ggvq0c6Uj7Q0Du1HnV2mtAwM0Ks1g==}
     peerDependencies:
-      typescript: '>=4.4.4'
-      vue: ^2.7.0 || ^3.5.11
+      '@vue/devtools-api': ^8.1.5
+      typescript: '>=5.6.0'
+      vue: ^3.5.11
     peerDependenciesMeta:
       typescript:
         optional: true
@@ -8454,6 +8458,8 @@ snapshots:
 
   node-releases@2.0.51: {}
 
+  nostics@1.2.0: {}
+
   npm-normalize-package-bin@6.0.0: {}
 
   npm-run-all2@9.0.2:
@@ -8607,15 +8613,13 @@ snapshots:
 
   pidtree@1.0.0: {}
 
-  pinia@2.3.1(typescript@5.8.3)(vue@3.5.40(typescript@5.8.3)):
+  pinia@4.0.2(@vue/devtools-api@7.7.10)(typescript@5.8.3)(vue@3.5.40(typescript@5.8.3)):
     dependencies:
-      '@vue/devtools-api': 6.6.4
+      '@vue/devtools-api': 7.7.10
+      nostics: 1.2.0
       vue: 3.5.40(typescript@5.8.3)
-      vue-demi: 0.14.10(vue@3.5.40(typescript@5.8.3))
     optionalDependencies:
       typescript: 5.8.3
-    transitivePeerDependencies:
-      - '@vue/composition-api'
 
   pngjs@5.0.0: {}
 
