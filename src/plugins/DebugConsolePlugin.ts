@@ -33,6 +33,7 @@ export default {
     };
 
     ['log', 'warn', 'error'].forEach(type => {
+      // eslint-disable-next-line @typescript-eslint/unbound-method -- called via .apply(console, args) below, this is always bound correctly
       const original = console[type as keyof Console]
       console[type as keyof Console] = (...args: any[]) => {
         original.apply(console, args)

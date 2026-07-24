@@ -23,11 +23,11 @@ import { valueUpdater } from '@/lib/utils'
 import type { ColumnDef, Header, Row, RowSelectionState, SortingState, VisibilityState } from '@tanstack/vue-table'
 import type { FilterDefinition } from '@/domains/shared/types/resource.type'
 
-const sorting = defineModel<SortingState>('sorting', { default: [] })
+const sorting = defineModel<SortingState>('sorting', { default: () => [] })
 const page = defineModel<number>('page', { default: 1 })
 const pageSize = defineModel<number>('pageSize', { default: 10 })
-const rowSelection = defineModel<RowSelectionState>('rowSelection', { default: {} })
-const selectedRows = defineModel<TData[]>('selectedRows', { default: [] })
+const rowSelection = defineModel<RowSelectionState>('rowSelection', { default: () => ({}) })
+const selectedRows = defineModel<TData[]>('selectedRows', { default: () => [] })
 
 const props = defineProps<{
   columns: ColumnDef<TData>[]
@@ -40,7 +40,7 @@ const props = defineProps<{
   loading?: boolean
 }>()
 
-const columnFilters = defineModel<Record<string, FilterDefinition>>('column-filters', { default: {} })
+const columnFilters = defineModel<Record<string, FilterDefinition>>('column-filters', { default: () => ({}) })
 
 const columnVisibility = ref<VisibilityState>({ ...props.initialColumnVisibility })
 
