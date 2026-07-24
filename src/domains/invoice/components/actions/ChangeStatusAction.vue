@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { RefreshCw } from 'lucide-vue-next'
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { Button } from '@/components/ui/button'
 import {
@@ -10,37 +10,48 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { useToast } from '@/components/ui/toast'
+import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
 import type { IInvoice } from '../../types/invoice.type'
+import { invoiceService } from '../../services/invoiceService'
+import type { TInvoiceStatus } from '@/domains/financial/types/financial.type'
 
 const { t } = useI18n()
 const { toast } = useToast()
 
-defineProps<{
-  invoice?: IInvoice
+const { invoice } = defineProps<{
+  invoice?: IInvoice | null
   invoices?: IInvoice[]
   variant?: 'button' | 'menu-item'
 }>()
 
+const emit = defineEmits<{
+  updated: [invoice: IInvoice]
+}>()
+
 const loading = ref(false)
 
-const statusOptions = [
-  { value: 'draft', label: 'Draft' },
-  { value: 'sent', label: 'Sent' },
-  { value: 'paid', label: 'Paid' },
-  { value: 'overdue', label: 'Overdue' },
-  { value: 'cancelled', label: 'Cancelled' },
-]
+// Mirrors InvoiceStatus::canTransitionTo() in the backend (app/Domain/Financial/Enums/InvoiceStatus.php) --
+// backend is authoritative and re-validates regardless, this only avoids offering options that would just 422.
+const transitions: Record<TInvoiceStatus, TInvoiceStatus[]> = {
+  draft: ['processing', 'cancelled'],
+  processing: ['issued', 'draft', 'cancelled'],
+  issued: ['completed', 'cancelled'],
+  completed: [],
+  cancelled: [],
+}
 
-const changeStatus = async (newStatus: string) => {
+const availableStatuses = computed<TInvoiceStatus[]>(() => invoice ? transitions[invoice.status] : [])
+
+const changeStatus = async (newStatus: TInvoiceStatus) => {
+  if (!invoice?.id) return
+
   loading.value = true
   try {
-    // TODO: Implement service integration
-    console.log('Changing status to:', newStatus)
-    await new Promise(resolve => setTimeout(resolve, 1000))
+    const updated = await invoiceService.update(invoice.id, { status: newStatus })
     toast.success(t('invoice.actions.changeStatus.success', 'Status changed successfully'))
+    emit('updated', updated)
   } catch (error) {
-    console.error('Failed to change status:', error)
-    toast.error(t('invoice.actions.changeStatus.error', 'Failed to change status'))
+    handleErrorWithToast(t('invoice.actions.changeStatus.error', 'Failed to change status'), error)
   } finally {
     loading.value = false
   }
@@ -54,7 +65,7 @@ const changeStatus = async (newStatus: string) => {
         v-if="variant === 'button'"
         variant="outline"
         size="sm"
-        :disabled="loading || (!invoice && !invoices?.length)"
+        :disabled="loading || !invoice || availableStatuses.length === 0"
       >
         <RefreshCw class="size-4" />
         {{ t('invoice.actions.changeStatus.title', 'Change Status') }}
@@ -62,7 +73,7 @@ const changeStatus = async (newStatus: string) => {
       <DropdownMenuItem
         v-else
         hoverable
-        :disabled="loading || (!invoice && !invoices?.length)"
+        :disabled="loading || !invoice || availableStatuses.length === 0"
       >
         <RefreshCw class="size-4 mr-2" />
         {{ t('invoice.actions.changeStatus.title', 'Change Status') }}
@@ -70,12 +81,12 @@ const changeStatus = async (newStatus: string) => {
     </DropdownMenuTrigger>
     <DropdownMenuContent align="end">
       <DropdownMenuItem
-        v-for="status in statusOptions"
-        :key="status.value"
+        v-for="status in availableStatuses"
+        :key="status"
         class="cursor-pointer"
-        @click="changeStatus(status.value)"
+        @click="changeStatus(status)"
       >
-        {{ t(`financial.invoiceStatus.${status.value}`, status.label) }}
+        {{ t(`financial.invoiceStatus.${status}`, status) }}
       </DropdownMenuItem>
     </DropdownMenuContent>
   </DropdownMenu>

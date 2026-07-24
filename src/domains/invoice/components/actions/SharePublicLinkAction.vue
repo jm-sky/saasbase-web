@@ -1,14 +1,13 @@
 <script setup lang="ts">
 import { Share } from 'lucide-vue-next'
-import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { Button } from '@/components/ui/button'
 import { DropdownMenuItem } from '@/components/ui/dropdown-menu'
-import { useToast } from '@/components/ui/toast'
 import type { IInvoice } from '../../types/invoice.type'
+import { useComingSoonAction } from '../../composables/useComingSoonAction'
 
 const { t } = useI18n()
-const { toast } = useToast()
+const { notifyComingSoon } = useComingSoonAction()
 
 defineProps<{
   invoice?: IInvoice
@@ -16,22 +15,11 @@ defineProps<{
   variant?: 'button' | 'menu-item'
 }>()
 
-const loading = ref(false)
-
-const sharePublicLink = async () => {
-  loading.value = true
-  try {
-    // TODO: Implement service integration
-    await new Promise(resolve => setTimeout(resolve, 1000))
-    // Copy link to clipboard
-    toast.success(t('invoice.actions.shareLink.success', 'Public link copied to clipboard'))
-  } catch (error) {
-    console.error('Failed to generate public link:', error)
-    toast.error(t('invoice.actions.shareLink.error', 'Failed to generate public link'))
-  } finally {
-    loading.value = false
-  }
-}
+// Backend only supports managing share-token records (POST/GET/DELETE
+// invoices/{invoice}/share-tokens), there's no public unauthenticated route
+// that actually serves a shared invoice by token yet -- generating a "public
+// link" today would produce a URL nothing can open. Real fix needs that
+// endpoint built first.
 </script>
 
 <template>
@@ -39,8 +27,8 @@ const sharePublicLink = async () => {
     v-if="variant === 'button'"
     variant="outline"
     size="sm"
-    :disabled="loading || (!invoice && !invoices?.length)"
-    @click="sharePublicLink"
+    :disabled="!invoice && !invoices?.length"
+    @click="notifyComingSoon"
   >
     <Share class="size-4" />
     {{ t('invoice.actions.shareLink.title', 'Share Link') }}
@@ -48,8 +36,8 @@ const sharePublicLink = async () => {
   <DropdownMenuItem
     v-else
     hoverable
-    :disabled="loading || (!invoice && !invoices?.length)"
-    @click="sharePublicLink"
+    :disabled="!invoice && !invoices?.length"
+    @click="notifyComingSoon"
   >
     <Share class="size-4 mr-2" />
     {{ t('invoice.actions.shareLink.title', 'Share Link') }}
