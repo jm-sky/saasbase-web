@@ -1,8 +1,8 @@
 import api from '@/lib/api'
+import { buildSpatieQuery } from '../helpers/filtering'
 import type { IGenericFilters } from '../helpers/filtering'
 import type { IExchangeRate } from '../types/exchange-rate.type'
 import type { IResource, IResourceCollection } from '../types/resource.type'
-import { buildSpatieQuery } from '../helpers/filtering'
 
 class ExchangeRateService {
   private readonly baseUrl = '/exchange-rates'

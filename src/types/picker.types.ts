@@ -1,5 +1,5 @@
-import type { ComputedRef, Ref } from 'vue'
 import type { FilterDefinition, IResourceCollection } from '@/domains/shared/types/resource.type'
+import type { ComputedRef, Ref } from 'vue'
 
 // Base interface that all picker items must implement
 export interface BasePickerItem {

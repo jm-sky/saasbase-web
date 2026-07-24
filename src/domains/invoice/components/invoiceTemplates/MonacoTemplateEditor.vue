@@ -4,8 +4,8 @@ import * as monaco from 'monaco-editor'
 import { computed, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import Button from '@/components/ui/button/Button.vue'
-import type { DataSchema, HandlebarsHelper, MonacoTheme, SchemaPath, SchemaProperty, SnippetType, ValidationError } from '../../types/invoiceTemplateEditor.type'
 import { getInvoiceTemplateSchema } from '../../helpers/invoiceTemplateSchema'
+import type { DataSchema, HandlebarsHelper, MonacoTheme, SchemaPath, SchemaProperty, SnippetType, ValidationError } from '../../types/invoiceTemplateEditor.type'
 
 const { t } = useI18n()
 

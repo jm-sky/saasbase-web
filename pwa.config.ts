@@ -49,10 +49,15 @@ export const pwaPlugin = VitePWA({
   // API responses are never cached and the app has no offline mode.
   workbox: {
     globPatterns: ['**/*.{js,css,html,ico,png,svg,woff2}'],
-    // Monaco's language worker bundles are huge (the TS worker alone is ~12MB)
+    // Monaco's language worker bundles are huge (the TS worker alone is ~7-12MB)
     // and lazily loaded only when the template/code editor is opened — not
     // part of the app shell, so they're excluded from precache entirely.
-    globIgnores: ['**/monacoeditorwork/**'],
+    // Two locations: vite-plugin-monaco-editor's own bundling
+    // (dist/monacoeditorwork/*.worker.bundle.js) plus a second, Vite-native
+    // copy Vite/Rolldown's built-in worker handling now also emits directly
+    // into dist/assets/ (e.g. ts.worker-XonqDHUu.js) as of monaco-editor 0.56 —
+    // both need excluding.
+    globIgnores: ['**/monacoeditorwork/**', '**/assets/*.worker-*.js'],
     maximumFileSizeToCacheInBytes: 5 * 1024 * 1024,
   },
   devOptions: {

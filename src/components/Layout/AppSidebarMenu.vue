@@ -25,8 +25,8 @@ import {
 import { config } from '@/config'
 import { useAuthStore } from '@/domains/auth/store/auth.store'
 import TenantBrandInfo from '@/domains/tenant/components/branding/TenantBrandInfo.vue'
-import type { MenuItemOrMenuCategory } from './menu.type'
 import UIIcon from '../UIIcon.vue'
+import type { MenuItemOrMenuCategory } from './menu.type'
 import type { SidebarProps } from '@/components/ui/sidebar'
 
 const { t } = useI18n()

@@ -8,8 +8,8 @@ import Button from '@/components/ui/button/Button.vue'
 import UIIcon from '@/components/UIIcon.vue'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
 import { toDateTimeString } from '@/lib/toDateTimeString'
-import type { IApplicationInvitation } from '../../types/invitation.type'
 import { applicationInvitationService } from '../../services/applicationInvitation.service'
+import type { IApplicationInvitation } from '../../types/invitation.type'
 
 const invitations = defineModel<IApplicationInvitation[]>('invitations', { required: true })
 

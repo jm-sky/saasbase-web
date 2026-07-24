@@ -4,12 +4,12 @@ import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import Button from '@/components/ui/button/Button.vue'
 import Separator from '@/components/ui/separator/Separator.vue'
-import type { IInvoice } from '../types/invoice.type'
 import ChangeStatusAction from './actions/ChangeStatusAction.vue'
 import DeleteInvoiceAction from './actions/DeleteInvoiceAction.vue'
 import GeneratePdfAction from './actions/GeneratePdfAction.vue'
 import SendEmailAction from './actions/SendEmailAction.vue'
 import SendToKsefAction from './actions/SendToKsefAction.vue'
+import type { IInvoice } from '../types/invoice.type'
 
 const { t } = useI18n()
 

@@ -2,9 +2,9 @@
 import { Plus } from 'lucide-vue-next'
 import { useI18n } from 'vue-i18n'
 import ButtonLink from '@/components/ButtonLink.vue'
-import type { IInvoice } from '../types/invoice.type'
 import SendEmailAction from './actions/SendEmailAction.vue'
 import SendToKsefAction from './actions/SendToKsefAction.vue'
+import type { IInvoice } from '../types/invoice.type'
 
 const { t } = useI18n()
 

@@ -4,8 +4,8 @@ import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import Badge from '@/components/ui/badge/Badge.vue'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
-import type { IUserSkill } from '../types/user.type'
 import { userSkillService } from '../services/UserSkillService'
+import type { IUserSkill } from '../types/user.type'
 
 const { t } = useI18n()
 

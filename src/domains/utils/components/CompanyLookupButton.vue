@@ -4,8 +4,8 @@ import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import Button from '@/components/ui/button/Button.vue'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
-import type { ICompanyLookupResponse } from '../types/companyLookup.type'
 import { companyLookupService } from '../services/companyLookup.service'
+import type { ICompanyLookupResponse } from '../types/companyLookup.type'
 
 const { t } = useI18n()
 

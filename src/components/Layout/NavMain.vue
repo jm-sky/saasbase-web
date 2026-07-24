@@ -19,9 +19,9 @@ import {
   SidebarMenuSubItem,
   useSidebar,
 } from '@/components/ui/sidebar'
-import type { MenuItem, MenuItemOrMenuCategory } from './menu.type'
 import ComingSoonIcon from './Menu/ComingSoonIcon.vue'
 import FeatureLockedIcon from './Menu/FeatureLockedIcon.vue'
+import type { MenuItem, MenuItemOrMenuCategory } from './menu.type'
 
 const { t } = useI18n()
 

@@ -18,8 +18,8 @@ import {
 } from '@/components/ui/popover'
 import { fullAddress } from '@/lib/fullAddress'
 import { cn } from '@/lib/utils'
-import type { IContractorAddress } from '../types/contractor.type'
 import { contractorAddressesService } from '../services/ContractorAddressesService'
+import type { IContractorAddress } from '../types/contractor.type'
 
 const { t } = useI18n()
 

@@ -7,10 +7,10 @@ import { Button } from '@/components/ui/button'
 import { DropdownMenuItem } from '@/components/ui/dropdown-menu'
 import { useToast } from '@/components/ui/toast'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
-import type { IInvoice } from '../../types/invoice.type'
 import { invoiceBatchService } from '../../services/invoiceBatchService'
 import { invoiceService } from '../../services/invoiceService'
 import { useInvoiceStore } from '../../stores/invoice.store'
+import type { IInvoice } from '../../types/invoice.type'
 
 const { t } = useI18n()
 const { toast } = useToast()

@@ -16,8 +16,8 @@ import { CommandEmpty, CommandGroup } from '@/components/ui/command'
 import { config } from '@/config'
 import TagList from '@/domains/tags/components/TagList.vue'
 import { useCache } from '@/lib/cache'
-import type { IContractorLookup } from '../types/contractor.type'
 import { contractorService, type IContractorFilters } from '../services/ContractorService'
+import type { IContractorLookup } from '../types/contractor.type'
 import type { FilterDefinition } from '@/domains/shared/types/resource.type'
 
 const { t } = useI18n()

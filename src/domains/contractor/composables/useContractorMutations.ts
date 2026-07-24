@@ -1,11 +1,11 @@
 import { useMutation, useQueryClient } from '@tanstack/vue-query'
+import { contractorService } from '../services/ContractorService'
+import { contractorKeys } from './queryKeys'
 import type {
   IContractorCombinedCreate,
   IContractorPreferencesUpdate,
   IContractorUpdate,
 } from '../types/contractor.type'
-import { contractorService } from '../services/ContractorService'
-import { contractorKeys } from './queryKeys'
 
 export function useCreateContractor() {
   const queryClient = useQueryClient()

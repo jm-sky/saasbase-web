@@ -14,9 +14,9 @@ import { useProjectStore } from '@/domains/project/stores/project.store'
 import AuthenticatedLayout from '@/layouts/AuthenticatedLayout.vue'
 import { toDateString } from '@/lib/toDateString'
 import { toDateTimeString } from '@/lib/toDateTimeString'
-import type { ColumnDef } from '@tanstack/vue-table'
 import type { IProject } from '@/domains/project/types/project.type'
 import type { IResourceMeta } from '@/domains/shared/types/resource.type'
+import type { ColumnDef } from '@tanstack/vue-table'
 
 const { t } = useI18n()
 const projectStore = useProjectStore()

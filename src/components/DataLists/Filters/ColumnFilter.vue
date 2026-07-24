@@ -31,7 +31,7 @@ interface FilterOperatorOption {
   label: string
 }
 
-const modelValue = defineModel<FilterDefinition>('modelValue', { default: { value: '', operator: '' } })
+const modelValue = defineModel<FilterDefinition>('modelValue', { default: () => ({ value: '', operator: '' }) })
 
 const operators: FilterOperatorOption[] = [
   { value: 'eq', label: 'Equal ( = )' },

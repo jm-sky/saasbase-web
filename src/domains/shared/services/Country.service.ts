@@ -1,8 +1,8 @@
 import api from '@/lib/api'
+import { buildSpatieQuery } from '../helpers/filtering'
 import type { IGenericFilters } from '../helpers/filtering'
 import type { ICountry } from '../types/country.type'
 import type { IResourceCollection } from '../types/resource.type'
-import { buildSpatieQuery } from '../helpers/filtering'
 
 export interface ICountryFilters extends IGenericFilters {
   search?: string

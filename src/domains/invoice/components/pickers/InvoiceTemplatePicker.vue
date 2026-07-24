@@ -17,8 +17,8 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover'
 import { cn } from '@/lib/utils'
-import type { IInvoiceTemplatePreview } from '../../types/invoiceTemplate.type'
 import { useInvoiceTemplates } from '../../helpers/useInvoiceTemplates'
+import type { IInvoiceTemplatePreview } from '../../types/invoiceTemplate.type'
 
 const { t } = useI18n()
 const { invoiceTemplates, loadTemplates: loadTemplatesHelper } = useInvoiceTemplates()

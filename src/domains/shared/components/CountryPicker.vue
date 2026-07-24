@@ -19,8 +19,8 @@ import {
 } from '@/components/ui/popover'
 import { useCache } from '@/lib/cache'
 import { cn } from '@/lib/utils'
-import type { ICountry } from '../types/country.type'
 import { countryService, type ICountryFilters } from '../services/Country.service'
+import type { ICountry } from '../types/country.type'
 
 const { t } = useI18n()
 
@@ -117,7 +117,7 @@ onMounted(() => {
     </PopoverTrigger>
     <PopoverContent :class="cn('w-full p-0', popoverContentClass)">
       <Command>
-        <CommandInput v-model="search" :placeholder="t('shared.country.search')" @input="(event) => onSearchDebounced(event.target.value)" />
+        <CommandInput v-model="search" :placeholder="t('shared.country.search')" @input="(event: Event) => onSearchDebounced((event.target as HTMLInputElement).value)" />
         <CommandList>
           <CommandEmpty>{{ t('shared.country.notFound') }}</CommandEmpty>
           <CommandGroup>

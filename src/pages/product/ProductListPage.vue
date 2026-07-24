@@ -15,9 +15,9 @@ import { useProductStore } from '@/domains/product/stores/product.store'
 import TagList from '@/domains/tags/components/TagList.vue'
 import AuthenticatedLayout from '@/layouts/AuthenticatedLayout.vue'
 import { toDateTimeString } from '@/lib/toDateTimeString'
-import type { ColumnDef } from '@tanstack/vue-table'
 import type { IProduct } from '@/domains/product/types/product.type'
 import type { IResourceMeta } from '@/domains/shared/types/resource.type'
+import type { ColumnDef } from '@tanstack/vue-table'
 
 const { t } = useI18n()
 const productStore = useProductStore()

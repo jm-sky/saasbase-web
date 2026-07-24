@@ -14,10 +14,10 @@ import { userService } from '@/domains/user/services/userService'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
 import { initials } from '@/lib/initials'
 import echo from '@/plugins/echo.js'
-import type { IChatMessage, IChatRoom, IMessageSentEvent } from '../types/chat.type'
 import { ChatMessage } from '../models/chat.model'
 import { chatRoomService } from '../services/chatRoomService'
 import ChatSidebar from './ChatSidebar.vue'
+import type { IChatMessage, IChatRoom, IMessageSentEvent } from '../types/chat.type'
 import type { IUserPreview } from '@/domains/user/types/user.type'
 
 const router = useRouter()

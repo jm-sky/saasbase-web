@@ -20,9 +20,9 @@ import {
 } from '@/components/ui/popover'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
 import { cn } from '@/lib/utils'
-import type { ICurrency } from '../types/currency.type'
 import { currencyService } from '../services/Currency.service'
 import { useCurrencyStore } from '../stores/currency.store'
+import type { ICurrency } from '../types/currency.type'
 
 const { t } = useI18n()
 const currencyStore = useCurrencyStore()

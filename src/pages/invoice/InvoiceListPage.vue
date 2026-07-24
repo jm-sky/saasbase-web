@@ -19,9 +19,9 @@ import { useInvoiceStore } from '@/domains/invoice/stores/invoice.store'
 import AuthenticatedLayout from '@/layouts/AuthenticatedLayout.vue'
 import { money } from '@/lib/money'
 import { toDateTimeString } from '@/lib/toDateTimeString'
-import type { ColumnDef, RowSelectionState } from '@tanstack/vue-table'
 import type { IInvoice } from '@/domains/invoice/types/invoice.type'
 import type { IResourceMeta } from '@/domains/shared/types/resource.type'
+import type { ColumnDef, RowSelectionState } from '@tanstack/vue-table'
 
 const { t, locale } = useI18n()
 

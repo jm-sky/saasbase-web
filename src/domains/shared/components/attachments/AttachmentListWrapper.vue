@@ -6,8 +6,8 @@ import FileUpload from '@/components/Inputs/FileUpload.vue'
 import Button from '@/components/ui/button/Button.vue'
 import { downloadBlob } from '@/lib/downloadBlob'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
-import type { IAttachment, IAttachmentService } from '../../types/attachment.type'
 import AttachmentListItem from './AttachmentListItem.vue'
+import type { IAttachment, IAttachmentService } from '../../types/attachment.type'
 
 const { t } = useI18n()
 

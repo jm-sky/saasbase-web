@@ -9,8 +9,8 @@ import Button from '@/components/ui/button/Button.vue'
 import UserPicker from '@/domains/user/components/UserPicker.vue'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
 import { isValidationError } from '@/lib/validation'
-import type { IOrganizationUnit, IOrganizationUnitAssignUser } from '../../../types/organizationUnit.type'
 import { tenantOrganizationUnitService } from '../../../services/TenantOrganizationUnit.service'
+import type { IOrganizationUnit, IOrganizationUnitAssignUser } from '../../../types/organizationUnit.type'
 import type { IUserPreview } from '@/domains/user/types/user.type'
 
 const { t } = useI18n()

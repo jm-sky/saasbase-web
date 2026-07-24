@@ -10,10 +10,10 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { useToast } from '@/components/ui/toast'
-import type { IInvoiceNumberingTemplate } from '../../types/numberingTemplate.type'
 import { numberingTemplateService } from '../../services/NumberingTemplate.service'
 import { FORMAT_ELEMENTS, getInvoiceTypeLabel } from '../../utils/numberingTemplateUtils'
 import { numberingTemplateFormSchema } from '../../validation/numberingTemplate.schema'
+import type { IInvoiceNumberingTemplate } from '../../types/numberingTemplate.type'
 import type { TInvoiceType } from '@/domains/financial/types/financial.type'
 
 const { t } = useI18n()

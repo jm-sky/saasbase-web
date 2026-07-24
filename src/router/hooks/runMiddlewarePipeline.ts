@@ -1,5 +1,5 @@
-import type { INextPipeline } from '../helpers/middlewarePipeline'
 import middlewarePipeline from '../helpers/middlewarePipeline'
+import type { INextPipeline } from '../helpers/middlewarePipeline'
 import type { NavigationGuardNext, RouteLocationNormalized, RouteLocationRaw, Router } from 'vue-router'
 
 // eslint-disable-next-line @typescript-eslint/no-invalid-void-type
@@ -11,6 +11,7 @@ export interface RunMiddlewarePipelineOptions {
 
 export interface RouterMiddlewareOptions {
   from: RouteLocationNormalized
+  // eslint-disable-next-line @typescript-eslint/no-deprecated -- vue-router 5 still fully supports the next() callback guard pattern (deprecated, slated for a future removal); this whole middleware pipeline is built around it and migrating to return-value guards is a separate, larger refactor
   next: INextPipeline | NavigationGuardNext
   router: Router
   to: RouteLocationNormalized
@@ -20,6 +21,7 @@ export type RouterMiddleware = (options: RouterMiddlewareOptions) => NavigationG
 
 export const runMiddlewarePipeline =
   ({ router }: RunMiddlewarePipelineOptions) =>
+    // eslint-disable-next-line @typescript-eslint/no-deprecated -- see note on RouterMiddlewareOptions.next above
     (to: RouteLocationNormalized, from: RouteLocationNormalized, next: NavigationGuardNext): NavigationGuardReturn => {
       const middlewares: RouterMiddleware[] | undefined = to.meta.middlewares
       const firstMiddleware = middlewares?.[0]

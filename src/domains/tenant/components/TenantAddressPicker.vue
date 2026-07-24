@@ -19,9 +19,9 @@ import {
 } from '@/components/ui/popover'
 import { fullAddress } from '@/lib/fullAddress'
 import { cn } from '@/lib/utils'
-import type { ITenantAddress } from '../types/tenant.type'
 import { tenantAddressesService } from '../services/TenantAddressesService'
 import { useTenantStore } from '../store/tenant.store'
+import type { ITenantAddress } from '../types/tenant.type'
 
 const { t } = useI18n()
 const tenantStore = useTenantStore()

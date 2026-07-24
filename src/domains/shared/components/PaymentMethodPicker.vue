@@ -20,9 +20,9 @@ import {
 } from '@/components/ui/popover'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
 import { cn } from '@/lib/utils'
-import type { IPaymentMethod } from '../types/paymentMethod.type'
 import { paymentMethodService } from '../services/PaymentMethod.service'
 import { usePaymentMethodStore } from '../stores/paymentMethod.store'
+import type { IPaymentMethod } from '../types/paymentMethod.type'
 
 const { t } = useI18n()
 const paymentMethodStore = usePaymentMethodStore()

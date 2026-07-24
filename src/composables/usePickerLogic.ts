@@ -148,7 +148,7 @@ export const usePickerLogic = <
   const onSearchDebounced = useDebounceFn(async (value: string) => {
     currentPage.value = 1
     hasMoreData.value = true
-    await searchWithCache({ ...filters.value, search: value, page: 1 } as TFilters)
+    await searchWithCache({ ...filters.value, search: value, page: 1 })
   }, DEBOUNCE_TIME)
 
   // Reset search state

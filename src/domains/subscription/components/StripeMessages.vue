@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, defineProps, toRef } from 'vue'
+import { computed, toRef } from 'vue'
 
 const props = defineProps<{
   messages: string[]
