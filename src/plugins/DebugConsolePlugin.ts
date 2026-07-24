@@ -27,7 +27,7 @@ export default {
           return '[Unserializable]'
         }
       }).join(' ')}\n`
-      // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
+       
       logDiv.textContent += entry
       logDiv.scrollTop = logDiv.scrollHeight
     };
