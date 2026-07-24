@@ -2,7 +2,8 @@ import api from '@/lib/api'
 import { apiRoutesMap } from '@/lib/api/apiRoutes'
 
 export interface MfaVerifyResponse {
-  message: string
+  accessToken: string
+  tokenType: string
 }
 
 export interface MfaEnableResponse {
