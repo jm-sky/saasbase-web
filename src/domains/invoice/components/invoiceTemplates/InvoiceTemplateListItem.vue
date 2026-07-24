@@ -8,9 +8,9 @@ import Button from '@/components/ui/button/Button.vue'
 import { useToast } from '@/components/ui/toast'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
 import { routeMap } from '@/router/routeMap'
-import type { IInvoiceTemplatePreview } from '../../types/invoiceTemplate.type'
 import { useInvoiceTemplates } from '../../helpers/useInvoiceTemplates'
 import { invoiceTemplateService } from '../../services/InvoiceTemplate.service'
+import type { IInvoiceTemplatePreview } from '../../types/invoiceTemplate.type'
 import type { TUUID } from '@/domains/shared/types/common'
 
 const { t } = useI18n()

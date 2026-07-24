@@ -8,11 +8,11 @@ import Button from '@/components/ui/button/Button.vue'
 import { downloadBlob } from '@/lib/downloadBlob'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
 import { isValidationError } from '@/lib/validation'
-import type { IInvoice } from '../../types/invoice.type'
-import type { IInvoiceTemplatePreview } from '../../types/invoiceTemplate.type'
 import { invoiceeAttachmentsService } from '../../services/invoiceAttachmentsService'
 import { type IGeneratePdfParams, type IGeneratePdfResponse, invoiceService } from '../../services/invoiceService'
 import InvoiceTemplatePicker from '../pickers/InvoiceTemplatePicker.vue'
+import type { IInvoice } from '../../types/invoice.type'
+import type { IInvoiceTemplatePreview } from '../../types/invoiceTemplate.type'
 
 const { t } = useI18n()
 

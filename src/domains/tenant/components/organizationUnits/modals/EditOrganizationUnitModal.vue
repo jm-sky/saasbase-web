@@ -10,8 +10,8 @@ import Switch from '@/components/ui/switch/Switch.vue'
 import Textarea from '@/components/ui/textarea/Textarea.vue'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
 import { isValidationError } from '@/lib/validation'
-import type { IOrganizationUnit } from '../../../types/organizationUnit.type'
 import { tenantOrganizationUnitService } from '../../../services/TenantOrganizationUnit.service'
+import type { IOrganizationUnit } from '../../../types/organizationUnit.type'
 
 const { t } = useI18n()
 

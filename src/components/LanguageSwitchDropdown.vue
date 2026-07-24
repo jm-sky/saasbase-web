@@ -9,8 +9,8 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { useLanguageStore } from '@/stores/language.store'
-import type { HTMLAttributes } from 'vue'
 import type { TLocale } from '@/i18n'
+import type { HTMLAttributes } from 'vue'
 
 const { t } = useI18n()
 const languageStore = useLanguageStore()

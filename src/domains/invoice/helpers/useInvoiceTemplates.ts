@@ -1,7 +1,7 @@
 import { storeToRefs } from 'pinia'
-import type { IInvoiceTemplatePreview } from '../types/invoiceTemplate.type'
 import { invoiceTemplateService } from '../services/InvoiceTemplate.service'
 import { useInvoiceTemplateStore } from '../stores/invoiceTemplate.store'
+import type { IInvoiceTemplatePreview } from '../types/invoiceTemplate.type'
 import type { TUUID } from '@/domains/shared/types/common'
 
 export const useInvoiceTemplates = () => {

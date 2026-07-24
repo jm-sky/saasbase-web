@@ -4,12 +4,12 @@ import { Controls } from '@vue-flow/controls'
 import { type GraphNode, type NodeMouseEvent, VueFlow } from '@vue-flow/core'
 import { MiniMap } from '@vue-flow/minimap'
 import { toRef, watch } from 'vue'
-import type { IOrganizationUnit } from '../../types/organizationUnit.type'
 import { useOrganizationChartLayout } from '../../composables/useOrganizationChartLayout'
 import OrganizationUnitNode from './nodes/OrganizationUnitNode.vue'
 import OrganizationUnitRootNode from './nodes/OrganizationUnitRootNode.vue'
 import OrganizationUnitTechnicalNode from './nodes/OrganizationUnitTechnicalNode.vue'
 import OrganizationUnitRelation from './OrganizationUnitRelation.vue'
+import type { IOrganizationUnit } from '../../types/organizationUnit.type'
 
 const props = defineProps<{
   organizationUnits: IOrganizationUnit[]

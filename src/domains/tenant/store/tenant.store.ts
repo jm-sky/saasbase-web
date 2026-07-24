@@ -3,8 +3,8 @@ import { defineStore, storeToRefs } from 'pinia'
 import { watch } from 'vue'
 import { config } from '@/config'
 import { useAuthStore } from '@/domains/auth/store/auth.store'
-import type { ITenant, ITenantAddress, ITenantBankAccount, ITenantBranding, ITenantPublicProfile } from '../types/tenant.type'
 import { tenantService } from '../services/TenantService'
+import type { ITenant, ITenantAddress, ITenantBankAccount, ITenantBranding, ITenantPublicProfile } from '../types/tenant.type'
 
 export const useTenantStore = defineStore('tenant', () => {
   const authStore = useAuthStore()

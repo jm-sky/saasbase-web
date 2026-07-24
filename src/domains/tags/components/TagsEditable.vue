@@ -10,10 +10,10 @@ import PopoverContent from '@/components/ui/popover/PopoverContent.vue'
 import PopoverTrigger from '@/components/ui/popover/PopoverTrigger.vue'
 import { TagsInput, TagsInputInput, TagsInputItem, TagsInputItemDelete, TagsInputItemText } from '@/components/ui/tags-input'
 import { useToast } from '@/components/ui/toast'
-import type { IModelTagService, ITagPreview, TTagColor } from '../types/tag.type'
 import { useTags } from '../composables/useTags'
 import { tagColor } from '../utils/tagColor'
 import TagsColorList from './TagsColorList.vue'
+import type { IModelTagService, ITagPreview, TTagColor } from '../types/tag.type'
 
 const { t } = useI18n()
 const { toast } = useToast()

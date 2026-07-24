@@ -1,10 +1,10 @@
 import { storeToRefs } from 'pinia'
 import { computed } from 'vue'
-import type { ITenant, ITenantAddress, ITenantBankAccount } from '../types/tenant.type'
 import { tenantAddressesService } from '../services/TenantAddressesService'
 import { tenantBankAccountsService } from '../services/TenantBankAccountsService'
 import { tenantService } from '../services/TenantService'
 import { useTenantStore } from '../store/tenant.store'
+import type { ITenant, ITenantAddress, ITenantBankAccount } from '../types/tenant.type'
 
 export const useTenant = () => {
   const tenantStore = useTenantStore()

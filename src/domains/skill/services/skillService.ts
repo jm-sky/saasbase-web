@@ -2,8 +2,8 @@ import { buildSpatieQuery } from '@/domains/shared/helpers/filtering'
 import { type ISkill } from '@/domains/skill/models/skill.model'
 import api from '@/lib/api'
 import { apiRoutesMap } from '@/lib/api/apiRoutes'
-import type { SortingState } from '@tanstack/vue-table'
 import type { FilterDefinition, IResource, IResourceCollection } from '@/domains/shared/types/resource.type'
+import type { SortingState } from '@tanstack/vue-table'
 
 export interface ISkillFilters {
   search?: string

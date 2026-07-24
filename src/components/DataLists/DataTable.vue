@@ -20,8 +20,8 @@ import {
 } from '@/components/ui/table'
 import TablePagination from '@/components/ui/table/TablePagination.vue'
 import { valueUpdater } from '@/lib/utils'
-import type { ColumnDef, Header, Row, RowSelectionState, SortingState, VisibilityState } from '@tanstack/vue-table'
 import type { FilterDefinition } from '@/domains/shared/types/resource.type'
+import type { ColumnDef, Header, Row, RowSelectionState, SortingState, VisibilityState } from '@tanstack/vue-table'
 
 const sorting = defineModel<SortingState>('sorting', { default: () => [] })
 const page = defineModel<number>('page', { default: 1 })

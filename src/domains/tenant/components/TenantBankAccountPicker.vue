@@ -19,9 +19,9 @@ import {
 } from '@/components/ui/popover'
 import { formatIBAN, getIbanWithCountryCode } from '@/lib/formatIBAN'
 import { cn } from '@/lib/utils'
-import type { ITenantBankAccount } from '../types/tenant.type'
 import { tenantBankAccountsService } from '../services/TenantBankAccountsService'
 import { useTenantStore } from '../store/tenant.store'
+import type { ITenantBankAccount } from '../types/tenant.type'
 
 const { t } = useI18n()
 const tenantStore = useTenantStore()

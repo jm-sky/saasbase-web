@@ -6,8 +6,8 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover'
-import type { ButtonVariants } from '../ui/button'
 import LayoutColorSection from './LayoutColorSection.vue'
+import type { ButtonVariants } from '../ui/button'
 import type { HTMLAttributes } from 'vue'
 
 const props = defineProps<{

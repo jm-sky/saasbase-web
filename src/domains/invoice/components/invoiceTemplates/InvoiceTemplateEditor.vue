@@ -14,7 +14,6 @@ import TenantSectionTitle from '@/domains/tenant/components/TenantSectionTitle.v
 import { useTenantBranding } from '@/domains/tenant/composables/useTenantBranding'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
 import { routeMap } from '@/router/routeMap'
-import type { IInvoiceTemplate } from '../../types/invoiceTemplate.type'
 import { useInvoiceTemplateDraftStorage } from '../../helpers/invoiceTemplateDraftStorage'
 import { useGetSampleData } from '../../helpers/invoiceTemplateEditorHelpers'
 import { invoiceTemplateService, type ITemplatePreviewOptions } from '../../services/InvoiceTemplate.service'
@@ -23,6 +22,7 @@ import InvoiceTemplateGroupedPicker from './InvoiceTemplateGroupedPicker.vue'
 import MonacoTemplateEditor from './MonacoTemplateEditor.vue'
 import PreviewOptions from './PreviewOptions.vue'
 import TemplateHelperReference from './TemplateHelperReference.vue'
+import type { IInvoiceTemplate } from '../../types/invoiceTemplate.type'
 import type { TUUID } from '@/domains/shared/types/common'
 
 const { t, locale } = useI18n()

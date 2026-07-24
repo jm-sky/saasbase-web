@@ -7,12 +7,12 @@ import { tenantOrganizationUnitService } from '@/domains/tenant/services/TenantO
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
 import { cn } from '@/lib/utils'
 import { routeMap } from '@/router/routeMap'
-import type { OrganizationUnitNodeData } from '../../../composables/useOrganizationChartLayout'
-import type { IOrganizationUnit } from '../../../types/organizationUnit.type'
 import AssignUserToOrganizationUnitModal from '../modals/AssignUserToOrganizationUnitModal.vue'
 import EditOrganizationUnitModal from '../modals/EditOrganizationUnitModal.vue'
 import OrganizationUnitUserAvatarsList from '../OrganizationUnitUserAvatarsList.vue'
 import UnitToolbar from '../UnitToolbar.vue'
+import type { OrganizationUnitNodeData } from '../../../composables/useOrganizationChartLayout'
+import type { IOrganizationUnit } from '../../../types/organizationUnit.type'
 
 const { t } = useI18n()
 

@@ -1,9 +1,9 @@
 import { storeToRefs } from 'pinia'
 import { ref } from 'vue'
 import { useToast } from '@/components/ui/toast'
-import type { TTagColor } from '../types/tag.type'
 import { TagService } from '../services/tag.service'
 import { useTagStore } from '../stores/tag.store'
+import type { TTagColor } from '../types/tag.type'
 
 export const useTags = () => {
   const { toast } = useToast()

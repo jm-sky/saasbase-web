@@ -1,9 +1,9 @@
 import { buildSpatieQuery } from '@/domains/shared/helpers/filtering'
 import api from '@/lib/api'
 import type { CreateCheckoutSessionRequest, ISubscriptionPlan, StoreSubscriptionRequest } from '../types/subscription.type'
-import type { SortingState } from '@tanstack/vue-table'
 import type { TUUID } from '@/domains/shared/types/common'
 import type { FilterDefinition, IResource, IResourceCollection } from '@/domains/shared/types/resource.type'
+import type { SortingState } from '@tanstack/vue-table'
 
 export interface ISubscriptionPlanFilters {
   search?: string

@@ -1,5 +1,5 @@
-import type { RouteLocationRaw } from 'vue-router'
 import type { TIdentityConfirmationType } from '@/domains/identityConfirmation/types/identityConfirmation.type'
+import type { RouteLocationRaw } from 'vue-router'
 
 export const routeMap = {
   landing: 'landing',

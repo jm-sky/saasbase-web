@@ -11,8 +11,8 @@ import Textarea from '@/components/ui/textarea/Textarea.vue'
 import PositionCategoryPicker from '@/domains/rights/components/PositionCategoryPicker.vue'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
 import { isValidationError } from '@/lib/validation'
-import type { IOrganizationUnit, IOrganizationUnitPositionCreate } from '../../../types/organizationUnit.type'
 import { tenantOrganizationUnitService } from '../../../services/TenantOrganizationUnit.service'
+import type { IOrganizationUnit, IOrganizationUnitPositionCreate } from '../../../types/organizationUnit.type'
 
 const { t } = useI18n()
 

@@ -21,8 +21,8 @@ import {
 } from '@/components/ui/popover'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
 import { cn } from '@/lib/utils'
-import type { IUserPreview } from '../types/user.type'
 import { userService } from '../services/userService'
+import type { IUserPreview } from '../types/user.type'
 
 const { t } = useI18n()
 

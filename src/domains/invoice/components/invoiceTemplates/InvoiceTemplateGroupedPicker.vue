@@ -5,8 +5,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import SelectGroup from '@/components/ui/select/SelectGroup.vue'
 import SelectLabel from '@/components/ui/select/SelectLabel.vue'
 import { cn } from '@/lib/utils'
-import type { IInvoiceTemplatePreview } from '../../types/invoiceTemplate.type'
 import { useInvoiceTemplates } from '../../helpers/useInvoiceTemplates'
+import type { IInvoiceTemplatePreview } from '../../types/invoiceTemplate.type'
 
 const { t } = useI18n()
 

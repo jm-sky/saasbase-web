@@ -14,10 +14,10 @@ import Separator from '@/components/ui/separator/Separator.vue'
 import { useToast } from '@/components/ui/toast'
 import { downloadBlob } from '@/lib/downloadBlob'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
-import type { IInvoice } from '../../types/invoice.type'
 import { invoiceeAttachmentsService } from '../../services/invoiceAttachmentsService'
 import { type IGeneratePdfResponse, invoiceService } from '../../services/invoiceService'
 import GenerateInvoicePdfModal from '../modals/GenerateInvoicePdfModal.vue'
+import type { IInvoice } from '../../types/invoice.type'
 
 const { t } = useI18n()
 const { toast } = useToast()

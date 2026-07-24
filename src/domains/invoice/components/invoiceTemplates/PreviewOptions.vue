@@ -5,8 +5,8 @@ import Checkbox from '@/components/ui/checkbox/Checkbox.vue'
 import Input from '@/components/ui/input/Input.vue'
 import CurrencyPicker from '@/domains/shared/components/CurrencyPicker.vue'
 import DateFormatPicker from '@/domains/shared/components/DateFormatPicker.vue'
-import type { ITemplatePreviewOptions } from '../../services/InvoiceTemplate.service'
 import InvoiceTemplateLanguagePicker from './InvoiceTemplateLanguagePicker.vue'
+import type { ITemplatePreviewOptions } from '../../services/InvoiceTemplate.service'
 
 const { t } = useI18n()
 

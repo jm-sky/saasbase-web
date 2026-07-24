@@ -2,8 +2,8 @@ import { type IFeed, type IFeedCreate } from '@/domains/feed/types/feed.type'
 import { buildSpatieQuery } from '@/domains/shared/helpers/filtering'
 import api from '@/lib/api'
 import { apiRoutesMap } from '@/lib/api/apiRoutes'
-import type { SortingState } from '@tanstack/vue-table'
 import type { FilterDefinition, IResourceCollection } from '@/domains/shared/types/resource.type'
+import type { SortingState } from '@tanstack/vue-table'
 
 export interface IFeedFilters {
   search?: string

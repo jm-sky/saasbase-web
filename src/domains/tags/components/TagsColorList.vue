@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import type { TTagColor } from '../types/tag.type'
 import { tagColor } from '../utils/tagColor'
+import type { TTagColor } from '../types/tag.type'
 
 defineProps<{
   text?: string

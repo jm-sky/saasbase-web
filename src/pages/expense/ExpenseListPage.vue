@@ -19,9 +19,9 @@ import InvoiceStatusBadge from '@/domains/financial/components/InvoiceStatusBadg
 import AuthenticatedLayout from '@/layouts/AuthenticatedLayout.vue'
 import { money } from '@/lib/money'
 import { toDateTimeString } from '@/lib/toDateTimeString'
-import type { ColumnDef } from '@tanstack/vue-table'
 import type { IExpense } from '@/domains/expense/types/expense.type'
 import type { IResourceMeta } from '@/domains/shared/types/resource.type'
+import type { ColumnDef } from '@tanstack/vue-table'
 
 const { t, locale } = useI18n()
 

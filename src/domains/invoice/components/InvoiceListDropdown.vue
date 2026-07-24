@@ -10,7 +10,6 @@ import DropdownMenuSeparator from '@/components/ui/dropdown-menu/DropdownMenuSep
 import DropdownMenuTrigger from '@/components/ui/dropdown-menu/DropdownMenuTrigger.vue'
 import { useToast } from '@/components/ui/toast'
 import { downloadBlob } from '@/lib/downloadBlob'
-import type { IInvoice } from '../types/invoice.type'
 import { type IInvoiceFilters, invoiceService } from '../services/invoiceService'
 import ChangeStatusAction from './actions/ChangeStatusAction.vue'
 import CopyInvoiceAction from './actions/CopyInvoiceAction.vue'
@@ -23,6 +22,7 @@ import RecurringInvoiceAction from './actions/RecurringInvoiceAction.vue'
 import SendEmailAction from './actions/SendEmailAction.vue'
 import SendToKsefAction from './actions/SendToKsefAction.vue'
 import SharePublicLinkAction from './actions/SharePublicLinkAction.vue'
+import type { IInvoice } from '../types/invoice.type'
 
 const { t } = useI18n()
 const { toast } = useToast()

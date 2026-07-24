@@ -9,8 +9,8 @@ import Input from '@/components/ui/input/Input.vue'
 import Textarea from '@/components/ui/textarea/Textarea.vue'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
 import { isValidationError } from '@/lib/validation'
-import type { IApplicationInvitation } from '../../types/invitation.type'
 import { applicationInvitationService } from '../../services/applicationInvitation.service'
+import type { IApplicationInvitation } from '../../types/invitation.type'
 
 const { t } = useI18n()
 

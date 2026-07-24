@@ -19,9 +19,9 @@ import {
 } from '@/components/ui/popover'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
 import { cn } from '@/lib/utils'
-import type { IVatRate } from '../types/vatRate.type'
 import { vatRateService } from '../services/vatRate.service'
 import { useVatRateStore } from '../stores/vatRate.store'
+import type { IVatRate } from '../types/vatRate.type'
 
 const { t } = useI18n()
 const vatRateStore = useVatRateStore()

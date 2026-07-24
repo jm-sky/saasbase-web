@@ -10,9 +10,9 @@ import UIIcon from '@/components/UIIcon.vue'
 import { config } from '@/config'
 import { tenantAddressesService } from '@/domains/tenant/services/TenantAddressesService'
 import { useTenantStore } from '@/domains/tenant/store/tenant.store'
-import type { IBillingPrice, ISubscriptionPlan, TBillingInterval } from '../types/subscription.type'
 import { subscriptionService } from '../services/SubscriptionService'
 import BillingInfoForm from './BillingInfoForm.vue'
+import type { IBillingPrice, ISubscriptionPlan, TBillingInterval } from '../types/subscription.type'
 
 const { t } = useI18n()
 const tenantStore = useTenantStore()

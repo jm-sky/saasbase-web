@@ -4,11 +4,11 @@ import { ArrowRight } from 'lucide-vue-next'
 import { computed, ref } from 'vue'
 import { cn } from '@/lib/utils'
 import { routeMap } from '@/router/routeMap'
-import type { OrganizationUnitNodeData } from '../../../composables/useOrganizationChartLayout'
-import type { IOrganizationUnit } from '../../../types/organizationUnit.type'
 import EditOrganizationUnitModal from '../modals/EditOrganizationUnitModal.vue'
 import OrganizationUnitUserAvatarsList from '../OrganizationUnitUserAvatarsList.vue'
 import UnitToolbar from '../UnitToolbar.vue'
+import type { OrganizationUnitNodeData } from '../../../composables/useOrganizationChartLayout'
+import type { IOrganizationUnit } from '../../../types/organizationUnit.type'
 import type { NodeProps } from '@vue-flow/core'
 
 const props = defineProps<{

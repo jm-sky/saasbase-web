@@ -2,8 +2,8 @@
 import { Pencil } from 'lucide-vue-next'
 import { useI18n } from 'vue-i18n'
 import ButtonLink from '@/components/ButtonLink.vue'
-import type { IContractor, IContractorListItem } from '../../types/contractor.type'
 import { useContractorStore } from '../../store/contractor.store'
+import type { IContractor, IContractorListItem } from '../../types/contractor.type'
 
 const { t } = useI18n()
 const contractorStore = useContractorStore()

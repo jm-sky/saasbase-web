@@ -2,10 +2,10 @@
 import { buildSpatieQuery } from '@/domains/shared/helpers/filtering'
 import api from '@/lib/api'
 import { apiRoutesMap } from '@/lib/api/apiRoutes'
-import type { SortingState } from '@tanstack/vue-table'
 import type { IExpense, IExpenseCreate } from '@/domains/expense/types/expense.type'
 import type { TUUID } from '@/domains/shared/types/common'
 import type { FilterDefinition, IResource, IResourceCollection } from '@/domains/shared/types/resource.type'
+import type { SortingState } from '@tanstack/vue-table'
 
 export interface IExpenseFilters {
   search?: string

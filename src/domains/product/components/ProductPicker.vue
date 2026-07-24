@@ -14,8 +14,8 @@ import { CommandGroup } from '@/components/ui/command'
 import { config } from '@/config'
 import TagList from '@/domains/tags/components/TagList.vue'
 import { useCache } from '@/lib/cache'
-import type { IProductLookup } from '../types/product.type'
 import { type IProductFilters, productService } from '../services/ProductService'
+import type { IProductLookup } from '../types/product.type'
 import type { FilterDefinition } from '@/domains/shared/types/resource.type'
 
 const { t } = useI18n()

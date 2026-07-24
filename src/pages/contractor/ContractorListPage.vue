@@ -19,9 +19,9 @@ import TagList from '@/domains/tags/components/TagList.vue'
 import AuthenticatedLayout from '@/layouts/AuthenticatedLayout.vue'
 import { toDateTimeString } from '@/lib/toDateTimeString'
 import ContractorListDropdown from '../../domains/contractor/components/ContractorListDropdown.vue'
-import type { ColumnDef } from '@tanstack/vue-table'
 import type { IContractorFilters } from '@/domains/contractor/services/ContractorService'
 import type { IContractor } from '@/domains/contractor/types/contractor.type'
+import type { ColumnDef } from '@tanstack/vue-table'
 
 const { t } = useI18n()
 const contractorStore = useContractorStore()
