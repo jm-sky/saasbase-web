@@ -15,10 +15,12 @@ import Textarea from '@/components/ui/textarea/Textarea.vue'
 import TenantSectionTitle from '@/domains/tenant/components/TenantSectionTitle.vue'
 import { useTenantBranding } from '@/domains/tenant/composables/useTenantBranding'
 import { tenantBrandingService } from '@/domains/tenant/services/TenantBrandingService'
+import { useCan } from '@/domains/rights/composables/useCan'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
 import type { ITenant, ITenantBrandingUpdate } from '@/domains/tenant/types/tenant.type'
 
 const { t } = useI18n()
+const { isOwnerOrAdmin } = useCan()
 const { tenantId, tenantBranding, loadTenantBranding } = useTenantBranding()
 
 const loading = ref(false)
@@ -83,7 +85,11 @@ onMounted(async () => {
   <div class="flex flex-col gap-2 border rounded-md p-4 shadow-lg/5">
     <TenantSectionTitle :title="t('tenant.branding.title')" />
 
-    <form class="grid grid-cols-1 gap-4 mt-4" :class="{ 'opacity-50': isSubmitting }" @submit.prevent="submit">
+    <form
+      class="grid grid-cols-1 gap-4 mt-4"
+      :class="{ 'opacity-50': isSubmitting, 'pointer-events-none opacity-60': !isOwnerOrAdmin }"
+      @submit.prevent="submit"
+    >
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <FormField v-slot="{ componentField }" name="shortName">
           <FormItem class="flex flex-row items-center gap-1">
@@ -224,7 +230,7 @@ onMounted(async () => {
         </FormField>
       </div>
 
-      <div class="col-span-full">
+      <div v-if="isOwnerOrAdmin" class="col-span-full">
         <Button type="submit" :loading="isSubmitting" class="w-full">
           {{ t('settings.save') }}
         </Button>

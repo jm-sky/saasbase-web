@@ -5,12 +5,14 @@ import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { Button } from '@/components/ui/button'
 import { useToast } from '@/components/ui/toast/use-toast'
+import { useCan } from '@/domains/rights/composables/useCan'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
 import { invoiceService } from '../services/invoiceService'
 import { useInvoiceStore } from '../stores/invoice.store'
 
 const { toast } = useToast()
 const { t } = useI18n()
+const { isOwnerOrAdmin } = useCan()
 
 const invoiceStore = useInvoiceStore()
 const { invoices } = storeToRefs(invoiceStore)
@@ -43,6 +45,7 @@ const deleteInvoice = async () => {
 
 <template>
   <Button
+    v-if="isOwnerOrAdmin"
     v-tooltip="t('common.delete', 'Delete')"
     variant="destructive"
     size="sm"

@@ -6,6 +6,7 @@ import { useI18n } from 'vue-i18n'
 import { Button } from '@/components/ui/button'
 import { DropdownMenuItem } from '@/components/ui/dropdown-menu'
 import { useToast } from '@/components/ui/toast'
+import { useCan } from '@/domains/rights/composables/useCan'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
 import { invoiceBatchService } from '../../services/invoiceBatchService'
 import { invoiceService } from '../../services/invoiceService'
@@ -14,6 +15,7 @@ import type { IInvoice } from '../../types/invoice.type'
 
 const { t } = useI18n()
 const { toast } = useToast()
+const { isOwnerOrAdmin } = useCan()
 
 const invoiceStore = useInvoiceStore()
 const { invoices: invoicesStore } = storeToRefs(invoiceStore)
@@ -61,7 +63,7 @@ const deleteInvoice = async () => {
 
 <template>
   <Button
-    v-if="variant === 'button'"
+    v-if="isOwnerOrAdmin && variant === 'button'"
     v-tooltip="t('common.delete', 'Delete')"
     variant="outline-destructive"
     size="sm"
@@ -74,7 +76,7 @@ const deleteInvoice = async () => {
     </template>
   </Button>
   <DropdownMenuItem
-    v-else
+    v-else-if="isOwnerOrAdmin"
     hoverable
     :disabled="loading || (!invoice && !invoices?.length)"
     @click="deleteInvoice"

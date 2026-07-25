@@ -10,9 +10,11 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { fullAddress } from '@/lib/fullAddress'
+import { useCan } from '@/domains/rights/composables/useCan'
 import type { ITenantAddress } from '@/domains/tenant/types/tenant.type'
 
 const { t } = useI18n()
+const { isOwnerOrAdmin } = useCan()
 
 defineProps<{
   address: ITenantAddress
@@ -43,7 +45,7 @@ const emit = defineEmits<{
       {{ address.description }}
     </div>
 
-    <div class="flex flex-row gap-1 justify-end order-1 md:order-1">
+    <div v-if="isOwnerOrAdmin" class="flex flex-row gap-1 justify-end order-1 md:order-1">
       <Button
         v-tooltip="t('address.setDefault')"
         variant="ghost"

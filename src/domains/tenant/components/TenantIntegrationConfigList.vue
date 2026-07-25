@@ -26,6 +26,7 @@ import {
 import FormMessage from '@/components/ui/form/FormMessage.vue'
 import { Input } from '@/components/ui/input'
 import { useToast } from '@/components/ui/toast'
+import { useCan } from '@/domains/rights/composables/useCan'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
 import { availableIntegrations, type IStoreTenantIntegrationRequest, type ITenantIntegration, tenantIntegrationsService, type TTenantIntegrationType } from '../services/TenantIntegrationsService'
 import { useTenantStore } from '../store/tenant.store'
@@ -38,6 +39,7 @@ interface ITenantIntegrationOption extends ITenantIntegration {
 
 const { toast } = useToast()
 const { t } = useI18n()
+const { isOwnerOrAdmin } = useCan()
 const tenantStore = useTenantStore()
 const route = useRoute()
 
@@ -182,20 +184,24 @@ onMounted(() => {
             {{ integration.description }}
           </p>
 
-          <form class="h-full mt-2 flex flex-col gap-y-2" @submit.prevent="onSubmit(integration)">
+          <form
+            class="h-full mt-2 flex flex-col gap-y-2"
+            :class="{ 'pointer-events-none opacity-60': !isOwnerOrAdmin }"
+            @submit.prevent="onSubmit(integration)"
+          >
             <div v-for="field in integration.fields" :key="field.name">
               <FormField :name="`config.${integration.id}.${field.name}`">
                 <FormItem>
                   <FormLabel>{{ t(`tenant.integrations.fields.${field.name}`) }}</FormLabel>
                   <FormControl>
-                    <Input v-model="formValues[integration.type][field.name]" :type="field.type" />
+                    <Input v-model="formValues[integration.type][field.name]" :type="field.type" :disabled="!isOwnerOrAdmin" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               </FormField>
             </div>
 
-            <div class="flex flex-row items-center justify-end gap-x-2 mt-auto pt-2">
+            <div v-if="isOwnerOrAdmin" class="flex flex-row items-center justify-end gap-x-2 mt-auto pt-2">
               <Button
                 v-if="integration.id"
                 type="button"

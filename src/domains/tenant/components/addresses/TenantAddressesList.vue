@@ -5,6 +5,7 @@ import { useRoute } from 'vue-router'
 import DataListSection from '@/components/DataLists/DataListSection.vue'
 import NoItems from '@/components/DataLists/NoItems.vue'
 import { tenantAddressesService } from '@/domains/tenant/services/TenantAddressesService'
+import { useCan } from '@/domains/rights/composables/useCan'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
 import TenantAddAddressModal from './TenantAddAddressModal.vue'
 import TenantAddressesListItem from './TenantAddressesListItem.vue'
@@ -13,6 +14,7 @@ import type { ITenantAddress } from '@/domains/tenant/types/tenant.type'
 
 const route = useRoute()
 const { t } = useI18n()
+const { isOwnerOrAdmin } = useCan()
 
 const tenantId = route.params.id as string
 const addresses = ref<ITenantAddress[]>([])
@@ -64,6 +66,8 @@ const handleDelete = async (address: ITenantAddress) => {
   <DataListSection
     :title="t('address.title')"
     :loading="loading"
+    :with-add-button="isOwnerOrAdmin"
+    with-refresh-button
     @refresh="refresh"
     @add="addModalOpen = true"
   >

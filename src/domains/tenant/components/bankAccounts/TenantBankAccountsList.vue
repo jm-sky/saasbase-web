@@ -5,6 +5,7 @@ import { useRoute } from 'vue-router'
 import DataListSection from '@/components/DataLists/DataListSection.vue'
 import NoItems from '@/components/DataLists/NoItems.vue'
 import { tenantBankAccountsService } from '@/domains/tenant/services/TenantBankAccountsService'
+import { useCan } from '@/domains/rights/composables/useCan'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
 import TenantAddBankAccountModal from './TenantAddBankAccountModal.vue'
 import TenantBankAccountsListItem from './TenantBankAccountsListItem.vue'
@@ -13,6 +14,7 @@ import type { ITenantBankAccount } from '@/domains/tenant/types/tenant.type'
 
 const route = useRoute()
 const { t } = useI18n()
+const { isOwnerOrAdmin } = useCan()
 
 const tenantId = route.params.id as string
 const bankAccounts = ref<ITenantBankAccount[]>([])
@@ -55,6 +57,8 @@ const handleSetDefault = async (bankAccount: ITenantBankAccount) => {
   <DataListSection
     :title="t('bankAccounts.title')"
     :loading="loading"
+    :with-add-button="isOwnerOrAdmin"
+    with-refresh-button
     @refresh="refresh"
     @add="addModalOpen = true"
   >

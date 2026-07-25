@@ -4,6 +4,7 @@ import { useI18n } from 'vue-i18n'
 import TenantInvitationForm from '@/domains/tenant/components/invitations/TenantInvitationForm.vue'
 import TenantInvitationsList from '@/domains/tenant/components/invitations/TenantInvitationsList.vue'
 import { tenantInvitationService } from '@/domains/tenant/services/TenantInvitationService'
+import { useCan } from '@/domains/rights/composables/useCan'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
 import type { ITenantInvitation } from '@/domains/tenant/types/invitation.type'
 import type { ITenant } from '@/domains/tenant/types/tenant.type'
@@ -13,6 +14,7 @@ const props = defineProps<{
 }>()
 
 const { t } = useI18n()
+const { isOwnerOrAdmin } = useCan()
 
 const invitations = ref<ITenantInvitation[]>([])
 const loading = ref(false)
@@ -39,7 +41,11 @@ onMounted(() => {
 
 <template>
   <div class="space-y-6">
-    <TenantInvitationForm :tenant @sent="invitations.push($event)" />
+    <TenantInvitationForm
+      v-if="isOwnerOrAdmin"
+      :tenant
+      @sent="invitations.push($event)"
+    />
 
     <div class="rounded-lg border">
       <div class="p-4">

@@ -11,11 +11,13 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { tenantBankAccountsService } from '@/domains/tenant/services/TenantBankAccountsService'
+import { useCan } from '@/domains/rights/composables/useCan'
 import { formatIBAN } from '@/lib/formatIBAN'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
 import type { ITenantBankAccount } from '@/domains/tenant/types/tenant.type'
 
 const { t } = useI18n()
+const { isOwnerOrAdmin } = useCan()
 
 const { tenantId, bankAccount } = defineProps<{
   tenantId: string
@@ -63,7 +65,7 @@ const handleDelete = async () => {
       <span v-if="bankAccount.currency" class="bg-muted-foreground/10 px-2 rounded">{{ bankAccount.currency }}</span>
     </div>
 
-    <div class="flex flex-row justify-end gap-1 order-4 md:order-3">
+    <div v-if="isOwnerOrAdmin" class="flex flex-row justify-end gap-1 order-4 md:order-3">
       <Button
         v-tooltip="t('bankAccounts.setDefault')"
         variant="ghost"
