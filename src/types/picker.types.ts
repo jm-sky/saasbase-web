@@ -1,5 +1,5 @@
 import type { FilterDefinition, IResourceCollection } from '@/domains/shared/types/resource.type'
-import type { ComputedRef, Ref } from 'vue'
+import type { ComputedRef, Ref, ShallowRef } from 'vue'
 
 // Base interface that all picker items must implement
 export interface BasePickerItem {
@@ -91,5 +91,5 @@ export interface UsePickerLogicReturn<TItem extends BasePickerItem> {
   clearCache: () => void
   resetSearch: () => void
   onSearchDebounced: (value: string) => void
-  listRef: Ref<HTMLElement | undefined>
+  listRef: Readonly<ShallowRef<HTMLElement | null>>
 }

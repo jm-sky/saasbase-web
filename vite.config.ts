@@ -11,7 +11,7 @@ export default defineConfig(() => ({
   plugins: [
     vue(),
     tailwindcss(),
-    monacoEditorPlugin.default({
+    monacoEditorPlugin({
       languageWorkers: ['editorWorkerService', 'typescript', 'json', 'html', 'css']
     }),
     pwaPlugin,

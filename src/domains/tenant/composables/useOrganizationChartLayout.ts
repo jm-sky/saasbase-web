@@ -1,5 +1,5 @@
 import { type Edge, MarkerType, type Node, useVueFlow } from '@vue-flow/core'
-import { ref, type Ref } from 'vue'
+import { type Ref, shallowRef } from 'vue'
 import type { IOrganizationUnit } from '../types/organizationUnit.type'
 
 export interface OrganizationUnitNodeData extends IOrganizationUnit {
@@ -22,10 +22,11 @@ export function useOrganizationChartLayout(organizationUnits: Ref<IOrganizationU
   })
 
   const unitMap = new Map<string, IOrganizationUnit>()
-  const rootNodes = ref<Node<OrganizationUnitNodeData>[]>([])
+  // shallowRef: Node<OrganizationUnitNodeData> is recursive; ref() UnwrapRef hits TS2589
+  const rootNodes = shallowRef<Node<OrganizationUnitNodeData>[]>([])
   const nodeMap = new Map<string, Node<OrganizationUnitNodeData>>()
-  const nodes = ref<Node<OrganizationUnitNodeData>[]>([])
-  const edges = ref<Edge[]>([])
+  const nodes = shallowRef<Node<OrganizationUnitNodeData>[]>([])
+  const edges = shallowRef<Edge[]>([])
 
   const init = () => {
     unitMap.clear()
@@ -108,6 +109,9 @@ export function useOrganizationChartLayout(organizationUnits: Ref<IOrganizationU
     prepareNodes()
     prepareEdges()
     calculateHierarchicalLayout(rootNodes.value)
+    // shallowRef: array pushes are not tracked — reassign to notify Vue Flow
+    nodes.value = nodes.value.slice()
+    edges.value = edges.value.slice()
   }
 
   return {
