@@ -26,7 +26,15 @@ export const project = {
   },
   add: {
     title: 'Dodaj projekt',
-    description: 'Dodaj nowy projekt do systemu.'
+    description: 'Dodaj nowy projekt do systemu.',
+    success: 'Projekt dodany pomyślnie',
+    error: 'Nie udało się dodać projektu',
+  },
+  status: {
+    select: 'Wybierz status',
+    search: 'Szukaj statusu',
+    notFound: 'Nie znaleziono statusu',
+    loadError: 'Nie udało się załadować statusów projektu',
   },
   edit: {
     title: 'Edytuj projekt',
