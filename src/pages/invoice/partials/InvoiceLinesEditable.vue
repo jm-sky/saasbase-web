@@ -18,6 +18,7 @@ const { setFieldValue } = useFormContext<IInvoiceCreate>()
 const props = defineProps<{
   values: IInvoiceCreate
   addLine: () => void
+  disabled?: boolean
 }>()
 
 // eslint-disable-next-line @typescript-eslint/unbound-method
@@ -131,12 +132,14 @@ const removeLine = (index: number) => {
               <ProductPicker
                 :id="item.value.productId"
                 class="w-full"
+                :disabled="disabled"
                 @update:model-value="onProductUpdate(index, $event)"
               />
               <Input
                 :model-value="item.value.description"
                 class="w-full"
                 placeholder="Description"
+                :disabled="disabled"
                 @update:model-value="(value) => onDescriptionChange(index, String(value))"
               />
             </div>
@@ -147,6 +150,7 @@ const removeLine = (index: number) => {
               :model-value="item.value.quantity"
               class="w-full text-right"
               placeholder="Quantity"
+              :disabled="disabled"
               @update:model-value="onQuantityChange(index, Number($event))"
             />
           </td>
@@ -157,6 +161,7 @@ const removeLine = (index: number) => {
               class="w-full text-right"
               placeholder="Price"
               step="0.01"
+              :disabled="disabled"
               @update:model-value="onUnitPriceChange(index, Number($event))"
             />
           </td>
@@ -164,6 +169,7 @@ const removeLine = (index: number) => {
             <VatRatePicker
               pick-first
               :model-value="item.value.vatRate"
+              :disabled="disabled"
               @update:model-value="onVatRateUpdate(index, $event)"
             />
           </td>
@@ -183,6 +189,7 @@ const removeLine = (index: number) => {
               variant="ghost"
               size="sm"
               class="h-8 w-8 p-0 text-red-500 hover:text-red-700"
+              :disabled="disabled"
               @click="removeLine(index)"
             >
               ×
@@ -192,7 +199,7 @@ const removeLine = (index: number) => {
       </tbody>
     </table>
 
-    <div class="mt-2 mr-2 flex justify-end">
+    <div v-if="!disabled" class="mt-2 mr-2 flex justify-end">
       <Button type="button" variant="outline" @click="addLine">
         {{ t('financial.lines.actions.addItem') }}
       </Button>

@@ -18,6 +18,7 @@ import { config } from '@/config'
 import NumberingTemplatePicker from '@/domains/invoice/components/pickers/NumberingTemplatePicker.vue'
 import { invoiceService } from '@/domains/invoice/services/invoiceService'
 import { useInvoiceStore } from '@/domains/invoice/stores/invoice.store'
+import { isInvoiceFinanciallyLocked } from '@/domains/invoice/helpers/isInvoiceFinanciallyLocked'
 import AuthenticatedLayout from '@/layouts/AuthenticatedLayout.vue'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
 import { isValidationError } from '@/lib/validation'
@@ -111,6 +112,8 @@ const { values, isSubmitting, handleSubmit, errors, setValues, setFieldValue, se
     numberingTemplate: invoice.value?.numberingTemplate ?? undefined,
   },
 })
+
+const financialLocked = computed(() => isInvoiceFinanciallyLocked(values.status))
 
 const createLine = (): IInvoiceLine => {
   return {
@@ -228,6 +231,12 @@ onMounted(async () => {
 
     <div class="flex flex-row gap-8 lg:mx-6">
       <form class="w-full lg:w-7xl mx-auto p-2 sm:p-4 md:p-8 border shadow-xl/30" @submit.prevent="onSubmit">
+        <Alert v-if="financialLocked" class="mb-4">
+          <AlertDescription>
+            {{ t('invoice.edit.financialLocked', 'This invoice is completed or cancelled. Financial details can no longer be edited.') }}
+          </AlertDescription>
+        </Alert>
+
         <div class="grid grid-cols-1 lg:grid-cols-[2fr_1fr]">
           <div class="border-b border-r p-2 sm:p-4 md:p-6">
             <div class="text-5xl font-bold py-4 mb-2">
@@ -235,13 +244,14 @@ onMounted(async () => {
             </div>
             <div class="flex flex-col sm:flex-row items-center justify-between gap-4 border-b-6 border-primary px-2 sm:px-4 py-2 font-semibold text-muted-foreground">
               <div>
-                <FormFieldLabeled name="numberingTemplateId" :disabled="isSubmitting">
+                <FormFieldLabeled name="numberingTemplateId" :disabled="isSubmitting || financialLocked">
                   <div class="flex flex-row items-center gap-4">
                     {{ values.number }}
                     <NumberingTemplatePicker
                       :id="values.numberingTemplateId"
                       :model-value="values.numberingTemplate"
                       :invoice-type="values.type"
+                      :disabled="financialLocked"
                       pick-first-template
                       class="w-56"
                       @update:model-value="setFieldValue('numberingTemplate', $event)"
@@ -250,7 +260,12 @@ onMounted(async () => {
                   </div>
                 </FormFieldLabeled>
               </div>
-              <DatePicker :model-value="values.issueDate" @update:model-value="(value) => setFieldValue('issueDate', value ?? values.issueDate)" />
+              <div :class="{ 'pointer-events-none opacity-60': financialLocked }">
+                <DatePicker
+                  :model-value="values.issueDate"
+                  @update:model-value="(value) => setFieldValue('issueDate', value ?? values.issueDate)"
+                />
+              </div>
             </div>
 
             <InvoiceInfoTable :values="values" />
@@ -268,6 +283,7 @@ onMounted(async () => {
         <InvoiceLinesEditable
           :values="values"
           :add-line="addLine"
+          :disabled="financialLocked"
         />
 
         <Separator class="my-8" />
@@ -308,6 +324,7 @@ onMounted(async () => {
         :values="values"
         :reset-form="resetForm"
         :is-submitting="isSubmitting"
+        :financial-locked="financialLocked"
         @update-payment-method="setFieldValue('payment.method', $event ?? values.payment.method)"
         @update-payment-method-object="onPaymentMethodUpdate"
         @update-payment-status="setFieldValue('payment.status', $event ?? values.payment.status)"

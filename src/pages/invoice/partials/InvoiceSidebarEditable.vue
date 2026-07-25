@@ -26,6 +26,7 @@ defineProps<{
   values: IInvoiceCreate
   resetForm: () => void
   isSubmitting: boolean
+  financialLocked?: boolean
 }>()
 
 const emit = defineEmits<{
@@ -148,6 +149,7 @@ const onPaymentMethodChange = (paymentMethod: IPaymentMethod | undefined) => {
               :id="values.currency"
               :model-value="{ code: values.currency, name: values.currency, symbol: values.currency }"
               class="w-40"
+              :disabled="financialLocked"
               @update:id="emit('updateCurrency', $event ?? values.currency)"
             />
           </FormControl>
@@ -161,11 +163,13 @@ const onPaymentMethodChange = (paymentMethod: IPaymentMethod | undefined) => {
             {{ t('financial.fields.exchange.date', 'Exchange Date') }}
           </FormLabel>
           <FormControl>
-            <DatePickerInput
-              :value="values.body.exchange.date"
-              class="w-42"
-              @update:model-value="emit('updateExchangeDate', ($event ?? values.body.exchange.date) as string)"
-            />
+            <div :class="{ 'pointer-events-none opacity-60': financialLocked }">
+              <DatePickerInput
+                :value="values.body.exchange.date"
+                class="w-42"
+                @update:model-value="emit('updateExchangeDate', ($event ?? values.body.exchange.date) as string)"
+              />
+            </div>
           </FormControl>
           <FormMessage />
         </FormItem>
@@ -182,6 +186,7 @@ const onPaymentMethodChange = (paymentMethod: IPaymentMethod | undefined) => {
               class="w-40"
               :date="values.body.exchange.date"
               :currency="values.currency"
+              :disabled="financialLocked"
             />
           </FormControl>
           <FormMessage />

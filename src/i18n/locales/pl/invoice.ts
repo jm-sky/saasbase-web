@@ -14,6 +14,7 @@ export default {
     success: 'Faktura zaktualizowana pomyślnie',
     error: 'Nie udało się zaktualizować faktury',
     submit: 'Zapisz fakturę',
+    financialLocked: 'Ta faktura jest zakończona lub anulowana. Szczegółów finansowych nie można już edytować.',
   },
   show: {
     title: 'Faktura',

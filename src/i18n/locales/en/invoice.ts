@@ -14,6 +14,7 @@ export default {
     success: 'Invoice updated successfully',
     error: 'Failed to update invoice',
     submit: 'Save Invoice',
+    financialLocked: 'This invoice is completed or cancelled. Financial details can no longer be edited.',
   },
   show: {
     title: 'Invoice',
