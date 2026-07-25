@@ -7,7 +7,10 @@
     "overrides": {
       "postcss@<8.5.12": "8.5.16",
       "dompurify@<3.4.12": "3.4.12"
-    }
+    },
+    "onlyBuiltDependencies": [
+      "esbuild"
+    ]
   },
   "scripts": {
     "dev": "vite",
@@ -91,6 +94,7 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "cross-env": "^10.1.0",
+    "esbuild": "^0.28.1",
     "eslint": "^10.7.0",
     "eslint-plugin-import": "^2.32.0",
     "eslint-plugin-perfectionist": "^5.10.0",
