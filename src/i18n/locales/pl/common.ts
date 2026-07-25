@@ -28,6 +28,7 @@ export const common = {
   refresh: 'Odśwież',
   or: 'lub',
   error: 'Błąd',
+  unknownError: 'Wystąpił nieoczekiwany błąd. Spróbuj ponownie.',
   noItems: 'Brak elementów',
   createdAt: 'Utworzono',
   tags: 'Tagi',

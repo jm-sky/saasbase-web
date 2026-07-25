@@ -1,6 +1,5 @@
 import axios, { AxiosError } from 'axios'
 import { config } from '@/config'
-import { DEFAULT_LOCALE } from '@/i18n'
 import { interceptUnauthorized } from '@/lib/api/interceptUnauthorized'
 import { authorizeOutgoingRequests } from './authorizeOutgoingRequests'
 import { interceptTenantRequired } from './interceptTenantRequired'
@@ -13,8 +12,6 @@ const api: AxiosInstance = axios.create({
   headers: {
     Accept: 'application/json',
     'Content-Type': 'application/json',
-    'Access-Control-Allow-Origin': '*',
-    'Accept-Language': DEFAULT_LOCALE,
   },
 })
 
