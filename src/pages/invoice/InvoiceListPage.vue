@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { RefreshCw } from 'lucide-vue-next'
-import { storeToRefs } from 'pinia'
-import { onMounted, ref, watch } from 'vue'
+import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import ButtonLink from '@/components/ButtonLink.vue'
 import DataListsWrapper from '@/components/DataLists/DataListsWrapper.vue'
@@ -14,29 +13,16 @@ import EditInvoiceButton from '@/domains/invoice/components/EditInvoiceButton.vu
 import InvoiceActionsMenu from '@/domains/invoice/components/InvoiceActionsMenu.vue'
 import InvoiceBatchActions from '@/domains/invoice/components/InvoiceBatchActions.vue'
 import InvoiceListDropdown from '@/domains/invoice/components/InvoiceListDropdown.vue'
-import { type IInvoiceFilters, invoiceService } from '@/domains/invoice/services/invoiceService'
-import { useInvoiceStore } from '@/domains/invoice/stores/invoice.store'
+import { useInvoiceList } from '@/domains/invoice/composables/useInvoiceQueries'
+import { type IInvoiceFilters } from '@/domains/invoice/services/invoiceService'
 import AuthenticatedLayout from '@/layouts/AuthenticatedLayout.vue'
 import { money } from '@/lib/money'
 import { toDateTimeString } from '@/lib/toDateTimeString'
 import type { IInvoice } from '@/domains/invoice/types/invoice.type'
-import type { IResourceMeta } from '@/domains/shared/types/resource.type'
 import type { ColumnDef, RowSelectionState } from '@tanstack/vue-table'
 
 const { t, locale } = useI18n()
 
-const invoiceStore = useInvoiceStore()
-const { invoices } = storeToRefs(invoiceStore)
-
-const meta = ref<IResourceMeta>({
-  currentPage: 1,
-  lastPage: 1,
-  perPage: 10,
-  total: 0,
-})
-
-const loading = ref(false)
-const error = ref<string | null>(null)
 const rowSelection = ref<RowSelectionState>({})
 const selectedRows = ref<IInvoice[]>([])
 const filters = ref<IInvoiceFilters>({
@@ -92,34 +78,17 @@ const columns: ColumnDef<IInvoice>[] = [
   },
 ]
 
-const refresh = async () => {
-  try {
-    loading.value = true
-    error.value = null
-    // For now, ignore filters except pagination
-    const response = await invoiceService.index(filters.value)
-    invoices.value = response.data
-    meta.value = response.meta
-  } catch (err) {
-    error.value = 'Failed to load invoices'
-    console.error(err)
-  } finally {
-    loading.value = false
-  }
-}
+const { data: response, isPending: loading, isError, refetch } = useInvoiceList(filters)
 
-// Action handlers
+const invoices = computed(() => response.value?.data ?? [])
+const total = computed(() => response.value?.meta.total ?? 0)
+const error = computed(() => isError.value ? t('invoice.list.error', 'Failed to load invoices') : null)
+
 const dataTableRef = ref<{ clearSelection: () => void } | null>(null)
 
 const clearSelection = () => {
   dataTableRef.value?.clearSelection()
 }
-
-onMounted(() => {
-  void refresh()
-})
-
-watch(filters, () => refresh(), { deep: true })
 </script>
 
 <template>
@@ -132,10 +101,10 @@ watch(filters, () => refresh(), { deep: true })
         <InvoiceActionsMenu
           :selected-rows
           @clear-selection="clearSelection"
-          @refresh="refresh"
+          @refresh="refetch()"
         />
 
-        <Button variant="ghost" @click="refresh">
+        <Button variant="ghost" @click="refetch()">
           <RefreshCw class="size-4" />
         </Button>
 
@@ -148,7 +117,7 @@ watch(filters, () => refresh(), { deep: true })
         :selected-invoices="selectedRows"
         class="mb-4"
         @clear-selection="clearSelection"
-        @refresh="refresh"
+        @refresh="refetch()"
       />
 
       <DataTable
@@ -161,7 +130,7 @@ watch(filters, () => refresh(), { deep: true })
         v-model:selected-rows="selectedRows"
         :columns="columns"
         :data="invoices"
-        :total="meta.total"
+        :total="total"
         :page-size-options="[10, 20, 30, 40, 50]"
         :show-column-filters="true"
         :enable-row-selection="true"
@@ -209,7 +178,7 @@ watch(filters, () => refresh(), { deep: true })
         <template #actions="{ data }">
           <div class="flex gap-2 justify-end w-full whitespace-nowrap min-w-0">
             <EditInvoiceButton :invoice="data" />
-            <DeleteInvoiceButton :id="data.id" @deleted="refresh" />
+            <DeleteInvoiceButton :id="data.id" @deleted="refetch()" />
           </div>
         </template>
         <template #actions-header>

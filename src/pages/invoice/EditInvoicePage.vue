@@ -2,7 +2,7 @@
 import { storeToRefs } from 'pinia'
 import { v4 } from 'uuid'
 import { useForm } from 'vee-validate'
-import { computed, onMounted, ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRoute, useRouter } from 'vue-router'
 import ButtonLink from '@/components/ButtonLink.vue'
@@ -13,10 +13,11 @@ import Alert from '@/components/ui/alert/Alert.vue'
 import AlertDescription from '@/components/ui/alert/AlertDescription.vue'
 import Button from '@/components/ui/button/Button.vue'
 import Separator from '@/components/ui/separator/Separator.vue'
-import { useToast } from '@/components/ui/toast/use-toast'
+import { toast } from '@/components/ui/toast'
 import { config } from '@/config'
 import NumberingTemplatePicker from '@/domains/invoice/components/pickers/NumberingTemplatePicker.vue'
-import { invoiceService } from '@/domains/invoice/services/invoiceService'
+import { useUpdateInvoice } from '@/domains/invoice/composables/useInvoiceMutations'
+import { useInvoice } from '@/domains/invoice/composables/useInvoiceQueries'
 import { useInvoiceStore } from '@/domains/invoice/stores/invoice.store'
 import { isInvoiceFinanciallyLocked } from '@/domains/invoice/helpers/isInvoiceFinanciallyLocked'
 import AuthenticatedLayout from '@/layouts/AuthenticatedLayout.vue'
@@ -37,7 +38,6 @@ import type { IPaymentMethod } from '@/domains/shared/types/paymentMethod.type'
 const { t } = useI18n()
 const route = useRoute()
 const router = useRouter()
-const { toast } = useToast()
 
 const invoiceStore = useInvoiceStore()
 const { invoice } = storeToRefs(invoiceStore)
@@ -45,8 +45,9 @@ const { invoice } = storeToRefs(invoiceStore)
 const buyer = ref<IContractor | undefined>(undefined)
 
 const invoiceId = route.params.id as string
-const loading = ref(false)
-const errorMessage = ref<string | null>(null)
+
+const { data: invoiceData, isPending: loading } = useInvoice(invoiceId)
+const { mutateAsync: updateInvoice } = useUpdateInvoice()
 
 const { values, isSubmitting, handleSubmit, errors, setValues, setFieldValue, setErrors, resetForm } = useForm<Omit<IInvoice, 'id' | 'createdAt' | 'updatedAt'>>({
   initialValues: {
@@ -160,24 +161,16 @@ const formErrors = computed(() => {
   return errorMessages
 })
 
-const refresh = async () => {
-  try {
-    loading.value = true
-    errorMessage.value = null
-    const response = await invoiceService.get(invoiceId)
-    invoice.value = response
-    setValues(response)
-  } catch (err) {
-    handleErrorWithToast(t('invoice.show.error', 'Error'), err)
-    errorMessage.value = t('invoice.show.error', 'Failed to load invoice')
-  } finally {
-    loading.value = false
-  }
-}
+watch(invoiceData, (value) => {
+  if (!value) return
+  invoiceStore.setInvoice(value)
+  setValues(value)
+  setRouteTitle(route, value.number)
+}, { immediate: true })
 
 const onSubmit = handleSubmit(async (values) => {
   try {
-    await invoiceService.update(invoiceId, values)
+    await updateInvoice({ id: invoiceId, data: values })
     toast.success(t('invoice.edit.success', 'Invoice updated successfully'))
     resetForm()
     await router.push(`/invoices/${invoiceId}/show/overview`)
@@ -207,11 +200,6 @@ const onPaymentMethodUpdate = (paymentMethod: IPaymentMethod | undefined) => {
     setFieldValue('payment.dueDate', dueDate.toISOString().split('T')[0])
   }
 }
-
-onMounted(async () => {
-  await refresh()
-  setRouteTitle(route, invoice.value?.number)
-})
 </script>
 
 <template>

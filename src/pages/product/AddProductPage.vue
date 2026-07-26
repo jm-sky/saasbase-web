@@ -8,10 +8,10 @@ import Button from '@/components/ui/button/Button.vue'
 import Input from '@/components/ui/input/Input.vue'
 import TagsInputField from '@/components/ui/tags-input/TagsInputField.vue'
 import Textarea from '@/components/ui/textarea/Textarea.vue'
-import { useToast } from '@/components/ui/toast/use-toast'
+import { toast } from '@/components/ui/toast'
 import ProductSidebar from '@/domains/product/components/ProductSidebar.vue'
 import ProductTypePicker from '@/domains/product/components/ProductTypePicker.vue'
-import { productService } from '@/domains/product/services/ProductService'
+import { useCreateProduct } from '@/domains/product/composables/useProductMutations'
 import MeasurementUnitPicker from '@/domains/shared/components/MeasurementUnitPicker.vue'
 import VatRatePicker from '@/domains/shared/components/VatRatePicker.vue'
 import AuthenticatedLayout from '@/layouts/AuthenticatedLayout.vue'
@@ -21,7 +21,8 @@ import type { IProductCreate } from '@/domains/product/types/product.type'
 
 const { t } = useI18n()
 const router = useRouter()
-const { toast } = useToast()
+
+const { mutateAsync: createProduct } = useCreateProduct()
 
 const { isSubmitting, handleSubmit, values, setFieldValue, setErrors, resetForm } = useForm<IProductCreate>({
   initialValues: {
@@ -39,7 +40,7 @@ const { isSubmitting, handleSubmit, values, setFieldValue, setErrors, resetForm 
 
 const onSubmit = handleSubmit(async (values) => {
   try {
-    const product = await productService.create(values)
+    const product = await createProduct(values)
     toast.success(t('product.add.success', 'Product added successfully'))
     resetForm()
     await router.push(`/products/${product.id}/show/overview`)
@@ -179,4 +180,3 @@ const onSubmit = handleSubmit(async (values) => {
     </EntityDetailsLayout>
   </AuthenticatedLayout>
 </template>
-

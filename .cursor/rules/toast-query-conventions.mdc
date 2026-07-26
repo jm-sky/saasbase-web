@@ -1,0 +1,24 @@
+---
+description: Toast, error handling, and TanStack Query conventions for server state
+globs: src/pages/**/*.vue,src/domains/**/*.{ts,vue}
+alwaysApply: false
+---
+
+# Toast, errors, and TanStack Query
+
+## Toast API
+- Use `toast.success` / `toast.error` / `toast.info` / `toast.warning` from `@/components/ui/toast`.
+- Do not use raw `toast({ title, variant })` in new or migrated code.
+
+## Errors and success
+- Errors: `handleErrorWithToast(t('domain.action.error'), error)`.
+- Success after mutations: `toast.success(t('domain.action.success'))` in the page
+  `try/catch` around `mutateAsync` (not inside mutation composables).
+
+## TanStack Query
+- Reference domain: `src/domains/contractor/composables/`.
+- Per domain: `queryKeys.ts`, `use<Domain>Queries.ts`, `use<Domain>Mutations.ts`.
+- Mutations invalidate query keys only; pages own toasts and navigation.
+- List/detail loading comes from `isPending` / `isError` / `refetch` — no local
+  `loading = ref(false)` for API reads.
+- Pinia holds client/UI selection state only, not list/detail server caches.

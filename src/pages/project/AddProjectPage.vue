@@ -8,10 +8,10 @@ import EntityDetailsLayout from '@/components/layouts/EntityDetailsLayout.vue'
 import Button from '@/components/ui/button/Button.vue'
 import Input from '@/components/ui/input/Input.vue'
 import Textarea from '@/components/ui/textarea/Textarea.vue'
-import { useToast } from '@/components/ui/toast/use-toast'
+import { toast } from '@/components/ui/toast'
 import ProjectSidebar from '@/domains/project/components/ProjectSidebar.vue'
 import ProjectStatusPicker from '@/domains/project/components/ProjectStatusPicker.vue'
-import { projectService } from '@/domains/project/services/ProjectService'
+import { useCreateProject } from '@/domains/project/composables/useProjectMutations'
 import { createProjectSchema } from '@/domains/project/validation/project.schema'
 import AuthenticatedLayout from '@/layouts/AuthenticatedLayout.vue'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
@@ -20,7 +20,8 @@ import type { IProjectCreatePayload } from '@/domains/project/types/project.type
 
 const { t } = useI18n()
 const router = useRouter()
-const { toast } = useToast()
+
+const { mutateAsync: createProject } = useCreateProject()
 
 const { values, isSubmitting, handleSubmit, setErrors, setFieldValue, resetForm } = useForm<IProjectCreatePayload>({
   validationSchema: createProjectSchema,
@@ -40,7 +41,7 @@ const statusIdModel = computed({
 
 const onSubmit = handleSubmit(async (formValues) => {
   try {
-    const project = await projectService.create({
+    const project = await createProject({
       name: formValues.name,
       description: formValues.description || undefined,
       statusId: formValues.statusId,

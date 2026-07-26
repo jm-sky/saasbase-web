@@ -1,9 +1,8 @@
 <script setup lang="ts">
 import { toTypedSchema } from '@vee-validate/zod'
-import { storeToRefs } from 'pinia'
 import { v4 } from 'uuid'
 import { useForm } from 'vee-validate'
-import { computed, onMounted, ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRoute, useRouter } from 'vue-router'
 import ButtonLink from '@/components/ButtonLink.vue'
@@ -15,10 +14,10 @@ import AlertDescription from '@/components/ui/alert/AlertDescription.vue'
 import Button from '@/components/ui/button/Button.vue'
 import Input from '@/components/ui/input/Input.vue'
 import Separator from '@/components/ui/separator/Separator.vue'
-import { useToast } from '@/components/ui/toast/use-toast'
+import { toast } from '@/components/ui/toast'
 import { config } from '@/config'
-import { expenseService } from '@/domains/expense/services/expenseService'
-import { useExpenseStore } from '@/domains/expense/stores/expense.store'
+import { useUpdateExpense } from '@/domains/expense/composables/useExpenseMutations'
+import { useExpense } from '@/domains/expense/composables/useExpenseQueries'
 import { expenseCreateSchema } from '@/domains/expense/validation/expense.schema'
 import AuthenticatedLayout from '@/layouts/AuthenticatedLayout.vue'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
@@ -36,18 +35,14 @@ import type { IInvoiceLine } from '@/domains/financial/types/financial.type'
 import type { IPaymentMethod } from '@/domains/shared/types/paymentMethod.type'
 
 const { t } = useI18n()
-const { toast } = useToast()
 const route = useRoute()
 const router = useRouter()
 
-const expenseStore = useExpenseStore()
-const { expense } = storeToRefs(expenseStore)
+const expenseId = route.params.id as string
+const { data: expense } = useExpense(expenseId)
+const { mutateAsync: updateExpense } = useUpdateExpense()
 
 const seller = ref<IContractor | undefined>(undefined)
-
-const expenseId = route.params.id as string
-const loading = ref(false)
-const errorMessage = ref<string | null>(null)
 
 const { values, isSubmitting, handleSubmit, errors, setValues, setFieldValue, setErrors, resetForm } = useForm<IExpenseCreate>({
   validationSchema: toTypedSchema(expenseCreateSchema),
@@ -155,25 +150,16 @@ const formErrors = computed(() => {
   return errorMessages
 })
 
-const refresh = async () => {
-  try {
-    loading.value = true
-    errorMessage.value = null
-    const response = await expenseService.get(expenseId)
-    expense.value = response
-    setValues(response)
-  } catch (err) {
-    handleErrorWithToast(t('expense.show.error', 'Error'), err)
-    errorMessage.value = t('expense.show.error', 'Failed to load expense')
-  } finally {
-    loading.value = false
-  }
-}
+watch(expense, (value) => {
+  if (!value) return
+  setValues(value)
+  if (value.number) setRouteTitle(route, value.number)
+}, { immediate: true })
 
 const onSubmit = handleSubmit(async (values) => {
   try {
     values.body.lines = values.body.lines.filter((line: IInvoiceLine) => line.description)
-    await expenseService.update(expenseId, values)
+    await updateExpense({ id: expenseId, data: values })
     toast.success(t('expense.edit.success', 'Expense updated successfully'))
     await router.push(`/expenses/${expenseId}/show`)
   } catch (error: unknown) {
@@ -206,10 +192,6 @@ const onPaymentMethodUpdate = (paymentMethod: IPaymentMethod | undefined) => {
   }
 }
 
-onMounted(async () => {
-  await refresh()
-  setRouteTitle(route, expense.value?.number)
-})
 </script>
 
 <template>

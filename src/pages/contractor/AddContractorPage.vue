@@ -10,7 +10,7 @@ import Input from '@/components/ui/input/Input.vue'
 import Separator from '@/components/ui/separator/Separator.vue'
 import Switch from '@/components/ui/switch/Switch.vue'
 import Textarea from '@/components/ui/textarea/Textarea.vue'
-import { useToast } from '@/components/ui/toast/use-toast'
+import { toast } from '@/components/ui/toast'
 import ContractorSidebar from '@/domains/contractor/components/ContractorSidebar.vue'
 import ContractorTypePicker from '@/domains/contractor/components/ContractorTypePicker.vue'
 import { useCreateContractor } from '@/domains/contractor/composables/useContractorMutations'
@@ -26,7 +26,6 @@ import type { IIbanInfo } from '@/domains/utils/services/IbanInfoService'
 import type { ICompanyLookupResponse, ICompanyRegistryConfirmation } from '@/domains/utils/types/companyLookup.type'
 
 const { t } = useI18n()
-const { toast } = useToast()
 const router = useRouter()
 
 const emptyRegistryConfirmation: ICompanyRegistryConfirmation = {

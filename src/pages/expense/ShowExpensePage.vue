@@ -1,15 +1,14 @@
 <script setup lang="ts">
 import { Pencil, ScanEye } from 'lucide-vue-next'
-import { storeToRefs } from 'pinia'
-import { onMounted, ref, useTemplateRef } from 'vue'
+import { useTemplateRef, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
 import ButtonLink from '@/components/ButtonLink.vue'
 import EntityDetailsHeader from '@/components/layouts/EntityDetailsHeader.vue'
 import Button from '@/components/ui/button/Button.vue'
-import { useToast } from '@/components/ui/toast'
-import { expenseService } from '@/domains/expense/services/expenseService'
-import { useExpenseStore } from '@/domains/expense/stores/expense.store'
+import { toast } from '@/components/ui/toast'
+import { useStartExpenseOcr } from '@/domains/expense/composables/useExpenseMutations'
+import { useExpense } from '@/domains/expense/composables/useExpenseQueries'
 import PaymentInfoDisplay from '@/domains/financial/components/PaymentInfoDisplay.vue'
 import InvoiceLines from '@/domains/invoice/components/InvoiceLines.vue'
 import AuthenticatedLayout from '@/layouts/AuthenticatedLayout.vue'
@@ -19,44 +18,26 @@ import { setRouteTitle } from '@/router/helpers/setRouteTitle'
 import ShowExpenseSidebar from './partials/ShowExpenseSidebar.vue'
 
 const { t } = useI18n()
-const { toast } = useToast()
 const route = useRoute()
 const expenseId = route.params.id as string
 
-const expenseStore = useExpenseStore()
-const { expense } = storeToRefs(expenseStore)
-
-const loading = ref(false)
-const error = ref<string | null>(null)
+const { data: expense, isPending: loading } = useExpense(expenseId)
+const { mutateAsync: startExpenseOcr, isPending: ocrLoading } = useStartExpenseOcr()
 
 const sidebar = useTemplateRef<typeof ShowExpenseSidebar>('sidebar')
 
-const refresh = async () => {
-  try {
-    loading.value = true
-    error.value = null
-    expense.value = await expenseService.get(expenseId)
-  } catch (err) {
-    handleErrorWithToast(t('expense.show.error', 'Error'), err)
-    error.value = 'Failed to load expense'
-  } finally {
-    loading.value = false
-  }
-}
+watch(expense, (value) => {
+  if (value?.number) setRouteTitle(route, value.number)
+}, { immediate: true })
 
 const startOcr = async () => {
   try {
-    await expenseService.startOcr(expenseId)
+    await startExpenseOcr({ id: expenseId })
     toast.success(t('financial.actions.startOcr.success'))
   } catch (err) {
     handleErrorWithToast(t('financial.actions.startOcr.error'), err)
   }
 }
-
-onMounted(async () => {
-  await refresh()
-  setRouteTitle(route, expense.value?.number)
-})
 </script>
 
 <template>
@@ -71,7 +52,7 @@ onMounted(async () => {
         <Button
           v-tooltip="t('financial.actions.startOcr.tooltip')"
           variant="ghost"
-          :loading
+          :loading="ocrLoading"
           @click="startOcr"
         >
           <ScanEye class="size-4" />

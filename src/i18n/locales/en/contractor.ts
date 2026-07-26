@@ -42,6 +42,8 @@ export const contractor = {
   edit: {
     title: 'Edit Contractor',
     description: 'Edit the contractor.',
+    success: 'Contractor updated successfully',
+    error: 'Could not edit contractor',
   },
   delete: {
     success: 'Contractor deleted successfully',

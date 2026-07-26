@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Pencil } from 'lucide-vue-next'
 import { storeToRefs } from 'pinia'
-import { onMounted, ref, useTemplateRef } from 'vue'
+import { useTemplateRef, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
 import ButtonLink from '@/components/ButtonLink.vue'
@@ -9,10 +9,9 @@ import EntityDetailsHeader from '@/components/layouts/EntityDetailsHeader.vue'
 import PaymentInfoDisplay from '@/domains/financial/components/PaymentInfoDisplay.vue'
 import GeneratePdfAction from '@/domains/invoice/components/actions/GeneratePdfAction.vue'
 import InvoiceLines from '@/domains/invoice/components/InvoiceLines.vue'
-import { invoiceService } from '@/domains/invoice/services/invoiceService'
+import { useInvoice } from '@/domains/invoice/composables/useInvoiceQueries'
 import { useInvoiceStore } from '@/domains/invoice/stores/invoice.store'
 import AuthenticatedLayout from '@/layouts/AuthenticatedLayout.vue'
-import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
 import { toDateString } from '@/lib/toDateString'
 import { setRouteTitle } from '@/router/helpers/setRouteTitle'
 import ShowInvoiceSidebar from './partials/ShowInvoiceSidebar.vue'
@@ -24,28 +23,15 @@ const invoiceId = route.params.id as string
 const invoiceStore = useInvoiceStore()
 const { invoice } = storeToRefs(invoiceStore)
 
-const loading = ref(false)
-const error = ref<string | null>(null)
+const { data: invoiceData, isPending: loading } = useInvoice(invoiceId)
 
 const sidebar = useTemplateRef<typeof ShowInvoiceSidebar>('sidebar')
 
-const refresh = async () => {
-  try {
-    loading.value = true
-    error.value = null
-    invoice.value = await invoiceService.get(invoiceId)
-  } catch (err) {
-    handleErrorWithToast(t('invoice.show.error', 'Error'), err)
-    error.value = 'Failed to load invoice'
-  } finally {
-    loading.value = false
-  }
-}
-
-onMounted(async () => {
-  await refresh()
-  setRouteTitle(route, invoice.value?.number)
-})
+watch(invoiceData, (value) => {
+  if (!value) return
+  invoiceStore.setInvoice(value)
+  setRouteTitle(route, value.number)
+}, { immediate: true })
 </script>
 
 <template>

@@ -7,7 +7,7 @@ import RefreshIconButton from '@/components/Buttons/RefreshIconButton.vue'
 import { Button } from '@/components/ui/button'
 import Separator from '@/components/ui/separator/Separator.vue'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { useToast } from '@/components/ui/toast'
+import { toast } from '@/components/ui/toast'
 import NumberingTemplateCard from '@/domains/invoice/components/numberingTemplates/NumberingTemplateCard.vue'
 import NumberingTemplateDeleteModal from '@/domains/invoice/components/numberingTemplates/NumberingTemplateDeleteModal.vue'
 import NumberingTemplateFormModal from '@/domains/invoice/components/numberingTemplates/NumberingTemplateFormModal.vue'
@@ -15,11 +15,11 @@ import { numberingTemplateService } from '@/domains/invoice/services/NumberingTe
 import { useNumberingTemplateStore } from '@/domains/invoice/stores/numberingTemplate.store'
 import { getInvoiceTypeLabel, groupTemplatesByInvoiceType } from '@/domains/invoice/utils/numberingTemplateUtils'
 import TenantSectionTitle from '@/domains/tenant/components/TenantSectionTitle.vue'
+import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
 import type { TInvoiceType } from '@/domains/financial/types/financial.type'
 import type { IInvoiceNumberingTemplate } from '@/domains/invoice/types/numberingTemplate.type'
 
 const { t } = useI18n()
-const { toast } = useToast()
 const numberingTemplateStore = useNumberingTemplateStore()
 const { numberingTemplates } = storeToRefs(numberingTemplateStore)
 
@@ -40,13 +40,9 @@ const loadTemplates = async () => {
     error.value = null
     const response = await numberingTemplateService.index()
     numberingTemplates.value = response.data
-  } catch {
+  } catch (err) {
     error.value = 'Failed to load numbering templates'
-    toast({
-      title: t('invoice.numberingTemplate.states.error'),
-      description: error.value,
-      variant: 'destructive',
-    })
+    handleErrorWithToast(t('invoice.numberingTemplate.states.error'), err)
   } finally {
     loading.value = false
   }
@@ -68,15 +64,9 @@ const handleSetDefault = async (template: IInvoiceNumberingTemplate) => {
   try {
     await numberingTemplateService.setDefault(template.id)
     await loadTemplates()
-    toast({
-      title: t('invoice.numberingTemplate.actions.setDefaultTemplate.success'),
-      variant: 'default',
-    })
-  } catch {
-    toast({
-      title: t('invoice.numberingTemplate.actions.setDefaultTemplate.error'),
-      variant: 'destructive',
-    })
+    toast.success(t('invoice.numberingTemplate.actions.setDefaultTemplate.success'))
+  } catch (err) {
+    handleErrorWithToast(t('invoice.numberingTemplate.actions.setDefaultTemplate.error'), err)
   }
 }
 
@@ -84,15 +74,9 @@ const handleDeleteTemplate = async (id: string) => {
   try {
     await numberingTemplateService.delete(id)
     await loadTemplates()
-    toast({
-      title: t('invoice.numberingTemplate.actions.deleteTemplate.success'),
-      variant: 'default',
-    })
-  } catch {
-    toast({
-      title: t('invoice.numberingTemplate.actions.deleteTemplate.error'),
-      variant: 'destructive',
-    })
+    toast.success(t('invoice.numberingTemplate.actions.deleteTemplate.success'))
+  } catch (err) {
+    handleErrorWithToast(t('invoice.numberingTemplate.actions.deleteTemplate.error'), err)
   } finally {
     deleteConfirmId.value = null
   }

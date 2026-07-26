@@ -42,6 +42,8 @@ export const contractor = {
   edit: {
     title: 'Edytuj kontrahenta',
     description: 'Edytuj kontrahenta.',
+    success: 'Kontrahent zaktualizowany pomyślnie',
+    error: 'Nie udało się edytować kontrahenta',
   },
   delete: {
     success: 'Kontrahent usunięty pomyślnie',

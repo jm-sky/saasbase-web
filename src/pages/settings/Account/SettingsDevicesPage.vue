@@ -2,11 +2,9 @@
 import { onMounted, ref } from 'vue'
 import { Button } from '@/components/ui/button'
 import Separator from '@/components/ui/separator/Separator.vue'
-import { useToast } from '@/components/ui/toast'
+import { toast } from '@/components/ui/toast'
 import { accountService, type Device } from '@/domains/account/services/AccountService'
 import SettingsHeader from '../partials/SettingsHeader.vue'
-
-const { toast } = useToast()
 
 const loading = ref(false)
 const devices = ref<Device[]>([])
@@ -32,10 +30,7 @@ const revokeDevice = async (deviceId: string) => {
   try {
     await accountService.terminateSession(deviceId)
     devices.value = devices.value.filter(device => device.id !== deviceId)
-    toast({
-      title: 'Success',
-      description: 'Device access revoked successfully',
-    })
+    toast.success('Device access revoked successfully')
   } catch {
     // handled in AccountService
   }

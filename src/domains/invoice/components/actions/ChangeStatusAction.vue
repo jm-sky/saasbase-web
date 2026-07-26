@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { RefreshCw } from 'lucide-vue-next'
-import { computed, ref } from 'vue'
+import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { Button } from '@/components/ui/button'
 import {
@@ -9,14 +9,13 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import { useToast } from '@/components/ui/toast'
+import { toast } from '@/components/ui/toast'
+import { useUpdateInvoice } from '../../composables/useInvoiceMutations'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
-import { invoiceService } from '../../services/invoiceService'
 import type { IInvoice } from '../../types/invoice.type'
 import type { TInvoiceStatus } from '@/domains/financial/types/financial.type'
 
 const { t } = useI18n()
-const { toast } = useToast()
 
 const { invoice } = defineProps<{
   invoice?: IInvoice | null
@@ -28,7 +27,7 @@ const emit = defineEmits<{
   updated: [invoice: IInvoice]
 }>()
 
-const loading = ref(false)
+const { mutateAsync: updateInvoice, isPending: loading } = useUpdateInvoice()
 
 // Mirrors InvoiceStatus::canTransitionTo() in the backend (app/Domain/Financial/Enums/InvoiceStatus.php) --
 // backend is authoritative and re-validates regardless, this only avoids offering options that would just 422.
@@ -45,15 +44,12 @@ const availableStatuses = computed<TInvoiceStatus[]>(() => invoice ? transitions
 const changeStatus = async (newStatus: TInvoiceStatus) => {
   if (!invoice?.id) return
 
-  loading.value = true
   try {
-    const updated = await invoiceService.update(invoice.id, { status: newStatus })
+    const updated = await updateInvoice({ id: invoice.id, data: { status: newStatus } })
     toast.success(t('invoice.actions.changeStatus.success', 'Status changed successfully'))
     emit('updated', updated)
   } catch (error) {
     handleErrorWithToast(t('invoice.actions.changeStatus.error', 'Failed to change status'), error)
-  } finally {
-    loading.value = false
   }
 }
 </script>

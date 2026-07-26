@@ -6,7 +6,7 @@ import FormFieldLabeled from '@/components/Form/FormFieldLabeled.vue'
 import Button from '@/components/ui/button/Button.vue'
 import Input from '@/components/ui/input/Input.vue'
 import TagsInputField from '@/components/ui/tags-input/TagsInputField.vue'
-import { useToast } from '@/components/ui/toast'
+import { toast } from '@/components/ui/toast'
 import { useUpdateContractorPreferences } from '@/domains/contractor/composables/useContractorMutations'
 import { useContractorStore } from '@/domains/contractor/store/contractor.store'
 import InvoiceTemplateLanguagePicker from '@/domains/invoice/components/invoiceTemplates/InvoiceTemplateLanguagePicker.vue'
@@ -17,7 +17,6 @@ import { isValidationError } from '@/lib/validation'
 import type { IContractorPreferences, IContractorPreferencesUpdate } from '@/domains/contractor/types/contractor.type'
 
 const { t } = useI18n()
-const { toast } = useToast()
 const { contractor } = storeToRefs(useContractorStore())
 const { mutateAsync: updatePreferences } = useUpdateContractorPreferences()
 

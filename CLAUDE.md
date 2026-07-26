@@ -87,6 +87,20 @@ Each domain contains:
   mutation success. Pinia stores stay scoped to client/UI state only (e.g. the
   currently-selected entity), not list/detail data fetched from the API.
 
+### Toast / error / loading conventions
+- **Toast API:** use `toast.success` / `toast.error` / `toast.info` / `toast.warning`
+  from `@/components/ui/toast`. Do not call raw `toast({ title, variant })` in new
+  or migrated code.
+- **Errors:** wrap failures with `handleErrorWithToast(t('…'), error)` (i18n title +
+  backend `message` / `common.unknownError` as description).
+- **Success:** call `toast.success(t('…'))` in the page after `await mutateAsync(...)`.
+- **Mutations:** composables only call the service + `invalidateQueries`. Toasts stay
+  in the page `try/catch` around `mutateAsync` so each action keeps its own i18n keys.
+- **Queries:** use `isPending` / `isFetching` / `isError` / `refetch` from `useQuery`.
+  Do not introduce local `loading = ref(false)` for server reads.
+- **Submit buttons:** prefer `isPending` from `useMutation` (and/or vee-validate
+  `isSubmitting`) instead of a separate loading ref.
+
 ## Development Guidelines
 
 ### File Organization
@@ -115,7 +129,8 @@ Each domain contains:
 ### Testing
 - Test framework: Vitest
 - Test command: `pnpm test`
-- Write tests for critical business logic
+- Write tests for critical business logic (query keys, mutation invalidation,
+  `handleErrorWithToast`)
 
 ## Common Tasks
 
@@ -133,7 +148,8 @@ Each domain contains:
 ### API Integration
 - Use services in domain `services/` folder
 - Extend base API client from `src/lib/api/`
-- Handle errors with toast notifications
+- Fetch/mutate via TanStack Query composables; handle errors with
+  `handleErrorWithToast` and success with `toast.success` (see Toast conventions above)
 
 ### Adding UI Components
 - Use Reka UI (was: Radix Vue) for headless components

@@ -12,9 +12,9 @@ import { Alert, AlertDescription } from '@/components/ui/alert'
 import Button from '@/components/ui/button/Button.vue'
 import Input from '@/components/ui/input/Input.vue'
 import Separator from '@/components/ui/separator/Separator.vue'
-import { useToast } from '@/components/ui/toast/use-toast'
+import { toast } from '@/components/ui/toast'
 import { config } from '@/config'
-import { expenseService } from '@/domains/expense/services/expenseService'
+import { useCreateExpense } from '@/domains/expense/composables/useExpenseMutations'
 import { expenseCreateSchema } from '@/domains/expense/validation/expense.schema'
 import { useTenant } from '@/domains/tenant/composables/useTenant'
 import AuthenticatedLayout from '@/layouts/AuthenticatedLayout.vue'
@@ -34,8 +34,8 @@ import type { TDate } from '@/domains/shared/types/common'
 import type { IPaymentMethod } from '@/domains/shared/types/paymentMethod.type'
 
 const { t } = useI18n()
-const { toast } = useToast()
 const router = useRouter()
+const { mutateAsync: createExpense } = useCreateExpense()
 const { tenant, tenantBillingAddress, loadTenant, loadTenantBillingAddress, loadTenantDefaultBankAccount } = useTenant()
 
 const issueDate = ref<TDate | undefined>(new Date().toISOString().split('T')[0])
@@ -157,7 +157,7 @@ onMounted(async () => {
 const onSubmit = handleSubmit(async (values) => {
   try {
     values.body.lines = values.body.lines.filter((line: IInvoiceLine) => line.description)
-    const expense = await expenseService.create(values)
+    const expense = await createExpense(values)
     toast.success(t('expense.add.success', 'Expense added successfully'))
     resetForm()
     await router.push(`/expenses/${expense.id}/show`)

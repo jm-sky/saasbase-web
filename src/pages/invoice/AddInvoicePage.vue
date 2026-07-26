@@ -11,10 +11,10 @@ import EntityDetailsHeader from '@/components/layouts/EntityDetailsHeader.vue'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import Button from '@/components/ui/button/Button.vue'
 import Separator from '@/components/ui/separator/Separator.vue'
-import { useToast } from '@/components/ui/toast/use-toast'
+import { toast } from '@/components/ui/toast'
 import { config } from '@/config'
 import NumberingTemplatePicker from '@/domains/invoice/components/pickers/NumberingTemplatePicker.vue'
-import { invoiceService } from '@/domains/invoice/services/invoiceService'
+import { useCreateInvoice } from '@/domains/invoice/composables/useInvoiceMutations'
 import { invoiceCreateSchema } from '@/domains/invoice/validation/invoice.schema'
 import { useTenant } from '@/domains/tenant/composables/useTenant'
 import AuthenticatedLayout from '@/layouts/AuthenticatedLayout.vue'
@@ -34,8 +34,8 @@ import type { TDate } from '@/domains/shared/types/common'
 import type { IPaymentMethod } from '@/domains/shared/types/paymentMethod.type'
 
 const { t } = useI18n()
-const { toast } = useToast()
 const router = useRouter()
+const { mutateAsync: createInvoice } = useCreateInvoice()
 const { tenant, tenantBillingAddress, loadTenant, loadTenantBillingAddress, loadTenantDefaultBankAccount } = useTenant()
 
 const issueDate = ref<TDate | undefined>(new Date().toISOString().split('T')[0])
@@ -162,7 +162,7 @@ onMounted(async () => {
 const onSubmit = handleSubmit(async (values) => {
   try {
     values.body.lines = values.body.lines.filter((line) => line.description)
-    const invoice = await invoiceService.create(values)
+    const invoice = await createInvoice(values)
     toast.success(t('invoice.add.success', 'Invoice added successfully'))
     resetForm()
     await router.push(`/invoices/${invoice.id}/show`)
