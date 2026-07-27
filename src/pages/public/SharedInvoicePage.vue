@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { isAxiosError } from 'axios'
 import { onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
@@ -6,23 +7,39 @@ import LoadingIcon from '@/components/Icons/LoadingIcon.vue'
 import Alert from '@/components/ui/alert/Alert.vue'
 import { invoiceShareTokenService, type IPublicSharedInvoice } from '@/domains/invoice/services/invoiceShareTokenService'
 import GuestLayout from '@/layouts/GuestLayout.vue'
-import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
 import { money } from '@/lib/money'
 
-const { t } = useI18n()
+const { t, locale } = useI18n()
 const route = useRoute()
 
 const loading = ref(true)
 const invoice = ref<IPublicSharedInvoice | null>(null)
 const error = ref<string | null>(null)
 
+const resolvePublicLoadError = (err: unknown): string => {
+  if (isAxiosError(err)) {
+    const status = err.response?.status
+
+    if (status === 404) {
+      return t('invoice.actions.shareLink.publicNotFound')
+    }
+    if (status === 410) {
+      return t('invoice.actions.shareLink.publicExpired')
+    }
+    if (status === 401) {
+      return t('invoice.actions.shareLink.publicAuthRequired')
+    }
+  }
+
+  return t('invoice.actions.shareLink.publicLoadError')
+}
+
 onMounted(async () => {
   try {
     const token = String(route.params.token ?? '')
     invoice.value = await invoiceShareTokenService.getPublicInvoice(token)
   } catch (err) {
-    error.value = t('invoice.actions.shareLink.publicLoadError')
-    handleErrorWithToast(t('invoice.actions.shareLink.publicLoadError'), err)
+    error.value = resolvePublicLoadError(err)
   } finally {
     loading.value = false
   }
@@ -69,7 +86,7 @@ onMounted(async () => {
 
         <div class="flex justify-between border-t pt-3">
           <span class="text-muted-foreground">{{ t('financial.fields.totalGross') }}</span>
-          <span class="font-semibold">{{ money(invoice.totalGross, invoice.currency) }}</span>
+          <span class="font-semibold">{{ money(invoice.totalGross, invoice.currency, locale) }}</span>
         </div>
       </div>
     </div>

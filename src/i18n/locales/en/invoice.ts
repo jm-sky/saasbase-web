@@ -77,6 +77,9 @@ export default {
       error: 'Failed to generate public link',
       publicTitle: 'Shared invoice',
       publicLoadError: 'Failed to load shared invoice',
+      publicNotFound: 'This share link is invalid or has been revoked',
+      publicExpired: 'This share link has expired or reached its usage limit',
+      publicAuthRequired: 'Sign in to view this shared invoice',
     },
     exportBank: {
       title: 'Export Bank Transfer',

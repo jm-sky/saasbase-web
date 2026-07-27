@@ -2,6 +2,10 @@ import api from '@/lib/api'
 import type { IInvoice } from '../types/invoice.type'
 import type { IResource, IResourceCollection } from '@/domains/shared/types/resource.type'
 
+export function buildPublicInvoiceShareUrl(token: string, origin = window.location.origin): string {
+  return `${origin}/shared/invoices/${token}`
+}
+
 export interface IInvoiceShareToken {
   id: string
   token: string

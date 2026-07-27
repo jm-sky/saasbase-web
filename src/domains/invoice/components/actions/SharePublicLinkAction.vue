@@ -5,7 +5,8 @@ import { useI18n } from 'vue-i18n'
 import { Button } from '@/components/ui/button'
 import { DropdownMenuItem } from '@/components/ui/dropdown-menu'
 import { toast } from '@/components/ui/toast'
-import { invoiceShareTokenService } from '../../services/invoiceShareTokenService'
+import { copyToClipboard } from '@/lib/copyToClipboard'
+import { invoiceShareTokenService, buildPublicInvoiceShareUrl } from '../../services/invoiceShareTokenService'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
 import type { IInvoice } from '../../types/invoice.type'
 
@@ -35,8 +36,8 @@ const sharePublicLink = async () => {
       maxUsage: 100,
     })
 
-    const publicUrl = `${window.location.origin}/shared/invoices/${shareToken.token}`
-    await navigator.clipboard.writeText(publicUrl)
+    const publicUrl = buildPublicInvoiceShareUrl(shareToken.token)
+    await copyToClipboard(publicUrl)
     toast.success(t('invoice.actions.shareLink.success'))
   } catch (error) {
     handleErrorWithToast(t('invoice.actions.shareLink.error'), error)

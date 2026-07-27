@@ -77,6 +77,9 @@ export default {
       error: 'Nie udało się wygenerować linku publicznego',
       publicTitle: 'Udostępniona faktura',
       publicLoadError: 'Nie udało się załadować udostępnionej faktury',
+      publicNotFound: 'Ten link jest nieprawidłowy lub został unieważniony',
+      publicExpired: 'Ten link wygasł lub osiągnął limit użyć',
+      publicAuthRequired: 'Zaloguj się, aby zobaczyć tę udostępnioną fakturę',
     },
     exportBank: {
       title: 'Eksportuj przelew bankowy',
