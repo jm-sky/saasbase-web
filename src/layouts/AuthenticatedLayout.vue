@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n'
 import DarkModeButton from '@/components/DarkModeButton.vue'
 import LanguageSwitchDropdown from '@/components/LanguageSwitchDropdown.vue'
 import AppSidebarMenu from '@/components/Layout/AppSidebarMenu.vue'
@@ -28,6 +29,7 @@ import SelectTenantModal from '@/domains/tenant/components/SelectTenantModal.vue
 import TopbarNav from '@/layouts/partials/TopbarNav.vue'
 
 const authStore = useAuthStore()
+const { t } = useI18n()
 </script>
 
 <template>
@@ -55,7 +57,7 @@ const authStore = useAuthStore()
           <BreadcrumbList>
             <BreadcrumbItem class="hidden md:block">
               <BreadcrumbLink to="/">
-                Home
+                {{ t('common.menu.home') }}
               </BreadcrumbLink>
             </BreadcrumbItem>
             <slot name="breadcrumbs" />

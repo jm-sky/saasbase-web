@@ -120,10 +120,10 @@ const error = computed(() => isError.value ? t('contractor.list.error') : null)
         <template #roles="{ data }">
           <div class="flex gap-2">
             <Badge v-if="data.isSupplier" variant="secondary">
-              Supplier
+              {{ t('contractor.fields.supplier') }}
             </Badge>
             <Badge v-if="data.isBuyer" variant="secondary">
-              Buyer
+              {{ t('contractor.fields.buyer') }}
             </Badge>
           </div>
         </template>
@@ -138,7 +138,7 @@ const error = computed(() => isError.value ? t('contractor.list.error') : null)
         </template>
         <template #actions-header>
           <div class="w-full text-right">
-            Actions
+            {{ t('common.actions') }}
           </div>
         </template>
       </DataTable>

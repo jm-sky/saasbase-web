@@ -16,6 +16,7 @@ export const auth = {
   createAccount: 'Create new account',
   enterCredentials: 'Enter Your credentials below to login',
   invalidCredentials: 'Invalid credentials',
+  recaptchaFailed: 'Security verification failed. Please refresh the page and try again.',
   continueWith: 'Or continue with',
   emailPlaceholder: 'Your e-mail',
   passwordPlaceholder: 'Your secret password',

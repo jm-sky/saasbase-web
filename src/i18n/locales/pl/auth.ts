@@ -16,6 +16,7 @@ export const auth = {
   createAccount: 'Utwórz nowe konto',
   enterCredentials: 'Wprowadź swoje dane logowania',
   invalidCredentials: 'Nieprawidłowe dane logowania',
+  recaptchaFailed: 'Weryfikacja bezpieczeństwa nie powiodła się. Odśwież stronę i spróbuj ponownie.',
   continueWith: 'Lub kontynuuj przez',
   emailPlaceholder: 'Twój e-mail',
   passwordPlaceholder: 'Twoje tajne hasło',

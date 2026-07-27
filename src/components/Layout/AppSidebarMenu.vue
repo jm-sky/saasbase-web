@@ -96,19 +96,19 @@ const menu = computed<MenuItemOrMenuCategory[]>(() => {
       isCategory: true,
     },
     {
-      title: 'Mailbox',
+      title: t('common.menu.mailbox'),
       url: '/mailbox/inbox',
       icon: Mail,
       soon: true,
     },
     {
-      title: 'E-Doręczalnia',
+      title: t('common.menu.edoreczenia'),
       url: '/e-doreczenia',
       icon: MailCheck,
       locked: true,
     },
     {
-      title: 'Chat',
+      title: t('chat.title'),
       url: '/chat',
       icon: Mail,
     },

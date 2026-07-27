@@ -1,4 +1,5 @@
 export const chat = {
+  title: 'Chat',
   live: 'LIVE',
   ai: {
     title: 'Chat with our AI',

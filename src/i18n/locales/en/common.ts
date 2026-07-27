@@ -83,6 +83,9 @@ export const common = {
   },
   menu: {
     menu: 'Menu',
+    home: 'Home',
+    mailbox: 'Mailbox',
+    edoreczenia: 'E-Doręczalnia',
     financial: 'Financial',
     communication: 'Communication',
     configurations: 'Configurations',

@@ -21,6 +21,7 @@ import type { Credentials } from '@/domains/auth/types/auth.type'
 
 interface AuthErrorResponse {
   message?: string
+  error?: string
 }
 
 const isAuthError = (error: unknown): error is AxiosError<AuthErrorResponse> => isAxiosError(error)
@@ -28,6 +29,32 @@ const isAuthError = (error: unknown): error is AxiosError<AuthErrorResponse> => 
 const { t } = useI18n()
 const { toast } = useToast()
 const { login } = useLogin()
+
+const getAuthErrorDescription = (error: unknown): string => {
+  if (!isAuthError(error)) {
+    return t('auth.invalidCredentials')
+  }
+
+  const data = error.response?.data
+  const apiMessage = data?.message ?? data?.error
+
+  if (apiMessage?.toLowerCase().includes('recaptcha')) {
+    return t('auth.recaptchaFailed')
+  }
+
+  return apiMessage ?? t('auth.invalidCredentials')
+}
+
+const isInvalidCredentialsError = (error: unknown): boolean => {
+  if (!isAuthError(error)) {
+    return false
+  }
+
+  const data = error.response?.data
+  const apiMessage = (data?.message ?? data?.error ?? '').toLowerCase()
+
+  return error.response?.status === 401 || apiMessage.includes('invalid credentials')
+}
 
 const props = defineProps<{
   providedEmail?: string
@@ -54,12 +81,16 @@ const onSubmit = handleSubmit(async (values) => {
 
   } catch (error: unknown) {
     console.warn('[LoginError]', error)
-    setErrors({
-      email: t('auth.invalidCredentials'),
-      password: t('auth.invalidCredentials'),
-    })
+
+    if (isInvalidCredentialsError(error)) {
+      setErrors({
+        email: t('auth.invalidCredentials'),
+        password: t('auth.invalidCredentials'),
+      })
+    }
+
     toast.error(t('common.error'), {
-      description: isAuthError(error) ? error.response?.data.message ?? error.message : t('auth.invalidCredentials'),
+      description: getAuthErrorDescription(error),
     })
   }
 })
