@@ -51,6 +51,7 @@ export const project = {
   },
   tasks: {
     title: 'Zadania',
+    loadError: 'Nie udało się załadować zadań',
   },
   comments: {
     title: 'Komentarze',

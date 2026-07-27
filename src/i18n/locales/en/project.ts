@@ -51,6 +51,7 @@ export const project = {
   },
   tasks: {
     title: 'Tasks',
+    loadError: 'Failed to load tasks',
   },
   comments: {
     title: 'Comments',

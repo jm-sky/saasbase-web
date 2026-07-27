@@ -9,7 +9,8 @@ import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/comp
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { useToast } from '@/components/ui/toast'
+import { toast } from '@/components/ui/toast'
+import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
 import { numberingTemplateService } from '../../services/NumberingTemplate.service'
 import { FORMAT_ELEMENTS, getInvoiceTypeLabel } from '../../utils/numberingTemplateUtils'
 import { numberingTemplateFormSchema } from '../../validation/numberingTemplate.schema'
@@ -17,7 +18,6 @@ import type { IInvoiceNumberingTemplate } from '../../types/numberingTemplate.ty
 import type { TInvoiceType } from '@/domains/financial/types/financial.type'
 
 const { t } = useI18n()
-const { toast } = useToast()
 
 const open = defineModel<boolean>('open')
 
@@ -30,7 +30,6 @@ const emit = defineEmits<{
   'submit': []
 }>()
 
-const loading = ref(false)
 const formatPreview = ref('')
 
 const isEditing = computed(() => !!props.template)
@@ -47,6 +46,8 @@ const form = useForm({
     suffix: '',
   },
 })
+
+const { isSubmitting } = form
 
 const resetPeriodOptions = [
   { value: 'monthly', label: t('invoice.numberingTemplate.resetPeriods.monthly') },
@@ -99,34 +100,24 @@ const insertFormatElement = (element: string) => {
 
 const handleSubmit = form.handleSubmit(async (values) => {
   try {
-    loading.value = true
-
     if (isEditing.value && props.template) {
       await numberingTemplateService.update(props.template.id, values)
-      toast({
-        title: t('invoice.numberingTemplate.actions.update.success'),
-        variant: 'default',
-      })
+      toast.success(t('invoice.numberingTemplate.actions.update.success'))
     } else {
       await numberingTemplateService.create(values)
-      toast({
-        title: t('invoice.numberingTemplate.actions.create.success'),
-        variant: 'default',
-      })
+      toast.success(t('invoice.numberingTemplate.actions.create.success'))
     }
 
     emit('submit')
     open.value = false
     form.resetForm()
-  } catch {
-    toast({
-      title: isEditing.value
+  } catch (error) {
+    handleErrorWithToast(
+      isEditing.value
         ? t('invoice.numberingTemplate.actions.update.error')
         : t('invoice.numberingTemplate.actions.create.error'),
-      variant: 'destructive',
-    })
-  } finally {
-    loading.value = false
+      error,
+    )
   }
 })
 
@@ -312,8 +303,8 @@ watch(() => [form.values.format, form.values.nextNumber, form.values.resetPeriod
       >
         {{ t('invoice.numberingTemplate.actions.cancel') }}
       </Button>
-      <Button type="submit" :disabled="loading" @click="handleSubmit">
-        {{ loading ? t('common.loading') : t('invoice.numberingTemplate.actions.save') }}
+      <Button type="submit" :disabled="isSubmitting" @click="handleSubmit">
+        {{ isSubmitting ? t('common.loading') : t('invoice.numberingTemplate.actions.save') }}
       </Button>
     </template>
   </ModalComponent>

@@ -1,19 +1,19 @@
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue'
+import { computed, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
 import NoItems from '@/components/DataLists/NoItems.vue'
 import Skeleton from '@/components/ui/skeleton/Skeleton.vue'
 import TaskCard from '@/domains/project/components/TaskCard.vue'
-import { type ITaskFilters, taskService } from '@/domains/task/services/taskService'
+import { useTaskList } from '@/domains/task/composables/useTaskQueries'
+import { type ITaskFilters } from '@/domains/task/services/taskService'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
 import type { IProject } from '@/domains/project/types/project.type'
-import type { ITask } from '@/domains/task/types/task.type'
+
+const { t } = useI18n()
 
 const { project } = defineProps<{
   project: IProject
 }>()
-
-const loading = ref(false)
-const tasks = ref<ITask[]>([])
 
 const filters = computed<ITaskFilters>(() => ({
   filter: {
@@ -23,20 +23,14 @@ const filters = computed<ITaskFilters>(() => ({
   },
 }))
 
-const getTasks = async () => {
-  try {
-    loading.value = true
-    const response = await taskService.index(filters.value)
-    tasks.value = response.data
-  } catch (error) {
-    handleErrorWithToast('Could not load tasks', error)
-  } finally {
-    loading.value = false
-  }
-}
+const { data: response, isPending: loading, isError, error } = useTaskList(filters)
 
-onMounted(async () => {
-  await getTasks()
+const tasks = computed(() => response.value?.data ?? [])
+
+watch(isError, (failed) => {
+  if (failed) {
+    handleErrorWithToast(t('project.tasks.loadError'), error.value)
+  }
 })
 </script>
 
