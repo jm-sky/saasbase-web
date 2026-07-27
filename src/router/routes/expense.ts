@@ -13,6 +13,14 @@ export const expenseRoutes: RouteRecordRaw[] = [
     },
   },
   {
+    path: '/expenses/pending-approvals',
+    name: 'expensePendingApprovals',
+    component: () => import('@/pages/expense/ExpensePendingApprovalsPage.vue'),
+    meta: {
+      middlewares: [isAuthenticated, isVerified, isInTenant],
+    },
+  },
+  {
     path: '/expenses/add',
     name: 'addExpense',
     component: () => import('@/pages/expense/AddExpensePage.vue'),

@@ -24,7 +24,7 @@ const exportToExcel = async () => {
   try {
     loading.value = true
     const blob = await expenseService.export(filters)
-    downloadBlob(blob, 'invoices.xlsx')
+    downloadBlob(blob, 'expenses.xlsx')
     loading.value = false
   } catch (error) {
     toast.error(t('common.export.error'))

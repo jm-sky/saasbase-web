@@ -11,7 +11,7 @@ import type { IComment, ICommentService } from '../types/comment.type'
 
 const  { t } = useI18n()
 const loading = ref(false)
-const html = ref('To jest mój pierwszy post')
+const html = ref('')
 
 const { commentableId, service } = defineProps<{
   commentableId: string

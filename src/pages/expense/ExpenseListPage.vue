@@ -13,11 +13,11 @@ import EditExpenseButton from '@/domains/expense/components/EditExpenseButton.vu
 import ExpenseListDropdown from '@/domains/expense/components/ExpenseListDropdown.vue'
 import UploadForOcrModal from '@/domains/expense/components/UploadForOcrModal.vue'
 import { useExpenseList } from '@/domains/expense/composables/useExpenseQueries'
-import type { IExpenseFilters } from '@/domains/expense/services/expenseService'
 import InvoiceStatusBadge from '@/domains/financial/components/InvoiceStatusBadge.vue'
 import AuthenticatedLayout from '@/layouts/AuthenticatedLayout.vue'
 import { money } from '@/lib/money'
 import { toDateTimeString } from '@/lib/toDateTimeString'
+import type { IExpenseFilters } from '@/domains/expense/services/expenseService'
 import type { IExpense } from '@/domains/expense/types/expense.type'
 import type { ColumnDef } from '@tanstack/vue-table'
 
@@ -99,6 +99,10 @@ const error = computed(() => isError.value ? t('expense.list.error', 'Failed to 
 
         <ButtonLink v-tooltip="t('expense.add.description', 'Add a new expense')" variant="default" to="/expenses/add">
           {{ t('expense.add.title', 'Add Expense') }}
+        </ButtonLink>
+
+        <ButtonLink variant="outline" to="/expenses/pending-approvals">
+          {{ t('expense.pendingApprovals.title') }}
         </ButtonLink>
 
         <Button variant="outline" @click="isUploadModalOpen = true">

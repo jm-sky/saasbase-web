@@ -7,6 +7,8 @@ import ButtonLink from '@/components/ButtonLink.vue'
 import EntityDetailsHeader from '@/components/layouts/EntityDetailsHeader.vue'
 import Button from '@/components/ui/button/Button.vue'
 import { toast } from '@/components/ui/toast'
+import ExpenseAllocationPanel from '@/domains/expense/components/ExpenseAllocationPanel.vue'
+import ExpenseApprovalPanel from '@/domains/expense/components/ExpenseApprovalPanel.vue'
 import { useStartExpenseOcr } from '@/domains/expense/composables/useExpenseMutations'
 import { useExpense } from '@/domains/expense/composables/useExpenseQueries'
 import PaymentInfoDisplay from '@/domains/financial/components/PaymentInfoDisplay.vue'
@@ -169,6 +171,17 @@ const startOcr = async () => {
 
         <!-- Payment Information Section -->
         <div v-if="expense" class="mt-8">
+          <ExpenseAllocationPanel
+            :expense-id="expenseId"
+            :total-gross="expense.totalGross"
+            :currency="expense.currency"
+            :status="expense.status"
+          />
+          <ExpenseApprovalPanel
+            :expense-id="expenseId"
+            :status="expense.status"
+            :approval-status="expense.approvalStatus"
+          />
           <PaymentInfoDisplay :payment="expense?.payment" />
         </div>
       </div>
