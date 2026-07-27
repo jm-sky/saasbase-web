@@ -65,11 +65,13 @@ export default {
       title: 'Send Email',
       success: 'Email sent successfully',
       error: 'Failed to send email',
+      selectRequired: 'Select one or more invoices to send an email',
     },
     sendToKsef: {
       title: 'Send to KSeF',
       success: 'Sent to KSeF successfully',
       error: 'Failed to send to KSeF',
+      selectRequired: 'Select one or more invoices to send to KSeF',
     },
     shareLink: {
       title: 'Share Link',

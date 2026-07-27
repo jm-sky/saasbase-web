@@ -8,6 +8,7 @@ import RevenueCard from '@/components/Dashboard/Cards/RevenueCard.vue'
 import SalesCard from '@/components/Dashboard/Cards/SalesCard.vue'
 import DateRangePicker from '@/components/Dashboard/DateRangePicker.vue'
 import RecentUsers from '@/components/Dashboard/RecentUsers.vue'
+import { Badge } from '@/components/ui/badge'
 import {
   Card,
   CardContent,
@@ -30,10 +31,21 @@ const endDate = ref(new Date())
 <template>
   <div class="flex-1 space-y-4 p-8 pt-6">
     <div class="flex flex-col md:flex-row items-center justify-between space-y-2">
-      <h2 class="text-3xl font-bold tracking-tight">
-        {{ t('dashboard.title') }}
-      </h2>
-      <div class="flex flex-col md:flex-row items-center gap-2">
+      <div class="flex items-center gap-3">
+        <h2 class="text-3xl font-bold tracking-tight">
+          {{ t('dashboard.title') }}
+        </h2>
+        <Badge
+          v-tooltip="t('dashboard.demo.tooltip')"
+          variant="secondary"
+        >
+          {{ t('dashboard.demo.badge') }}
+        </Badge>
+      </div>
+      <div
+        v-tooltip="t('dashboard.dateRangeComingSoon')"
+        class="flex flex-col md:flex-row items-center gap-2"
+      >
         <DateRangePicker
           v-model:start-date="startDate"
           v-model:end-date="endDate"
@@ -49,24 +61,30 @@ const endDate = ref(new Date())
         <TabsTrigger value="overview">
           {{ t('dashboard.tabs.overview') }}
         </TabsTrigger>
-        <TabsTrigger
-          value="analytics"
-          disabled
-        >
-          {{ t('dashboard.tabs.analytics') }}
-        </TabsTrigger>
-        <TabsTrigger
-          value="reports"
-          disabled
-        >
-          {{ t('dashboard.tabs.reports') }}
-        </TabsTrigger>
-        <TabsTrigger
-          value="notifications"
-          disabled
-        >
-          {{ t('dashboard.tabs.notifications') }}
-        </TabsTrigger>
+        <span v-tooltip="t('dashboard.tabs.comingSoon')">
+          <TabsTrigger
+            value="analytics"
+            disabled
+          >
+            {{ t('dashboard.tabs.analytics') }}
+          </TabsTrigger>
+        </span>
+        <span v-tooltip="t('dashboard.tabs.comingSoon')">
+          <TabsTrigger
+            value="reports"
+            disabled
+          >
+            {{ t('dashboard.tabs.reports') }}
+          </TabsTrigger>
+        </span>
+        <span v-tooltip="t('dashboard.tabs.comingSoon')">
+          <TabsTrigger
+            value="notifications"
+            disabled
+          >
+            {{ t('dashboard.tabs.notifications') }}
+          </TabsTrigger>
+        </span>
       </TabsList>
       <TabsContent
         value="overview"

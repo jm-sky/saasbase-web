@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import { useMiddleware } from '@/router/useMiddleware'
 import { setRouteTitle } from './helpers/setRouteTitle'
+import { useRouteLoading } from './routeLoading'
 import { routes } from './routes'
 
 const router = createRouter({
@@ -10,6 +11,11 @@ const router = createRouter({
   linkExactActiveClass: 'exact-active',
 })
 
+router.beforeEach((to) => {
+  setRouteTitle(to)
+})
+
+useRouteLoading(router)
 useMiddleware({ router })
 
 router.afterEach((to) => {

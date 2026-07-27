@@ -1,15 +1,21 @@
 <script setup lang="ts">
 import { Icon } from '@iconify/vue'
+import { useI18n } from 'vue-i18n'
 import { Input } from '@/components/ui/input'
 import Button from '../ui/button/Button.vue'
 
 defineProps<{
   disabled?: boolean
 }>()
+
+const { t } = useI18n()
 </script>
 
 <template>
-  <div class="flex items-center gap-2">
+  <div
+    v-tooltip="disabled ? t('common.searchComingSoon') : undefined"
+    class="flex items-center gap-2"
+  >
     <Button
       variant="ghost"
       size="icon"
@@ -20,7 +26,7 @@ defineProps<{
     </Button>
     <Input
       type="search"
-      placeholder="Search..."
+      :placeholder="t('common.search')"
       class="hidden md:flex md:w-[100px] lg:w-[300px]"
       :disabled
     />

@@ -65,11 +65,13 @@ export default {
       title: 'Wyślij e-mail',
       success: 'E-mail wysłany pomyślnie',
       error: 'Nie udało się wysłać e-maila',
+      selectRequired: 'Zaznacz jedną lub więcej faktur, aby wysłać e-mail',
     },
     sendToKsef: {
       title: 'Wyślij do KSeF',
       success: 'Wysłano do KSeF pomyślnie',
       error: 'Nie udało się wysłać do KSeF',
+      selectRequired: 'Zaznacz jedną lub więcej faktur, aby wysłać do KSeF',
     },
     shareLink: {
       title: 'Udostępnij link',

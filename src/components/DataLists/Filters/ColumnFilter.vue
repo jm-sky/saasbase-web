@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
+import { useI18n } from 'vue-i18n'
 import Button from '@/components/ui/button/Button.vue'
 import DropdownMenu from '@/components/ui/dropdown-menu/DropdownMenu.vue'
 import DropdownMenuContent from '@/components/ui/dropdown-menu/DropdownMenuContent.vue'
@@ -26,32 +27,38 @@ export type TFilterOperator = 'eq'
   | 'nin'
   | 'between'
 
-interface FilterOperatorOption {
-  value: TFilterOperator
-  label: string
-}
+const { t } = useI18n()
 
 const modelValue = defineModel<FilterDefinition>('modelValue', { default: () => ({ value: '', operator: '' }) })
 
-const operators: FilterOperatorOption[] = [
-  { value: 'eq', label: 'Equal ( = )' },
-  { value: 'ne', label: 'neq: Not equal ( != )' },
-  { value: 'gt', label: 'Greater than ( > )' },
-  { value: 'gte', label: 'Greater than or equal ( >= )' },
-  { value: 'lt', label: 'Less than ( < )' },
-  { value: 'lte', label: 'Less than or equal ( <= )' },
-  { value: 'like', label: 'Contains (LIKE %value%)' },
-  { value: 'nlike', label: 'notlike: Not contains (NOT LIKE %value%)' },
-  { value: 'startswith', label: 'Starts with (LIKE value%)' },
-  { value: 'endswith', label: 'Ends with (LIKE %value)' },
-  { value: 'regex', label: 'Regular expression (REGEXP)' },
-  { value: 'null', label: 'Is NULL' },
-  { value: 'notnull', label: 'Is NOT NULL' },
-  { value: 'nullish', label: 'Is NULL or empty string' },
-  { value: 'in', label: 'In array/list' },
-  { value: 'nin', label: 'notin: Not in array/list' },
-  { value: 'between', label: 'Between two values (comma-separated or array)' },
-]
+const operators = computed(() => ([
+  'eq',
+  'ne',
+  'gt',
+  'gte',
+  'lt',
+  'lte',
+  'like',
+  'nlike',
+  'startswith',
+  'endswith',
+  'regex',
+  'null',
+  'notnull',
+  'nullish',
+  'in',
+  'nin',
+  'between',
+] as const).map((value) => ({
+  value,
+  short: t(`common.filters.operatorShort.${value}`),
+  label: t(`common.filters.operators.${value}`),
+})))
+
+const currentOperator = computed(() => {
+  const operator = (modelValue.value.operator ?? 'eq') as TFilterOperator
+  return operators.value.find(item => item.value === operator) ?? operators.value[0]
+})
 
 const value = computed<string>({
   get() {
@@ -73,8 +80,14 @@ const value = computed<string>({
     <Input v-model.lazy.trim="value" class="w-full h-8" />
     <DropdownMenu>
       <DropdownMenuTrigger as-child>
-        <Button variant="outline" size="icon" class="h-8">
-          {{ modelValue.operator?.slice(0, 3) ?? 'eq' }}
+        <Button
+          v-tooltip="currentOperator.label"
+          variant="outline"
+          size="icon"
+          class="h-8"
+          :aria-label="t('common.filters.operator')"
+        >
+          {{ currentOperator.short }}
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
@@ -85,7 +98,9 @@ const value = computed<string>({
           class="flex items-center justify-between gap-2 cursor-pointer"
           @click="modelValue.operator = operator.value"
         >
-          {{ operator.value }}
+          <span class="font-mono text-sm">
+            {{ operator.short }}
+          </span>
           <span class="text-xs text-muted-foreground">
             {{ operator.label }}
           </span>
