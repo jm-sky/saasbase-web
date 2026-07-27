@@ -112,7 +112,7 @@ describe('CRUD mutation invalidation', () => {
     const { result, queryClient } = mountComposable(() => useUpdateContractor())
     const invalidateSpy = vi.spyOn(queryClient, 'invalidateQueries')
 
-    await result.mutateAsync({ id: 'contractor-1', data: {} })
+    await result.mutateAsync({ id: 'contractor-1', data: {} as never })
 
     expect(invalidateSpy).toHaveBeenCalledWith({ queryKey: contractorKeys.lists() })
     expect(invalidateSpy).toHaveBeenCalledWith({ queryKey: contractorKeys.detail('contractor-1') })
