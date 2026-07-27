@@ -75,6 +75,8 @@ export default {
       title: 'Share Link',
       success: 'Public link copied to clipboard',
       error: 'Failed to generate public link',
+      publicTitle: 'Shared invoice',
+      publicLoadError: 'Failed to load shared invoice',
     },
     exportBank: {
       title: 'Export Bank Transfer',

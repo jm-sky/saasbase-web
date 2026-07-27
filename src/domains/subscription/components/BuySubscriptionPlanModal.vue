@@ -26,6 +26,7 @@ const { plan, price, billingInterval } = defineProps<{
 
 const loading = ref(false)
 const error = ref('')
+const isDev = import.meta.env.DEV
 
 const fetchBillingAddress = async () => {
   const response = await tenantAddressesService.index(tenantId.value ?? '')
@@ -100,13 +101,16 @@ onMounted(async () => {
         </div>
       </div>
 
-      <div class="flex flex-col gap-1 bg-muted/30 text-muted-foreground text-sm border rounded-md p-2 shadow">
+      <div
+        v-if="isDev"
+        class="flex flex-col gap-1 bg-muted/30 text-muted-foreground text-sm border rounded-md p-2 shadow"
+      >
         <div class="font-semibold">
-          Stripe test card:
+          {{ t('subscription.checkout.testCardTitle') }}
         </div>
-        <pre>4242424242424242  05/25  123</pre>
+        <pre>4242424242424242  05/33  123</pre>
         <div class="text-xs">
-          More:
+          {{ t('subscription.checkout.testCardMore') }}
           <a
             href="https://docs.stripe.com/testing#cards"
             target="_blank"

@@ -57,6 +57,6 @@ export const config = {
     logoutOnUnauthorized: false,
   },
   stripe: {
-    publishableKey: import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY ?? 'pk_test_51N0000000000000000000000000000000000000000000000000000000000000000000000000000000',
+    publishableKey: import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY ?? '',
   },
 }

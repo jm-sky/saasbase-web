@@ -75,6 +75,8 @@ export default {
       title: 'Udostępnij link',
       success: 'Link publiczny skopiowany do schowka',
       error: 'Nie udało się wygenerować linku publicznego',
+      publicTitle: 'Udostępniona faktura',
+      publicLoadError: 'Nie udało się załadować udostępnionej faktury',
     },
     exportBank: {
       title: 'Eksportuj przelew bankowy',

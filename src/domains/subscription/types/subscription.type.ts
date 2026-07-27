@@ -29,9 +29,6 @@ export interface ISubscriptionPlan {
   name: string
   description: string
   prices: IBillingPrice[]
-  billingInterval: string
-  stripeProductId: string
-  stripePriceId: string
   features: IFeature[]
   isCurrent: boolean
   createdAt: TDateTime
@@ -41,22 +38,6 @@ export interface ISubscriptionPlan {
 export interface ISubscriptionPlanDiscount {
   amount: number
   interval: TBillingInterval
-}
-
-export interface PaymentDetails {
-  cardNumber: string;  // 16 digits
-  expiry: string;      // MM/YY format
-  cvc: string;         // 3-4 digits
-  name: string;        // max 255 chars
-}
-
-export interface StoreSubscriptionRequest {
-  planId: TUUID;
-  billingInterval: TBillingInterval;
-  paymentDetails: PaymentDetails;
-  trialEndsAt?: string;  // ISO date string
-  couponCode?: string;   // max 50 chars
-  metadata?: Record<string, string>;
 }
 
 export interface CreateCheckoutSessionRequest {

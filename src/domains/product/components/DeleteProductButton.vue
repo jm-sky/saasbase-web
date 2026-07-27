@@ -4,9 +4,11 @@ import { useI18n } from 'vue-i18n'
 import { Button } from '@/components/ui/button'
 import { toast } from '@/components/ui/toast'
 import { useDeleteProduct } from '@/domains/product/composables/useProductMutations'
+import { useCan } from '@/domains/rights/composables/useCan'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
 
 const { t } = useI18n()
+const { isOwnerOrAdmin } = useCan()
 
 const props = defineProps<{
   id: string
@@ -27,6 +29,7 @@ const deleteProduct = async () => {
 
 <template>
   <Button
+    v-if="isOwnerOrAdmin"
     v-tooltip="t('common.delete', 'Delete')"
     variant="destructive"
     size="sm"
