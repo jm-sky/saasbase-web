@@ -6,8 +6,8 @@ import Button from '@/components/ui/button/Button.vue'
 const { t } = useI18n()
 
 const {
-  showCreateButton = false,
-  showClearCache = true,
+  showCreateButton,
+  showClearCache,
   clearCacheText,
   createText
 } = defineProps<{

@@ -2,8 +2,8 @@ export const subscription = {
   currentPlan: 'Current Plan',
   selectPlan: 'Select Plan',
   plans: {
-    title: 'Plany',
-    description: 'Wybierz plan, który najlepiej odpowiada Twoim potrzebom',
+    title: 'Plans',
+    description: 'Choose the plan that best fits your needs',
     save: 'Save {amount}%',
   },
   billingInterval: {
@@ -18,6 +18,8 @@ export const subscription = {
     paymentDetails: 'Payment details',
     redirecting: 'Redirecting...',
     error: 'Error',
+    testCardTitle: 'Stripe test card:',
+    testCardMore: 'More:',
   },
   features: {
     title: 'Features',

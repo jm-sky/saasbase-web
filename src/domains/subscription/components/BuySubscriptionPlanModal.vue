@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { loadStripe } from '@stripe/stripe-js'
 import { isAxiosError } from 'axios'
 import { storeToRefs } from 'pinia'
 import { onMounted, ref } from 'vue'
@@ -7,12 +6,11 @@ import { useI18n } from 'vue-i18n'
 import ModalComponent from '@/components/ModalComponent.vue'
 import Button from '@/components/ui/button/Button.vue'
 import UIIcon from '@/components/UIIcon.vue'
-import { config } from '@/config'
 import { tenantAddressesService } from '@/domains/tenant/services/TenantAddressesService'
 import { useTenantStore } from '@/domains/tenant/store/tenant.store'
-import type { IBillingPrice, ISubscriptionPlan, TBillingInterval } from '../types/subscription.type'
 import { subscriptionService } from '../services/SubscriptionService'
 import BillingInfoForm from './BillingInfoForm.vue'
+import type { IBillingPrice, ISubscriptionPlan, TBillingInterval } from '../types/subscription.type'
 
 const { t } = useI18n()
 const tenantStore = useTenantStore()
@@ -28,7 +26,7 @@ const { plan, price, billingInterval } = defineProps<{
 
 const loading = ref(false)
 const error = ref('')
-const stripePromise = loadStripe(config.stripe.publishableKey)
+const isDev = import.meta.env.DEV
 
 const fetchBillingAddress = async () => {
   const response = await tenantAddressesService.index(tenantId.value ?? '')
@@ -40,11 +38,6 @@ async function redirectToCheckout() {
   error.value = ''
 
   try {
-    const stripe = await stripePromise
-    if (!stripe) {
-      throw new Error('Stripe failed to initialize.')
-    }
-
     const encodedSourcePath = encodeURIComponent(window.location.pathname)
     const response = await subscriptionService.createCheckoutSession({
       planId: plan.id,
@@ -54,7 +47,7 @@ async function redirectToCheckout() {
       cancelUrl: `${window.location.origin}/billing/checkout/cancel?source_path=${encodedSourcePath}`,
     })
 
-    await stripe.redirectToCheckout({ sessionId: response.data.sessionId })
+    window.location.href = response.data.checkoutUrl
 
   } catch (err: unknown) {
     error.value = isAxiosError(err) ? err.response?.data.message : 'Unexpected error.'
@@ -108,13 +101,16 @@ onMounted(async () => {
         </div>
       </div>
 
-      <div class="flex flex-col gap-1 bg-muted/30 text-muted-foreground text-sm border rounded-md p-2 shadow">
+      <div
+        v-if="isDev"
+        class="flex flex-col gap-1 bg-muted/30 text-muted-foreground text-sm border rounded-md p-2 shadow"
+      >
         <div class="font-semibold">
-          Stripe test card:
+          {{ t('subscription.checkout.testCardTitle') }}
         </div>
-        <pre>4242424242424242  05/25  123</pre>
+        <pre>4242424242424242  05/33  123</pre>
         <div class="text-xs">
-          More:
+          {{ t('subscription.checkout.testCardMore') }}
           <a
             href="https://docs.stripe.com/testing#cards"
             target="_blank"

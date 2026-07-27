@@ -2,6 +2,7 @@
 import Echo from 'laravel-echo'
 import Pusher from 'pusher-js'
 import { config } from '@/config'
+
 declare global {
   interface Window {
     Pusher: typeof Pusher
@@ -10,7 +11,14 @@ declare global {
 
 window.Pusher = Pusher
 
-const echoOptions = {
+const tokenStorageKey = `${config.appId}:token`
+
+const readBearerToken = (): string | null => localStorage.getItem(tokenStorageKey)
+
+const authHeaderValue = (token: string | null): string =>
+  token ? `Bearer ${token}` : ''
+
+const echo = new Echo({
   broadcaster: 'pusher' as const,
   key: config.pusher.appKey,
   cluster: config.pusher.appCluster,
@@ -24,11 +32,26 @@ const echoOptions = {
   authEndpoint: `${config.api.baseUrl}/broadcasting/auth`,
   auth: {
     headers: {
-      Authorization: `Bearer ${localStorage.getItem(`${config.appId}:token`)}`, // or your auth method
+      // Updated on login / token refresh / logout via syncEchoAuthToken.
+      // Echo reads connector.options.auth.headers for each /broadcasting/auth call.
+      Authorization: authHeaderValue(readBearerToken()),
     },
   },
-}
+})
 
-const echo = new Echo(echoOptions)
+/** Keep connector auth headers in sync after login / refresh / logout. */
+export const syncEchoAuthToken = (token: string | null): void => {
+  const connector = echo.connector as { options?: { auth?: { headers?: Record<string, string> } } }
+  if (!connector.options) {
+    connector.options = {}
+  }
+  if (!connector.options.auth) {
+    connector.options.auth = { headers: {} }
+  }
+  if (!connector.options.auth.headers) {
+    connector.options.auth.headers = {}
+  }
+  connector.options.auth.headers.Authorization = authHeaderValue(token)
+}
 
 export default echo

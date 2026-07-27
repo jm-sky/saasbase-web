@@ -4,6 +4,17 @@ import type { IUserPreview } from '@/domains/user/types/user.type'
 
 export type TProjectStatus = 'active' | 'completed' | 'archived'
 
+export interface IProjectStatus {
+  id: TUUID
+  tenantId?: TUUID
+  name: string
+  color: string
+  sortOrder: number
+  isDefault: boolean
+  createdAt?: TDateTime | Date
+  updatedAt?: TDateTime | Date
+}
+
 export interface IProject {
   id: TUUID
   tenantId: TUUID
@@ -23,6 +34,16 @@ export interface IProject {
   updatedAt: TDateTime | Date
 }
 
+/** Payload accepted by POST /projects (tenantId/ownerId merged server-side). */
+export interface IProjectCreatePayload {
+  name: string
+  description?: string
+  statusId: TUUID
+  startDate?: TDate
+  endDate?: TDate
+}
+
+/** @deprecated Prefer IProjectCreatePayload for create forms */
 export type IProjectCreate = Omit<IProject, 'id' | 'createdAt' | 'updatedAt'>
 
 export interface IProjectRole {

@@ -21,6 +21,8 @@ export const financial = {
     exchangeRate: 'Exchange Rate',
     seller: 'Seller',
     buyer: 'Buyer',
+    issuedFor: 'Issued for',
+    issuedBy: 'Issued by',
     data: 'Data',
     payment: 'Payment',
     options: 'Options',
@@ -29,6 +31,7 @@ export const financial = {
     createdAt: 'Created At',
     updatedAt: 'Updated At',
     numberingTemplate: 'Numbering Template',
+    mailing: 'Mailing',
     exchange: {
       date: 'Exchange Rate Date',
       rate: 'Exchange Rate',
@@ -49,10 +52,18 @@ export const financial = {
     }
   },
   payment: {
+    title: 'Payment Information',
     fields: {
       method: 'Method',
       status: 'Status',
       dueDate: 'Due Date',
+      reference: 'Reference',
+      terms: 'Terms',
+      notes: 'Payment notes',
+      notesPlaceholder: 'Payment notes',
+      referencePlaceholder: 'Payment reference',
+      termsPlaceholder: 'Payment terms',
+      bankAccount: 'Bank Account Details',
     },
     status: {
       pending: 'Pending',
@@ -82,6 +93,21 @@ export const financial = {
       undefined: '',
       voucher: 'Voucher',
     },
+    bankAccount: {
+      select: 'Select Bank Account',
+      country: 'Country',
+      iban: 'IBAN',
+      ibanPlaceholder: 'IBAN number',
+      ibanInvalid: 'Invalid IBAN',
+      bankName: 'Bank Name',
+      bankNamePlaceholder: 'Bank name',
+      swift: 'SWIFT',
+      swiftPlaceholder: 'SWIFT',
+    },
+  },
+  mailing: {
+    sendEmail: 'Send Email',
+    emailTo: 'Email Recipients',
   },
   invoiceType:{
     'basic': 'Basic invoice',

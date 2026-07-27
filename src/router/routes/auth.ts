@@ -16,7 +16,7 @@ export const authRoutes: RouteRecordRaw[] = [
     component: LoginView,
   },
   {
-    path: '/password-forgot',
+    path: '/forgot-password',
     name: routeMap.auth.passwordForgot,
     component: () => import('@/pages/auth/ForgotPasswordPage.vue'),
   },

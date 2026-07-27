@@ -26,7 +26,15 @@ export const project = {
   },
   add: {
     title: 'Add Project',
-    description: 'Add a new project to the system.'
+    description: 'Add a new project to the system.',
+    success: 'Project added successfully',
+    error: 'Could not add project',
+  },
+  status: {
+    select: 'Select status',
+    search: 'Search status',
+    notFound: 'No status found',
+    loadError: 'Failed to load project statuses',
   },
   edit: {
     title: 'Edit Project',
@@ -43,6 +51,7 @@ export const project = {
   },
   tasks: {
     title: 'Tasks',
+    loadError: 'Failed to load tasks',
   },
   comments: {
     title: 'Comments',

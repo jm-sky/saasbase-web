@@ -56,10 +56,17 @@ export const shared = {
     search: 'Szukaj metody płatności',
     notFound: 'Nie znaleziono metod płatności',
   },
+  positionCategory: {
+    select: 'Wybierz kategorię stanowiska',
+    search: 'Szukaj kategorii stanowiska',
+    notFound: 'Nie znaleziono kategorii stanowiska',
+  },
   product: {
     select: 'Wybierz produkt',
     search: 'Szukaj produktu',
     notFound: 'Nie znaleziono produktów',
+    recent: 'Ostatnie',
+    all: 'Wszystkie',
   },
   vatRate: {
     select: 'Wybierz stawkę VAT',

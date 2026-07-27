@@ -21,6 +21,8 @@ export const financial = {
     exchangeRate: 'Kurs wymiany',
     seller: 'Sprzedawca',
     buyer: 'Kupujący',
+    issuedFor: 'Wystawione dla',
+    issuedBy: 'Wystawione przez',
     data: 'Data',
     payment: 'Płatność',
     options: 'Opcje',
@@ -29,6 +31,7 @@ export const financial = {
     createdAt: 'Data utworzenia',
     updatedAt: 'Data aktualizacji',
     numberingTemplate: 'Szablon numeracji',
+    mailing: 'Mailing',
     exchange: {
       date: 'Data kursu wymiany',
       rate: 'Kurs wymiany',
@@ -37,7 +40,7 @@ export const financial = {
   },
   lines: {
     fields: {
-      items: 'Przedmioty',
+      items: 'Pozycje',
       description: 'Opis',
       quantity: 'Ilość',
       unitPrice: 'Cena jednostkowa',
@@ -49,10 +52,18 @@ export const financial = {
     }
   },
   payment: {
+    title: 'Informacje o płatności',
     fields: {
       method: 'Metoda',
       status: 'Status',
       dueDate: 'Termin płatności',
+      reference: 'Referencja',
+      terms: 'Terminy',
+      notes: 'Uwagi do płatności',
+      notesPlaceholder: 'Uwagi do płatności',
+      referencePlaceholder: 'Referencja płatności',
+      termsPlaceholder: 'Terminy płatności',
+      bankAccount: 'Szczegóły konta bankowego',
     },
     status: {
       pending: 'Oczekuje',
@@ -82,6 +93,21 @@ export const financial = {
       other: 'Inna',
       undefined: '',
     },
+    bankAccount: {
+      select: 'Wybierz konto bankowe',
+      country: 'Kraj',
+      iban: 'IBAN',
+      ibanPlaceholder: 'Numer IBAN',
+      ibanInvalid: 'Nieprawidłowy IBAN',
+      bankName: 'Nazwa banku',
+      bankNamePlaceholder: 'Nazwa banku',
+      swift: 'SWIFT',
+      swiftPlaceholder: 'SWIFT',
+    },
+  },
+  mailing: {
+    sendEmail: 'Wyślij email',
+    emailTo: 'Odbiorcy email',
   },
   invoiceType:{
     'basic': 'Faktura podstawowa',

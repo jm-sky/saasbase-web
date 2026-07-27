@@ -42,11 +42,7 @@ const setup2FA = async () => {
     isLoading.value = true
     setupData.value = await mfaService.setup2fa()
   } catch {
-    toast({
-      title: 'Error',
-      description: 'Failed to setup 2FA. Please try again.',
-      variant: 'destructive',
-    })
+    toast.error('Failed to setup 2FA. Please try again.')
   } finally {
     isLoading.value = false
   }

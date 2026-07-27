@@ -6,11 +6,12 @@ import FormFieldLabeled from '@/components/Form/FormFieldLabeled.vue'
 import EntityDetailsLayout from '@/components/layouts/EntityDetailsLayout.vue'
 import Button from '@/components/ui/button/Button.vue'
 import Input from '@/components/ui/input/Input.vue'
+import TagsInputField from '@/components/ui/tags-input/TagsInputField.vue'
 import Textarea from '@/components/ui/textarea/Textarea.vue'
-import { useToast } from '@/components/ui/toast/use-toast'
+import { toast } from '@/components/ui/toast'
 import ProductSidebar from '@/domains/product/components/ProductSidebar.vue'
 import ProductTypePicker from '@/domains/product/components/ProductTypePicker.vue'
-import { productService } from '@/domains/product/services/ProductService'
+import { useCreateProduct } from '@/domains/product/composables/useProductMutations'
 import MeasurementUnitPicker from '@/domains/shared/components/MeasurementUnitPicker.vue'
 import VatRatePicker from '@/domains/shared/components/VatRatePicker.vue'
 import AuthenticatedLayout from '@/layouts/AuthenticatedLayout.vue'
@@ -20,7 +21,8 @@ import type { IProductCreate } from '@/domains/product/types/product.type'
 
 const { t } = useI18n()
 const router = useRouter()
-const { toast } = useToast()
+
+const { mutateAsync: createProduct } = useCreateProduct()
 
 const { isSubmitting, handleSubmit, values, setFieldValue, setErrors, resetForm } = useForm<IProductCreate>({
   initialValues: {
@@ -38,7 +40,7 @@ const { isSubmitting, handleSubmit, values, setFieldValue, setErrors, resetForm 
 
 const onSubmit = handleSubmit(async (values) => {
   try {
-    const product = await productService.create(values)
+    const product = await createProduct(values)
     toast.success(t('product.add.success', 'Product added successfully'))
     resetForm()
     await router.push(`/products/${product.id}/show/overview`)
@@ -55,6 +57,7 @@ const onSubmit = handleSubmit(async (values) => {
     <EntityDetailsLayout
       :title="t('product.add.title')"
       back-link="/products"
+      show-sidebar
     >
       <template #back-link-text>
         {{ t('product.title') }}
@@ -66,16 +69,7 @@ const onSubmit = handleSubmit(async (values) => {
 
       <template #content>
         <div class="p-6 md:p-8 border rounded-md shadow-lg">
-          <form class="flex flex-col gap-y-2 gap-x-8" @submit.prevent="onSubmit">
-            <FormFieldLabeled
-              v-slot="{ componentField }"
-              name="name"
-              :label="t('product.fields.name')"
-              :disabled="isSubmitting"
-            >
-              <Input v-bind="componentField" class="bg-white/50 dark:bg-black/50" />
-            </FormFieldLabeled>
-
+          <form class="flex flex-col gap-y-6 gap-x-8" @submit.prevent="onSubmit">
             <FormFieldLabeled
               name="type"
               :label="t('product.fields.type')"
@@ -89,6 +83,15 @@ const onSubmit = handleSubmit(async (values) => {
 
             <FormFieldLabeled
               v-slot="{ componentField }"
+              name="name"
+              :label="t('product.fields.name')"
+              :disabled="isSubmitting"
+            >
+              <Input v-bind="componentField" class="bg-white/50 dark:bg-black/50" />
+            </FormFieldLabeled>
+
+            <FormFieldLabeled
+              v-slot="{ componentField }"
               name="description"
               :label="t('product.fields.description')"
               :disabled="isSubmitting"
@@ -96,7 +99,7 @@ const onSubmit = handleSubmit(async (values) => {
               <Textarea v-bind="componentField" class="bg-white/50 dark:bg-black/50" />
             </FormFieldLabeled>
 
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-x-8 gap-y-6">
               <FormFieldLabeled
                 v-slot="{ componentField }"
                 name="priceNet"
@@ -134,9 +137,39 @@ const onSubmit = handleSubmit(async (values) => {
                   @update:id="setFieldValue('vatRateId', $event)"
                 />
               </FormFieldLabeled>
+
+              <FormFieldLabeled
+                v-slot="{ componentField }"
+                name="pkwiuCode"
+                :label="t('product.fields.pkwiuCode')"
+                disabled
+              >
+                <Input v-bind="componentField" disabled />
+              </FormFieldLabeled>
+
+              <FormFieldLabeled
+                v-slot="{ componentField }"
+                name="ean"
+                :label="t('product.fields.ean')"
+                :disabled="isSubmitting"
+              >
+                <Input v-bind="componentField" />
+              </FormFieldLabeled>
+
+              <FormFieldLabeled
+                name="gtuCodes"
+                :label="t('product.fields.gtuCodes')"
+                disabled
+              >
+                <TagsInputField
+                  disabled
+                  :model-value="values.gtuCodes ?? []"
+                  @update:model-value="setFieldValue('gtuCodes', $event)"
+                />
+              </FormFieldLabeled>
             </div>
 
-            <div class="col-span-2">
+            <div class="col-span-2 mt-8">
               <Button type="submit" :disabled="isSubmitting" class="w-full">
                 {{ t('product.add.title') }}
               </Button>
@@ -147,4 +180,3 @@ const onSubmit = handleSubmit(async (values) => {
     </EntityDetailsLayout>
   </AuthenticatedLayout>
 </template>
-

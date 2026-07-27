@@ -1,8 +1,12 @@
 import api from '@/lib/api'
 import { apiRoutesMap } from '@/lib/api/apiRoutes'
 
+// TwoFactorAuthController::verify() (backend) returns a fresh JWT with
+// mfa=2, not a plain message — the old { message } shape here meant the
+// frontend never actually captured the token that proves 2FA passed.
 export interface MfaVerifyResponse {
-  message: string
+  accessToken: string
+  tokenType: string
 }
 
 export interface MfaEnableResponse {
@@ -31,7 +35,7 @@ class MfaService {
   }
 
   async enable2fa(code: string) {
-    const response = await api.post<MfaEnableResponse>(apiRoutesMap.auth2faSetup, { code })
+    const response = await api.post<MfaEnableResponse>(apiRoutesMap.auth2faEnable, { code })
     return response.data
   }
 

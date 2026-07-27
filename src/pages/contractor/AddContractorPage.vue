@@ -10,10 +10,10 @@ import Input from '@/components/ui/input/Input.vue'
 import Separator from '@/components/ui/separator/Separator.vue'
 import Switch from '@/components/ui/switch/Switch.vue'
 import Textarea from '@/components/ui/textarea/Textarea.vue'
-import { useToast } from '@/components/ui/toast/use-toast'
+import { toast } from '@/components/ui/toast'
 import ContractorSidebar from '@/domains/contractor/components/ContractorSidebar.vue'
 import ContractorTypePicker from '@/domains/contractor/components/ContractorTypePicker.vue'
-import { contractorService } from '@/domains/contractor/services/ContractorService'
+import { useCreateContractor } from '@/domains/contractor/composables/useContractorMutations'
 import CompanyLookupButton from '@/domains/utils/components/CompanyLookupButton.vue'
 import AuthenticatedLayout from '@/layouts/AuthenticatedLayout.vue'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
@@ -26,7 +26,6 @@ import type { IIbanInfo } from '@/domains/utils/services/IbanInfoService'
 import type { ICompanyLookupResponse, ICompanyRegistryConfirmation } from '@/domains/utils/types/companyLookup.type'
 
 const { t } = useI18n()
-const { toast } = useToast()
 const router = useRouter()
 
 const emptyRegistryConfirmation: ICompanyRegistryConfirmation = {
@@ -34,6 +33,8 @@ const emptyRegistryConfirmation: ICompanyRegistryConfirmation = {
   vies: false,
   mf: false,
 }
+
+const { mutateAsync: createContractor } = useCreateContractor()
 
 const { isSubmitting, handleSubmit, values, setFieldValue, setValues, setErrors, resetForm } = useForm<IContractorCombinedCreate>({
   initialValues: {
@@ -71,7 +72,7 @@ const { isSubmitting, handleSubmit, values, setFieldValue, setValues, setErrors,
 
 const onSubmit = handleSubmit(async (values) => {
   try {
-    await contractorService.create(values)
+    await createContractor(values)
     toast.success(t('contractor.add.success'))
     resetForm()
     await router.push('/contractors') // Navigate to the contractors list
@@ -124,6 +125,7 @@ const onBankAccountLookup = (ibanInfo: IIbanInfo) => {
     <EntityDetailsLayout
       :title="t('contractor.add.title')"
       back-link="/contractors"
+      show-sidebar
     >
       <template #back-link-text>
         {{ t('contractor.title') }}

@@ -9,10 +9,12 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
+import { useCan } from '@/domains/rights/composables/useCan'
 import { fullAddress } from '@/lib/fullAddress'
 import type { IContractorAddress } from '@/domains/contractor/types/contractor.type'
 
 const { t } = useI18n()
+const { isOwnerOrAdmin } = useCan()
 
 defineProps<{
   address: IContractorAddress
@@ -42,11 +44,11 @@ const emit = defineEmits<{
       <CopyToClipboard :text="fullAddress(address)" class="ml-1" />
     </div>
 
-    <div class="col-span-full text-sm text-muted-foreground order-3 md:order-2">
+    <div v-if="address.description" class="col-span-full text-sm text-muted-foreground order-3 md:order-2">
       {{ address.description }}
     </div>
 
-    <div class="flex flex-row gap-1 justify-end order-1 md:order-1">
+    <div v-if="isOwnerOrAdmin" class="flex flex-row items-center justify-end gap-1 order-1 md:order-1">
       <Button
         v-tooltip="t('address.setDefault')"
         variant="ghost"
@@ -63,17 +65,11 @@ const emit = defineEmits<{
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
-          <DropdownMenuItem
-            class="cursor-pointer gap-2 hover:bg-accent"
-            @click="emit('edit', address)"
-          >
+          <DropdownMenuItem hoverable @click="emit('edit', address)">
             <Icon icon="lucide:edit" />
             {{ t('common.edit') }}
           </DropdownMenuItem>
-          <DropdownMenuItem
-            class="cursor-pointer gap-2 hover:bg-accent"
-            @click="emit('delete', address)"
-          >
+          <DropdownMenuItem variant="destructive" hoverable @click="emit('delete', address)">
             <Icon icon="lucide:trash" />
             {{ t('common.delete') }}
           </DropdownMenuItem>

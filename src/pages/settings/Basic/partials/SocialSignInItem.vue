@@ -26,7 +26,7 @@ defineProps<{
       </div>
     </div>
     <div class="flex items-center gap-5">
-      <Checkbox :checked="isEnabled" :disabled="disabled" />
+      <Checkbox :model-value="isEnabled" :disabled="disabled" />
       <Button variant="ghost" size="icon" :disabled="!isEnabled || disabled">
         <Trash class="size-4" />
       </Button>

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
 import { useForm } from 'vee-validate'
-import { onMounted, ref } from 'vue'
+import { computed, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRoute, useRouter } from 'vue-router'
 import FormFieldLabeled from '@/components/Form/FormFieldLabeled.vue'
@@ -9,9 +9,10 @@ import EntityDetailsLayout from '@/components/layouts/EntityDetailsLayout.vue'
 import Button from '@/components/ui/button/Button.vue'
 import Input from '@/components/ui/input/Input.vue'
 import Textarea from '@/components/ui/textarea/Textarea.vue'
-import { useToast } from '@/components/ui/toast/use-toast'
+import { toast } from '@/components/ui/toast'
 import ProjectSidebar from '@/domains/project/components/ProjectSidebar.vue'
-import { projectService } from '@/domains/project/services/ProjectService'
+import { useUpdateProject } from '@/domains/project/composables/useProjectMutations'
+import { useProject } from '@/domains/project/composables/useProjectQueries'
 import { useProjectStore } from '@/domains/project/stores/project.store'
 import AuthenticatedLayout from '@/layouts/AuthenticatedLayout.vue'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
@@ -21,13 +22,13 @@ import type { IProjectCreate } from '@/domains/project/types/project.type'
 const { t } = useI18n()
 const route = useRoute()
 const router = useRouter()
-const { toast } = useToast()
 
 const projectId = route.params.id as string
-const { project } = storeToRefs(useProjectStore())
+const projectStore = useProjectStore()
+const { project: storeProject } = storeToRefs(projectStore)
 
-const loading = ref(false)
-const error = ref<string | null>(null)
+const { data: project, isPending: loading, refetch } = useProject(projectId)
+const { mutateAsync: updateProject } = useUpdateProject()
 
 const { isSubmitting, handleSubmit, setValues, setErrors, resetForm } = useForm<IProjectCreate>({
   initialValues: {
@@ -36,27 +37,20 @@ const { isSubmitting, handleSubmit, setValues, setErrors, resetForm } = useForm<
   },
 })
 
-const refresh = async () => {
-  try {
-    loading.value = true
-    error.value = null
-    const response = await projectService.get(projectId)
-    project.value = response
-    setValues({
-      name: response.name,
-      description: response.description,
-    })
-  } catch (err) {
-    handleErrorWithToast(t('project.edit.error', 'Error'), err)
-    error.value = t('project.edit.error', 'Failed to load project')
-  } finally {
-    loading.value = false
-  }
-}
+watch(project, (value) => {
+  if (!value) return
+  projectStore.setProject(value)
+  setValues({
+    name: value.name,
+    description: value.description,
+  })
+}, { immediate: true })
+
+const displayProject = computed(() => project.value ?? storeProject.value)
 
 const onSubmit = handleSubmit(async (values) => {
   try {
-    await projectService.update(projectId, values)
+    await updateProject({ id: projectId, data: values })
     toast.success(t('project.edit.success', 'Project updated successfully'))
     resetForm()
     await router.push(`/projects/${projectId}/show/overview`)
@@ -66,10 +60,6 @@ const onSubmit = handleSubmit(async (values) => {
     handleErrorWithToast(t('project.edit.error', 'Could not edit project'), error)
   }
 })
-
-onMounted(async () => {
-  await refresh()
-})
 </script>
 
 <template>
@@ -77,13 +67,18 @@ onMounted(async () => {
     <EntityDetailsLayout
       :title="t('project.edit.title')"
       back-link="/projects"
+      :name="displayProject?.name"
+      :logo="displayProject?.logoUrl"
+      :loading
+      show-sidebar
+      @refresh="refetch()"
     >
       <template #back-link-text>
         {{ t('project.title') }}
       </template>
 
       <template #sidebar>
-        <ProjectSidebar :project-id :project="project" />
+        <ProjectSidebar :project-id="projectId" :project="displayProject" />
       </template>
 
       <template #content>
@@ -118,4 +113,3 @@ onMounted(async () => {
     </EntityDetailsLayout>
   </AuthenticatedLayout>
 </template>
-

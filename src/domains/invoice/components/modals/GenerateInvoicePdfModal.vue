@@ -5,12 +5,14 @@ import { useI18n } from 'vue-i18n'
 import FormFieldLabeled from '@/components/Form/FormFieldLabeled.vue'
 import ModalComponent from '@/components/ModalComponent.vue'
 import Button from '@/components/ui/button/Button.vue'
+import { downloadBlob } from '@/lib/downloadBlob'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
 import { isValidationError } from '@/lib/validation'
+import { invoiceeAttachmentsService } from '../../services/invoiceAttachmentsService'
+import { type IGeneratePdfParams, type IGeneratePdfResponse, invoiceService } from '../../services/invoiceService'
+import InvoiceTemplatePicker from '../pickers/InvoiceTemplatePicker.vue'
 import type { IInvoice } from '../../types/invoice.type'
 import type { IInvoiceTemplatePreview } from '../../types/invoiceTemplate.type'
-import { type IGeneratePdfParams, invoiceService } from '../../services/invoiceService'
-import InvoiceTemplatePicker from '../pickers/InvoiceTemplatePicker.vue'
 
 const { t } = useI18n()
 
@@ -24,8 +26,9 @@ const selectedTemplate = ref<IInvoiceTemplatePreview | undefined>({
   isSystem: false,
 })
 
-const { invoice } = defineProps<{
+const { invoice, download } = defineProps<{
   invoice?: IInvoice | null
+  download?: boolean
 }>()
 
 const emit = defineEmits<{
@@ -42,7 +45,8 @@ const { values, handleSubmit, resetForm, setFieldValue, setErrors, isSubmitting 
 const onSubmit = handleSubmit(async (values: IGeneratePdfParams) => {
   try {
     if (!invoice?.id) return
-    await invoiceService.generatePdf(invoice.id, values)
+    const response = await invoiceService.generatePdf(invoice.id, values)
+    await optionalDownload(response)
     emit('done')
     open.value = false
   } catch (error) {
@@ -51,7 +55,15 @@ const onSubmit = handleSubmit(async (values: IGeneratePdfParams) => {
   }
 })
 
-const onSelectTemplate = (template: IInvoiceTemplatePreview) => {
+const optionalDownload = async (response: IGeneratePdfResponse) => {
+  if (!download) return
+  if (!invoice?.id) return
+  const blob = await invoiceeAttachmentsService.download(invoice.id, response.mediaId)
+  downloadBlob(blob, response.fileName)
+}
+
+const onSelectTemplate = (template: IInvoiceTemplatePreview | undefined) => {
+  if (!template) return
   setFieldValue('templateId', template.id)
   selectedTemplate.value = template
 }
@@ -79,14 +91,11 @@ watch(open, (isOpen) => {
       :class="{ 'opacity-50': isSubmitting }"
       @submit.prevent="onSubmit"
     >
-      <FormFieldLabeled
-        name="templateId"
-        :label="t('invoice.actions.generatePdf.fields.template')"
-      >
+      <FormFieldLabeled name="templateId" :label="t('invoice.actions.generatePdf.fields.template')">
         <InvoiceTemplatePicker
           :id="values?.templateId ?? ''"
           :model-value="selectedTemplate"
-          @select="onSelectTemplate"
+          @update:model-value="onSelectTemplate"
         />
       </FormFieldLabeled>
 

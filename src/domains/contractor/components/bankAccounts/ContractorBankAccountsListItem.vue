@@ -11,11 +11,13 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { contractorBankAccountsService } from '@/domains/contractor/services/ContractorBankAccountsService'
+import { useCan } from '@/domains/rights/composables/useCan'
 import { formatIBAN } from '@/lib/formatIBAN'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
 import type { IContractorBankAccount } from '@/domains/contractor/types/contractor.type'
 
 const { t } = useI18n()
+const { isOwnerOrAdmin } = useCan()
 
 const { contractorId, bankAccount } = defineProps<{
   contractorId: string
@@ -63,7 +65,7 @@ const handleDelete = async () => {
       <span v-if="bankAccount.currency" class="bg-muted-foreground/10 px-2 rounded">{{ bankAccount.currency }}</span>
     </div>
 
-    <div class="flex flex-row gap-1 justify-end order-4 md:order-3">
+    <div v-if="isOwnerOrAdmin" class="flex flex-row gap-1 justify-end order-4 md:order-3">
       <Button
         v-tooltip="t('bankAccounts.setDefault')"
         variant="ghost"
@@ -80,17 +82,11 @@ const handleDelete = async () => {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
-          <DropdownMenuItem
-            class="cursor-pointer gap-2 hover:bg-accent"
-            @click="emit('edit', bankAccount)"
-          >
+          <DropdownMenuItem hoverable @click="emit('edit', bankAccount)">
             <Icon icon="lucide:edit" />
             {{ t('common.edit') }}
           </DropdownMenuItem>
-          <DropdownMenuItem
-            class="cursor-pointer gap-2 hover:bg-accent"
-            @click="handleDelete"
-          >
+          <DropdownMenuItem hoverable variant="destructive" @click="handleDelete">
             <Icon icon="lucide:trash" />
             {{ t('common.delete') }}
           </DropdownMenuItem>

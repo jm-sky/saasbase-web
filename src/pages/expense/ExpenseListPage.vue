@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { RefreshCw, Upload } from 'lucide-vue-next'
-import { storeToRefs } from 'pinia'
-import { onMounted, ref, watch } from 'vue'
+import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import ButtonLink from '@/components/ButtonLink.vue'
 import DataListsWrapper from '@/components/DataLists/DataListsWrapper.vue'
@@ -13,32 +12,19 @@ import DeleteExpenseButton from '@/domains/expense/components/DeleteExpenseButto
 import EditExpenseButton from '@/domains/expense/components/EditExpenseButton.vue'
 import ExpenseListDropdown from '@/domains/expense/components/ExpenseListDropdown.vue'
 import UploadForOcrModal from '@/domains/expense/components/UploadForOcrModal.vue'
-import { expenseService, type IExpenseFilters } from '@/domains/expense/services/expenseService'
-import { useExpenseStore } from '@/domains/expense/stores/expense.store'
+import { useExpenseList } from '@/domains/expense/composables/useExpenseQueries'
 import InvoiceStatusBadge from '@/domains/financial/components/InvoiceStatusBadge.vue'
 import AuthenticatedLayout from '@/layouts/AuthenticatedLayout.vue'
 import { money } from '@/lib/money'
 import { toDateTimeString } from '@/lib/toDateTimeString'
-import type { ColumnDef } from '@tanstack/vue-table'
+import type { IExpenseFilters } from '@/domains/expense/services/expenseService'
 import type { IExpense } from '@/domains/expense/types/expense.type'
-import type { IResourceMeta } from '@/domains/shared/types/resource.type'
+import type { ColumnDef } from '@tanstack/vue-table'
 
 const { t, locale } = useI18n()
 
-const expenseStore = useExpenseStore()
-const { expenses } = storeToRefs(expenseStore)
-
-const meta = ref<IResourceMeta>({
-  currentPage: 1,
-  lastPage: 1,
-  perPage: 10,
-  total: 0,
-})
-
-const loading = ref(false)
 const isUploadModalOpen = ref(false)
 const draggedFiles = ref<File[]>([])
-const error = ref<string | null>(null)
 const filters = ref<IExpenseFilters>({
   search: '',
   page: 1,
@@ -92,27 +78,11 @@ const columns: ColumnDef<IExpense>[] = [
   },
 ]
 
-const refresh = async () => {
-  try {
-    loading.value = true
-    error.value = null
-    // For now, ignore filters except pagination
-    const response = await expenseService.index(filters.value)
-    expenses.value = response.data
-    meta.value = response.meta
-  } catch (err) {
-    error.value = 'Failed to load expenses'
-    console.error(err)
-  } finally {
-    loading.value = false
-  }
-}
+const { data: response, isPending: loading, isError, refetch } = useExpenseList(filters)
 
-onMounted(() => {
-  void refresh()
-})
-
-watch(filters, () => refresh(), { deep: true })
+const expenses = computed(() => response.value?.data ?? [])
+const total = computed(() => response.value?.meta.total ?? 0)
+const error = computed(() => isError.value ? t('expense.list.error', 'Failed to load expenses') : null)
 </script>
 
 <template>
@@ -121,7 +91,7 @@ watch(filters, () => refresh(), { deep: true })
       <template #actions>
         <SearchField v-model="filters.search" />
 
-        <Button variant="ghost" @click="refresh">
+        <Button variant="ghost" @click="refetch()">
           <RefreshCw class="size-4" />
         </Button>
 
@@ -129,6 +99,10 @@ watch(filters, () => refresh(), { deep: true })
 
         <ButtonLink v-tooltip="t('expense.add.description', 'Add a new expense')" variant="default" to="/expenses/add">
           {{ t('expense.add.title', 'Add Expense') }}
+        </ButtonLink>
+
+        <ButtonLink variant="outline" to="/expenses/pending-approvals">
+          {{ t('expense.pendingApprovals.title') }}
         </ButtonLink>
 
         <Button variant="outline" @click="isUploadModalOpen = true">
@@ -146,7 +120,7 @@ watch(filters, () => refresh(), { deep: true })
           v-model:sorting="filters.sort"
           :columns="columns"
           :data="expenses"
-          :total="meta.total"
+          :total="total"
           :page-size-options="[10, 20, 30, 40, 50]"
           :show-column-filters="true"
           :loading
@@ -193,18 +167,18 @@ watch(filters, () => refresh(), { deep: true })
           <template #actions="{ data }">
             <div class="flex gap-2 justify-end w-full whitespace-nowrap min-w-0">
               <EditExpenseButton :expense="data" />
-              <DeleteExpenseButton :id="data.id" @deleted="refresh" />
+              <DeleteExpenseButton :id="data.id" />
             </div>
           </template>
           <template #actions-header>
             <div class="w-full text-right">
-              {{ t('actions', 'Actions') }}
+              {{ t('common.actions', 'Actions') }}
             </div>
           </template>
         </DataTable>
       </FileDropZoneSlot>
     </DataListsWrapper>
 
-    <UploadForOcrModal v-model:is-open="isUploadModalOpen" v-model:dragged-files="draggedFiles" @uploaded="refresh" />
+    <UploadForOcrModal v-model:is-open="isUploadModalOpen" v-model:dragged-files="draggedFiles" />
   </AuthenticatedLayout>
 </template>

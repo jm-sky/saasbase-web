@@ -1,6 +1,9 @@
 export const contractor = {
   title: 'Contractors',
   contractorDetails: 'Contractor details',
+  list: {
+    error: 'Failed to load contractors',
+  },
   fields: {
     name: 'Name',
     country: 'Country',
@@ -39,6 +42,8 @@ export const contractor = {
   edit: {
     title: 'Edit Contractor',
     description: 'Edit the contractor.',
+    success: 'Contractor updated successfully',
+    error: 'Could not edit contractor',
   },
   delete: {
     success: 'Contractor deleted successfully',
@@ -69,5 +74,22 @@ export const contractor = {
       title: 'Edit Address',
       description: 'Edit the address of the contractor.',
     },
-  }
+  },
+  preferences: {
+    title: 'Preferences',
+    description: 'Contractor preferences.',
+    success: 'Preferences updated successfully',
+    error: 'Could not update preferences',
+    fields: {
+      defaultPaymentMethod: 'Default payment method',
+      defaultPaymentMethodId: 'Default payment method',
+      defaultPaymentMethodIdDescription: 'Default payment method for the contractor used in invoices.',
+      defaultCurrency: 'Default currency',
+      defaultCurrencyCode: 'Default currency',
+      defaultLanguage: 'Default language',
+      defaultLanguageDescription: 'Default language for the contractor used in invoices.',
+      defaultPaymentDays: 'Default payment days',
+      defaultTags: 'Default tags',
+    },
+  },
 }

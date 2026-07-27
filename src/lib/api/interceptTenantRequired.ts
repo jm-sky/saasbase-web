@@ -6,7 +6,7 @@ const isTenantRequired = (error: unknown): boolean => {
   return (
     error instanceof AxiosError &&
     (error.response?.status === HttpStatusCode.Forbidden) &&
-    error.response.data.actionRequired === 'select-tenant'
+    error.response?.data?.actionRequired === 'select-tenant'
   )
 }
 

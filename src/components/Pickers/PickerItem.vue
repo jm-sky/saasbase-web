@@ -6,8 +6,8 @@ import {
 
 const {
   value,
-  isSelected = false,
-  isLoading = false
+  isSelected,
+  isLoading
 } = defineProps<{
   value: string
   isSelected?: boolean

@@ -10,6 +10,7 @@ export interface IOption<T> {
 }
 
 const props = defineProps<{
+  class?: string
   options: IOption<T>[]
   isCollapsed?: boolean
 }>()
@@ -35,9 +36,10 @@ const selectedLabel = computed(() => modelValue.value?.label)
       :class="cn(
         'flex items-center gap-2 [&>span]:line-clamp-1 [&>span]:flex [&>span]:w-full [&>span]:items-center [&>span]:gap-1 [&>span]:truncate [&_svg]:h-4 [&_svg]:w-4 [&_svg]:shrink-0',
         { 'flex size-9 shrink-0 items-center justify-center p-0 [&>span]:w-auto [&>svg]:hidden': isCollapsed },
+        props.class,
       )"
     >
-      <SelectValue placeholder="Select an account">
+      <SelectValue>
         <div class="flex items-center gap-3">
           {{ selectedLabel }}
         </div>

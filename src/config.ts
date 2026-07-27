@@ -21,6 +21,9 @@ export const config = {
     country: import.meta.env.VITE_DEFAULTS_COUNTRY ?? 'PL',
     language: import.meta.env.VITE_DEFAULTS_LANGUAGE ?? 'pl',
     currency: import.meta.env.VITE_DEFAULTS_CURRENCY ?? 'PLN',
+    paymentDays: 14,
+    primaryColor: '#0284C7', // blue-500
+    secondaryColor: '#6B7280', // gray-500
   },
   pusher: {
     appKey: import.meta.env.VITE_PUSHER_APP_KEY ?? 'saasbase-key',
@@ -54,6 +57,6 @@ export const config = {
     logoutOnUnauthorized: false,
   },
   stripe: {
-    publishableKey: import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY ?? 'pk_test_51N0000000000000000000000000000000000000000000000000000000000000000000000000000000',
+    publishableKey: import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY ?? '',
   },
 }

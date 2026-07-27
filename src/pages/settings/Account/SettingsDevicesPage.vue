@@ -2,12 +2,9 @@
 import { onMounted, ref } from 'vue'
 import { Button } from '@/components/ui/button'
 import Separator from '@/components/ui/separator/Separator.vue'
-import { useToast } from '@/components/ui/toast'
+import { toast } from '@/components/ui/toast'
 import { accountService, type Device } from '@/domains/account/services/AccountService'
-import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
 import SettingsHeader from '../partials/SettingsHeader.vue'
-
-const { toast } = useToast()
 
 const loading = ref(false)
 const devices = ref<Device[]>([])
@@ -16,13 +13,14 @@ onMounted(async () => {
   await fetchDevices()
 })
 
+// AccountService already reports errors via toast and rethrows, so these
+// catches only need to stop the rejection from propagating further.
 const fetchDevices = async () => {
   loading.value = true
   try {
-    // TODO: Replace with actual API call
     devices.value = await accountService.getDevices()
-  } catch (error: unknown) {
-    handleErrorWithToast('Failed to fetch devices', error)
+  } catch {
+    // handled in AccountService
   } finally {
     loading.value = false
   }
@@ -30,15 +28,11 @@ const fetchDevices = async () => {
 
 const revokeDevice = async (deviceId: string) => {
   try {
-    // TODO: Replace with actual API call
-    await accountService.delay(1000)
+    await accountService.terminateSession(deviceId)
     devices.value = devices.value.filter(device => device.id !== deviceId)
-    toast({
-      title: 'Success',
-      description: 'Device access revoked successfully',
-    })
-  } catch (error: unknown) {
-    handleErrorWithToast('Failed to revoke device access', error)
+    toast.success('Device access revoked successfully')
+  } catch {
+    // handled in AccountService
   }
 }
 
@@ -67,14 +61,12 @@ const formatDate = (dateString: string) => {
     >
       <div class="flex items-center gap-4">
         <div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
-          <span class="text-lg text-primary">
-            {{ device.type === 'Mobile' ? '📱' : '💻' }}
-          </span>
+          <span class="text-lg text-primary">💻</span>
         </div>
         <div>
           <div class="flex items-center gap-2">
             <h3 class="font-medium">
-              {{ device.name }}
+              {{ device.deviceName ?? 'Unknown device' }}
             </h3>
             <span
               v-if="device.isCurrent"
@@ -83,11 +75,11 @@ const formatDate = (dateString: string) => {
               Current Device
             </span>
           </div>
-          <p class="text-sm text-muted-foreground">
-            {{ device.type }} • {{ device.location }}
+          <p v-if="device.ipAddress" class="text-sm text-muted-foreground">
+            {{ device.ipAddress }}
           </p>
           <p class="text-sm text-muted-foreground">
-            Last active: {{ formatDate(device.lastActive) }}
+            Last active: {{ formatDate(device.lastActiveAt) }}
           </p>
         </div>
       </div>

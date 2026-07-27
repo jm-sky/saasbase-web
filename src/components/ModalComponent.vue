@@ -9,7 +9,7 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog'
 
-const { size = 'md', disableClose = false } = defineProps<{
+const { size = 'md', disableClose } = defineProps<{
   title: string
   description?: string
   size?: 'sm' | 'md' | 'lg' | 'xl'

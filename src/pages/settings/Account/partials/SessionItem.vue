@@ -20,7 +20,7 @@ const getTypeIcon = (sessionType: TUserSessionType) => {
     jwt: 'heroicons:key',
     cookie: 'heroicons:finger-print',
   }
-  return icons[sessionType as keyof typeof icons] || 'heroicons:question-mark-circle'
+  return icons[sessionType] || 'heroicons:question-mark-circle'
 }
 </script>
 

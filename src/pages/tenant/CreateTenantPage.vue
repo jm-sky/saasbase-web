@@ -3,6 +3,7 @@ import { useForm } from 'vee-validate'
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
+import ButtonLink from '@/components/ButtonLink.vue'
 import Accordion from '@/components/ui/accordion/Accordion.vue'
 import AccordionContent from '@/components/ui/accordion/AccordionContent.vue'
 import AccordionItem from '@/components/ui/accordion/AccordionItem.vue'
@@ -24,6 +25,7 @@ import CompanyLookupButton from '@/domains/utils/components/CompanyLookupButton.
 import IbanLookupButton from '@/domains/utils/components/IbanLookupButton.vue'
 import GuestLayout from '@/layouts/GuestLayout.vue'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
+import { routeTo } from '@/router/routeMap'
 import type { IIbanInfo } from '@/domains/utils/services/IbanInfoService'
 import type { ICompanyLookupResponse } from '@/domains/utils/types/companyLookup.type'
 
@@ -384,7 +386,7 @@ const onSubmit = handleSubmit(async (formData) => {
               <div class="space-y-4 py-4">
                 <FormField v-slot="{ componentField }" name="bankAccount.iban">
                   <FormItem>
-                    <FormLabel>{{ t('bankAccount.fields.iban') }}</FormLabel>
+                    <FormLabel>{{ t('bankAccounts.fields.iban') }}</FormLabel>
                     <FormControl>
                       <div class="flex flex-row gap-2 items-center grow">
                         <Input v-bind="componentField" variant="filled" />
@@ -401,7 +403,7 @@ const onSubmit = handleSubmit(async (formData) => {
                 </FormField>
                 <FormField v-slot="{ componentField }" name="bankAccount.bankName">
                   <FormItem>
-                    <FormLabel>{{ t('bankAccount.fields.bankName') }}</FormLabel>
+                    <FormLabel>{{ t('bankAccounts.fields.bankName') }}</FormLabel>
                     <FormControl>
                       <div class="flex flex-row gap-2 items-center grow">
                         <Input v-bind="componentField" variant="filled" />
@@ -412,7 +414,7 @@ const onSubmit = handleSubmit(async (formData) => {
                 </FormField>
                 <FormField v-slot="{ componentField }" name="bankAccount.swift">
                   <FormItem>
-                    <FormLabel>{{ t('bankAccount.fields.swift') }}</FormLabel>
+                    <FormLabel>{{ t('bankAccounts.fields.swift') }}</FormLabel>
                     <FormControl>
                       <div class="flex flex-row gap-2 items-center grow">
                         <Input v-bind="componentField" variant="filled" />
@@ -426,7 +428,10 @@ const onSubmit = handleSubmit(async (formData) => {
           </AccordionItem>
         </Accordion>
 
-        <div class="pt-6 text-right">
+        <div class="pt-6 flex flex-row justify-between gap-2">
+          <ButtonLink type="button" variant="light" :to="routeTo.tenants()">
+            {{ t('common.cancel') }}
+          </ButtonLink>
           <Button type="submit" :disabled="isSubmitting">
             {{ t('common.createAndContinue') }}
           </Button>

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Icon } from '@iconify/vue/dist/iconify.js'
+import { Icon } from '@iconify/vue'
 import { Input } from '@/components/ui/input'
 import Button from '../ui/button/Button.vue'
 

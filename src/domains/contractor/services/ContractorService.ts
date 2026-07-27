@@ -1,9 +1,9 @@
-import { type IContractor, type IContractorCombinedCreate, type IContractorLookup, type IContractorUpdate } from '@/domains/contractor/types/contractor.type'
+import { type IContractor, type IContractorCombinedCreate, type IContractorLookup, type IContractorPreferences, type IContractorPreferencesUpdate, type IContractorUpdate } from '@/domains/contractor/types/contractor.type'
 import { buildSpatieQuery } from '@/domains/shared/helpers/filtering'
 import api from '@/lib/api'
 import { apiRoutesMap } from '@/lib/api/apiRoutes'
-import type { SortingState } from '@tanstack/vue-table'
 import type { FilterDefinition, IResource, IResourceCollection } from '@/domains/shared/types/resource.type'
+import type { SortingState } from '@tanstack/vue-table'
 
 export interface IContractorFilters {
   search?: string
@@ -38,6 +38,11 @@ class ContractorService {
 
   async update(id: string, contractor: IContractorUpdate): Promise<IContractor> {
     const response = (await api.patch<IResource<IContractor>>(`${apiRoutesMap.contractors}/${id}`, contractor)).data
+    return response.data
+  }
+
+  async updatePreferences(id: string, preferences: IContractorPreferencesUpdate): Promise<IContractorPreferences> {
+    const response = (await api.patch<IResource<IContractorPreferences>>(`${apiRoutesMap.contractors}/${id}/preferences`, preferences)).data
     return response.data
   }
 

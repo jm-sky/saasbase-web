@@ -3,12 +3,24 @@ import vue from '@vitejs/plugin-vue'
 import { execSync } from 'child_process'
 import { fileURLToPath, URL } from 'node:url'
 import { defineConfig } from 'vite'
+import monacoEditorPluginImport from 'vite-plugin-monaco-editor'
+import { pwaPlugin } from './pwa.config'
+
+// CJS package: Vite 8 ESM interop nests the factory under `.default`
+const monacoEditorPlugin =
+  typeof monacoEditorPluginImport === 'function'
+    ? monacoEditorPluginImport
+    : (monacoEditorPluginImport as { default: typeof monacoEditorPluginImport }).default
 
 // https://vitejs.dev/config/
 export default defineConfig(() => ({
   plugins: [
     vue(),
     tailwindcss(),
+    monacoEditorPlugin({
+      languageWorkers: ['editorWorkerService', 'typescript', 'json', 'html', 'css']
+    }),
+    pwaPlugin,
   ],
   resolve: {
     alias: {

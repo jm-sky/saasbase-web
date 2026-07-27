@@ -40,11 +40,23 @@ export type TApprovalStatus =
   | 'rejected'
   | 'cancelled'
 
+export type TInvoiceAllocationStatus =
+  | 'notRequired'
+  | 'pending'
+  | 'partiallyAllocated'
+  | 'fullyAllocated'
+
 export type TDeliveryStatus =
   | 'notSent'
   | 'pending'
   | 'sent'
   | 'delivered'
+  | 'failed'
+
+export type TInvoiceOcrStatus =
+  | 'pending'
+  | 'processing'
+  | 'completed'
   | 'failed'
 
 export type TPaymentMethod =
@@ -91,6 +103,7 @@ export interface IInvoiceBody {
   lines: IInvoiceLine[];
   vatSummary: IInvoiceVatSummary[];
   exchange: IInvoiceExchange;
+  description?: string;
 }
 
 export interface IVatRateData {
@@ -98,6 +111,7 @@ export interface IVatRateData {
   name: string;
   rate: number;
   type: TVatRateType;
+  country?: string;
 }
 
 export interface IInvoiceLine {
@@ -110,10 +124,14 @@ export interface IInvoiceLine {
   totalVat: number;
   totalGross: number;
   productId?: string | null;
+  gtuCodes?: string[];
 }
 
 export interface IInvoiceVatSummary {
-  vatRate: TVatRate;
+  vatRate: {
+    rate: number;
+    category?: string;
+  };
   net: number;
   vat: number;
   gross: number;
@@ -125,20 +143,33 @@ export interface IInvoiceExchange {
   date: string;
 }
 
+export interface IInvoicePaymentMethod {
+  id: TUUID;
+  name?: string;
+  code?: string;
+  paymentDays?: number
+}
+
 export interface IInvoicePayment {
   status: TPaymentStatus;
-  dueDate: string;
-  paidDate: string | null;
-  paidAmount: number;
-  method: TPaymentMethod;
-  reference: string;
-  terms: string;
-  notes: string | null;
+  dueDate?: string;
+  paidDate?: string;
+  paidAmount?: number;
+  method: IInvoicePaymentMethod;
+  reference?: string;
+  terms?: string;
+  notes?: string;
+  bankAccount?: {
+    iban?: string;
+    country?: string;
+    swift?: string;
+    bankName?: string;
+  };
 }
 
 export interface IInvoiceOptions {
-  language: string;
-  template: string;
+  language?: string;
+  template?: string;
   sendEmail: boolean;
   emailTo: string[];
 }

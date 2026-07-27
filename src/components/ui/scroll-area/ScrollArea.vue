@@ -1,29 +1,30 @@
 <script setup lang="ts">
+import { reactiveOmit } from '@vueuse/core'
 import {
   ScrollAreaCorner,
   ScrollAreaRoot,
   type ScrollAreaRootProps,
   ScrollAreaViewport,
-} from 'radix-vue'
-import { computed, type HTMLAttributes } from 'vue'
+} from 'reka-ui'
 import { cn } from '@/lib/utils'
 import ScrollBar from './ScrollBar.vue'
+import type { HTMLAttributes } from 'vue'
 
 const props = defineProps<ScrollAreaRootProps & { class?: HTMLAttributes['class'] }>()
 
-const delegatedProps = computed(() => {
-  const { class: _, ...delegated } = props // eslint-disable-line @typescript-eslint/no-unused-vars
-
-  return delegated
-})
+const delegatedProps = reactiveOmit(props, 'class')
 </script>
 
 <template>
   <ScrollAreaRoot
+    data-slot="scroll-area"
     v-bind="delegatedProps"
-    :class="cn('relative overflow-hidden', props.class)"
+    :class="cn('relative', props.class)"
   >
-    <ScrollAreaViewport class="h-full w-full rounded-[inherit]">
+    <ScrollAreaViewport
+      data-slot="scroll-area-viewport"
+      class="focus-visible:ring-ring/50 size-full rounded-[inherit] transition-[color,box-shadow] outline-none focus-visible:ring-[3px] focus-visible:outline-1"
+    >
       <slot />
     </ScrollAreaViewport>
     <ScrollBar />

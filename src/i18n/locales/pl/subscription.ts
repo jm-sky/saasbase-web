@@ -18,6 +18,8 @@ export const subscription = {
     paymentDetails: 'Dane płatności',
     redirecting: 'Redirecting...',
     error: 'Error',
+    testCardTitle: 'Testowa karta Stripe:',
+    testCardMore: 'Więcej:',
   },
   features: {
     title: 'Cechy',

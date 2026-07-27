@@ -8,9 +8,9 @@ import TablePagination from '@/components/ui/table/TablePagination.vue'
 import CommentForm from '@/domains/comment/components/CommentForm.vue'
 import { productCommentsService } from '@/domains/product/services/ProductCommentsService'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
-import type { IProject } from '../../types/project.type'
 import { projectCommentsService } from '../../services/ProjectCommentsService'
 import ProjectCommentsListItem from './ProjectCommentsListItem.vue'
+import type { IProject } from '../../types/project.type'
 import type { IComment } from '@/domains/comment/types/comment.type'
 
 const { t } = useI18n()

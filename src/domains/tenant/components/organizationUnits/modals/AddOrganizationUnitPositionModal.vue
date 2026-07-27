@@ -8,10 +8,11 @@ import Button from '@/components/ui/button/Button.vue'
 import Input from '@/components/ui/input/Input.vue'
 import Switch from '@/components/ui/switch/Switch.vue'
 import Textarea from '@/components/ui/textarea/Textarea.vue'
+import PositionCategoryPicker from '@/domains/rights/components/PositionCategoryPicker.vue'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
 import { isValidationError } from '@/lib/validation'
-import type { IOrganizationUnit, IOrganizationUnitPositionCreate } from '../../../types/organizationUnit.type'
 import { tenantOrganizationUnitService } from '../../../services/TenantOrganizationUnit.service'
+import type { IOrganizationUnit, IOrganizationUnitPositionCreate } from '../../../types/organizationUnit.type'
 
 const { t } = useI18n()
 
@@ -25,7 +26,7 @@ const emit = defineEmits<{
   added: [IOrganizationUnit]
 }>()
 
-const { handleSubmit, resetForm, setErrors, isSubmitting } = useForm<IOrganizationUnitPositionCreate>({
+const { values, handleSubmit, setFieldValue, resetForm, setErrors, isSubmitting } = useForm<IOrganizationUnitPositionCreate>({
   initialValues: {
     unitId: unit.id,
     name: '',
@@ -78,7 +79,7 @@ watch(open, (isOpen) => {
       @submit.prevent="onSubmit"
     >
       <div class="flex flex-col gap-2 border rounded-md px-3 py-2 bg-muted">
-        <div class="text-xs text-muted-foreground">
+        <div v-if="unit.parent" class="text-xs text-muted-foreground">
           {{ unit.parent?.name }}
         </div>
         <div class="font-medium">
@@ -107,7 +108,11 @@ watch(open, (isOpen) => {
         name="category"
         :label="t('tenant.organizationUnits.addPosition.fields.category')"
       >
-        <Input v-bind="componentField" />
+        <PositionCategoryPicker
+          v-bind="componentField"
+          :model-value="values.category"
+          @update:model-value="setFieldValue('category', $event ?? '')"
+        />
       </FormFieldLabeled>
 
       <div class="grid grid-cols-2 gap-4">

@@ -70,7 +70,7 @@ onMounted(() => {
           :disabled="isLoading || !organizationUnit"
           @click="isAddPositionModalOpen = true"
         >
-          <Plus class="h-4 w-4 mr-2" />
+          <Plus class="size-4" />
           {{ t('tenant.organizationUnits.show.actions.addPosition') }}
         </Button>
         <Button
@@ -78,7 +78,7 @@ onMounted(() => {
           :disabled="isLoading || !organizationUnit"
           @click="isAssignUserModalOpen = true"
         >
-          <UserPlus class="h-4 w-4 mr-2" />
+          <UserPlus class="size-4" />
           {{ t('tenant.organizationUnits.show.actions.assignUser') }}
         </Button>
       </div>
@@ -140,7 +140,7 @@ onMounted(() => {
             size="sm"
             @click="isAddPositionModalOpen = true"
           >
-            <Plus class="h-4 w-4 mr-2" />
+            <Plus class="size-4" />
             {{ t('tenant.organizationUnits.show.positions.addPosition') }}
           </Button>
         </div>
@@ -185,7 +185,7 @@ onMounted(() => {
             size="sm"
             @click="isAssignUserModalOpen = true"
           >
-            <UserPlus class="h-4 w-4 mr-2" />
+            <UserPlus class="size-4" />
             {{ t('tenant.organizationUnits.show.actions.assignUser') }}
           </Button>
         </div>

@@ -1,6 +1,6 @@
 import { toTypedSchema } from '@vee-validate/zod'
 import { z, ZodSchema } from 'zod'
-import { type IProject, type IProjectCreate } from '../types/project.type'
+import { type IProject, type IProjectCreatePayload } from '../types/project.type'
 
 const projectStatuses = ['active', 'archived', 'completed'] as const
 
@@ -15,9 +15,18 @@ const baseProjectSchema = z.object({
   updatedAt: z.string().datetime(),
 })
 
+const createProjectPayloadSchema = z.object({
+  name: z.string().min(1).max(255),
+  description: z.string().optional(),
+  statusId: z.string().min(1),
+  startDate: z.string().optional(),
+  endDate: z.string().optional(),
+})
+
 const createProjectBaseSchema = baseProjectSchema.omit({ id: true, createdAt: true, updatedAt: true })
 const updateProjectBaseSchema = createProjectBaseSchema.partial()
 
 export const projectSchema = toTypedSchema<ZodSchema, IProject>(baseProjectSchema)
-export const createProjectSchema = toTypedSchema<ZodSchema, IProjectCreate>(createProjectBaseSchema)
-export const updateProjectSchema = toTypedSchema<ZodSchema, Partial<IProjectCreate>>(updateProjectBaseSchema)
+export const createProjectSchema = toTypedSchema<ZodSchema, IProjectCreatePayload>(createProjectPayloadSchema)
+export const updateProjectSchema = toTypedSchema<ZodSchema, Partial<IProjectCreatePayload>>(createProjectPayloadSchema.partial())
+export { updateProjectBaseSchema }

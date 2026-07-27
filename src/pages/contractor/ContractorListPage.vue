@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { Plus, RefreshCw } from 'lucide-vue-next'
-import { storeToRefs } from 'pinia'
-import { onMounted, ref, type Ref, watch } from 'vue'
+import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import ButtonLink from '@/components/ButtonLink.vue'
 import DataListsWrapper from '@/components/DataLists/DataListsWrapper.vue'
@@ -14,29 +13,19 @@ import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import DeleteContractorButton from '@/domains/contractor/components/actions/DeleteContractorButton.vue'
 import EditContractorButton from '@/domains/contractor/components/actions/EditContractorButton.vue'
-import { contractorService, type IContractorFilters } from '@/domains/contractor/services/ContractorService'
+import { useContractorList } from '@/domains/contractor/composables/useContractorQueries'
 import { useContractorStore } from '@/domains/contractor/store/contractor.store'
 import TagList from '@/domains/tags/components/TagList.vue'
 import AuthenticatedLayout from '@/layouts/AuthenticatedLayout.vue'
 import { toDateTimeString } from '@/lib/toDateTimeString'
 import ContractorListDropdown from '../../domains/contractor/components/ContractorListDropdown.vue'
-import type { ColumnDef } from '@tanstack/vue-table'
+import type { IContractorFilters } from '@/domains/contractor/services/ContractorService'
 import type { IContractor } from '@/domains/contractor/types/contractor.type'
-import type { IResourceMeta } from '@/domains/shared/types/resource.type'
+import type { ColumnDef } from '@tanstack/vue-table'
 
 const { t } = useI18n()
 const contractorStore = useContractorStore()
-const { contractors } = storeToRefs(contractorStore)
 
-const meta: Ref<IResourceMeta> = ref({
-  currentPage: 1,
-  lastPage: 1,
-  perPage: 10,
-  total: 0,
-})
-
-const loading = ref(false)
-const error = ref<string | null>(null)
 const filters = ref<IContractorFilters>({
   search: '',
   page: 1,
@@ -80,31 +69,11 @@ const columns: ColumnDef<IContractor>[] = [
   },
 ]
 
-const refresh = async () => {
-  try {
-    loading.value = true
-    error.value = null
-    const response = await contractorService.index(filters.value)
-    contractors.value = response.data
-    meta.value = response.meta
-  } catch (err) {
-    error.value = 'Failed to load contractors'
-    console.error(err)
-  } finally {
-    loading.value = false
-  }
-}
+const { data: response, isLoading: loading, isError, refetch } = useContractorList(filters)
 
-const removeRow = (id: string) => {
-  contractors.value = contractors.value.filter((contractor) => contractor.id !== id)
-  meta.value.total -= 1
-}
-
-onMounted(() => {
-  void refresh()
-})
-
-watch(filters, () => refresh(), { deep: true })
+const contractors = computed(() => response.value?.data ?? [])
+const total = computed(() => response.value?.meta.total ?? 0)
+const error = computed(() => isError.value ? t('contractor.list.error') : null)
 </script>
 
 <template>
@@ -112,7 +81,7 @@ watch(filters, () => refresh(), { deep: true })
     <DataListsWrapper :title="t('contractor.title')" :loading :error>
       <template #actions>
         <SearchField v-model="filters.search" />
-        <Button variant="ghost" @click="refresh">
+        <Button variant="ghost" @click="refetch()">
           <RefreshCw class="size-4" />
         </Button>
 
@@ -134,7 +103,7 @@ watch(filters, () => refresh(), { deep: true })
         v-model:sorting="filters.sort"
         :columns="columns"
         :data="contractors"
-        :total="meta.total"
+        :total="total"
         :page-size-options="[10, 20, 30, 40, 50]"
         :show-column-filters="true"
         :loading
@@ -164,7 +133,7 @@ watch(filters, () => refresh(), { deep: true })
         <template #actions="{ data }">
           <div class="flex gap-2 justify-end w-full whitespace-nowrap min-w-0">
             <EditContractorButton :id="data.id" :contractor="data" />
-            <DeleteContractorButton :id="data.id" @delete="removeRow(data.id)" />
+            <DeleteContractorButton :id="data.id" />
           </div>
         </template>
         <template #actions-header>

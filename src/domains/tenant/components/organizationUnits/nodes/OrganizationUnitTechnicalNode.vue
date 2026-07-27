@@ -4,9 +4,9 @@ import { Lock } from 'lucide-vue-next'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { cn } from '@/lib/utils'
+import OrganizationUnitUserAvatarsList from '../OrganizationUnitUserAvatarsList.vue'
 import type { OrganizationUnitNodeData } from '../../../composables/useOrganizationChartLayout'
 import type { IOrganizationUnit } from '../../../types/organizationUnit.type'
-import OrganizationUnitUserAvatarsList from '../OrganizationUnitUserAvatarsList.vue'
 
 const { t } = useI18n()
 

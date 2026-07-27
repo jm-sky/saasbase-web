@@ -9,20 +9,18 @@ import ModalComponent from '@/components/ModalComponent.vue'
 import Alert from '@/components/ui/alert/Alert.vue'
 import AlertDescription from '@/components/ui/alert/AlertDescription.vue'
 import Button from '@/components/ui/button/Button.vue'
-import { useToast } from '@/components/ui/toast'
+import { toast } from '@/components/ui/toast'
+import { useUploadExpensesForOcr } from '@/domains/expense/composables/useExpenseMutations'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
 import { isValidationError } from '@/lib/validation'
-import { expenseService, type IUploadForOcr } from '../services/expenseService'
+import type { IUploadForOcr } from '../services/expenseService'
 
 const { t } = useI18n()
-const { toast } = useToast()
 
 const isOpen = defineModel<boolean>('isOpen', { required: true })
 const draggedFiles = defineModel<File[]>('draggedFiles', { required: true })
 
-const emit = defineEmits<{
-  uploaded: []
-}>()
+const { mutateAsync: uploadForOcr } = useUploadExpensesForOcr()
 
 const { handleSubmit, isSubmitting, errors, setFieldValue, setErrors } = useForm<IUploadForOcr>({
   initialValues: {
@@ -34,11 +32,10 @@ const { handleSubmit, isSubmitting, errors, setFieldValue, setErrors } = useForm
 
 const onSubmit = handleSubmit(async (values) => {
   try {
-    await expenseService.uploadForOcr(values)
+    await uploadForOcr(values)
     toast.success(t('expense.uploadForOcr.success', 'Files uploaded successfully'))
     isOpen.value = false
     draggedFiles.value = []
-    emit('uploaded')
   } catch (error) {
     console.error(error)
     if (isValidationError(error)) setErrors(error.response.data.errors)

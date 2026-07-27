@@ -9,11 +9,12 @@ import type { IExpenseCreate } from '@/domains/expense/types/expense.type'
 
 const { t } = useI18n()
 
-defineProps<{
+const props = defineProps<{
   values: IExpenseCreate
+  onSellerUpdate: (contractor: IContractorLookup | undefined) => void
 }>()
 
-const seller = defineModel<IContractorLookup | undefined>('seller')
+const seller = defineModel<IContractorLookup | undefined>()
 </script>
 
 <template>
@@ -28,7 +29,7 @@ const seller = defineModel<IContractorLookup | undefined>('seller')
     <ContractorPicker
       :model-value="seller"
       class="w-50 overflow-hidden"
-      @update:model-value="seller = $event"
+      @update:model-value="(contractor) => { seller = contractor; props.onSellerUpdate(contractor) }"
     >
       <template #trigger>
         {{ t('shared.contractor.select') }}

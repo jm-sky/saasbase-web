@@ -22,6 +22,7 @@ const props = withDefaults(defineProps<Props>(), {
 
 <template>
   <Primitive
+    data-slot="button"
     :as="as"
     :as-child="asChild"
     :class="cn(buttonVariants({ variant, size, vibe }), props.class)"
@@ -31,10 +32,7 @@ const props = withDefaults(defineProps<Props>(), {
       <LoadingIcon />
     </template>
     <template v-else>
-      <i
-        v-if="icon"
-        :class="icon"
-      />
+      <i v-if="icon" :class="icon" />
       <slot>
         {{ label }}
       </slot>

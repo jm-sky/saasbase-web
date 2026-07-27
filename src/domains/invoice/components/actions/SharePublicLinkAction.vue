@@ -4,30 +4,43 @@ import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { Button } from '@/components/ui/button'
 import { DropdownMenuItem } from '@/components/ui/dropdown-menu'
-import { useToast } from '@/components/ui/toast'
+import { toast } from '@/components/ui/toast'
+import { copyToClipboard } from '@/lib/copyToClipboard'
+import { invoiceShareTokenService, buildPublicInvoiceShareUrl } from '../../services/invoiceShareTokenService'
+import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
 import type { IInvoice } from '../../types/invoice.type'
 
 const { t } = useI18n()
-const { toast } = useToast()
+const loading = ref(false)
 
-defineProps<{
+const { invoice, invoices, variant = 'menu-item' } = defineProps<{
   invoice?: IInvoice
   invoices?: IInvoice[]
   variant?: 'button' | 'menu-item'
 }>()
 
-const loading = ref(false)
+const targetInvoice = () => invoice ?? invoices?.[0]
 
 const sharePublicLink = async () => {
-  loading.value = true
+  const current = targetInvoice()
+  if (!current?.id) return
+
   try {
-    // TODO: Implement service integration
-    await new Promise(resolve => setTimeout(resolve, 1000))
-    // Copy link to clipboard
-    toast.success(t('invoice.actions.shareLink.success', 'Public link copied to clipboard'))
+    loading.value = true
+    const expiresAt = new Date()
+    expiresAt.setDate(expiresAt.getDate() + 30)
+
+    const shareToken = await invoiceShareTokenService.create(current.id, {
+      expiresAt: expiresAt.toISOString(),
+      onlyForAuthenticated: false,
+      maxUsage: 100,
+    })
+
+    const publicUrl = buildPublicInvoiceShareUrl(shareToken.token)
+    await copyToClipboard(publicUrl)
+    toast.success(t('invoice.actions.shareLink.success'))
   } catch (error) {
-    console.error('Failed to generate public link:', error)
-    toast.error(t('invoice.actions.shareLink.error', 'Failed to generate public link'))
+    handleErrorWithToast(t('invoice.actions.shareLink.error'), error)
   } finally {
     loading.value = false
   }
@@ -39,19 +52,20 @@ const sharePublicLink = async () => {
     v-if="variant === 'button'"
     variant="outline"
     size="sm"
-    :disabled="loading || (!invoice && !invoices?.length)"
+    :disabled="loading || !targetInvoice()"
+    :loading="loading"
     @click="sharePublicLink"
   >
     <Share class="size-4" />
-    {{ t('invoice.actions.shareLink.title', 'Share Link') }}
+    {{ t('invoice.actions.shareLink.title') }}
   </Button>
   <DropdownMenuItem
     v-else
     hoverable
-    :disabled="loading || (!invoice && !invoices?.length)"
+    :disabled="loading || !targetInvoice()"
     @click="sharePublicLink"
   >
     <Share class="size-4 mr-2" />
-    {{ t('invoice.actions.shareLink.title', 'Share Link') }}
+    {{ t('invoice.actions.shareLink.title') }}
   </DropdownMenuItem>
 </template>

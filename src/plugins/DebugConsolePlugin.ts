@@ -27,12 +27,13 @@ export default {
           return '[Unserializable]'
         }
       }).join(' ')}\n`
-      // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
+       
       logDiv.textContent += entry
       logDiv.scrollTop = logDiv.scrollHeight
     };
 
     ['log', 'warn', 'error'].forEach(type => {
+      // eslint-disable-next-line @typescript-eslint/unbound-method -- called via .apply(console, args) below, this is always bound correctly
       const original = console[type as keyof Console]
       console[type as keyof Console] = (...args: any[]) => {
         original.apply(console, args)

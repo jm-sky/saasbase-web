@@ -16,10 +16,10 @@ import { useAuthStore } from '@/domains/auth/store/auth.store'
 import { downloadBlob } from '@/lib/downloadBlob'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
 import { isValidationError } from '@/lib/validation'
-import type { IIdentityConfirmationResponse } from '../types/identityConfirmation.type'
 import { identityConfirmationService } from '../services/identityConfirmation.service'
 import SignatureInfoSection from './SignatureInfoSection.vue'
 import SignatureInfoSectionItem from './SignatureInfoSectionItem.vue'
+import type { IIdentityConfirmationResponse } from '../types/identityConfirmation.type'
 
 interface IConfirmIdentityByTrustedProfileForm {
   file: File

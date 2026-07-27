@@ -25,8 +25,8 @@ import {
 import { config } from '@/config'
 import { useAuthStore } from '@/domains/auth/store/auth.store'
 import TenantBrandInfo from '@/domains/tenant/components/branding/TenantBrandInfo.vue'
-import type { MenuItemOrMenuCategory } from './menu.type'
 import UIIcon from '../UIIcon.vue'
+import type { MenuItemOrMenuCategory } from './menu.type'
 import type { SidebarProps } from '@/components/ui/sidebar'
 
 const { t } = useI18n()
@@ -112,19 +112,34 @@ const menu = computed<MenuItemOrMenuCategory[]>(() => {
       url: '/chat',
       icon: Mail,
     },
-    {
-      title: t('common.menu.configurations'),
-      isCategory: true,
-    },
   ]
 
   if (authStore.tenantId) {
     items.push({
-      title: t('tenant.title'),
+      title: t('tenant.menuCategories.tenantSettings'),
+      isCategory: true,
+    })
+    items.push({
+      title: t('tenant.menuCategories.companySettings'),
       icon: Building2,
-      url: `/tenants/${authStore.tenantId}/show/overview`,
+      url: `/tenants/${authStore.tenantId}/show`,
+    })
+    items.push({
+      title: t('tenant.menuCategories.financialSettings'),
+      icon: DollarSign,
+      url: `/tenants/${authStore.tenantId}/financial-settings`,
+    })
+    items.push({
+      title: t('tenant.menuCategories.usersSettings'),
+      icon: Users,
+      url: `/tenants/${authStore.tenantId}/user-settings`,
     })
   }
+
+  items.push({
+    title: t('settings.category'),
+    isCategory: true,
+  })
 
   items.push({
     title: t('common.settings'),

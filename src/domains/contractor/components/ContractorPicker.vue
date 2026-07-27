@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { templateRef, useDebounceFn, useInfiniteScroll } from '@vueuse/core'
+import { useDebounceFn, useInfiniteScroll } from '@vueuse/core'
 import { Plus } from 'lucide-vue-next'
-import { computed, nextTick, onMounted, ref, watch } from 'vue'
+import { computed, nextTick, onMounted, ref, useTemplateRef, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import LoadingIcon from '@/components/Icons/LoadingIcon.vue'
 import {
@@ -16,8 +16,8 @@ import { CommandEmpty, CommandGroup } from '@/components/ui/command'
 import { config } from '@/config'
 import TagList from '@/domains/tags/components/TagList.vue'
 import { useCache } from '@/lib/cache'
-import type { IContractorLookup } from '../types/contractor.type'
 import { contractorService, type IContractorFilters } from '../services/ContractorService'
+import type { IContractorLookup } from '../types/contractor.type'
 import type { FilterDefinition } from '@/domains/shared/types/resource.type'
 
 const { t } = useI18n()
@@ -30,8 +30,8 @@ const {
   disabled,
   class: classProp,
   type = 'buyer',
-  showCreateButton = false,
-  showVatId = true,
+  showCreateButton,
+  showVatId,
   perPage = 20,
   maxHeight = '300px'
 } = defineProps<{
@@ -56,7 +56,7 @@ const contractors = ref<IContractorLookup[]>([])
 const currentPage = ref(1)
 const hasMoreData = ref(true)
 const error = ref<string | null>(null)
-const listRef = templateRef<HTMLElement>('listRef')
+const listRef = useTemplateRef<HTMLElement>('listRef')
 const recentSelections = ref<IContractorLookup[]>([])
 
 // Load recent selections from localStorage

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { RefreshCw } from 'lucide-vue-next'
-import { onMounted, ref, watch } from 'vue'
+import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import ButtonLink from '@/components/ButtonLink.vue'
 import DataListsWrapper from '@/components/DataLists/DataListsWrapper.vue'
@@ -9,27 +9,18 @@ import SearchField from '@/components/DataLists/Filters/SearchField.vue'
 import { Button } from '@/components/ui/button'
 import DeleteProjectButton from '@/domains/project/components/DeleteProjectButton.vue'
 import EditProjectButton from '@/domains/project/components/EditProjectButton.vue'
-import { type IProjectFilters, projectService } from '@/domains/project/services/ProjectService'
+import { useProjectList } from '@/domains/project/composables/useProjectQueries'
+import { type IProjectFilters } from '@/domains/project/services/ProjectService'
 import { useProjectStore } from '@/domains/project/stores/project.store'
 import AuthenticatedLayout from '@/layouts/AuthenticatedLayout.vue'
 import { toDateString } from '@/lib/toDateString'
 import { toDateTimeString } from '@/lib/toDateTimeString'
-import type { ColumnDef } from '@tanstack/vue-table'
 import type { IProject } from '@/domains/project/types/project.type'
-import type { IResourceMeta } from '@/domains/shared/types/resource.type'
+import type { ColumnDef } from '@tanstack/vue-table'
 
 const { t } = useI18n()
 const projectStore = useProjectStore()
 
-const projects = ref<IProject[]>([])
-const meta = ref<IResourceMeta>({
-  currentPage: 1,
-  lastPage: 1,
-  perPage: 10,
-  total: 0,
-})
-const loading = ref(false)
-const error = ref<string | null>(null)
 const filters = ref<IProjectFilters>({
   search: '',
   page: 1,
@@ -66,26 +57,11 @@ const columns: ColumnDef<IProject>[] = [
   },
 ]
 
-const refresh = async () => {
-  try {
-    loading.value = true
-    error.value = null
-    const response = await projectService.index(filters.value)
-    projects.value = response.data
-    meta.value = response.meta
-  } catch (err) {
-    error.value = 'Failed to load projects'
-    console.error(err)
-  } finally {
-    loading.value = false
-  }
-}
+const { data: response, isPending: loading, isError, refetch } = useProjectList(filters)
 
-onMounted(() => {
-  void refresh()
-})
-
-watch(filters, () => refresh(), { deep: true })
+const projects = computed(() => response.value?.data ?? [])
+const total = computed(() => response.value?.meta.total ?? 0)
+const error = computed(() => isError.value ? t('project.list.error', 'Failed to load projects') : null)
 </script>
 
 <template>
@@ -93,7 +69,7 @@ watch(filters, () => refresh(), { deep: true })
     <DataListsWrapper :title="t('project.title')" :loading :error>
       <template #actions>
         <SearchField v-model="filters.search" />
-        <Button variant="ghost" @click="refresh">
+        <Button variant="ghost" @click="refetch()">
           <RefreshCw class="size-4" />
         </Button>
 
@@ -108,7 +84,7 @@ watch(filters, () => refresh(), { deep: true })
         v-model:page-size="filters.perPage"
         :columns="columns"
         :data="projects"
-        :total="meta.total"
+        :total="total"
         :page-size-options="[10, 20, 30, 40, 50]"
       >
         <template #name="{ data }">
@@ -124,12 +100,12 @@ watch(filters, () => refresh(), { deep: true })
         <template #actions="{ data }">
           <div class="flex gap-2 justify-end w-full whitespace-nowrap min-w-0">
             <EditProjectButton :id="data.id" @click="projectStore.setProject(data)" />
-            <DeleteProjectButton :id="data.id" @deleted="refresh" />
+            <DeleteProjectButton :id="data.id" />
           </div>
         </template>
         <template #actions-header>
           <div class="w-full text-right">
-            {{ t('actions') }}
+            {{ t('common.actions') }}
           </div>
         </template>
       </DataTable>

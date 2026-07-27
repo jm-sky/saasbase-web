@@ -1,13 +1,13 @@
+import api from '@/lib/api'
+import { apiRoutesMap } from '@/lib/api/apiRoutes'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
-
-const delay = (ms = 500) => new Promise((resolve) => setTimeout(resolve, ms))
 
 export interface Device {
   id: string
-  name: string
-  type: string
-  lastActive: string
-  location: string
+  deviceName: string | null
+  userAgent: string | null
+  ipAddress: string | null
+  lastActiveAt: string
   isCurrent: boolean
 }
 
@@ -91,33 +91,18 @@ export class AccountService {
   }
 
   async getDevices(): Promise<Device[]> {
-    // TODO: Implement API call
-    await delay()
-    return [
-      {
-        id: '1',
-        name: 'MacBook Pro',
-        type: 'Desktop',
-        lastActive: '2024-03-20T10:30:00Z',
-        location: 'New York, USA',
-        isCurrent: true,
-      },
-      {
-        id: '2',
-        name: 'iPhone 13',
-        type: 'Mobile',
-        lastActive: '2024-03-20T09:15:00Z',
-        location: 'New York, USA',
-        isCurrent: false,
-      },
-    ]
+    try {
+      const response = await api.get<{ data: Device[] }>(apiRoutesMap.authSessions)
+      return response.data.data
+    } catch (error) {
+      handleErrorWithToast('Failed to fetch devices', error)
+      throw error
+    }
   }
 
   async terminateSession(sessionId: string): Promise<void> {
     try {
-      await this.delay()
-      // TODO: Replace with actual API call
-      console.log('Terminating session:', sessionId)
+      await api.delete(`${apiRoutesMap.authSessions}/${sessionId}`)
     } catch (error) {
       handleErrorWithToast('Failed to terminate session', error)
       throw error
@@ -126,8 +111,7 @@ export class AccountService {
 
   async terminateAllSessions(): Promise<void> {
     try {
-      await this.delay()
-      // TODO: Replace with actual API call
+      await api.post(`${apiRoutesMap.authSessions}/revoke-others`)
     } catch (error) {
       handleErrorWithToast('Failed to terminate all sessions', error)
       throw error

@@ -1,28 +1,55 @@
 <script setup lang="ts">
-import { LockIcon, LockOpenIcon, Pencil, Star, Trash, Zap } from 'lucide-vue-next'
+import { Copy, LockIcon, LockOpenIcon, Pencil, Star, Trash, Zap } from 'lucide-vue-next'
+import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
+import ButtonLink from '@/components/ButtonLink.vue'
 import Badge from '@/components/ui/badge/Badge.vue'
 import Button from '@/components/ui/button/Button.vue'
 import { useToast } from '@/components/ui/toast'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
-import type { IInvoiceTemplate } from '../../types/invoiceTemplate.type'
+import { routeMap } from '@/router/routeMap'
+import { useInvoiceTemplates } from '../../helpers/useInvoiceTemplates'
 import { invoiceTemplateService } from '../../services/InvoiceTemplate.service'
+import type { IInvoiceTemplatePreview } from '../../types/invoiceTemplate.type'
+import type { TUUID } from '@/domains/shared/types/common'
 
 const { t } = useI18n()
 const { toast } = useToast()
+const { setTemplate } = useInvoiceTemplates()
 
-defineProps<{
-  template: IInvoiceTemplate
+const props = defineProps<{
+  tenantId: TUUID
+  template: IInvoiceTemplatePreview
 }>()
 
 const emit = defineEmits<{
-  'changed-active-state': [template: IInvoiceTemplate]
-  'changed-default-status': [template: IInvoiceTemplate]
-  'deleted': [template: IInvoiceTemplate]
-  'edit': [template: IInvoiceTemplate]
+  'changed-active-state': [template: IInvoiceTemplatePreview]
+  'changed-default-status': [template: IInvoiceTemplatePreview]
+  'deleted': [template: IInvoiceTemplatePreview]
 }>()
 
-const toggleDefault = async (template: IInvoiceTemplate) => {
+const editTemplateRoute = computed(() => {
+  return {
+    name: routeMap.tenant.financialSettings.invoiceTemplatesEdit,
+    params: {
+      id: props.tenantId,
+      templateId: props.template.id,
+    }
+  }
+})
+
+const copyTemplateRoute = computed(() => {
+  return {
+    name: routeMap.tenant.financialSettings.invoiceTemplatesEdit,
+    params: { id: null },
+    query: {
+      id: props.tenantId,
+      parentId: props.template.id,
+    }
+  }
+})
+
+const toggleDefault = async (template: IInvoiceTemplatePreview) => {
   if (template.isDefault || template.isSystem) return
 
   try {
@@ -34,7 +61,7 @@ const toggleDefault = async (template: IInvoiceTemplate) => {
   }
 }
 
-const toggleActive = async (template: IInvoiceTemplate) => {
+const toggleActive = async (template: IInvoiceTemplatePreview) => {
   if (template.isSystem) return
 
   try {
@@ -51,7 +78,7 @@ const toggleActive = async (template: IInvoiceTemplate) => {
   }
 }
 
-const deleteTemplate = async (template: IInvoiceTemplate) => {
+const deleteTemplate = async (template: IInvoiceTemplatePreview) => {
   if (template.isSystem || template.isDefault) return
 
   if (!confirm(t('tenant.invoiceTemplates.delete.confirm', { name: template.name }))) {
@@ -70,10 +97,10 @@ const deleteTemplate = async (template: IInvoiceTemplate) => {
 
 <template>
   <div class="bg-card border border-border rounded-lg p-4 shadow hover:shadow-md transition-shadow">
-    <div class="flex justify-between items-start">
+    <div class="flex justify-between items-start flex-wrap">
       <div class="flex-1">
-        <div class="flex items-center space-x-2 mb-2">
-          <h3 class="text-lg font-semibold flex items-center gap-2">
+        <div class="flex items-center gap-2 mb-2">
+          <h3 class="flex items-center gap-2 text-lg font-semibold">
             <LockIcon v-if="template.isSystem" class="size-4 opacity-50" />
             <LockOpenIcon v-else class="size-4 opacity-50" />
             {{ template.name }}
@@ -88,6 +115,7 @@ const deleteTemplate = async (template: IInvoiceTemplate) => {
             {{ template.isActive ? $t('common.active') : $t('common.inactive') }}
           </Badge>
         </div>
+
         <p v-if="template.description" class="text-muted-foreground mb-2">
           {{ template.description }}
         </p>
@@ -95,16 +123,27 @@ const deleteTemplate = async (template: IInvoiceTemplate) => {
           {{ t('tenant.invoiceTemplates.category') }}: {{ template.category }}
         </div>
       </div>
+
       <div class="flex gap-1 ml-4">
-        <Button
+        <ButtonLink
           v-tooltip="t('common.edit')"
           :disabled="template.isSystem"
           variant="ghost"
           size="icon"
-          @click="emit('edit', template)"
+          :to="editTemplateRoute"
+          @click="setTemplate(template)"
         >
           <Pencil class="size-4" />
-        </Button>
+        </ButtonLink>
+        <ButtonLink
+          v-tooltip="t('common.copy')"
+          variant="ghost"
+          size="icon"
+          :to="copyTemplateRoute"
+          @click="setTemplate(template)"
+        >
+          <Copy class="size-4" />
+        </ButtonLink>
         <Button
           v-tooltip="t('tenant.invoiceTemplates.setDefault.setAsDefault')"
           :disabled="template.isDefault || template.isSystem"

@@ -3,9 +3,9 @@ import { X } from 'lucide-vue-next'
 import Button from '@/components/ui/button/Button.vue'
 import Separator from '@/components/ui/separator/Separator.vue'
 import { useAuthStore } from '@/domains/auth/store/auth.store'
-import type { IChatRoom } from '../types/chat.type'
 import ChatSidebarRooms from './ChatSidebarRooms.vue'
 import ChatSidebarUsers from './ChatSidebarUsers.vue'
+import type { IChatRoom } from '../types/chat.type'
 import type { IUserPreview } from '@/domains/user/types/user.type'
 
 defineProps<{

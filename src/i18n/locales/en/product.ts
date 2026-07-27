@@ -10,6 +10,10 @@ export const product = {
     priceNet: 'Price Net',
     vatRate: 'VAT Rate',
     tags: 'Tags',
+    ean: 'EAN',
+    pkwiuCode: 'PKWiU Code',
+    gtuCodes: 'GTU Codes',
+    gtuCode: 'GTU Code',
     actions: 'Actions',
     createdAt: 'Created At',
     updatedAt: 'Updated At',
@@ -25,6 +29,10 @@ export const product = {
   add: {
     title: 'Add Product',
     description: 'Add a new product to the system.'
+  },
+  edit: {
+    success: 'Product updated successfully',
+    error: 'Failed to update product',
   },
   delete: {
     success: 'Product deleted successfully',

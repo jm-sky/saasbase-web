@@ -59,11 +59,10 @@ watch(open, (isOpen) => {
 
 <template>
   <ModalComponent
+    v-model:open="open"
     size="lg"
     :title="t('tenant.addresses.add.title')"
     :description="t('tenant.addresses.add.description')"
-    :open="open"
-    @update:open="open = $event"
   >
     <form
       class="grid grid-cols-1 md:grid-cols-2 gap-4"

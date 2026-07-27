@@ -135,7 +135,7 @@ const uploaderService: UploaderService = {
     <FormItem class="col-span-full flex items-center justify-between space-y-0">
       <FormLabel>{{ t('settings.profile.user.isPublicProfile') }}</FormLabel>
       <FormControl>
-        <Switch v-bind="componentField" :checked="profile?.isPublicProfile" />
+        <Switch v-bind="componentField" :model-value="profile?.isPublicProfile" />
       </FormControl>
       <FormMessage />
     </FormItem>
@@ -193,7 +193,7 @@ const uploaderService: UploaderService = {
         <FormItem class="flex flex-col justify-center items-end">
           <FormLabel>{{ t('settings.profile.public') }}</FormLabel>
           <FormControl>
-            <Switch v-bind="componentField" :checked="profile?.publicFields?.email" class="mb-0" />
+            <Switch v-bind="componentField" :model-value="profile?.publicFields?.email" class="mb-0" />
           </FormControl>
           <FormMessage />
         </FormItem>
@@ -224,7 +224,7 @@ const uploaderService: UploaderService = {
         <FormItem class="flex flex-col justify-center items-end">
           <FormLabel>{{ t('settings.profile.public') }}</FormLabel>
           <FormControl>
-            <Switch v-bind="componentField" :checked="profile?.publicFields?.phone" class="mb-0" />
+            <Switch v-bind="componentField" :model-value="profile?.publicFields?.phone" class="mb-0" />
           </FormControl>
           <FormMessage />
         </FormItem>
@@ -245,7 +245,7 @@ const uploaderService: UploaderService = {
         <FormItem class="flex flex-col justify-center items-end">
           <FormLabel>{{ t('settings.profile.public') }}</FormLabel>
           <FormControl>
-            <Switch v-bind="componentField" :checked="profile?.publicFields?.birthDate" class="mb-0" />
+            <Switch v-bind="componentField" :model-value="profile?.publicFields?.birthDate" class="mb-0" />
           </FormControl>
           <FormMessage />
         </FormItem>

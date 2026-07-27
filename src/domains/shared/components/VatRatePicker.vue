@@ -19,9 +19,9 @@ import {
 } from '@/components/ui/popover'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
 import { cn } from '@/lib/utils'
-import type { IVatRate } from '../types/vatRate.type'
 import { vatRateService } from '../services/vatRate.service'
 import { useVatRateStore } from '../stores/vatRate.store'
+import type { IVatRate } from '../types/vatRate.type'
 
 const { t } = useI18n()
 const vatRateStore = useVatRateStore()
@@ -30,13 +30,26 @@ const { vatRates } = storeToRefs(vatRateStore)
 const id = defineModel<string | undefined>('id')
 const modelValue = defineModel<IVatRate | undefined>('modelValue', { required: true })
 
-defineProps<{
+const props = defineProps<{
   popoverContentClass?: string
   disabled?: boolean
+  pickFirst?: boolean
 }>()
 
 const open = ref(false)
 const loading = ref(false)
+
+const pickFirstValueIfNeeded = () => {
+  if (!props.pickFirst) return
+  if (vatRates.value.length === 0) return
+  const value = id.value ? vatRates.value.find((rate) => rate.id === id.value) : vatRates.value[0]
+  setValue(value)
+}
+
+const setValue = (value: IVatRate | undefined) => {
+  id.value = value?.id
+  modelValue.value = value
+}
 
 const loadVatRates = async () => {
   try {
@@ -54,15 +67,15 @@ const loadVatRates = async () => {
 const onSelect = (event: any) => {
   const selectedId = event.detail.value
   const selectedVatRate = vatRates.value.find((rate) => rate.id === selectedId)
-  id.value = selectedVatRate?.id
-  modelValue.value = selectedVatRate
+  setValue(selectedVatRate)
   open.value = false
 }
 
-onMounted(() => {
+onMounted(async () => {
   if (vatRates.value.length === 0) {
-    void loadVatRates()
+    await loadVatRates()
   }
+  pickFirstValueIfNeeded()
 })
 </script>
 

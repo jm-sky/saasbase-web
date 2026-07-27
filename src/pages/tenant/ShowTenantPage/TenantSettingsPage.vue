@@ -67,7 +67,7 @@ const submit = handleSubmit((values) => {
             {{ t('tenant.settings.fields.require2fa') }}
           </FormLabel>
           <FormControl>
-            <Switch v-bind="componentField" :checked="values?.require2fa" />
+            <Switch v-bind="componentField" :model-value="values?.require2fa" />
           </FormControl>
           <FormDescription />
           <FormMessage />

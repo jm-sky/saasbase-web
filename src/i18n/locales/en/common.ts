@@ -4,6 +4,7 @@ export const common = {
   deactivate: 'Deactivate',
   activate: 'Activate',
   cancel: 'Cancel',
+  copy: 'Copy',
   inactive: 'Inactive',
   add: 'Add',
   back: 'Back',
@@ -27,6 +28,7 @@ export const common = {
   refresh: 'Refresh',
   or: 'or',
   error: 'Error',
+  unknownError: 'An unexpected error occurred. Please try again.',
   noItems: 'No items',
   createdAt: 'Created at',
   tags: 'Tags',
@@ -50,7 +52,9 @@ export const common = {
   },
   language: {
     en: 'English',
-    pl: 'Polish'
+    pl: 'Polish',
+    uk: 'Ukrainian',
+    ru: 'Russian',
   },
   fileUpload: {
     upload: 'Upload',
@@ -83,5 +87,16 @@ export const common = {
     communication: 'Communication',
     configurations: 'Configurations',
     other: 'Other',
-  }
+  },
+  form: {
+    validationErrors: 'Validation errors',
+  },
+  pwa: {
+    update: {
+      title: 'Update available',
+      description: 'A new version of SaaSBase is available. Reload to update.',
+      later: 'Later',
+      reload: 'Reload',
+    },
+  },
 }

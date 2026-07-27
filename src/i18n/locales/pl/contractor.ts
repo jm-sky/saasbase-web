@@ -1,6 +1,9 @@
 export const contractor = {
   title: 'Kontrahenci',
   contractorDetails: 'Szczegóły kontrahenta',
+  list: {
+    error: 'Nie udało się załadować kontrahentów',
+  },
   fields: {
     name: 'Nazwa',
     country: 'Kraj',
@@ -39,6 +42,8 @@ export const contractor = {
   edit: {
     title: 'Edytuj kontrahenta',
     description: 'Edytuj kontrahenta.',
+    success: 'Kontrahent zaktualizowany pomyślnie',
+    error: 'Nie udało się edytować kontrahenta',
   },
   delete: {
     success: 'Kontrahent usunięty pomyślnie',
@@ -69,5 +74,22 @@ export const contractor = {
       title: 'Edytuj adres',
       description: 'Edytuj adres kontrahenta.',
     },
-  }
+  },
+  preferences: {
+    title: 'Preferencje',
+    description: 'Preferencje kontrahenta.',
+    success: 'Preferencje zaktualizowane pomyślnie',
+    error: 'Nie udało się zaktualizować preferencji',
+    fields: {
+      defaultPaymentMethod: 'Domyślna metoda płatności',
+      defaultPaymentMethodId: 'Domyślna metoda płatności',
+      defaultPaymentMethodIdDescription: 'Domyślna metoda płatności dla kontrahenta używana w fakturach.',
+      defaultCurrency: 'Domyślna waluta',
+      defaultCurrencyCode: 'Domyślna waluta',
+      defaultLanguage: 'Domyślny język',
+      defaultLanguageDescription: 'Domyślny język dla kontrahenta używany w fakturach.',
+      defaultPaymentDays: 'Domyślne dni płatności',
+      defaultTags: 'Domyślne tagi',
+    },
+  },
 }

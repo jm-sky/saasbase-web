@@ -1,7 +1,9 @@
 import type { IInvoiceNumberingTemplate } from './numberingTemplate.type'
-import type { IInvoiceBody, IInvoiceBuyer, IInvoiceOptions, IInvoicePayment, IInvoiceSeller, TApprovalStatus, TDeliveryStatus, TInvoiceStatus, TInvoiceType } from '@/domains/financial/types/financial.type'
+import type { IInvoiceBody, IInvoiceBuyer, IInvoiceOptions, IInvoicePayment, IInvoiceSeller, TApprovalStatus, TDeliveryStatus, TInvoiceStatus, TInvoiceType, TPaymentStatus } from '@/domains/financial/types/financial.type'
 import type { TDate, TDateTime, TUUID } from '@/domains/shared/types/common'
 import type { ITagPreview } from '@/domains/tags/types/tag.type'
+
+export type TAllocationStatus = 'PENDING' | 'ALLOCATED' | 'PARTIALLY_ALLOCATED'
 
 // Main Invoice interface
 export interface IInvoice {
@@ -24,17 +26,26 @@ export interface IInvoice {
   payment: IInvoicePayment;
   options: IInvoiceOptions;
   tags: ITagPreview[];
-  issueDate?: TDate | null;
-  createdAt?: TDateTime | null;
-  updatedAt?: TDateTime | null;
+  issueDate: TDate;
+  createdAt: TDateTime;
+  updatedAt: TDateTime;
   numberingTemplate?: IInvoiceNumberingTemplate;
 }
 
 export interface IInvoiceCreate {
   type: TInvoiceType;
-  status: TInvoiceStatus;
+  issueDate: TDate;
+  status?: TInvoiceStatus;
+  statusInfo?: {
+    general?: TInvoiceStatus;
+    ocr?: TApprovalStatus;
+    allocation?: TAllocationStatus;
+    approval?: TApprovalStatus;
+    delivery?: TDeliveryStatus;
+    payment?: TPaymentStatus;
+  };
   number: string;
-  numberingTemplateId?: string;
+  numberingTemplateId: string;
   totalNet: number;
   totalTax: number;
   totalGross: number;
@@ -45,7 +56,6 @@ export interface IInvoiceCreate {
   body: IInvoiceBody;
   payment: IInvoicePayment;
   options: IInvoiceOptions;
-  issueDate: TDate;
   numberingTemplate?: IInvoiceNumberingTemplate;
 }
 

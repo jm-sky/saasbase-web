@@ -1,35 +1,27 @@
 <script setup lang="ts">
 import { Trash2 } from 'lucide-vue-next'
-import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { Button } from '@/components/ui/button'
-import { useToast } from '@/components/ui/toast/use-toast'
-import { contractorService } from '@/domains/contractor/services/ContractorService'
+import { toast } from '@/components/ui/toast'
+import { useDeleteContractor } from '@/domains/contractor/composables/useContractorMutations'
+import { useCan } from '@/domains/rights/composables/useCan'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
 
-const { toast } = useToast()
 const { t } = useI18n()
+const { isOwnerOrAdmin } = useCan()
 
 const props = defineProps<{
   id: string
 }>()
 
-const loading = ref(false)
-
-const emit = defineEmits<{
-  delete: [id: string]
-}>()
+const { mutateAsync: deleteContractorMutation, isPending: loading } = useDeleteContractor()
 
 const deleteContractor = async () => {
   if (!confirm(t('contractor.delete.confirm', 'Are you sure you want to delete this contractor?'))) return
   try {
-    loading.value = true
-    await contractorService.delete(props.id)
-    emit('delete', props.id)
-    loading.value = false
+    await deleteContractorMutation(props.id)
     toast.success(t('contractor.delete.success', 'Contractor deleted successfully'))
   } catch (error) {
-    loading.value = false
     handleErrorWithToast(t('contractor.delete.error', 'Failed to delete contractor'), error)
   }
 }
@@ -37,6 +29,7 @@ const deleteContractor = async () => {
 
 <template>
   <Button
+    v-if="isOwnerOrAdmin"
     v-tooltip="t('common.delete', 'Delete')"
     variant="destructive"
     size="sm"

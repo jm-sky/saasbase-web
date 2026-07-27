@@ -18,9 +18,9 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover'
 import { cn } from '@/lib/utils'
-import type { IMeasurementUnit } from '../types/measurementUnit.type'
 import { measurementUnitService } from '../services/measurementUnit.service'
 import { useMeasurementUnitStore } from '../stores/measurementUnit.store'
+import type { IMeasurementUnit } from '../types/measurementUnit.type'
 
 const { t } = useI18n()
 const measurementUnitStore = useMeasurementUnitStore()

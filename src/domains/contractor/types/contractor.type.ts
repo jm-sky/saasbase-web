@@ -1,5 +1,7 @@
 import type { IAddress } from '@/domains/shared/types/address.type'
+import type { IBankAccount } from '@/domains/shared/types/bankAccount.type'
 import type { TDateTime, TUUID } from '@/domains/shared/types/common'
+import type { ICurrency } from '@/domains/shared/types/currency.type'
 import type { IMedia } from '@/domains/shared/types/media.type'
 import type { IPaymentMethod } from '@/domains/shared/types/paymentMethod.type'
 import type { IRegistryConfirmation } from '@/domains/shared/types/registryConfirmation'
@@ -14,7 +16,7 @@ export interface IContractorAddress extends IAddress {
 
 export type IContractorAddressCreate = Omit<IContractorAddress, 'id' | 'tenantId' | 'meta' | 'createdAt' | 'updatedAt'>
 
-export interface IContractorBankAccount {
+export interface IContractorBankAccount extends IBankAccount {
   id: TUUID
   contractorId: TUUID
   iban: string
@@ -70,14 +72,18 @@ export type TContractorType =
 
 export interface IContractorPreferences {
   id: TUUID
-  defaultPaymentMethodId?: TUUID
-  defaultCurrency?: string
-  defaultPaymentDays?: number
+  defaultPaymentMethodId?: TUUID | null
+  defaultCurrencyCode?: TUUID | null
+  defaultLanguage?: string | null
+  defaultPaymentDays?: number | null
   defaultTags?: string[]
+  defaultCurrency?: ICurrency
   defaultPaymentMethod?: IPaymentMethod
   createdAt: TDateTime
   updatedAt: TDateTime
 }
+
+export type IContractorPreferencesUpdate = Omit<IContractorPreferences, 'id' | 'createdAt' | 'updatedAt'>
 
 export interface IContractor {
   id: TUUID
@@ -122,6 +128,7 @@ export interface IContractorLookup {
   logo?: IMedia
   preferences?: IContractorPreferences
   defaultAddress?: IContractorAddress
+  [key: string]: unknown
 }
 
 export type IContractorCreate = Omit<IContractor, 'id' | 'tenantId' | 'logo' | 'logoUrl' | 'createdAt' | 'updatedAt'>

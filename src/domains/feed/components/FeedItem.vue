@@ -64,7 +64,7 @@ const canDelete = computed(() => feed.creator?.id === authStore.user?.id)
             <DropdownMenuContent align="end">
               <DropdownMenuItem
                 v-if="canEdit"
-                class="cursor-pointer gap-2 hover:bg-accent"
+                hoverable
                 @click="emit('edit', feed)"
               >
                 <Icon icon="lucide:edit" />
@@ -72,7 +72,8 @@ const canDelete = computed(() => feed.creator?.id === authStore.user?.id)
               </DropdownMenuItem>
               <DropdownMenuItem
                 v-if="canDelete"
-                class="cursor-pointer gap-2 hover:bg-accent"
+                hoverable
+                variant="destructive"
                 @click="emit('delete', feed)"
               >
                 <Icon icon="lucide:trash" />

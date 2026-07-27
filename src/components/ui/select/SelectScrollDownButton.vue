@@ -1,22 +1,20 @@
 <script setup lang="ts">
+import { reactiveOmit } from '@vueuse/core'
 import { ChevronDown } from 'lucide-vue-next'
-import { SelectScrollDownButton, type SelectScrollDownButtonProps, useForwardProps } from 'radix-vue'
-import { computed, type HTMLAttributes } from 'vue'
+import { SelectScrollDownButton, type SelectScrollDownButtonProps, useForwardProps } from 'reka-ui'
 import { cn } from '@/lib/utils'
+import type { HTMLAttributes } from 'vue'
 
 const props = defineProps<SelectScrollDownButtonProps & { class?: HTMLAttributes['class'] }>()
 
-const delegatedProps = computed(() => {
-  const { class: _, ...delegated } = props // eslint-disable-line @typescript-eslint/no-unused-vars
-
-  return delegated
-})
+const delegatedProps = reactiveOmit(props, 'class')
 
 const forwardedProps = useForwardProps(delegatedProps)
 </script>
 
 <template>
   <SelectScrollDownButton
+    data-slot="select-scroll-down-button"
     v-bind="forwardedProps"
     :class="cn('flex cursor-default items-center justify-center py-1', props.class)"
   >

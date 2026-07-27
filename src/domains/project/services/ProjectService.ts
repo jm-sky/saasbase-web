@@ -1,9 +1,9 @@
 import { buildSpatieQuery } from '@/domains/shared/helpers/filtering'
 import api from '@/lib/api'
 import { apiRoutesMap } from '@/lib/api/apiRoutes'
-import type { SortingState } from '@tanstack/vue-table'
-import type { IProject } from '@/domains/project/types/project.type'
+import type { IProject, IProjectCreatePayload } from '@/domains/project/types/project.type'
 import type { FilterDefinition, IResource, IResourceCollection } from '@/domains/shared/types/resource.type'
+import type { SortingState } from '@tanstack/vue-table'
 
 export interface IProjectFilters {
   search?: string
@@ -25,7 +25,7 @@ class ProjectService {
     return response.data.data
   }
 
-  async create(project: Omit<IProject, 'id' | 'createdAt' | 'updatedAt'>): Promise<IProject> {
+  async create(project: IProjectCreatePayload): Promise<IProject> {
     const response = await api.post<IResource<IProject>>(apiRoutesMap.projects, project)
     return response.data.data
   }

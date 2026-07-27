@@ -5,6 +5,7 @@ export interface IBankAccount {
   bankName?: string
   iban: string
   currency?: string
+  country?: string
   swift?: string
   isDefault: boolean
   description?: string

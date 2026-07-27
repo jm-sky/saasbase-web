@@ -1,9 +1,9 @@
 import { buildSpatieQuery } from '@/domains/shared/helpers/filtering'
 import api from '@/lib/api'
 import { apiRoutesMap } from '@/lib/api/apiRoutes'
-import type { SortingState } from '@tanstack/vue-table'
 import type { FilterDefinition, IResource, IResourceCollection } from '@/domains/shared/types/resource.type'
 import type { ITask } from '@/domains/task/types/task.type'
+import type { SortingState } from '@tanstack/vue-table'
 
 export interface ITaskFilters {
   search?: string

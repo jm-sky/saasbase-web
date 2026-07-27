@@ -12,17 +12,17 @@ import FormLabel from '@/components/ui/form/FormLabel.vue'
 import FormMessage from '@/components/ui/form/FormMessage.vue'
 import Input from '@/components/ui/input/Input.vue'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
-import type { IFeed, IFeedCreate } from '../types/feed.type'
 import { feedService } from '../services/FeedService'
+import type { IFeed, IFeedCreate } from '../types/feed.type'
 
 const  { t } = useI18n()
 const loading = ref(false)
-const html = ref('To jest mój pierwszy post')
+const html = ref('')
 
 const { handleSubmit, setFieldValue, resetForm } = useForm<IFeedCreate>({
   initialValues: {
-    title: 'Mój pierwszy post',
-    content: 'To jest mój pierwszy post',
+    title: '',
+    content: '',
   },
 })
 
@@ -37,6 +37,7 @@ const onSubmit = handleSubmit(async (values) => {
     const feed = await feedService.create(values)
     emit('create', feed)
     resetForm()
+    html.value = ''
   } catch (error) {
     handleErrorWithToast(t('feed.create.error'), error)
   } finally {

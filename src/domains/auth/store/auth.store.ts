@@ -4,6 +4,7 @@ import { computed, ref, } from 'vue'
 import { config } from '@/config'
 import { User } from '@/domains/user/models/user.model'
 import { type IUser } from '@/domains/user/types/user.type'
+import { syncEchoAuthToken } from '@/plugins/echo'
 import { authService } from '../services/authService'
 import type { TUUID } from '@/domains/shared/types/common'
 
@@ -52,8 +53,14 @@ export const useAuthStore = defineStore('auth', () => {
 
   const user = computed<undefined | User>(() => userData.value ? User.load(userData.value) : undefined)
 
-  const setToken = (newToken: string) => token.value = newToken
-  const clearToken = () => token.value = null
+  const setToken = (newToken: string) => {
+    token.value = newToken
+    syncEchoAuthToken(newToken)
+  }
+  const clearToken = () => {
+    token.value = null
+    syncEchoAuthToken(null)
+  }
 
   const clearData = () => {
     clearToken()

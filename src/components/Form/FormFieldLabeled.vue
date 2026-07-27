@@ -10,10 +10,11 @@ import {
 import type { HTMLAttributes } from 'vue'
 
 const props = defineProps<{
+  name: string
   disabled?: boolean
   readonly?: boolean
   label?: string
-  name: string
+  description?: string
   class?: HTMLAttributes['class']
 }>()
 </script>
@@ -21,7 +22,7 @@ const props = defineProps<{
 <template>
   <FormField v-slot="{ componentField, meta, value, handleChange }" :name>
     <FormItem :class="props.class">
-      <FormLabel v-if="label">
+      <FormLabel v-if="label" :disabled>
         {{ label }}
         <span
           v-if="meta.required"
@@ -31,7 +32,11 @@ const props = defineProps<{
       <FormControl :disabled :readonly>
         <slot :component-field :value :handle-change />
       </FormControl>
-      <FormDescription />
+      <FormDescription>
+        <slot name="description">
+          {{ description }}
+        </slot>
+      </FormDescription>
       <FormMessage />
     </FormItem>
   </FormField>

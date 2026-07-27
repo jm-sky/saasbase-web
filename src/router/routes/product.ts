@@ -9,6 +9,7 @@ export const productRoutes: RouteRecordRaw[] = [
     name: 'products',
     component: () => import('@/pages/product/ProductListPage.vue'),
     meta: {
+      title: 'product.title',
       middlewares: [isAuthenticated, isVerified, isInTenant],
     },
   },
@@ -17,6 +18,7 @@ export const productRoutes: RouteRecordRaw[] = [
     name: 'addProduct',
     component: () => import('@/pages/product/AddProductPage.vue'),
     meta: {
+      title: 'product.add.title',
       middlewares: [isAuthenticated, isVerified, isInTenant],
     },
   },
@@ -25,6 +27,7 @@ export const productRoutes: RouteRecordRaw[] = [
     name: 'showProduct',
     component: () => import('@/pages/product/ShowProductPage.vue'),
     meta: {
+      title: 'product.show.title',
       middlewares: [isAuthenticated, isVerified, isInTenant],
     },
     children: [

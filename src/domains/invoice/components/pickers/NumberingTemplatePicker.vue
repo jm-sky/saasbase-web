@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { Check, ChevronsUpDown } from 'lucide-vue-next'
-import { storeToRefs } from 'pinia'
-import { computed, onMounted, ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import Button from '@/components/ui/button/Button.vue'
 import {
@@ -17,15 +16,12 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover'
+import { useNumberingTemplateList } from '@/domains/invoice/composables/useNumberingTemplateQueries'
 import { cn } from '@/lib/utils'
 import type { IInvoiceNumberingTemplate } from '../../types/numberingTemplate.type'
-import { numberingTemplateService } from '../../services/NumberingTemplate.service'
-import { useNumberingTemplateStore } from '../../stores/numberingTemplate.store'
 import type { TInvoiceType } from '@/domains/financial/types/financial.type'
 
 const { t } = useI18n()
-const numberingTemplateStore = useNumberingTemplateStore()
-const { numberingTemplates } = storeToRefs(numberingTemplateStore)
 
 const id = defineModel<string | undefined>('id')
 const modelValue = defineModel<IInvoiceNumberingTemplate | undefined>('modelValue', { required: true })
@@ -39,21 +35,10 @@ const { invoiceType, class: classProp, pickFirstTemplate } = defineProps<{
 }>()
 
 const open = ref(false)
-const loading = ref(false)
-const error = ref<string | null>(null)
 
-const loadTemplates = async () => {
-  try {
-    loading.value = true
-    error.value = null
-    numberingTemplates.value = (await numberingTemplateService.index()).data
-  } catch (err) {
-    error.value = 'Failed to load numbering templates'
-    console.error('[NumberingTemplatePicker][loadVatRates] error:', err)
-  } finally {
-    loading.value = false
-  }
-}
+const { data: response, isPending: loading, isError } = useNumberingTemplateList()
+
+const numberingTemplates = computed(() => response.value?.data ?? [])
 
 const filteredNumberingTemplates = computed(() => {
   if (!invoiceType) return numberingTemplates.value
@@ -63,21 +48,24 @@ const filteredNumberingTemplates = computed(() => {
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const onSelect = (event: any) => {
   const selectedId = event.detail.value
-  const selectedVatRate = numberingTemplates.value.find((template) => template.id === selectedId)
-  id.value = selectedVatRate?.id
-  modelValue.value = selectedVatRate
+  const selectedTemplate = numberingTemplates.value.find((template) => template.id === selectedId)
+  id.value = selectedTemplate?.id
+  modelValue.value = selectedTemplate
   open.value = false
 }
 
-onMounted(async () => {
-  if (numberingTemplates.value.length === 0) {
-    await loadTemplates()
-  }
-  if (pickFirstTemplate && numberingTemplates.value.length > 0) {
-    modelValue.value = numberingTemplates.value[0]
-    id.value = numberingTemplates.value[0].id
-  }
-})
+watch(
+  () => [pickFirstTemplate, filteredNumberingTemplates.value] as const,
+  ([shouldPickFirst, templates]) => {
+    if (!shouldPickFirst || templates.length === 0 || modelValue.value) {
+      return
+    }
+
+    modelValue.value = templates[0]
+    id.value = templates[0].id
+  },
+  { immediate: true },
+)
 </script>
 
 <template>
@@ -87,7 +75,7 @@ onMounted(async () => {
         variant="outline"
         role="combobox"
         :aria-expanded="open"
-        :disabled="disabled || loading"
+        :disabled="disabled || loading || isError"
         class="w-full justify-between"
         :class="classProp"
       >

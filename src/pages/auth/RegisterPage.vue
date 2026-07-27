@@ -9,7 +9,7 @@ import PasswordInput from '@/components/Inputs/PasswordInput.vue'
 import InvitationInfo from '@/components/invitation/InvitationInfo.vue'
 import Button from '@/components/ui/button/Button.vue'
 import Input from '@/components/ui/input/Input.vue'
-import { useToast } from '@/components/ui/toast/use-toast'
+import { toast } from '@/components/ui/toast'
 import { authService } from '@/domains/auth/services/authService'
 import { registrationSchema } from '@/domains/auth/validation/auth.schema'
 import { useRepatcha } from '@/domains/shared/composables/useRepatcha'
@@ -22,7 +22,6 @@ import type { RegistrationData } from '@/domains/auth/types/auth.type'
 
 const router = useRouter()
 const { t } = useI18n()
-const { toast } = useToast()
 const { redirectTo } = useNextRedirect()
 const { token, loading: invitationLoading, invitation, loadInvitation } = useInvitation()
 
@@ -43,8 +42,7 @@ const onSubmit = handleSubmit(async (values) => {
 
     await authService.register(values)
 
-    toast({
-      title: t('auth.register.success'),
+    toast.success(t('auth.register.success'), {
       description: t('auth.register.successDescription'),
     })
 
@@ -84,7 +82,7 @@ onMounted(() => {
         <p class="text-sm text-muted-foreground">
           {{ t('common.or') }}
           <ButtonLink to="/login">
-            {{ t('auth.login.title') }}
+            {{ t('auth.signIn') }}
           </ButtonLink>
         </p>
       </div>
@@ -155,13 +153,13 @@ onMounted(() => {
 
         <Button
           type="button"
-          variant="outline"
+          variant="light"
           class="w-full"
           :disabled="isSubmitting"
           :loading="isSubmitting"
           @click="resetForm()"
         >
-          Reset
+          {{ t('common.reset') }}
         </Button>
       </form>
 

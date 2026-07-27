@@ -4,6 +4,7 @@ export const common = {
   deactivate: 'Deaktywuj',
   activate: 'Aktywuj',
   cancel: 'Anuluj',
+  copy: 'Kopiuj',
   inactive: 'Nieaktywny',
   add: 'Dodaj',
   back: 'Wstecz',
@@ -27,6 +28,7 @@ export const common = {
   refresh: 'Odśwież',
   or: 'lub',
   error: 'Błąd',
+  unknownError: 'Wystąpił nieoczekiwany błąd. Spróbuj ponownie.',
   noItems: 'Brak elementów',
   createdAt: 'Utworzono',
   tags: 'Tagi',
@@ -50,7 +52,9 @@ export const common = {
   },
   language: {
     en: 'Angielski',
-    pl: 'Polski'
+    pl: 'Polski',
+    uk: 'Ukraiński',
+    ru: 'Rosyjski',
   },
   fileUpload: {
     upload: 'Wgraj',
@@ -83,5 +87,16 @@ export const common = {
     communication: 'Komunikacja',
     configurations: 'Konfiguracje',
     other: 'Inne',
-  }
+  },
+  form: {
+    validationErrors: 'Błędy walidacji',
+  },
+  pwa: {
+    update: {
+      title: 'Dostępna aktualizacja',
+      description: 'Nowa wersja SaaSBase jest dostępna. Odśwież, aby zaktualizować.',
+      later: 'Później',
+      reload: 'Odśwież',
+    },
+  },
 }

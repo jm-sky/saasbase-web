@@ -1,25 +1,27 @@
 <script setup lang="ts">
 import { onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { RouterLink, useRouter } from 'vue-router'
+import { RouterLink } from 'vue-router'
 import ButtonLink from '@/components/ButtonLink.vue'
 import InvitationInfo from '@/components/invitation/InvitationInfo.vue'
+import { usePostAuthNavigation } from '@/domains/auth/composables/usePostAuthNavigation'
 import UserAuthForm from '@/domains/auth/components/UserAuthForm.vue'
 import { useInvitation } from '@/domains/tenant/composables/useTenantInvitation'
 import GuestLayout from '@/layouts/GuestLayout.vue'
 import { useNextRedirect } from '@/lib/useNextRedirect'
 
 const { t } = useI18n()
-const router = useRouter()
 const { redirectTo } = useNextRedirect()
+const { navigateAfterAuthentication } = usePostAuthNavigation()
 const { token, loading: invitationLoading, invitation, loadInvitation } = useInvitation()
 
 const handleLoggedIn = async () => {
   if (token) {
-    await router.push(`/invitation/accept?next=${encodeURIComponent(redirectTo.value)}`)
-  } else {
-    await router.push(redirectTo.value)
+    await navigateAfterAuthentication(`/invitation/accept?next=${encodeURIComponent(redirectTo.value)}`)
+    return
   }
+
+  await navigateAfterAuthentication(redirectTo.value)
 }
 
 onMounted(() => {

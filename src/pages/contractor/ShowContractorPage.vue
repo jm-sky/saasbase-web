@@ -1,29 +1,38 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
-import { onMounted, ref } from 'vue'
+import { computed, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
 import EntityDetailsLayout from '@/components/layouts/EntityDetailsLayout.vue'
 import TabLink from '@/components/ui/tabs/TabLink.vue'
 import ContractorSidebar from '@/domains/contractor/components/ContractorSidebar.vue'
-import { contractorService } from '@/domains/contractor/services/ContractorService'
+import { useContractor } from '@/domains/contractor/composables/useContractorQueries'
 import { useContractorStore } from '@/domains/contractor/store/contractor.store'
 import AuthenticatedLayout from '@/layouts/AuthenticatedLayout.vue'
-import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
 
 const { t } = useI18n()
 const route = useRoute()
 
 const contractorId = route.params.id as string
-const { contractor } = storeToRefs(useContractorStore())
+const contractorStore = useContractorStore()
+const { contractor: storeContractor } = storeToRefs(contractorStore)
 
-const loading = ref(false)
-const error = ref<string | null>(null)
+const { data: contractor, isPending: loading, refetch } = useContractor(contractorId)
 
-const tabs = [
+watch(contractor, (value) => {
+  if (value) contractorStore.setContractor(value)
+}, { immediate: true })
+
+const displayContractor = computed(() => contractor.value ?? storeContractor.value)
+
+const tabs = computed(() => [
   {
     to: `/contractors/${contractorId}/show/overview`,
     label: t('contractor.overview.title'),
+  },
+  {
+    to: `/contractors/${contractorId}/show/preferences`,
+    label: t('contractor.preferences.title'),
   },
   {
     to: `/contractors/${contractorId}/show/comments`,
@@ -33,24 +42,7 @@ const tabs = [
     to: `/contractors/${contractorId}/show/logs`,
     label: t('contractor.logs.title'),
   },
-]
-
-const refresh = async () => {
-  try {
-    loading.value = true
-    error.value = null
-    contractor.value = await contractorService.get(contractorId)
-  } catch (err) {
-    handleErrorWithToast(t('contractor.show.error'), err)
-    error.value = 'Failed to load contractor'
-  } finally {
-    loading.value = false
-  }
-}
-
-onMounted(async () => {
-  await refresh()
-})
+])
 </script>
 
 <template>
@@ -59,18 +51,19 @@ onMounted(async () => {
       :title="t('contractor.contractorDetails')"
       :back-link="'/contractors'"
       :edit-link="`/contractors/${contractorId}/edit`"
-      :name="contractor?.name"
-      :email="contractor?.email"
-      :logo="contractor?.logoUrl"
+      :name="displayContractor?.name"
+      :email="displayContractor?.email"
+      :logo="displayContractor?.logoUrl"
       :loading
-      @refresh="refresh"
+      show-sidebar
+      @refresh="refetch()"
     >
       <template #back-link-text>
         {{ t('contractor.title') }}
       </template>
 
       <template #sidebar>
-        <ContractorSidebar :contractor-id="contractorId" :contractor />
+        <ContractorSidebar :contractor-id="contractorId" :contractor="displayContractor" />
       </template>
 
       <template #tabs>
@@ -83,7 +76,7 @@ onMounted(async () => {
       </template>
 
       <template #content>
-        <RouterView v-if="contractor" :contractor />
+        <RouterView v-if="displayContractor" :contractor="displayContractor" />
       </template>
     </EntityDetailsLayout>
   </AuthenticatedLayout>

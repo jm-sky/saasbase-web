@@ -1,5 +1,5 @@
 import api from '@/lib/api'
-import type { IInvoiceNumberingTemplate } from '../types/numberingTemplate.type'
+import type { IInvoiceNumberingTemplate, IInvoiceNumberingTemplateForm } from '../types/numberingTemplate.type'
 import type { IResource, IResourceCollection } from '@/domains/shared/types/resource.type'
 
 class NumberingTemplateService {
@@ -7,11 +7,15 @@ class NumberingTemplateService {
     return (await api.get<IResourceCollection<IInvoiceNumberingTemplate>>('/numbering-templates')).data
   }
 
-  async create(data: IInvoiceNumberingTemplate): Promise<IInvoiceNumberingTemplate> {
+  async show(id: string): Promise<IInvoiceNumberingTemplate> {
+    return (await api.get<IResource<IInvoiceNumberingTemplate>>(`/numbering-templates/${id}`)).data.data
+  }
+
+  async create(data: IInvoiceNumberingTemplateForm): Promise<IInvoiceNumberingTemplate> {
     return (await api.post<IResource<IInvoiceNumberingTemplate>>('/numbering-templates', data)).data.data
   }
 
-  async update(id: string, data: IInvoiceNumberingTemplate): Promise<IInvoiceNumberingTemplate> {
+  async update(id: string, data: Partial<IInvoiceNumberingTemplateForm>): Promise<IInvoiceNumberingTemplate> {
     return (await api.put<IResource<IInvoiceNumberingTemplate>>(`/numbering-templates/${id}`, data)).data.data
   }
 
@@ -21,6 +25,16 @@ class NumberingTemplateService {
 
   async delete(id: string): Promise<void> {
     await api.delete(`/numbering-templates/${id}`)
+  }
+
+  async previewNumber(templateData: Partial<IInvoiceNumberingTemplateForm>): Promise<string> {
+    const response = await api.post<{ preview: string }>('/numbering-templates/preview', templateData)
+    return response.data.preview
+  }
+
+  async validateFormat(format: string): Promise<{ isValid: boolean; errors: string[] }> {
+    const response = await api.post<{ isValid: boolean; errors: string[] }>('/numbering-templates/validate-format', { format })
+    return response.data
   }
 }
 

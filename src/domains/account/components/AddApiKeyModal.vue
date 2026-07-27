@@ -85,8 +85,8 @@ watch(open, (newValue) => {
             :key="scope"
             :value="scope"
             with-content
-            :checked="values.scopes.includes(scope)"
-            @update:checked="toggleScope(scope)"
+            :model-value="values.scopes.includes(scope)"
+            @update:model-value="toggleScope(scope)"
           >
             <template #content>
               <Check v-if="values.scopes.includes(scope)" class="size-4" />

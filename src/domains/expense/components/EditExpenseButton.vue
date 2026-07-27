@@ -2,14 +2,14 @@
 import { Pencil } from 'lucide-vue-next'
 import { useI18n } from 'vue-i18n'
 import ButtonLink from '@/components/ButtonLink.vue'
-import type { IExpense } from '../types/expense.type'
 import { useExpenseStore } from '../stores/expense.store'
+import type { IExpense } from '../types/expense.type'
 
 const { t } = useI18n()
 
 const expenseStore = useExpenseStore()
 
-const { withText = false, withIcon = true } = defineProps<{
+const { withText, withIcon } = defineProps<{
   expense: IExpense
   withIcon?: boolean
   withText?: boolean

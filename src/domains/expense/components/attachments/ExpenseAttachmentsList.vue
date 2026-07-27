@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import { templateRef } from '@vueuse/core'
-import { Scan } from 'lucide-vue-next'
-import { computed } from 'vue'
+import { ScanEye } from 'lucide-vue-next'
+import { computed, useTemplateRef } from 'vue'
 import { useI18n } from 'vue-i18n'
 import DataListSection from '@/components/DataLists/DataListSection.vue'
 import Button from '@/components/ui/button/Button.vue'
@@ -19,7 +18,7 @@ const { expenseId } = defineProps<{
   expenseId?: string | null
 }>()
 
-const listWrapper = templateRef('listWrapper')
+const listWrapper = useTemplateRef('listWrapper')
 
 const loading = computed(() => listWrapper.value?.loading ?? false)
 
@@ -70,7 +69,7 @@ const startOcr = async (attachment: IAttachment) => {
           variant="ghost"
           @click="startOcr(attachment)"
         >
-          <Scan class="size-4" />
+          <ScanEye class="size-4" />
         </Button>
       </template>
     </AttachmentListWrapper>

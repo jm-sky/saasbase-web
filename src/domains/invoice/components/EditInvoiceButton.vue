@@ -2,14 +2,14 @@
 import { Pencil } from 'lucide-vue-next'
 import { useI18n } from 'vue-i18n'
 import ButtonLink from '@/components/ButtonLink.vue'
-import type { IInvoice } from '../types/invoice.type'
 import { useInvoiceStore } from '../stores/invoice.store'
+import type { IInvoice } from '../types/invoice.type'
 
 const { t } = useI18n()
 
 const invoiceStore = useInvoiceStore()
 
-const { withText = false, withIcon = true } = defineProps<{
+const { withText, withIcon } = defineProps<{
   invoice: IInvoice
   withIcon?: boolean
   withText?: boolean

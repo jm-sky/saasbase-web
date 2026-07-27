@@ -56,10 +56,17 @@ export const shared = {
     search: 'Search payment method',
     notFound: 'No payment methods found',
   },
+  positionCategory: {
+    select: 'Select position category',
+    search: 'Search position category',
+    notFound: 'No position categories found',
+  },
   product: {
     select: 'Select product',
     search: 'Search product',
     notFound: 'No products found',
+    recent: 'Recent',
+    all: 'All',
   },
   vatRate: {
     select: 'Select vat rate',

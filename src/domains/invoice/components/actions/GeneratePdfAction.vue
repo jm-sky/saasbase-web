@@ -3,7 +3,7 @@ import { ArrowDown, FileDown } from 'lucide-vue-next'
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import LoadingIcon from '@/components/Icons/LoadingIcon.vue'
-import { Button } from '@/components/ui/button'
+import { Button, type ButtonVariants } from '@/components/ui/button'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -12,18 +12,22 @@ import {
 } from '@/components/ui/dropdown-menu'
 import Separator from '@/components/ui/separator/Separator.vue'
 import { useToast } from '@/components/ui/toast'
+import { downloadBlob } from '@/lib/downloadBlob'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
-import type { IInvoice } from '../../types/invoice.type'
-import { invoiceService } from '../../services/invoiceService'
+import { invoiceeAttachmentsService } from '../../services/invoiceAttachmentsService'
+import { type IGeneratePdfResponse, invoiceService } from '../../services/invoiceService'
 import GenerateInvoicePdfModal from '../modals/GenerateInvoicePdfModal.vue'
+import type { IInvoice } from '../../types/invoice.type'
 
 const { t } = useI18n()
 const { toast } = useToast()
 
-const props = defineProps<{
+const { size = 'sm', variant = 'button', invoice, invoices, download } = defineProps<{
   invoice?: IInvoice | null
   invoices?: IInvoice[]
+  size?: ButtonVariants['size']
   variant?: 'button' | 'menu-item'
+  download?: boolean
 }>()
 
 const emit = defineEmits<{
@@ -40,12 +44,13 @@ const invoiceOptions = {
 }
 
 const generatePdf = async (type: 'original' | 'duplicate') => {
-  if (!props.invoice?.id) return
+  if (!invoice?.id) return
   loading.value = true
   try {
-    await invoiceService.generatePdf(props.invoice.id, invoiceOptions)
+    const response = await invoiceService.generatePdf(invoice.id, invoiceOptions)
     toast.success(t(`invoice.actions.generatePdf.${type}.success`, `${type} PDF generated successfully`))
     emit('done', type)
+    await optionalDownload(response)
   } catch (error) {
     handleErrorWithToast(t('invoice.actions.generatePdf.error', 'Failed to generate PDF'), error)
     console.error(`Failed to generate ${type} PDF:`, error)
@@ -54,15 +59,22 @@ const generatePdf = async (type: 'original' | 'duplicate') => {
     loading.value = false
   }
 }
+
+const optionalDownload = async (response: IGeneratePdfResponse) => {
+  if (!download) return
+  if (!invoice?.id) return
+  const blob = await invoiceeAttachmentsService.download(invoice.id, response.mediaId)
+  downloadBlob(blob, response.fileName)
+}
 </script>
 
 <template>
   <DropdownMenu>
-    <DropdownMenuTrigger as="div" class="border rounded-md">
+    <DropdownMenuTrigger as="div" class="border flex flex-row rounded-md">
       <template v-if="variant === 'button'">
         <Button
           variant="ghost"
-          size="sm"
+          :size="size"
           type="button"
           class="rounded-r-none border-r-1"
           :disabled="loading || (!invoice && !invoices?.length)"
@@ -74,7 +86,7 @@ const generatePdf = async (type: 'original' | 'duplicate') => {
         </Button>
         <Button
           variant="ghost"
-          size="sm"
+          :size="size"
           class="rounded-l-none"
           :disabled="loading || (!invoice && !invoices?.length)"
         >
@@ -92,10 +104,10 @@ const generatePdf = async (type: 'original' | 'duplicate') => {
     </DropdownMenuTrigger>
     <DropdownMenuContent align="end">
       <DropdownMenuItem hoverable @click="generatePdf('original')">
-        {{ t('invoice.actions.generatePdf.original', 'Original PDF') }}
+        {{ t('invoice.actions.generatePdf.original.title', 'Original PDF') }}
       </DropdownMenuItem>
       <DropdownMenuItem hoverable @click="generatePdf('duplicate')">
-        {{ t('invoice.actions.generatePdf.duplicate', 'Duplicate PDF') }}
+        {{ t('invoice.actions.generatePdf.duplicate.title', 'Duplicate PDF') }}
       </DropdownMenuItem>
 
       <Separator class="my-2" />
@@ -108,6 +120,8 @@ const generatePdf = async (type: 'original' | 'duplicate') => {
     <GenerateInvoicePdfModal
       v-model:open="open"
       :invoice="invoice"
+      :download
+      @done="emit('done', 'original')"
     />
   </DropdownMenu>
 </template>

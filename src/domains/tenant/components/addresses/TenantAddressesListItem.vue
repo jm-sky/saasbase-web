@@ -10,9 +10,11 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { fullAddress } from '@/lib/fullAddress'
+import { useCan } from '@/domains/rights/composables/useCan'
 import type { ITenantAddress } from '@/domains/tenant/types/tenant.type'
 
 const { t } = useI18n()
+const { isOwnerOrAdmin } = useCan()
 
 defineProps<{
   address: ITenantAddress
@@ -43,7 +45,7 @@ const emit = defineEmits<{
       {{ address.description }}
     </div>
 
-    <div class="flex flex-row gap-1 justify-end order-1 md:order-1">
+    <div v-if="isOwnerOrAdmin" class="flex flex-row gap-1 justify-end order-1 md:order-1">
       <Button
         v-tooltip="t('address.setDefault')"
         variant="ghost"
@@ -60,17 +62,11 @@ const emit = defineEmits<{
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
-          <DropdownMenuItem
-            class="cursor-pointer gap-2 hover:bg-accent"
-            @click="emit('edit', address)"
-          >
+          <DropdownMenuItem hoverable @click="emit('edit', address)">
             <Icon icon="lucide:edit" />
             {{ t('common.edit') }}
           </DropdownMenuItem>
-          <DropdownMenuItem
-            class="cursor-pointer gap-2 hover:bg-accent"
-            @click="emit('delete', address)"
-          >
+          <DropdownMenuItem hoverable variant="destructive" @click="emit('delete', address)">
             <Icon icon="lucide:trash" />
             {{ t('common.delete') }}
           </DropdownMenuItem>

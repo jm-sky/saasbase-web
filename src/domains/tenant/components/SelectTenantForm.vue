@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import { storeToRefs } from 'pinia'
+import { onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import ButtonLink from '@/components/ButtonLink.vue'
 import Avatar from '@/components/ui/avatar/Avatar.vue'
@@ -10,17 +11,17 @@ import { useToast } from '@/components/ui/toast'
 import UIIcon from '@/components/UIIcon.vue'
 import { useLogout } from '@/domains/auth/composables/useLogout'
 import { tenantService } from '@/domains/tenant/services/TenantService'
-import type { ITenantPreview } from '@/domains/tenant/types/tenant.type'
+import { useTenantsStore } from '../store/tenants.store'
 
 const { toast } = useToast()
 const { logout } = useLogout()
 const { t } = useI18n()
+const tenantsStore = useTenantsStore()
+const { tenants } = storeToRefs(tenantsStore)
 
 const emit = defineEmits<{
   selected: [tenantId: string]
 }>()
-
-const tenants = ref<ITenantPreview[]>([])
 
 const handleSelectTenant = async (tenantId: string) => {
   try {
@@ -73,13 +74,16 @@ onMounted(async () => {
       </Button>
     </div>
 
-    <div class="flex flex-col gap-3 text-center mt-4">
-      <ButtonLink variant="ghost" size="sm" to="/tenants/create">
-        {{ t('auth.selectTenant.createTenant') }}
-      </ButtonLink>
+    <div class="flex flex-col md:flex-row justify-between gap-3 text-center mt-4">
       <Button variant="ghost" size="sm" @click="logout">
         {{ t('auth.signOut') }}
       </Button>
+      <ButtonLink variant="ghost" size="sm" to="/">
+        {{ t('common.back') }}
+      </ButtonLink>
+      <ButtonLink variant="primary" size="sm" to="/tenants/create">
+        {{ t('auth.selectTenant.createTenant') }}
+      </ButtonLink>
     </div>
   </div>
 </template>

@@ -1,5 +1,6 @@
-import type { INextPipeline } from '../helpers/middlewarePipeline'
 import middlewarePipeline from '../helpers/middlewarePipeline'
+import { is2faRequested } from '../middleware/is2faRequested'
+import type { INextPipeline } from '../helpers/middlewarePipeline'
 import type { NavigationGuardNext, RouteLocationNormalized, RouteLocationRaw, Router } from 'vue-router'
 
 // eslint-disable-next-line @typescript-eslint/no-invalid-void-type
@@ -11,6 +12,7 @@ export interface RunMiddlewarePipelineOptions {
 
 export interface RouterMiddlewareOptions {
   from: RouteLocationNormalized
+  // eslint-disable-next-line @typescript-eslint/no-deprecated -- vue-router 5 still fully supports the next() callback guard pattern (deprecated, slated for a future removal); this whole middleware pipeline is built around it and migrating to return-value guards is a separate, larger refactor
   next: INextPipeline | NavigationGuardNext
   router: Router
   to: RouteLocationNormalized
@@ -20,7 +22,20 @@ export type RouterMiddleware = (options: RouterMiddlewareOptions) => NavigationG
 
 export const runMiddlewarePipeline =
   ({ router }: RunMiddlewarePipelineOptions) =>
+    // eslint-disable-next-line @typescript-eslint/no-deprecated -- see note on RouterMiddlewareOptions.next above
     (to: RouteLocationNormalized, from: RouteLocationNormalized, next: NavigationGuardNext): NavigationGuardReturn => {
+      // Global, route-independent: a user with 2FA enabled but not yet
+      // verified this session (JWT mfa=1) must resolve that before going
+      // anywhere else, mirroring the backend's `mfa` middleware applied
+      // across the API's protected route groups. Deliberately not opt-in
+      // per route like isAuthenticated/isVerified below -- that pattern is
+      // exactly how this check ended up wired into zero routes previously.
+      const twoFactorRedirect = is2faRequested(to)
+
+      if (true !== twoFactorRedirect) {
+        next(twoFactorRedirect); return
+      }
+
       const middlewares: RouterMiddleware[] | undefined = to.meta.middlewares
       const firstMiddleware = middlewares?.[0]
 

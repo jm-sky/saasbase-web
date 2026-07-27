@@ -7,6 +7,11 @@ export const publicRoutes: RouteRecordRaw[] = [
     component: () => import('@/pages/public/LandingPage.vue'),
   },
   {
+    path: '/shared/invoices/:token',
+    name: 'sharedInvoice',
+    component: () => import('@/pages/public/SharedInvoicePage.vue'),
+  },
+  {
     path: '/terms',
     name: 'terms',
     component: () => import('@/pages/public/TermsPage.vue'),

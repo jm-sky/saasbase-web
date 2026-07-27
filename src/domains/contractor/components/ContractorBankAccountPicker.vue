@@ -18,8 +18,8 @@ import {
 } from '@/components/ui/popover'
 import { formatIBAN } from '@/lib/formatIBAN'
 import { cn } from '@/lib/utils'
-import type { IContractorBankAccount } from '../types/contractor.type'
 import { contractorBankAccountsService } from '../services/ContractorBankAccountsService'
+import type { IContractorBankAccount } from '../types/contractor.type'
 
 const { t } = useI18n()
 

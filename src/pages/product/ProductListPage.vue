@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { RefreshCw } from 'lucide-vue-next'
-import { onMounted, ref, watch } from 'vue'
+import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import ButtonLink from '@/components/ButtonLink.vue'
 import DataListsWrapper from '@/components/DataLists/DataListsWrapper.vue'
@@ -10,27 +10,18 @@ import { Button } from '@/components/ui/button'
 import DeleteProductButton from '@/domains/product/components/DeleteProductButton.vue'
 import EditProductButton from '@/domains/product/components/EditProductButton.vue'
 import ProductListDropdown from '@/domains/product/components/ProductListDropdown.vue'
-import { type IProductFilters, productService } from '@/domains/product/services/ProductService'
+import { useProductList } from '@/domains/product/composables/useProductQueries'
+import { type IProductFilters } from '@/domains/product/services/ProductService'
 import { useProductStore } from '@/domains/product/stores/product.store'
 import TagList from '@/domains/tags/components/TagList.vue'
 import AuthenticatedLayout from '@/layouts/AuthenticatedLayout.vue'
 import { toDateTimeString } from '@/lib/toDateTimeString'
-import type { ColumnDef } from '@tanstack/vue-table'
 import type { IProduct } from '@/domains/product/types/product.type'
-import type { IResourceMeta } from '@/domains/shared/types/resource.type'
+import type { ColumnDef } from '@tanstack/vue-table'
 
 const { t } = useI18n()
 const productStore = useProductStore()
 
-const products = ref<IProduct[]>([])
-const meta = ref<IResourceMeta>({
-  currentPage: 1,
-  lastPage: 1,
-  perPage: 10,
-  total: 0,
-})
-const loading = ref(false)
-const error = ref<string | null>(null)
 const filters = ref<IProductFilters>({
   search: '',
   page: 1,
@@ -66,26 +57,11 @@ const columns: ColumnDef<IProduct>[] = [
   },
 ]
 
-const refresh = async () => {
-  try {
-    loading.value = true
-    error.value = null
-    const response = await productService.index(filters.value)
-    products.value = response.data
-    meta.value = response.meta
-  } catch (err) {
-    error.value = 'Failed to load products'
-    console.error(err)
-  } finally {
-    loading.value = false
-  }
-}
+const { data: response, isPending: loading, isError, refetch } = useProductList(filters)
 
-onMounted(() => {
-  void refresh()
-})
-
-watch(filters, () => refresh(), { deep: true })
+const products = computed(() => response.value?.data ?? [])
+const total = computed(() => response.value?.meta.total ?? 0)
+const error = computed(() => isError.value ? t('product.list.error', 'Failed to load products') : null)
 </script>
 
 <template>
@@ -93,7 +69,7 @@ watch(filters, () => refresh(), { deep: true })
     <DataListsWrapper :title="t('product.title')" :loading :error>
       <template #actions>
         <SearchField v-model="filters.search" />
-        <Button variant="ghost" @click="refresh">
+        <Button variant="ghost" @click="refetch()">
           <RefreshCw class="size-4" />
         </Button>
 
@@ -110,8 +86,9 @@ watch(filters, () => refresh(), { deep: true })
         v-model:page-size="filters.perPage"
         :columns="columns"
         :data="products"
-        :total="meta.total"
+        :total="total"
         :page-size-options="[10, 20, 30, 40, 50]"
+        :loading
       >
         <template #name="{ data }">
           <ButtonLink :to="`/products/${data.id}/show/overview`">
@@ -129,12 +106,12 @@ watch(filters, () => refresh(), { deep: true })
         <template #actions="{ data }">
           <div class="flex gap-2 justify-end w-full whitespace-nowrap min-w-0">
             <EditProductButton :id="data.id" @click="productStore.setProduct(data)" />
-            <DeleteProductButton :id="data.id" @deleted="refresh" />
+            <DeleteProductButton :id="data.id" />
           </div>
         </template>
         <template #actions-header>
           <div class="w-full text-right">
-            {{ t('actions') }}
+            {{ t('common.actions') }}
           </div>
         </template>
       </DataTable>

@@ -10,8 +10,8 @@ import Switch from '@/components/ui/switch/Switch.vue'
 import Textarea from '@/components/ui/textarea/Textarea.vue'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
 import { isValidationError } from '@/lib/validation'
-import type { IOrganizationUnit, IOrganizationUnitCreate } from '../../../types/organizationUnit.type'
 import { tenantOrganizationUnitService } from '../../../services/TenantOrganizationUnit.service'
+import type { IOrganizationUnit, IOrganizationUnitCreate } from '../../../types/organizationUnit.type'
 
 const { t } = useI18n()
 
@@ -119,7 +119,7 @@ const generateCode = () => {
           :label="t('tenant.organizationUnits.fields.isActive')"
           class="flex flex-col items-center gap-1"
         >
-          <Switch v-bind="componentField" :checked="values.isActive" />
+          <Switch v-bind="componentField" :model-value="values.isActive" />
         </FormFieldLabeled>
       </div>
 

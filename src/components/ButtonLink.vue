@@ -3,7 +3,7 @@ import { type RouteLocationRaw, RouterLink } from 'vue-router'
 import Button from '@/components/ui/button/Button.vue'
 import type { ButtonVariants } from '@/components/ui/button'
 
-const { variant = 'link', disabled = undefined } = defineProps<{
+const { variant = 'link', disabled } = defineProps<{
   to: RouteLocationRaw
   variant?: ButtonVariants['variant']
   size?: ButtonVariants['size']

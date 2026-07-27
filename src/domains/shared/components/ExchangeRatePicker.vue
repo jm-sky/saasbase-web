@@ -19,9 +19,9 @@ import {
 } from '@/components/ui/popover'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
 import { cn } from '@/lib/utils'
-import type { IExchangeRate, IExchangeRateFilters } from '../types/exchange-rate.type'
 import { exchangeRateService } from '../services/ExchangeRate.service'
 import { useExchangeRateStore } from '../stores/exchangeRate.store'
+import type { IExchangeRate, IExchangeRateFilters } from '../types/exchange-rate.type'
 
 const { t } = useI18n()
 const exchangeRateStore = useExchangeRateStore()

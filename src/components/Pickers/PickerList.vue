@@ -12,9 +12,9 @@ const { t } = useI18n()
 
 const {
   maxHeight = '300px',
-  loading = false,
-  hasMoreData = false,
-  showCreateButton = false,
+  loading,
+  hasMoreData,
+  showCreateButton,
   emptyMessage,
   loadMoreMessage,
   loadingMessage
