@@ -29,7 +29,7 @@ export const routes: RouteRecordRaw[] = [
     name: 'dashboard',
     component: HomeView,
     meta: {
-      middlewares: [isAuthenticated, isVerified],
+      middlewares: [isAuthenticated, isVerified, isInTenant],
     },
   },
 

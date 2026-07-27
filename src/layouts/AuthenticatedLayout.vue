@@ -25,7 +25,6 @@ import UserAuthModal from '@/domains/auth/components/UserAuthModal.vue'
 import { useAuthStore } from '@/domains/auth/store/auth.store'
 import FloatingAiChatWidget from '@/domains/chat/components/FloatingAiChatWidget.vue'
 import FloatingChatWidget from '@/domains/chat/components/FloatingChatWidget.vue'
-import SelectTenantModal from '@/domains/tenant/components/SelectTenantModal.vue'
 import TopbarNav from '@/layouts/partials/TopbarNav.vue'
 
 const authStore = useAuthStore()
@@ -71,7 +70,6 @@ const { t } = useI18n()
     </SidebarInset>
 
     <UserAuthModal v-if="authStore.showAuthModal" />
-    <SelectTenantModal v-if="authStore.showSelectTenantModal" />
     <FloatingAiChatWidget v-if="config.aiChat.enabled" />
     <FloatingChatWidget v-if="config.chat.enabled && !config.aiChat.enabled" />
   </SidebarProvider>

@@ -1,9 +1,12 @@
-import { config } from '@/config'
+import { useAuthStore } from '@/domains/auth/store/auth.store'
 import { useLanguageStore } from '@/stores/language.store'
 import type { InternalAxiosRequestConfig } from 'axios'
 
 export const authorizeOutgoingRequests = (request: InternalAxiosRequestConfig) => {
-  const token = localStorage.getItem(`${config.appId}:token`)
+  // Read from the Pinia/auth ref — not raw localStorage — so a freshly
+  // switched tenant JWT is sent on the very next request (VueUse storage
+  // write is async via a watcher).
+  const token = useAuthStore().token
   if (token) {
     request.headers.Authorization = `Bearer ${token}`
   }

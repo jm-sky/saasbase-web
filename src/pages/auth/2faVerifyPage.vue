@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { useForm } from 'vee-validate'
 import { useI18n } from 'vue-i18n'
-import { useRoute, useRouter } from 'vue-router'
+import { useRoute } from 'vue-router'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { PinInput } from '@/components/ui/pin-input'
 import { toast } from '@/components/ui/toast'
 import UIIcon from '@/components/UIIcon.vue'
-import { authService } from '@/domains/auth/services/authService'
+import { usePostAuthNavigation } from '@/domains/auth/composables/usePostAuthNavigation'
 import { mfaService } from '@/domains/auth/services/mfaService'
 import { useAuthStore } from '@/domains/auth/store/auth.store'
 import GuestLayout from '@/layouts/GuestLayout.vue'
@@ -15,9 +15,9 @@ import { useNextRedirect } from '@/lib/useNextRedirect'
 
 const { t } = useI18n()
 const route = useRoute()
-const router = useRouter()
 const authStore = useAuthStore()
 const { redirectTo } = useNextRedirect()
+const { navigateAfterAuthentication } = usePostAuthNavigation()
 
 const { values, isSubmitting, handleSubmit } = useForm({
   initialValues: {
@@ -29,10 +29,9 @@ const onSubmit = handleSubmit(async (values) => {
   try {
     const { accessToken } = await mfaService.verify2fa(values.code.join(''))
     authStore.setToken(accessToken)
-    authStore.setUser(await authService.getMe())
 
     const next = typeof route.query.next === 'string' ? route.query.next : redirectTo.value
-    await router.push(next)
+    await navigateAfterAuthentication(next)
   } catch (error) {
     console.error('2FA verification failed:', error)
     toast.error(t('common.error'), {
