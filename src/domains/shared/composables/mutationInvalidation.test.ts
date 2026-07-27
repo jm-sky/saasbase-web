@@ -13,12 +13,19 @@ import {
   useStartExpenseOcr,
   useUpdateExpense,
 } from '@/domains/expense/composables/useExpenseMutations'
-import { invoiceKeys } from '@/domains/invoice/composables/queryKeys'
+import {
+  useCreateNumberingTemplate,
+  useDeleteNumberingTemplate,
+  useSetDefaultNumberingTemplate,
+  useUpdateNumberingTemplate,
+} from '@/domains/invoice/composables/useNumberingTemplateMutations'
+import { numberingTemplateKeys } from '@/domains/invoice/composables/numberingTemplateQueryKeys'
 import {
   useCreateInvoice,
   useDeleteInvoice,
   useUpdateInvoice,
 } from '@/domains/invoice/composables/useInvoiceMutations'
+import { invoiceKeys } from '@/domains/invoice/composables/queryKeys'
 import { productKeys } from '@/domains/product/composables/queryKeys'
 import {
   useCreateProduct,
@@ -64,6 +71,15 @@ vi.mock('@/domains/product/services/ProductService', () => ({
     create: vi.fn().mockResolvedValue({ id: 'product-1' }),
     update: vi.fn().mockResolvedValue({ id: 'product-1' }),
     delete: vi.fn().mockResolvedValue(undefined),
+  },
+}))
+
+vi.mock('@/domains/invoice/services/NumberingTemplate.service', () => ({
+  numberingTemplateService: {
+    create: vi.fn().mockResolvedValue({ id: 'template-1' }),
+    update: vi.fn().mockResolvedValue({ id: 'template-1' }),
+    delete: vi.fn().mockResolvedValue(undefined),
+    setDefault: vi.fn().mockResolvedValue(undefined),
   },
 }))
 
@@ -205,5 +221,32 @@ describe('CRUD mutation invalidation', () => {
     const productInvalidate = vi.spyOn(productClient, 'invalidateQueries')
     await productMutation.mutateAsync({} as never)
     expect(productInvalidate).toHaveBeenCalledWith({ queryKey: productKeys.lists() })
+  })
+
+  it('invalidates numbering template list on create, update, delete, and set default', async () => {
+    const tenantId = 'tenant-1'
+
+    const { result: createMutation, queryClient: createClient } = mountComposable(() => useCreateNumberingTemplate())
+    const createInvalidate = vi.spyOn(createClient, 'invalidateQueries')
+    await createMutation.mutateAsync({} as never)
+    expect(createInvalidate).toHaveBeenCalledWith({ queryKey: numberingTemplateKeys.lists() })
+
+    const { result: updateMutation, queryClient: updateClient } = mountComposable(() => useUpdateNumberingTemplate())
+    const updateInvalidate = vi.spyOn(updateClient, 'invalidateQueries')
+    await updateMutation.mutateAsync({ id: 'template-1', data: {} })
+    expect(updateInvalidate).toHaveBeenCalledWith({ queryKey: numberingTemplateKeys.lists() })
+    expect(updateInvalidate).toHaveBeenCalledWith({ queryKey: numberingTemplateKeys.detail('template-1') })
+
+    const { result: deleteMutation, queryClient: deleteClient } = mountComposable(() => useDeleteNumberingTemplate())
+    const deleteInvalidate = vi.spyOn(deleteClient, 'invalidateQueries')
+    await deleteMutation.mutateAsync('template-1')
+    expect(deleteInvalidate).toHaveBeenCalledWith({ queryKey: numberingTemplateKeys.lists() })
+
+    const { result: setDefaultMutation, queryClient: setDefaultClient } = mountComposable(() => useSetDefaultNumberingTemplate())
+    const setDefaultInvalidate = vi.spyOn(setDefaultClient, 'invalidateQueries')
+    await setDefaultMutation.mutateAsync('template-1')
+    expect(setDefaultInvalidate).toHaveBeenCalledWith({ queryKey: numberingTemplateKeys.lists() })
+
+    expect(numberingTemplateKeys.list(tenantId)).toEqual(['numbering-templates', 'list', tenantId])
   })
 })

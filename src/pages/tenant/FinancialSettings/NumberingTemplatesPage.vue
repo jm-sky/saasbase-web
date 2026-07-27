@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { Plus } from 'lucide-vue-next'
-import { storeToRefs } from 'pinia'
-import { computed, onMounted, ref } from 'vue'
+import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import RefreshIconButton from '@/components/Buttons/RefreshIconButton.vue'
 import { Button } from '@/components/ui/button'
@@ -11,8 +10,11 @@ import { toast } from '@/components/ui/toast'
 import NumberingTemplateCard from '@/domains/invoice/components/numberingTemplates/NumberingTemplateCard.vue'
 import NumberingTemplateDeleteModal from '@/domains/invoice/components/numberingTemplates/NumberingTemplateDeleteModal.vue'
 import NumberingTemplateFormModal from '@/domains/invoice/components/numberingTemplates/NumberingTemplateFormModal.vue'
-import { numberingTemplateService } from '@/domains/invoice/services/NumberingTemplate.service'
-import { useNumberingTemplateStore } from '@/domains/invoice/stores/numberingTemplate.store'
+import {
+  useDeleteNumberingTemplate,
+  useSetDefaultNumberingTemplate,
+} from '@/domains/invoice/composables/useNumberingTemplateMutations'
+import { useNumberingTemplateList } from '@/domains/invoice/composables/useNumberingTemplateQueries'
 import { getInvoiceTypeLabel, groupTemplatesByInvoiceType } from '@/domains/invoice/utils/numberingTemplateUtils'
 import TenantSectionTitle from '@/domains/tenant/components/TenantSectionTitle.vue'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
@@ -20,33 +22,20 @@ import type { TInvoiceType } from '@/domains/financial/types/financial.type'
 import type { IInvoiceNumberingTemplate } from '@/domains/invoice/types/numberingTemplate.type'
 
 const { t } = useI18n()
-const numberingTemplateStore = useNumberingTemplateStore()
-const { numberingTemplates } = storeToRefs(numberingTemplateStore)
 
-const loading = ref(false)
-const error = ref<string | null>(null)
 const showTemplateModal = ref(false)
 const selectedTemplate = ref<IInvoiceNumberingTemplate | null>(null)
 const selectedInvoiceType = ref<TInvoiceType | null>(null)
 const deleteConfirmId = ref<string | null>(null)
 
-const groupedTemplates = computed(() => {
-  return groupTemplatesByInvoiceType(numberingTemplates.value)
-})
+const { data: response, isPending: loading, isError, refetch } = useNumberingTemplateList()
+const { mutateAsync: setDefaultTemplate } = useSetDefaultNumberingTemplate()
+const { mutateAsync: deleteTemplate, isPending: isDeleting } = useDeleteNumberingTemplate()
 
-const loadTemplates = async () => {
-  try {
-    loading.value = true
-    error.value = null
-    const response = await numberingTemplateService.index()
-    numberingTemplates.value = response.data
-  } catch (err) {
-    error.value = 'Failed to load numbering templates'
-    handleErrorWithToast(t('invoice.numberingTemplate.states.error'), err)
-  } finally {
-    loading.value = false
-  }
-}
+const numberingTemplates = computed(() => response.value?.data ?? [])
+const error = computed(() => isError.value ? t('invoice.numberingTemplate.states.error') : null)
+
+const groupedTemplates = computed(() => groupTemplatesByInvoiceType(numberingTemplates.value))
 
 const handleAddTemplate = (invoiceType: TInvoiceType) => {
   selectedTemplate.value = null
@@ -62,8 +51,7 @@ const handleEditTemplate = (template: IInvoiceNumberingTemplate) => {
 
 const handleSetDefault = async (template: IInvoiceNumberingTemplate) => {
   try {
-    await numberingTemplateService.setDefault(template.id)
-    await loadTemplates()
+    await setDefaultTemplate(template.id)
     toast.success(t('invoice.numberingTemplate.actions.setDefaultTemplate.success'))
   } catch (err) {
     handleErrorWithToast(t('invoice.numberingTemplate.actions.setDefaultTemplate.error'), err)
@@ -72,8 +60,7 @@ const handleSetDefault = async (template: IInvoiceNumberingTemplate) => {
 
 const handleDeleteTemplate = async (id: string) => {
   try {
-    await numberingTemplateService.delete(id)
-    await loadTemplates()
+    await deleteTemplate(id)
     toast.success(t('invoice.numberingTemplate.actions.deleteTemplate.success'))
   } catch (err) {
     handleErrorWithToast(t('invoice.numberingTemplate.actions.deleteTemplate.error'), err)
@@ -88,19 +75,14 @@ const handleDeleteConfirm = (id: string) => {
 
 const handleTemplateSubmit = () => {
   showTemplateModal.value = false
-  void loadTemplates()
 }
-
-onMounted(() => {
-  void loadTemplates()
-})
 </script>
 
 <template>
   <div class="flex flex-col gap-6 border rounded-md p-4 shadow-lg/5">
     <TenantSectionTitle :title="t('invoice.numberingTemplate.title')" :subtitle="t('invoice.numberingTemplate.subtitle')">
       <template #actions>
-        <RefreshIconButton :loading @click="loadTemplates()" />
+        <RefreshIconButton :loading @click="refetch()" />
       </template>
     </TenantSectionTitle>
 
@@ -139,7 +121,6 @@ onMounted(() => {
         :value="group.key"
         class="space-y-6 pl-2"
       >
-        <!-- Base Templates -->
         <div class="space-y-4">
           <div class="flex items-center justify-between">
             <h3 class="text-lg font-medium">
@@ -178,7 +159,6 @@ onMounted(() => {
 
         <Separator />
 
-        <!-- Correction Templates -->
         <div v-if="group.correctionType" class="space-y-4">
           <div class="flex items-center justify-between">
             <h3 class="text-lg font-medium">
@@ -220,7 +200,6 @@ onMounted(() => {
       </TabsContent>
     </Tabs>
 
-    <!-- Template Form Modal -->
     <NumberingTemplateFormModal
       v-model:open="showTemplateModal"
       :template="selectedTemplate"
@@ -228,10 +207,9 @@ onMounted(() => {
       @submit="handleTemplateSubmit"
     />
 
-    <!-- Delete Confirmation Modal -->
     <NumberingTemplateDeleteModal
       :open="!!deleteConfirmId"
-      :loading="loading"
+      :loading="isDeleting"
       @update:open="(open) => !open && (deleteConfirmId = null)"
       @confirm="handleDeleteTemplate(deleteConfirmId!)"
     />

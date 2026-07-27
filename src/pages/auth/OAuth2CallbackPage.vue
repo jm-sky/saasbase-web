@@ -7,6 +7,7 @@ import Alert from '@/components/ui/alert/Alert.vue'
 import { toast } from '@/components/ui/toast'
 import { authService } from '@/domains/auth/services/authService'
 import { useAuthStore } from '@/domains/auth/store/auth.store'
+import { usePostAuthNavigation } from '@/domains/auth/composables/usePostAuthNavigation'
 import GuestLayout from '@/layouts/GuestLayout.vue'
 
 const TIMEOUT = 3000
@@ -18,6 +19,7 @@ const error = ref('')
 
 const router = useRouter()
 const authStore = useAuthStore()
+const { navigateAfterAuthentication } = usePostAuthNavigation()
 
 const redirect = () => setTimeout(() => router.push('/'), TIMEOUT)
 
@@ -47,8 +49,7 @@ const processOAuth2Callback = async () => {
   }
 
   authStore.setToken(jwtToken as string)
-  authStore.setUser(await authService.getMe())
-  redirect()
+  await navigateAfterAuthentication()
 }
 
 onMounted(async () => {

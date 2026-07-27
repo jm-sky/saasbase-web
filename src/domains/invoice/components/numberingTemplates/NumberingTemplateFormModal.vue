@@ -10,6 +10,10 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { toast } from '@/components/ui/toast'
+import {
+  useCreateNumberingTemplate,
+  useUpdateNumberingTemplate,
+} from '@/domains/invoice/composables/useNumberingTemplateMutations'
 import { handleErrorWithToast } from '@/lib/handleErrorWithToast'
 import { numberingTemplateService } from '../../services/NumberingTemplate.service'
 import { FORMAT_ELEMENTS, getInvoiceTypeLabel } from '../../utils/numberingTemplateUtils'
@@ -48,6 +52,9 @@ const form = useForm({
 })
 
 const { isSubmitting } = form
+const { mutateAsync: createTemplate, isPending: isCreating } = useCreateNumberingTemplate()
+const { mutateAsync: updateTemplate, isPending: isUpdating } = useUpdateNumberingTemplate()
+const isSaving = computed(() => isSubmitting.value || isCreating.value || isUpdating.value)
 
 const resetPeriodOptions = [
   { value: 'monthly', label: t('invoice.numberingTemplate.resetPeriods.monthly') },
@@ -101,10 +108,10 @@ const insertFormatElement = (element: string) => {
 const handleSubmit = form.handleSubmit(async (values) => {
   try {
     if (isEditing.value && props.template) {
-      await numberingTemplateService.update(props.template.id, values)
+      await updateTemplate({ id: props.template.id, data: values })
       toast.success(t('invoice.numberingTemplate.actions.update.success'))
     } else {
-      await numberingTemplateService.create(values)
+      await createTemplate(values)
       toast.success(t('invoice.numberingTemplate.actions.create.success'))
     }
 
@@ -303,8 +310,8 @@ watch(() => [form.values.format, form.values.nextNumber, form.values.resetPeriod
       >
         {{ t('invoice.numberingTemplate.actions.cancel') }}
       </Button>
-      <Button type="submit" :disabled="isSubmitting" @click="handleSubmit">
-        {{ isSubmitting ? t('common.loading') : t('invoice.numberingTemplate.actions.save') }}
+      <Button type="submit" :disabled="isSaving" @click="handleSubmit">
+        {{ isSaving ? t('common.loading') : t('invoice.numberingTemplate.actions.save') }}
       </Button>
     </template>
   </ModalComponent>

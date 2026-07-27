@@ -12,8 +12,13 @@ export const useLogin = () => {
     credentials.recaptchaToken = token
 
     await authService.login(credentials)
-    authStore.setUser(await authService.getMe())
     clearFailedQueue()
+
+    if (authStore.isTwoFactorEnabled && !authStore.isTwoFactorPassed) {
+      return
+    }
+
+    authStore.setUser(await authService.getMe())
   }
 
   return { login }

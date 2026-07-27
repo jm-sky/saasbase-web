@@ -6,7 +6,7 @@ const isTwoFactorRequired = (error: unknown): boolean => {
   return (
     error instanceof AxiosError &&
     (error.response?.status === HttpStatusCode.Forbidden) &&
-    error.response.data.actionRequired === 'verify-2fa'
+    error.response?.data?.actionRequired === 'verify-2fa'
   )
 }
 
