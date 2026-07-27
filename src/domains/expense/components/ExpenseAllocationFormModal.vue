@@ -213,7 +213,7 @@ const onSubmit = async () => {
               <Label>{{ dimensionLabel(dim) }}</Label>
               <Select
                 :model-value="row.dimensionSelections[dim.dimensionType] ?? NONE_DIMENSION"
-                @update:model-value="row.dimensionSelections[dim.dimensionType] = $event"
+                @update:model-value="row.dimensionSelections[dim.dimensionType] = ($event as string) ?? NONE_DIMENSION"
               >
                 <SelectTrigger>
                   <SelectValue :placeholder="t('expense.allocation.form.dimensionPlaceholder')" />
